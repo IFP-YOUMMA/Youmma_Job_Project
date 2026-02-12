@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Développement YOUMMA-JOB | Guide Complet Django</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2B5BA8;
+            --secondary: #E8833A;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --dark: #1E293B;
+            --light: #F8FAFC;
+            --code-bg: #0F172A;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.7;
+            color: var(--dark);
+            background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1E40AF 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(43, 91, 168, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        header h1 { font-size: 3.5em; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; position: relative; }
+        header .subtitle { font-size: 1.3em; opacity: 0.95; font-weight: 400; position: relative; }
+        
+        .intro-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+            border-left: 6px solid var(--secondary);
+        }
+        
+        .intro-card h2 { color: var(--primary); font-size: 2em; font-weight: 800; margin-bottom: 20px; }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin: 30px 0;
+        }
+        
+        .tech-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+            padding: 30px;
+            border-radius: 16px;
+            border: 2px solid #E2E8F0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+        
+        .tech-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 40px rgba(43, 91, 168, 0.15);
+        }
+        
+        .tech-card .icon { font-size: 2.5em; margin-bottom: 15px; }
+        .tech-card h4 { color: var(--primary); font-size: 1.2em; font-weight: 700; margin-bottom: 10px; }
+        
+        .phase {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .phase:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+        
+        .phase-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1E40AF 100%);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .phase-title { display: flex; align-items: center; gap: 20px; font-size: 1.8em; font-weight: 800; }
+        
+        .phase-number {
+            background: rgba(255, 255, 255, 0.25);
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            font-weight: 800;
+        }
+        
+        .duration {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        
+        .phase-content { padding: 40px; }
+        
+        .step {
+            margin-bottom: 40px;
+            padding-left: 30px;
+            border-left: 4px solid var(--secondary);
+            transition: border-color 0.3s ease;
+        }
+        
+        .step:hover { border-left-color: var(--primary); }
+        .step h3 { color: var(--dark); font-size: 1.5em; font-weight: 700; margin-bottom: 15px; }
+        .step-description { color: #64748B; font-size: 1.05em; margin-bottom: 20px; line-height: 1.8; }
+        
+        .code-block {
+            background: var(--code-bg);
+            color: #E2E8F0;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .code-title { color: #60A5FA; font-weight: 600; margin-bottom: 12px; font-size: 0.95em; }
+        .code-block code { display: block; line-height: 1.7; white-space: pre-wrap; }
+        
+        .file-tree {
+            background: #F8FAFC;
+            padding: 24px;
+            border-radius: 12px;
+            border: 2px solid #E2E8F0;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+        
+        .file-tree code { display: block; line-height: 1.7; color: #475569; }
+        
+        .checklist { list-style: none; margin: 20px 0; }
+        .checklist li { padding: 12px 0 12px 35px; position: relative; font-size: 1.05em; }
+        .checklist li::before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: bold; font-size: 1.4em; }
+        
+        .alert { padding: 20px 24px; border-radius: 12px; margin: 20px 0; border-left: 5px solid; }
+        .alert-note { background: #FEF3C7; border-left-color: var(--warning); }
+        .alert-note strong { color: #92400E; }
+        .alert-warning { background: #FEE2E2; border-left-color: var(--danger); }
+        .alert-warning strong { color: #991B1B; }
+        .alert-success { background: #D1FAE5; border-left-color: var(--success); }
+        .alert-success strong { color: #065F46; }
+        
+        .timeline {
+            background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+            border: 2px solid #DBEAFE;
+        }
+        
+        .timeline h2 { text-align: center; color: var(--primary); font-size: 2.2em; font-weight: 800; margin-bottom: 40px; }
+        
+        .timeline-item {
+            padding: 20px;
+            border-left: 4px solid var(--primary);
+            margin: 0 0 20px 30px;
+            background: white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item:hover { transform: translateX(10px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .timeline-item h4 { color: var(--primary); font-weight: 700; margin-bottom: 8px; }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        @media print {
+            body { background: white; }
+            .phase:hover, .tech-card:hover { transform: none; box-shadow: none; }
+        }
+        
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.2em; }
+            .phase-title { font-size: 1.3em; }
+            .tech-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📱 YOUMMA-JOB</h1>
+            <p class="subtitle">Plan de Développement Complet | Application Django MVP</p>
+        </header>
+        
+        <div class="intro-card">
+            <h2>🎯 Vue d'ensemble du projet</h2>
+            <p><strong>YOUMMA-JOB</strong> est une application web de mise en relation entre prestataires de services qualifiés et clients en République de Guinée. Ce document présente un plan de développement étape par étape, depuis la configuration initiale jusqu'au déploiement en production.</p>
+            
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="icon">🐍</div>
+                    <h4>Backend</h4>
+                    <p>Django 5.x + PostgreSQL</p>
+                </div>
+                <div class="tech-card">
+                    <div class="icon">🎨</div>
+                    <h4>Frontend</h4>
+                    <p>Tailwind CSS + Alpine.js</p>
+                </div>
+                <div class="tech-card">
+                    <div class="icon">🚀</div>
+                    <h4>Déploiement</h4>
+                    <p>Nginx + Gunicorn + VPS</p>
+                </div>
+                <div class="tech-card">
+                    <div class="icon">⏱️</div>
+                    <h4>Durée totale</h4>
+                    <p>6 semaines MVP</p>
+                </div>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-number">0</div>
+                    Configuration de l'environnement de développement
+                </div>
+                <div class="duration">⏱️ 1-2 jours</div>
+            </div>
+            <div class="phase-content">
+                <div class="step">
+                    <h3>0.1 Installation des prérequis système</h3>
+                    <div class="step-description">
+                        Installer Python, PostgreSQL et les outils de développement nécessaires.
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-title"># Pour Ubuntu/Debian</div>
+                        <code>sudo apt update
+sudo apt install python3.11 python3.11-venv python3-pip
+sudo apt install postgresql postgresql-contrib
+sudo apt install git curl</code>
+                    </div>
+
+                    <div class="code-block">
+                        <div class="code-title"># Pour macOS (avec Homebrew)</div>
+                        <code>brew install python@3.11
+brew install postgresql@15
+brew install git</code>
+                    </div>
+
+                    <div class="alert alert-note">
+                        <strong>💡 Note :</strong> Python 3.11+ est recommandé pour Django 5.x. PostgreSQL sera utilisé dès le développement pour éviter les divergences avec la production.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3>0.2 Configuration de PostgreSQL</h3>
+                    <div class="step-description">
+                        Créer la base de données et l'utilisateur pour le projet.
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-title"># Se connecter à PostgreSQL</div>
+                        <code>sudo -u postgres psql
+
+-- Créer la base de données et l'utilisateur
+CREATE DATABASE youmma_job_db;
+CREATE USER youmma_user WITH PASSWORD 'votre_mot_de_passe_securise';
+ALTER ROLE youmma_user SET client_encoding TO 'utf8';
+ALTER ROLE youmma_user SET default_transaction_isolation TO 'read committed';
+ALTER ROLE youmma_user SET timezone TO 'UTC';
+GRANT ALL PRIVILEGES ON DATABASE youmma_job_db TO youmma_user;
+\q</code>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>⚠️ Attention :</strong> Utilisez un mot de passe fort et conservez-le en sécurité. Ne le commitez jamais dans Git.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3>0.3 Création du dépôt Git</h3>
+                    <div class="step-description">
+                        Initialiser Git et créer le fichier .gitignore pour le versioning.
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-title"># Créer le répertoire du projet</div>
+                        <code>mkdir youmma-job
+cd youmma-job
+git init</code>
+                    </div>
+
+                    <div class="alert alert-success">
+                        <strong>✅ Bonne pratique :</strong> Créer un dépôt GitHub dès le début permet de versionner votre code et de le sauvegarder régulièrement.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-number">1</div>
+                    Initialisation du projet Django
+                </div>
+                <div class="duration">⏱️ 1 jour</div>
+            </div>
+            <div class="phase-content">
+                <div class="step">
+                    <h3>1.1 Création de l'environnement virtuel</h3>
+                    <div class="code-block">
+                        <code>python3.11 -m venv venv\nsource venv/bin/activate</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>1.2 Installation Django et dépendances</h3>
+                    <div class="code-block">
+                        <code>pip install django==5.0 psycopg2-binary python-decouple Pillow djangorestframework</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>1.3 Création du projet</h3>
+                    <div class="code-block">
+                        <code>django-admin startproject youmma_job_project .</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>1.4 Configuration .env</h3>
+                    <div class="code-block">
+                        <code>Créer le fichier .env avec SECRET_KEY, DB_NAME, DB_USER, DB_PASSWORD</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>1.5 Premier test</h3>
+                    <div class="code-block">
+                        <code>python manage.py migrate\npython manage.py createsuperuser\npython manage.py runserver</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-number">2</div>
+                    Architecture et applications Django
+                </div>
+                <div class="duration">⏱️ 1 jour</div>
+            </div>
+            <div class="phase-content">
+                <div class="step">
+                    <h3>2.1 Création des apps</h3>
+                    <div class="code-block">
+                        <code>python manage.py startapp users\npython manage.py startapp profiles\npython manage.py startapp services\npython manage.py startapp reviews\npython manage.py startapp search</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>2.2 Enregistrement dans INSTALLED_APPS</h3>
+                    <div class="code-block">
+                        <code>Ajouter toutes les apps dans settings.py</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>2.3 Configuration templates</h3>
+                    <div class="code-block">
+                        <code>Créer templates/{base,users,profiles,services,reviews,search}</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-number">3</div>
+                    Modèles de données (Models)
+                </div>
+                <div class="duration">⏱️ 2-3 jours</div>
+            </div>
+            <div class="phase-content">
+                <div class="step">
+                    <h3>3.1 Modèle User personnalisé</h3>
+                    <div class="code-block">
+                        <code>User avec user_type (client/prestataire), phone_number, phone_verified</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>3.2 Modèle ServiceCategory</h3>
+                    <div class="code-block">
+                        <code>15 catégories de métiers prioritaires</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>3.3 Modèle ProviderProfile</h3>
+                    <div class="code-block">
+                        <code>Profil complet avec photo, localisation, tarifs, disponibilité, vérification</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>3.4 Modèle Review</h3>
+                    <div class="code-block">
+                        <code>Système de notation 1-5 étoiles avec commentaires</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>3.5 Migrations</h3>
+                    <div class="code-block">
+                        <code>python manage.py makemigrations\npython manage.py migrate</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>3.6 Données initiales</h3>
+                    <div class="code-block">
+                        <code>Script pour peupler les 15 catégories et localisations</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-number">4</div>
+                    Interface d'administration Django
+                </div>
+                <div class="duration">⏱️ 1 jour</div>
+            </div>
+            <div class="phase-content">
+                <div class="step">
+                    <h3>4.1 Admin User</h3>
+                    <div class="code-block">
+                        <code>Personnaliser UserAdmin avec filtres user_type, phone_verified</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>4.2 Admin Profiles</h3>
+                    <div class="code-block">
+                        <code>Inline Portfolio, filtres par catégorie/localisation/vérification</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>4.3 Admin Reviews</h3>
+                    <div class="code-block">
+                        <code>Actions de modération (vérifier, signaler)</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>4.4 Admin Services</h3>
+                    <div class="code-block">
+                        <code>Gestion des catégories avec ordre d'affichage</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-number">5</div>
+                    Authentification (Semaines 1-2)
+                </div>
+                <div class="duration">⏱️ 1-2 semaines</div>
+            </div>
+            <div class="phase-content">
+                <div class="step">
+                    <h3>5.1 Formulaires</h3>
+                    <div class="code-block">
+                        <code>ClientRegistrationForm, ProviderRegistrationForm, LoginForm</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>5.2 Vues</h3>
+                    <div class="code-block">
+                        <code>register_client, register_provider, user_login, user_logout</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>5.3 URLs</h3>
+                    <div class="code-block">
+                        <code>auth/inscription/client/, auth/inscription/prestataire/, auth/connexion/</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>5.4 Templates</h3>
+                    <div class="code-block">
+                        <code>Pages d'inscription et connexion avec Tailwind CSS</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-number">6</div>
+                    Profils prestataires (Semaines 1-2)
+                </div>
+                <div class="duration">⏱️ 1-2 semaines</div>
+            </div>
+            <div class="phase-content">
+                <div class="step">
+                    <h3>6.1 Formulaires profil</h3>
+                    <div class="code-block">
+                        <code>ProviderProfileForm avec validation images</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>6.2 CRUD profil</h3>
+                    <div class="code-block">
+                        <code>profile_create, profile_edit, profile_detail</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>6.3 Portfolio</h3>
+                    <div class="code-block">
+                        <code>Upload jusqu'à 5 images (gratuit) ou 10 (premium)</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>6.4 Templates</h3>
+                    <div class="code-block">
+                        <code>Page de profil public avec galerie photos et avis</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-number">7</div>
+                    Moteur de recherche (Semaines 3-4)
+                </div>
+                <div class="duration">⏱️ 1-2 semaines</div>
+            </div>
+            <div class="phase-content">
+                <div class="step">
+                    <h3>7.1 Vue de recherche</h3>
+                    <div class="code-block">
+                        <code>Filtres : catégorie, localisation, note min, disponibilité, recherche texte</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>7.2 Optimisation</h3>
+                    <div class="code-block">
+                        <code>select_related, prefetch_related pour performances</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>7.3 Tri résultats</h3>
+                    <div class="code-block">
+                        <code>Premium en premier, puis par note moyenne</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>7.4 Template résultats</h3>
+                    <div class="code-block">
+                        <code>Cartes de profil responsive avec badges</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-number">8</div>
+                    Système d'avis (Semaines 5-6)
+                </div>
+                <div class="duration">⏱️ 1 semaine</div>
+            </div>
+            <div class="phase-content">
+                <div class="step">
+                    <h3>8.1 Formulaire avis</h3>
+                    <div class="code-block">
+                        <code>ReviewForm avec étoiles et commentaire obligatoire</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>8.2 Contrainte unique</h3>
+                    <div class="code-block">
+                        <code>Un seul avis par client par prestataire</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>8.3 Calcul automatique</h3>
+                    <div class="code-block">
+                        <code>Mise à jour average_rating après chaque avis</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>8.4 Signalement</h3>
+                    <div class="code-block">
+                        <code>ReportReviewForm pour modération</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-number">9</div>
+                    Interface UI avec Tailwind CSS
+                </div>
+                <div class="duration">⏱️ 1 semaine</div>
+            </div>
+            <div class="phase-content">
+                <div class="step">
+                    <h3>9.1 Installation Tailwind</h3>
+                    <div class="code-block">
+                        <code>Via CDN pour MVP, npm pour production</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>9.2 Alpine.js</h3>
+                    <div class="code-block">
+                        <code>Interactions légères (modales, dropdowns)</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>9.3 Composants UI</h3>
+                    <div class="code-block">
+                        <code>Cartes profil, badges, galerie, système étoiles</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>9.4 Responsive design</h3>
+                    <div class="code-block">
+                        <code>Mobile-first, optimisé pour connexions faibles</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-number">10</div>
+                    Tests et optimisations
+                </div>
+                <div class="duration">⏱️ 1-2 semaines</div>
+            </div>
+            <div class="phase-content">
+                <div class="step">
+                    <h3>10.1 Tests unitaires</h3>
+                    <div class="code-block">
+                        <code>Tests models, views, forms</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>10.2 Optimisation requêtes</h3>
+                    <div class="code-block">
+                        <code>select_related, prefetch_related, indexes</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>10.3 Compression images</h3>
+                    <div class="code-block">
+                        <code>Pillow pour réduire taille uploads</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>10.4 Tests utilisateurs</h3>
+                    <div class="code-block">
+                        <code>Scénarios complets sur mobile et desktop</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-number">11</div>
+                    Déploiement en production
+                </div>
+                <div class="duration">⏱️ 3-5 jours</div>
+            </div>
+            <div class="phase-content">
+                <div class="step">
+                    <h3>11.1 Config production</h3>
+                    <div class="code-block">
+                        <code>DEBUG=False, ALLOWED_HOSTS, sécurité SSL</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>11.2 Serveur VPS</h3>
+                    <div class="code-block">
+                        <code>Ubuntu, PostgreSQL, Nginx, Gunicorn, Supervisor</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>11.3 SSL Let's Encrypt</h3>
+                    <div class="code-block">
+                        <code>Certificat HTTPS avec certbot</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>11.4 Sauvegardes</h3>
+                    <div class="code-block">
+                        <code>Script cron quotidien (DB + media)</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3>11.5 Monitoring</h3>
+                    <div class="code-block">
+                        <code>Logs, surveillance performances</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="timeline">
+            <h2>📅 Timeline du développement MVP (6 semaines)</h2>
+            
+            <div class="timeline-item">
+                <h4>Semaines 1-2 : Authentification et Profils</h4>
+                <p>Système d'inscription/connexion pour clients et prestataires + création de profils prestataires complets avec portfolio.</p>
+            </div>
+            
+            <div class="timeline-item">
+                <h4>Semaines 3-4 : Moteur de recherche</h4>
+                <p>Recherche multicritères (métier, localisation, note, disponibilité) avec affichage optimisé des résultats.</p>
+            </div>
+            
+            <div class="timeline-item">
+                <h4>Semaines 5-6 : Avis et Polish</h4>
+                <p>Système de notation et commentaires + optimisations UI/UX + tests utilisateurs + corrections.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>Document préparé pour IFP-YOUMMA</strong></p>
+            <p>Février 2026 | YOUMMA-JOB - Plateforme de mise en relation professionnelle</p>
+            <p style="margin-top: 20px; opacity: 0.8;">République de Guinée - Conakry et extensions futures</p>
+        </footer>
+    </div>
+</body>
+</html>
