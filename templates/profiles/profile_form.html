@@ -1,0 +1,812 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {% if profile %}Modifier mon profil{% else %}Créer mon profil{% endif %} - YOUMMA-JOB
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #8B5CF6;
+        --primary-dark: #7C3AED;
+        --accent: #F59E0B;
+        --bg-primary: #0F172A;
+        --bg-secondary: #1E293B;
+        --text-primary: #F8FAFC;
+        --text-secondary: #94A3B8;
+        --border: #334155;
+    }
+
+    .profile-form-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    /* Progress Header */
+    .progress-header {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 32px;
+        margin-bottom: 32px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .progress-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .progress-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 12px;
+        letter-spacing: -0.5px;
+    }
+
+    .progress-subtitle {
+        color: var(--text-secondary);
+        font-size: 1rem;
+        margin-bottom: 24px;
+    }
+
+    .progress-steps {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .step-indicator {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .step-dot {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--bg-primary);
+        border: 2px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+    }
+
+    .step-dot.active {
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        border-color: var(--primary);
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .step-dot.completed {
+        background: #10b981;
+        border-color: #10b981;
+        color: white;
+    }
+
+    .step-line {
+        width: 60px;
+        height: 3px;
+        background: var(--border);
+    }
+
+    .step-line.active {
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    /* Form Card */
+    .form-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 48px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        margin-bottom: 24px;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .section-icon {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .section-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke: white;
+        stroke-width: 2;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+    }
+
+    /* Form Fields */
+    .form-grid {
+        display: grid;
+        gap: 24px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .required {
+        color: var(--accent);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    textarea {
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--bg-primary);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+        font-family: 'DM Sans', sans-serif;
+        transition: all 0.3s ease;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: #475569;
+    }
+
+    select {
+        cursor: pointer;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .char-counter {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        text-align: right;
+        margin-top: 4px;
+    }
+
+    /* Image Upload */
+    .image-upload-area {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        border-radius: 20px;
+        border: 2px dashed var(--border);
+        background: var(--bg-primary);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .image-upload-area:hover {
+        border-color: var(--primary);
+        background: rgba(139, 92, 246, 0.05);
+    }
+
+    .image-upload-area.has-image {
+        border-style: solid;
+    }
+
+    .image-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 18px;
+    }
+
+    .upload-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-secondary);
+    }
+
+    .upload-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .upload-icon svg {
+        width: 24px;
+        height: 24px;
+        stroke: white;
+        stroke-width: 2;
+    }
+
+    .upload-text {
+        font-size: 0.875rem;
+        text-align: center;
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    /* Help Text */
+    .help-text {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .help-icon {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* Alert Box */
+    .info-box {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .info-icon-wrapper {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .info-icon-wrapper svg {
+        stroke: #60a5fa;
+        stroke-width: 2;
+    }
+
+    .info-text {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    /* Buttons */
+    .button-group {
+        display: flex;
+        gap: 16px;
+        margin-top: 32px;
+    }
+
+    .btn {
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+        flex: 1;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(139, 92, 246, 0.4);
+    }
+
+    .btn-secondary {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+        background: var(--border);
+    }
+
+    .btn-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Messages */
+    .messages {
+        margin-bottom: 24px;
+    }
+
+    .alert {
+        padding: 14px 18px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+        animation: slideDown 0.3s ease-out;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .alert-success {
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        color: #4ade80;
+    }
+
+    .alert-error {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #f87171;
+    }
+
+    /* Error Styling */
+    .errorlist {
+        list-style: none;
+        padding: 0;
+        margin: 4px 0 0 0;
+    }
+
+    .errorlist li {
+        color: #f87171;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 4px;
+    }
+
+    .form-group.error input,
+    .form-group.error select,
+    .form-group.error textarea {
+        border-color: #ef4444;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .form-card {
+            padding: 32px 24px;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .progress-header {
+            padding: 24px;
+        }
+
+        .progress-title {
+            font-size: 1.5rem;
+        }
+
+        .step-line {
+            width: 40px;
+        }
+
+        .button-group {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-form-container">
+    <!-- Progress Header -->
+    <div class="progress-header">
+        <h1 class="progress-title">
+            {% if profile %}
+                Modifier mon profil professionnel
+            {% else %}
+                Créer mon profil professionnel
+            {% endif %}
+        </h1>
+        <p class="progress-subtitle">
+            {% if profile %}
+                Mettez à jour vos informations pour attirer plus de clients
+            {% else %}
+                Complétez votre profil pour commencer à recevoir des demandes
+            {% endif %}
+        </p>
+
+        <div class="progress-steps">
+            <div class="step-indicator">
+                <div class="step-dot completed">✓</div>
+                <div class="step-line active"></div>
+                <div class="step-dot active">2</div>
+                <div class="step-line"></div>
+                <div class="step-dot">3</div>
+            </div>
+        </div>
+    </div>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Section 1: Informations de base -->
+        <div class="form-card">
+            <div class="section-header">
+                <div class="section-icon">
+                    <svg fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                </div>
+                <h2 class="section-title">Informations de base</h2>
+            </div>
+
+            <div class="info-box">
+                <div class="info-icon-wrapper">
+                    <svg fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="info-text">
+                    Ces informations seront visibles publiquement sur votre profil. Assurez-vous qu'elles sont exactes et professionnelles.
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="id_profile_picture">
+                        Photo de profil <span class="required">*</span>
+                    </label>
+                    <label for="id_profile_picture" class="image-upload-area {% if form.profile_picture.value %}has-image{% endif %}">
+                        {% if form.profile_picture.value %}
+                            <img src="{{ form.profile_picture.value.url }}" alt="Photo de profil" class="image-preview" id="preview-image">
+                        {% else %}
+                            <div class="upload-placeholder" id="upload-placeholder">
+                                <div class="upload-icon">
+                                    <svg fill="none" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div class="upload-text">
+                                    <strong>Cliquez pour ajouter</strong><br>
+                                    <span style="font-size: 0.75rem;">JPG, PNG (max 5MB)</span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </label>
+                    <input type="file" name="profile_picture" id="id_profile_picture" accept="image/*">
+                    {% if form.profile_picture.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.profile_picture.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_full_name">
+                            Nom complet <span class="required">*</span>
+                        </label>
+                        <input type="text" 
+                               name="full_name" 
+                               id="id_full_name" 
+                               placeholder="ex: Jean Traoré"
+                               value="{{ form.full_name.value|default:'' }}"
+                               required>
+                        {% if form.full_name.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.full_name.errors %}
+                                    <li>⚠ {{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_category">
+                            Catégorie de service <span class="required">*</span>
+                        </label>
+                        <select name="category" id="id_category" required>
+                            <option value="">-- Sélectionnez --</option>
+                            {{ form.category }}
+                        </select>
+                        {% if form.category.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.category.errors %}
+                                    <li>⚠ {{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_city">
+                            Ville <span class="required">*</span>
+                        </label>
+                        <select name="city" id="id_city" required>
+                            <option value="">-- Sélectionnez --</option>
+                            <option value="Conakry" {% if form.city.value == "Conakry" %}selected{% endif %}>Conakry</option>
+                            <option value="Kindia" {% if form.city.value == "Kindia" %}selected{% endif %}>Kindia</option>
+                            <option value="Boké" {% if form.city.value == "Boké" %}selected{% endif %}>Boké</option>
+                            <option value="Kankan" {% if form.city.value == "Kankan" %}selected{% endif %}>Kankan</option>
+                            <option value="Labé" {% if form.city.value == "Labé" %}selected{% endif %}>Labé</option>
+                            <option value="Mamou" {% if form.city.value == "Mamou" %}selected{% endif %}>Mamou</option>
+                            <option value="Nzérékoré" {% if form.city.value == "Nzérékoré" %}selected{% endif %}>Nzérékoré</option>
+                            <option value="Faranah" {% if form.city.value == "Faranah" %}selected{% endif %}>Faranah</option>
+                        </select>
+                        {% if form.city.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.city.errors %}
+                                    <li>⚠ {{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_commune">
+                            Commune <span class="required">*</span>
+                        </label>
+                        <input type="text" 
+                               name="commune" 
+                               id="id_commune" 
+                               placeholder="ex: Kaloum"
+                               value="{{ form.commune.value|default:'' }}"
+                               required>
+                        {% if form.commune.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.commune.errors %}
+                                    <li>⚠ {{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Détails professionnels -->
+        <div class="form-card">
+            <div class="section-header">
+                <div class="section-icon">
+                    <svg fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h2 class="section-title">Détails professionnels</h2>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label for="id_bio">
+                        Description de vos services
+                    </label>
+                    <textarea name="bio" 
+                              id="id_bio" 
+                              placeholder="Décrivez votre expertise, vos services et ce qui vous rend unique..."
+                              maxlength="500">{{ form.bio.value|default:'' }}</textarea>
+                    <div class="char-counter">
+                        <span id="char-count">{{ form.bio.value|default:""|length }}</span>/500 caractères
+                    </div>
+                    <p class="help-text">
+                        <svg class="help-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Présentez vos compétences et votre expérience de manière attractive
+                    </p>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_years_experience">
+                            Années d'expérience
+                        </label>
+                        <input type="number" 
+                               name="years_experience" 
+                               id="id_years_experience" 
+                               placeholder="ex: 5"
+                               min="0"
+                               max="50"
+                               value="{{ form.years_experience.value|default:'' }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_hourly_rate">
+                            Tarif horaire indicatif (GNF)
+                        </label>
+                        <input type="number" 
+                               name="hourly_rate" 
+                               id="id_hourly_rate" 
+                               placeholder="ex: 50000"
+                               min="0"
+                               value="{{ form.hourly_rate.value|default:'' }}">
+                        <p class="help-text">
+                            <svg class="help-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Optionnel - Donne une idée aux clients
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_availability">
+                        Disponibilité actuelle
+                    </label>
+                    <select name="availability" id="id_availability">
+                        <option value="available" {% if form.availability.value == "available" %}selected{% endif %}>✓ Disponible</option>
+                        <option value="busy" {% if form.availability.value == "busy" %}selected{% endif %}>⏳ Occupé</option>
+                        <option value="absent" {% if form.availability.value == "absent" %}selected{% endif %}>✗ Absent</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-group">
+            <a href="{% if profile %}{% url 'profiles:profile_detail' profile.pk %}{% else %}{% url 'home' %}{% endif %}" 
+               class="btn btn-secondary">
+                <svg class="btn-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Annuler
+            </a>
+            <button type="submit" class="btn btn-primary">
+                {% if profile %}
+                    Enregistrer les modifications
+                {% else %}
+                    Créer mon profil
+                {% endif %}
+                <svg class="btn-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Image preview
+    const fileInput = document.getElementById('id_profile_picture');
+    const uploadArea = document.querySelector('.image-upload-area');
+    const placeholder = document.getElementById('upload-placeholder');
+    
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadArea.classList.add('has-image');
+                if (placeholder) placeholder.remove();
+                
+                let img = uploadArea.querySelector('.image-preview');
+                if (!img) {
+                    img = document.createElement('img');
+                    img.className = 'image-preview';
+                    img.id = 'preview-image';
+                    uploadArea.appendChild(img);
+                }
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Character counter for bio
+    const bioTextarea = document.getElementById('id_bio');
+    const charCount = document.getElementById('char-count');
+    
+    bioTextarea.addEventListener('input', function() {
+        charCount.textContent = this.value.length;
+    });
+</script>
+{% endblock %}

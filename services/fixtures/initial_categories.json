@@ -1,0 +1,79 @@
+[ 
+    {
+        "model": "services.servicecategory",  
+        "fields": {"name": "Mécanique automobile", 
+        "slug": "mecanique-automobile", 
+        "icon": "wrench", "order": 1}
+    }, 
+    
+    {
+        "model": "services.servicecategory",  
+        "fields": {"name": "Maçonnerie", "slug": "maconnerie", "icon": "hammer", "order": 2}
+    }, 
+    
+    {
+        "model": "services.servicecategory", 
+        "fields": {"name": "Menuiserie", "slug": "menuiserie", "icon": "tools", "order": 3}
+    }, 
+    {
+        "model": "services.servicecategory", 
+        "fields": {"name": "Plomberie", "slug": "plomberie", "icon": "droplet", "order": 4}
+    }, 
+        
+    {
+        "model": "services.servicecategory", 
+        "fields": {"name": "Électricité", "slug": "electricite", "icon": "zap", "order": 5}
+    }, 
+    
+    {
+        "model": "services.servicecategory", 
+        "fields": {"name": "Peinture bâtiment", "slug": "peinture-batiment", "icon": "paintbrush", "order": 6}
+    }, 
+    
+    {
+        "model": "services.servicecategory", 
+        "fields": {"name": "Climatisation et froid", 
+        "slug": "climatisation-froid", 
+        "icon": "wind", "order": 7}
+    }, 
+    
+    {
+        "model": "services.servicecategory",  
+        "fields": {"name": "Soudure", "slug": "soudure", "icon": "flame", "order": 8}
+    }, 
+    
+    {
+        "model": "services.servicecategory", 
+        "fields": {"name": "Médecine générale", "slug": "medecine-generale", "icon": "stethoscope", "order": 9}
+    }, 
+    
+    {
+        "model": "services.servicecategory",  
+        "fields": {"name": "Droit et conseil juridique", "slug": "droit-conseil-juridique", "icon": "balance", "order": 10}
+    }, 
+    
+    {
+        "model": "services.servicecategory", 
+        "fields": {"name": "Informatique et réparation", "slug": "informatique-reparation", "icon": "laptop", "order": 11}
+    }, 
+    
+    {
+        "model": "services.servicecategory", 
+        "fields": {"name": "Photographie et vidéo", "slug": "photographie-video", "icon": "camera", "order": 12}
+    }, 
+    
+    {
+        "model": "services.servicecategory", 
+        "fields": {"name": "Coiffure et esthétique", "slug": "coiffure-esthetique", "icon": "scissors", "order": 13}
+    }, 
+    
+    {
+        "model": "services.servicecategory", 
+        "fields": {"name": "Comptabilité", "slug": "comptabilite", "icon": "calculator", "order": 14}
+    }, 
+    
+    {
+        "model": "services.servicecategory", 
+        "fields": {"name": "Traduction et rédaction", "slug": "traduction-redaction", "icon": "book", "order": 15}
+    } 
+]

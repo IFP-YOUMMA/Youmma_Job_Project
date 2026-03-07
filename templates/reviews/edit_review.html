@@ -1,0 +1,542 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Modifier mon avis - YOUMMA-JOB{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #8B5CF6;
+        --primary-dark: #7C3AED;
+        --accent: #F59E0B;
+        --bg-primary: #0F172A;
+        --bg-secondary: #1E293B;
+        --text-primary: #F8FAFC;
+        --text-secondary: #94A3B8;
+        --border: #334155;
+    }
+
+    .review-container {
+        max-width: 800px;
+        margin: 60px auto;
+        padding: 20px;
+    }
+
+    /* Provider Card */
+    .provider-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 24px;
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .provider-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--primary);
+    }
+
+    .provider-info h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+    }
+
+    .provider-info p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+    }
+
+    /* Review Form Card */
+    .review-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 48px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        position: relative;
+    }
+
+    .review-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        border-radius: 24px 24px 0 0;
+    }
+
+    .review-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .review-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--accent), #f97316);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+
+    .review-icon svg {
+        width: 40px;
+        height: 40px;
+        stroke: white;
+        stroke-width: 2;
+    }
+
+    .review-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
+    }
+
+    .review-subtitle {
+        color: var(--text-secondary);
+        font-size: 1rem;
+    }
+
+    /* Rating Section */
+    .rating-section {
+        margin-bottom: 32px;
+    }
+
+    .rating-label {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 16px;
+        display: block;
+    }
+
+    .rating-options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .rating-option {
+        background: var(--bg-primary);
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .rating-option:hover {
+        border-color: var(--primary);
+        background: rgba(139, 92, 246, 0.05);
+    }
+
+    .rating-option input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        accent-color: var(--primary);
+    }
+
+    .rating-option.selected {
+        border-color: var(--primary);
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(124, 58, 237, 0.15));
+    }
+
+    .rating-text {
+        font-size: 1.1rem;
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+
+    /* Comment Section */
+    .comment-section {
+        margin-bottom: 32px;
+    }
+
+    .comment-label {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .comment-textarea {
+        width: 100%;
+        padding: 16px;
+        background: var(--bg-primary);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+        font-family: 'DM Sans', sans-serif;
+        line-height: 1.6;
+        resize: vertical;
+        min-height: 150px;
+        transition: all 0.3s ease;
+    }
+
+    .comment-textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+
+    .comment-textarea::placeholder {
+        color: #475569;
+    }
+
+    .char-counter {
+        text-align: right;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-top: 8px;
+    }
+
+    .help-text {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin-top: 8px;
+    }
+
+    /* Info Box */
+    .info-box {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .info-icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .info-icon svg {
+        stroke: #fbbf24;
+        stroke-width: 2;
+    }
+
+    .info-text {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    /* Buttons */
+    .button-group {
+        display: flex;
+        gap: 16px;
+        margin-top: 32px;
+    }
+
+    .btn {
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+        flex: 1;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(139, 92, 246, 0.4);
+    }
+
+    .btn-secondary {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+        background: var(--border);
+    }
+
+    .btn-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Delete Button */
+    .delete-section {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+        text-align: center;
+    }
+
+    .btn-delete {
+        background: transparent;
+        color: #f87171;
+        border: 1px solid #ef4444;
+        padding: 12px 24px;
+        font-size: 0.9rem;
+    }
+
+    .btn-delete:hover {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: #dc2626;
+    }
+
+    /* Messages */
+    .messages {
+        margin-bottom: 24px;
+    }
+
+    .alert {
+        padding: 14px 18px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .alert-error {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #f87171;
+    }
+
+    .alert-success {
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        color: #4ade80;
+    }
+
+    .errorlist {
+        list-style: none;
+        padding: 0;
+        margin: 8px 0 0 0;
+    }
+
+    .errorlist li {
+        color: #f87171;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 4px;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+        .review-card {
+            padding: 32px 24px;
+        }
+
+        .review-title {
+            font-size: 1.5rem;
+        }
+
+        .button-group {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+
+        .provider-card {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="review-container">
+    <!-- Provider Card -->
+    <div class="provider-card">
+        {% if provider.profile_picture %}
+            <img src="{{ provider.profile_picture.url }}" alt="{{ provider.full_name }}" class="provider-avatar">
+        {% else %}
+            <img src="{% static 'images/default_profile.svg' %}" alt="{{ provider.full_name }}" class="provider-avatar">
+        {% endif %}
+        <div class="provider-info">
+            <h2>{{ provider.full_name }}</h2>
+            <p>{{ provider.category }} • {{ provider.city }}</p>
+        </div>
+    </div>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Review Form -->
+    <div class="review-card">
+        <div class="review-header">
+            <div class="review-icon">
+                <svg fill="none" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+            </div>
+            <h1 class="review-title">Modifier mon avis</h1>
+            <p class="review-subtitle">Mettez à jour votre évaluation</p>
+        </div>
+
+        <div class="info-box">
+            <div class="info-icon">
+                <svg fill="none" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+            </div>
+            <div class="info-text">
+                Vous modifiez un avis déjà publié. Les modifications seront visibles après une nouvelle modération.
+            </div>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Rating Section -->
+            <div class="rating-section">
+                <label class="rating-label">Votre note *</label>
+                <div class="rating-options">
+                    {% for value, label in form.rating.field.choices %}
+                        <label class="rating-option" data-rating="{{ value }}">
+                            <input type="radio" 
+                                   name="rating" 
+                                   value="{{ value }}" 
+                                   {% if form.rating.value == value|stringformat:"s" %}checked{% endif %}
+                                   required>
+                            <span class="rating-text">{{ label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                {% if form.rating.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.rating.errors %}
+                            <li>⚠ {{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Comment Section -->
+            <div class="comment-section">
+                <label for="id_comment" class="comment-label">Votre commentaire *</label>
+                <textarea name="comment" 
+                          id="id_comment" 
+                          class="comment-textarea"
+                          placeholder="Décrivez votre expérience avec ce prestataire..."
+                          maxlength="1000"
+                          required>{{ form.comment.value|default:'' }}</textarea>
+                <div class="char-counter">
+                    <span id="char-count">{{ form.comment.value|default:""|length }}</span>/1000 caractères
+                </div>
+                <p class="help-text">Minimum 20 caractères pour publier votre avis</p>
+                {% if form.comment.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.comment.errors %}
+                            <li>⚠ {{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-group">
+                <a href="{% url 'profiles:profile_detail' provider.pk %}" class="btn btn-secondary">
+                    <svg class="btn-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    Annuler
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    Enregistrer les modifications
+                    <svg class="btn-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </button>
+            </div>
+        </form>
+
+        <!-- Delete Section -->
+        <div class="delete-section">
+            <a href="{% url 'reviews:delete_review' review.pk %}" 
+               class="btn btn-delete"
+               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet avis ? Cette action est irréversible.');">
+                <svg class="btn-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+                Supprimer cet avis
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Character counter
+    const commentTextarea = document.getElementById('id_comment');
+    const charCount = document.getElementById('char-count');
+    
+    commentTextarea.addEventListener('input', function() {
+        charCount.textContent = this.value.length;
+    });
+
+    // Rating selection visual feedback
+    const ratingOptions = document.querySelectorAll('.rating-option');
+    
+    ratingOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            // Remove selected class from all options
+            ratingOptions.forEach(opt => opt.classList.remove('selected'));
+            
+            // Add selected class to clicked option
+            this.classList.add('selected');
+        });
+        
+        // Check if already selected on page load
+        const radio = option.querySelector('input[type="radio"]');
+        if (radio.checked) {
+            option.classList.add('selected');
+        }
+    });
+</script>
+{% endblock %}

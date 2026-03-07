@@ -32,6 +32,10 @@ INSTALLED_APPS = [
     'reviews',
     'services',
     'search',
+
+    'crispy_forms',
+    'crispy_tailwind',
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -45,6 +49,15 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'youmma_job.urls'
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+# Login/Logout redirects
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 TEMPLATES = [
     {
@@ -67,12 +80,23 @@ WSGI_APPLICATION = 'youmma_job.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
+DATABASES = { 
+    'default': { 
+        'ENGINE': 'django.db.backends.postgresql', 
+        'NAME': 'youmma_job_db', 
+        'USER': 'postgres', 
+        'PASSWORD': '', 
+        'HOST': 'localhost', 
+        'PORT': '5432', 
+    } 
+}
+
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
+} """
 
 
 # Password validation
@@ -99,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'fr-fr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Conakry'
 
 USE_I18N = True
 
@@ -110,3 +134,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"

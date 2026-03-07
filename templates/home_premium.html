@@ -1,0 +1,1449 @@
+{% extends 'base/base.html' %}
+{% block title %}YOUMMA-JOB - Trouvez les meilleurs professionnels en Guinée{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #8B5CF6;
+        --primary-dark: #7C3AED;
+        --accent: #F59E0B;
+        --bg-primary: #0F172A;
+        --bg-secondary: #1E293B;
+        --text-primary: #F8FAFC;
+        --text-secondary: #94A3B8;
+        --border: #334155;
+    }
+
+    /* Hero Section Ultra Premium */
+    .hero-section {
+        position: relative;
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    }
+
+    /* Animated Background */
+    .hero-background {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+    }
+
+    .bg-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        animation: float 20s ease-in-out infinite;
+    }
+
+    .bg-circle-1 {
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+        top: -250px;
+        right: -100px;
+    }
+
+    .bg-circle-2 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, transparent 70%);
+        bottom: -200px;
+        left: -100px;
+        animation-delay: -10s;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        33% { transform: translate(50px, -50px) scale(1.1); }
+        66% { transform: translate(-50px, 50px) scale(0.9); }
+    }
+
+    .hero-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 80px 20px;
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 80px;
+        align-items: center;
+    }
+
+    .hero-content {
+        animation: slideInLeft 0.8s ease-out;
+    }
+
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2));
+        border: 1px solid var(--primary);
+        color: var(--primary);
+        padding: 10px 20px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 32px;
+    }
+
+    .badge-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .hero-title {
+        font-size: 4.5rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 24px;
+        letter-spacing: -2px;
+        background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .hero-title .highlight {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        display: inline-block;
+    }
+
+    .hero-title .highlight::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        border-radius: 2px;
+    }
+
+    .hero-description {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 40px;
+        max-width: 600px;
+    }
+
+    .hero-cta-group {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 48px;
+    }
+
+    .btn-hero {
+        padding: 18px 40px;
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-hero-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+    }
+
+    .btn-hero-primary:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 40px rgba(139, 92, 246, 0.5);
+    }
+
+    .btn-hero-secondary {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        border: 2px solid var(--border);
+    }
+
+    .btn-hero-secondary:hover {
+        border-color: var(--primary);
+        background: rgba(139, 92, 246, 0.1);
+    }
+
+    .hero-stats {
+        display: flex;
+        gap: 48px;
+        flex-wrap: wrap;
+    }
+
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+    }
+
+    /* Hero Visual avec images réelles */
+    .hero-visual {
+        position: relative;
+        animation: slideInRight 0.8s ease-out;
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .visual-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .visual-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .visual-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--primary);
+        box-shadow: 0 12px 32px rgba(139, 92, 246, 0.3);
+    }
+
+    .visual-icon {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .visual-icon svg {
+        width: 32px;
+        height: 32px;
+        stroke: white;
+        stroke-width: 2;
+    }
+
+    .visual-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--text-primary);
+    }
+
+    .visual-count {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--primary);
+    }
+
+    /* Catégories Section avec icônes colorées */
+    .categories-section {
+        padding: 120px 20px;
+        background: var(--bg-primary);
+    }
+
+    .section-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 80px;
+    }
+
+    .section-badge {
+        display: inline-block;
+        background: rgba(139, 92, 246, 0.1);
+        border: 1px solid var(--primary);
+        color: var(--primary);
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .section-title {
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin-bottom: 20px;
+        letter-spacing: -1.5px;
+    }
+
+    .section-subtitle {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.7;
+    }
+
+    .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+    }
+
+    .category-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 32px;
+        text-align: center;
+        transition: all 0.4s ease;
+        cursor: pointer;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .category-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--category-color-1), var(--category-color-2));
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .category-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .category-card:hover {
+        transform: translateY(-12px);
+        border-color: var(--primary);
+        box-shadow: 0 20px 50px rgba(139, 92, 246, 0.3);
+    }
+
+    /* Icônes colorées pour chaque catégorie */
+    .category-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 24px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .category-card:hover .category-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .category-icon svg,
+    .category-icon i {
+        font-size: 40px;
+        color: white;
+    }
+
+    /* Couleurs spécifiques par catégorie */
+    .cat-mecanique { background: linear-gradient(135deg, #EF4444, #DC2626); }
+    .cat-maconnerie { background: linear-gradient(135deg, #F59E0B, #D97706); }
+    .cat-electricite { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+    .cat-plomberie { background: linear-gradient(135deg, #06B6D4, #0891B2); }
+    .cat-informatique { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+    .cat-medecine { background: linear-gradient(135deg, #10B981, #059669); }
+    .cat-menuiserie { background: linear-gradient(135deg, #D97706, #B45309); }
+    .cat-peinture { background: linear-gradient(135deg, #EC4899, #DB2777); }
+    .cat-coiffure { background: linear-gradient(135deg, #F59E0B, #EA580C); }
+    .cat-enseignement { background: linear-gradient(135deg, #6366F1, #4F46E5); }
+    .cat-juridique { background: linear-gradient(135deg, #14B8A6, #0D9488); }
+    .cat-photographie { background: linear-gradient(135deg, #A855F7, #9333EA); }
+
+    .category-name {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 12px;
+    }
+
+    .category-count {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .category-count svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* How It Works avec Timeline */
+    .how-section {
+        padding: 120px 20px;
+        background: var(--bg-secondary);
+    }
+
+    .timeline {
+        max-width: 1000px;
+        margin: 80px auto 0;
+        position: relative;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, var(--primary), var(--accent));
+        transform: translateX(-50%);
+    }
+
+    .timeline-item {
+        display: grid;
+        grid-template-columns: 1fr 100px 1fr;
+        gap: 40px;
+        margin-bottom: 80px;
+        position: relative;
+    }
+
+    .timeline-item:nth-child(even) .step-content:first-child {
+        grid-column: 3;
+        text-align: left;
+    }
+
+    .timeline-item:nth-child(even) .step-number {
+        grid-column: 2;
+    }
+
+    .timeline-item:nth-child(even) .step-content:last-child {
+        grid-column: 1;
+        text-align: right;
+    }
+
+    .step-number {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: white;
+        box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        position: relative;
+        z-index: 2;
+    }
+
+    .step-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .step-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 12px;
+    }
+
+    .step-description {
+        color: var(--text-secondary);
+        line-height: 1.7;
+        font-size: 1.05rem;
+    }
+
+    /* Top Providers Section */
+    .top-providers-section {
+        padding: 120px 20px;
+        background: var(--bg-primary);
+    }
+
+    .providers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 32px;
+        margin-top: 80px;
+    }
+
+    .provider-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .provider-card:hover {
+        transform: translateY(-12px);
+        border-color: var(--primary);
+        box-shadow: 0 20px 50px rgba(139, 92, 246, 0.3);
+    }
+
+    .provider-image-wrapper {
+        position: relative;
+        width: 100%;
+        height: 240px;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--bg-primary), var(--border));
+    }
+
+    .provider-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .provider-card:hover .provider-image {
+        transform: scale(1.1);
+    }
+
+    .provider-badges {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        display: flex;
+        gap: 8px;
+    }
+
+    .badge-verified {
+        background: rgba(16, 185, 129, 0.9);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        backdrop-filter: blur(10px);
+    }
+
+    .badge-premium {
+        background: rgba(245, 158, 11, 0.9);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        backdrop-filter: blur(10px);
+    }
+
+    .provider-rating-overlay {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        background: rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(10px);
+        padding: 8px 16px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--border);
+    }
+
+    .rating-number {
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 1rem;
+    }
+
+    .rating-star {
+        color: var(--accent);
+        font-size: 1rem;
+    }
+
+    .provider-content {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        flex: 1;
+    }
+
+    .provider-name {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+    }
+
+    .provider-category {
+        color: var(--primary);
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .provider-category i {
+        font-size: 0.85rem;
+    }
+
+    .provider-location {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .provider-stats {
+        display: flex;
+        gap: 20px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        margin-top: auto;
+    }
+
+    .stat {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .stat-value {
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 1.1rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+
+    .provider-availability {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        width: fit-content;
+    }
+
+    .availability-available {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .availability-busy {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .availability-absent {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .pulse-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+        animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+
+    /* Testimonials Section */
+    .testimonials-section {
+        padding: 120px 20px;
+        background: var(--bg-secondary);
+    }
+
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 32px;
+        margin-top: 80px;
+    }
+
+    .testimonial-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 40px;
+        transition: all 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--primary);
+        box-shadow: 0 15px 40px rgba(139, 92, 246, 0.3);
+    }
+
+    .testimonial-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .testimonial-avatar {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+    }
+
+    .testimonial-info h4 {
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+    }
+
+    .testimonial-info p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .testimonial-rating {
+        color: var(--accent);
+        font-size: 1.2rem;
+        margin-bottom: 16px;
+    }
+
+    .testimonial-text {
+        color: var(--text-secondary);
+        line-height: 1.7;
+        font-style: italic;
+    }
+
+    /* CTA Section Premium */
+    .cta-section {
+        padding: 120px 20px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        top: -250px;
+        right: -100px;
+        animation: float 15s ease-in-out infinite;
+    }
+
+    .cta-container {
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cta-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 24px;
+        letter-spacing: -1.5px;
+    }
+
+    .cta-description {
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 48px;
+        line-height: 1.7;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-cta {
+        padding: 20px 48px;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 1.2rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .btn-cta-white {
+        background: white;
+        color: var(--primary);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-cta-white:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-cta-outline {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+    }
+
+    .btn-cta-outline:hover {
+        background: white;
+        color: var(--primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+        .hero-container {
+            grid-template-columns: 1fr;
+            gap: 60px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+        }
+
+        .timeline::before {
+            left: 40px;
+        }
+
+        .timeline-item {
+            grid-template-columns: 100px 1fr;
+            gap: 30px;
+        }
+
+        .timeline-item:nth-child(even) .step-content:first-child {
+            grid-column: 2;
+            text-align: left;
+        }
+
+        .timeline-item:nth-child(even) .step-number {
+            grid-column: 1;
+        }
+
+        .timeline-item:nth-child(even) .step-content:last-child {
+            display: none;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+
+        .cta-title {
+            font-size: 2rem;
+        }
+
+        .visual-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .categories-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section Ultra Premium -->
+<section class="hero-section">
+    <div class="hero-background">
+        <div class="bg-circle bg-circle-1"></div>
+        <div class="bg-circle bg-circle-2"></div>
+    </div>
+
+    <div class="hero-container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <svg class="badge-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                </svg>
+                🇬🇳 Plateforme N°1 en République de Guinée
+            </div>
+
+            <h1 class="hero-title">
+                Trouvez le <span class="highlight">professionnel idéal</span> pour tous vos projets
+            </h1>
+
+            <p class="hero-description">
+                Connectez-vous instantanément avec des milliers de prestataires qualifiés, vérifiés et notés par la communauté. De la mécanique à la médecine, trouvez l'expert qu'il vous faut.
+            </p>
+
+            <div class="hero-cta-group">
+                {% if user.is_authenticated %}
+                    {% if user.user_type == 'prestataire' %}
+                        <a href="{% url 'profiles:my_profile' %}" class="btn-hero btn-hero-primary">
+                            <i class="fas fa-user-circle"></i>
+                            Mon profil professionnel
+                        </a>
+                        <a href="{% url 'profiles:profile_edit' %}" class="btn-hero btn-hero-secondary">
+                            <i class="fas fa-edit"></i>
+                            Modifier mon profil
+                        </a>
+                    {% else %}
+                        <a href="{% url 'search:search_providers' %}" class="btn-hero btn-hero-primary">
+                            <i class="fas fa-search"></i>
+                            Trouver un prestataire
+                        </a>
+                        <a href="{% url 'register_provider' %}" class="btn-hero btn-hero-secondary">
+                            <i class="fas fa-briefcase"></i>
+                            Devenir prestataire
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'search:search_providers' %}" class="btn-hero btn-hero-primary">
+                        <i class="fas fa-search"></i>
+                        Rechercher maintenant
+                    </a>
+                    <a href="{% url 'register_provider' %}" class="btn-hero btn-hero-secondary">
+                        <i class="fas fa-rocket"></i>
+                        Devenir prestataire
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Professionnels vérifiés</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">2000+</div>
+                    <div class="stat-label">Clients satisfaits</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Taux de satisfaction</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="visual-grid">
+                <div class="visual-card">
+                    <div class="visual-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="visual-title">Prestataires actifs</div>
+                    <div class="visual-count">500+</div>
+                </div>
+
+                <div class="visual-card">
+                    <div class="visual-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="visual-title">Catégories</div>
+                    <div class="visual-count">15</div>
+                </div>
+
+                <div class="visual-card">
+                    <div class="visual-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="visual-title">Missions complétées</div>
+                    <div class="visual-count">1000+</div>
+                </div>
+
+                <div class="visual-card">
+                    <div class="visual-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="visual-title">Note moyenne</div>
+                    <div class="visual-count">4.8★</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Catégories avec icônes colorées -->
+<section class="categories-section">
+    <div class="section-container">
+        <div class="section-header">
+            <div class="section-badge">NOS SERVICES</div>
+            <h2 class="section-title">Explorez nos catégories</h2>
+            <p class="section-subtitle">
+                Des professionnels qualifiés dans tous les domaines pour répondre à vos besoins
+            </p>
+        </div>
+
+        <div class="categories-grid">
+            <a href="{% url 'search:search_providers' %}?category=mecanique-automobile" class="category-card">
+                <div class="category-icon cat-mecanique">
+                    <i class="fas fa-car"></i>
+                </div>
+                <h3 class="category-name">Mécanique automobile</h3>
+                <p class="category-count">
+                    <i class="fas fa-user-check"></i>
+                    45 prestataires
+                </p>
+            </a>
+
+            <a href="{% url 'search:search_providers' %}?category=maconnerie" class="category-card">
+                <div class="category-icon cat-maconnerie">
+                    <i class="fas fa-hard-hat"></i>
+                </div>
+                <h3 class="category-name">Maçonnerie</h3>
+                <p class="category-count">
+                    <i class="fas fa-user-check"></i>
+                    38 prestataires
+                </p>
+            </a>
+
+            <a href="{% url 'search:search_providers' %}?category=electricite" class="category-card">
+                <div class="category-icon cat-electricite">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="category-name">Électricité</h3>
+                <p class="category-count">
+                    <i class="fas fa-user-check"></i>
+                    32 prestataires
+                </p>
+            </a>
+
+            <a href="{% url 'search:search_providers' %}?category=plomberie" class="category-card">
+                <div class="category-icon cat-plomberie">
+                    <i class="fas fa-wrench"></i>
+                </div>
+                <h3 class="category-name">Plomberie</h3>
+                <p class="category-count">
+                    <i class="fas fa-user-check"></i>
+                    28 prestataires
+                </p>
+            </a>
+
+            <a href="{% url 'search:search_providers' %}?category=informatique" class="category-card">
+                <div class="category-icon cat-informatique">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3 class="category-name">Informatique</h3>
+                <p class="category-count">
+                    <i class="fas fa-user-check"></i>
+                    42 prestataires
+                </p>
+            </a>
+
+            <a href="{% url 'search:search_providers' %}?category=medecine" class="category-card">
+                <div class="category-icon cat-medecine">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h3 class="category-name">Médecine</h3>
+                <p class="category-count">
+                    <i class="fas fa-user-check"></i>
+                    25 prestataires
+                </p>
+            </a>
+
+            <a href="{% url 'search:search_providers' %}?category=menuiserie" class="category-card">
+                <div class="category-icon cat-menuiserie">
+                    <i class="fas fa-hammer"></i>
+                </div>
+                <h3 class="category-name">Menuiserie</h3>
+                <p class="category-count">
+                    <i class="fas fa-user-check"></i>
+                    22 prestataires
+                </p>
+            </a>
+
+            <a href="{% url 'search:search_providers' %}?category=peinture" class="category-card">
+                <div class="category-icon cat-peinture">
+                    <i class="fas fa-paint-roller"></i>
+                </div>
+                <h3 class="category-name">Peinture</h3>
+                <p class="category-count">
+                    <i class="fas fa-user-check"></i>
+                    20 prestataires
+                </p>
+            </a>
+
+            <a href="{% url 'search:search_providers' %}?category=coiffure" class="category-card">
+                <div class="category-icon cat-coiffure">
+                    <i class="fas fa-cut"></i>
+                </div>
+                <h3 class="category-name">Coiffure & Esthétique</h3>
+                <p class="category-count">
+                    <i class="fas fa-user-check"></i>
+                    35 prestataires
+                </p>
+            </a>
+
+            <a href="{% url 'search:search_providers' %}?category=enseignement" class="category-card">
+                <div class="category-icon cat-enseignement">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3 class="category-name">Enseignement</h3>
+                <p class="category-count">
+                    <i class="fas fa-user-check"></i>
+                    30 prestataires
+                </p>
+            </a>
+
+            <a href="{% url 'search:search_providers' %}?category=juridique" class="category-card">
+                <div class="category-icon cat-juridique">
+                    <i class="fas fa-gavel"></i>
+                </div>
+                <h3 class="category-name">Services juridiques</h3>
+                <p class="category-count">
+                    <i class="fas fa-user-check"></i>
+                    18 prestataires
+                </p>
+            </a>
+
+            <a href="{% url 'search:search_providers' %}?category=photographie" class="category-card">
+                <div class="category-icon cat-photographie">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <h3 class="category-name">Photographie</h3>
+                <p class="category-count">
+                    <i class="fas fa-user-check"></i>
+                    27 prestataires
+                </p>
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 60px;">
+            <a href="{% url 'search:search_providers' %}" class="btn-hero btn-hero-primary">
+                <i class="fas fa-th"></i>
+                Voir toutes les catégories
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Timeline -->
+<section class="how-section">
+    <div class="section-container">
+        <div class="section-header">
+            <div class="section-badge">COMMENT ÇA MARCHE</div>
+            <h2 class="section-title">Simple, rapide et efficace</h2>
+            <p class="section-subtitle">
+                Trouvez le professionnel idéal en quelques clics
+            </p>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="step-content">
+                    <h3 class="step-title">Recherchez</h3>
+                    <p class="step-description">
+                        Utilisez notre moteur de recherche avancé pour trouver le professionnel qui correspond exactement à vos besoins. Filtrez par catégorie, localisation, note et disponibilité.
+                    </p>
+                </div>
+                <div class="step-number">1</div>
+                <div class="step-content"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="step-content"></div>
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 class="step-title">Comparez</h3>
+                    <p class="step-description">
+                        Consultez les profils détaillés, portfolios, avis clients et tarifs. Chaque prestataire est vérifié et noté par la communauté pour votre tranquillité d'esprit.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="step-content">
+                    <h3 class="step-title">Contactez</h3>
+                    <p class="step-description">
+                        Contactez directement le professionnel par téléphone ou WhatsApp. Discutez de votre projet, obtenez un devis et planifiez l'intervention en toute simplicité.
+                    </p>
+                </div>
+                <div class="step-number">3</div>
+                <div class="step-content"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Top Providers Section -->
+<section class="top-providers-section">
+    <div class="section-container">
+        <div class="section-header">
+            <div class="section-badge">LES MEILLEURS</div>
+            <h2 class="section-title">Prestataires les mieux notés</h2>
+            <p class="section-subtitle">
+                Découvrez nos professionnels d'excellence, plébiscités par la communauté
+            </p>
+        </div>
+
+        {% if top_providers %}
+        <div class="providers-grid">
+            {% for provider in top_providers %}
+            <a href="{% url 'profiles:profile_detail' provider.pk %}" class="provider-card">
+                <!-- Image avec badges -->
+                <div class="provider-image-wrapper">
+                    {% if provider.profile_picture %}
+                        <img src="{{ provider.profile_picture.url }}" alt="{{ provider.full_name }}" class="provider-image">
+                    {% else %}
+                        <div class="provider-image" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--accent));">
+                            <i class="fas fa-user" style="font-size: 80px; color: white; opacity: 0.5;"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Badges -->
+                    <div class="provider-badges">
+                        {% if provider.is_verified %}
+                        <span class="badge-verified">
+                            <i class="fas fa-check-circle"></i>
+                            Vérifié
+                        </span>
+                        {% endif %}
+                        {% if provider.is_premium %}
+                        <span class="badge-premium">
+                            <i class="fas fa-crown"></i>
+                            Premium
+                        </span>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Note -->
+                    <div class="provider-rating-overlay">
+                        <span class="rating-number">{{ provider.average_rating }}</span>
+                        <span class="rating-star">★</span>
+                    </div>
+                </div>
+
+                <!-- Contenu -->
+                <div class="provider-content">
+                    <h3 class="provider-name">{{ provider.full_name }}</h3>
+                    
+                    <div class="provider-category">
+                        <i class="fas fa-briefcase"></i>
+                        {{ provider.category.name }}
+                    </div>
+                    
+                    <div class="provider-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ provider.city }}{% if provider.commune %}, {{ provider.commune }}{% endif %}
+                    </div>
+
+                    <!-- Disponibilité -->
+                    {% if provider.availability == 'available' %}
+                        <div class="provider-availability availability-available">
+                            <span class="pulse-dot"></span>
+                            Disponible
+                        </div>
+                    {% elif provider.availability == 'busy' %}
+                        <div class="provider-availability availability-busy">
+                            <span class="pulse-dot"></span>
+                            Occupé
+                        </div>
+                    {% else %}
+                        <div class="provider-availability availability-absent">
+                            <span class="pulse-dot"></span>
+                            Absent
+                        </div>
+                    {% endif %}
+
+                    <!-- Stats -->
+                    <div class="provider-stats">
+                        <div class="stat">
+                            <span class="stat-value">{{ provider.total_reviews }}</span>
+                            <span class="stat-label">Avis</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">{{ provider.completed_jobs }}</span>
+                            <span class="stat-label">Missions</span>
+                        </div>
+                        {% if provider.years_experience %}
+                        <div class="stat">
+                            <span class="stat-value">{{ provider.years_experience }}</span>
+                            <span class="stat-label">Ans d'exp.</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div style="text-align: center; margin-top: 60px;">
+            <a href="{% url 'search:search_providers' %}" class="btn-hero btn-hero-primary">
+                <i class="fas fa-users"></i>
+                Voir tous les prestataires
+            </a>
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 60px 20px;">
+            <i class="fas fa-users" style="font-size: 64px; color: var(--text-secondary); margin-bottom: 20px;"></i>
+            <p style="color: var(--text-secondary); font-size: 1.1rem;">Aucun prestataire disponible pour le moment.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials-section">
+    <div class="section-container">
+        <div class="section-header">
+            <div class="section-badge">TÉMOIGNAGES</div>
+            <h2 class="section-title">Ils nous font confiance</h2>
+            <p class="section-subtitle">
+                Découvrez les expériences de nos utilisateurs satisfaits
+            </p>
+        </div>
+
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">AM</div>
+                    <div class="testimonial-info">
+                        <h4>Abdoulaye Diallo</h4>
+                        <p>Client - Conakry</p>
+                    </div>
+                </div>
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">
+                    "J'ai trouvé un excellent électricien en moins de 10 minutes ! Le service est rapide, les profils sont complets et les avis m'ont aidé à faire le bon choix. Je recommande vivement YOUMMA-JOB."
+                </p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">FC</div>
+                    <div class="testimonial-info">
+                        <h4>Fatoumata Camara</h4>
+                        <p>Prestataire - Kindia</p>
+                    </div>
+                </div>
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">
+                    "Depuis que je suis sur YOUMMA-JOB, j'ai triplé mon nombre de clients ! La plateforme est facile à utiliser et me permet de montrer mon travail avec mon portfolio. Un outil indispensable."
+                </p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">MT</div>
+                    <div class="testimonial-info">
+                        <h4>Mamadou Traoré</h4>
+                        <p>Client - Labé</p>
+                    </div>
+                </div>
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">
+                    "Très satisfait du mécanicien trouvé sur YOUMMA-JOB. Professionnel, ponctuel et tarif honnête. Le système de notation aide vraiment à trouver les meilleurs professionnels."
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Premium -->
+{% if not user.is_authenticated or user.user_type == 'client' %}
+<section class="cta-section">
+    <div class="cta-container">
+        <h2 class="cta-title">Vous êtes un professionnel ?</h2>
+        <p class="cta-description">
+            Rejoignez YOUMMA-JOB dès aujourd'hui et donnez de la visibilité à votre activité. Créez votre profil gratuitement et commencez à recevoir des demandes de clients qualifiés.
+        </p>
+        <div class="cta-buttons">
+            <a href="{% url 'register_provider' %}" class="btn-cta btn-cta-white">
+                <i class="fas fa-rocket"></i>
+                Créer mon profil gratuitement
+            </a>
+            <a href="{% url 'login' %}" class="btn-cta btn-cta-outline">
+                <i class="fas fa-sign-in-alt"></i>
+                J'ai déjà un compte
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
