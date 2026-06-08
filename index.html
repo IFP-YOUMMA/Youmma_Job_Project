@@ -1246,6 +1246,16 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 #adminWrap  { display: none; }
 
 #adminWrap.visible { display: flex; }
+
+/* ── ÉTAPES INSCRIPTION ── */
+.step-section { display: none; }
+.step-section.active { display: block; }
+.step-indicator { display: flex; align-items: center; gap: 0; margin-bottom: 24px; }
+.step { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; border: 2px solid var(--bordure); background: #fff; color: var(--gris); flex-shrink: 0; transition: all .3s; }
+.step.active { background: var(--orange); border-color: var(--orange); color: #fff; }
+.step.done { background: var(--vert); border-color: var(--vert); color: #fff; }
+.step-line { flex: 1; height: 2px; background: var(--bordure); }
+.step-line.done { background: var(--vert); }
 </style>
 
 <body>
