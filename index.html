@@ -21,6 +21,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://slawwbhlakilnviwzyrb.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_2TA7_QvKNMl6Wd0ZQkRRkw_oedxmSor';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SESSION_KEY = 'yj_provider_session';
+const ADMIN_SESSION_KEY = 'yj_admin_session';
+</script>
 <style>
 /* ════════════════════════════════════
    YOUMMA JOBS 2026 — DESIGN SYSTEM
@@ -5195,6 +5203,45 @@ document.addEventListener('DOMContentLoaded', function() {
   setTimeout(addExpressBtn, 500);
 });
 </script>
+<script>
+// Fonctions auth disponibles immédiatement
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password + 'youmma_salt_2025');
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function generateToken() {
+  return Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function connexionAdmin(telephone, password) {
+  try {
+    const hash = await hashPassword(password);
+    const { data, error } = await sb.from('admin_users').select('id,nom,role,telephone').eq('telephone',telephone).eq('password_hash',hash).single();
+    if (error||!data) return { success:false, message:'Identifiants incorrects' };
+    const token = generateToken();
+    await sb.from('admin_sessions').insert({admin_id:data.id,token});
+    localStorage.setItem(ADMIN_SESSION_KEY,JSON.stringify({admin_id:data.id,token,nom:data.nom,role:data.role}));
+    return { success:true, admin:data };
+  } catch(e) { return { success:false, message:'Erreur' }; }
+}
+
+async function connexionPrestataire(telephone, password) {
+  try {
+    const hash = await hashPassword(password);
+    const { data, error } = await sb.from('providers').select('id,nom,prenom,metier,categorie,telephone,statut').eq('telephone',telephone).eq('password_hash',hash).single();
+    if (error || !data) return { success:false, message:'Téléphone ou mot de passe incorrect' };
+    const token = generateToken();
+    await sb.from('provider_sessions').insert({ provider_id:data.id, token });
+    setSession({ provider_id:data.id, token, nom:data.nom, prenom:data.prenom });
+    return { success:true, provider:data };
+  } catch(e) { return { success:false, message:'Erreur de connexion' }; }
+}
+
+</script>
+
 
 <script>
 // ── PHOTO PREVIEW FONCTIONS ──
