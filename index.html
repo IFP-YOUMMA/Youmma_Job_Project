@@ -1232,6 +1232,12 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
   .admin-wrap .admin-main{margin-left:0;padding:16px;}
   .stats-row{grid-template-columns:1fr 1fr;}
 }
+
+/* Admin page — login vs panel */
+#loginWrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+#adminWrap  { display: none; }
+
+#adminWrap.visible { display: flex; }
 </style>
 
 <body>
