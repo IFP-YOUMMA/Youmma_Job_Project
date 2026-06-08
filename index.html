@@ -4172,7 +4172,7 @@ function getAdminSession() { try { return JSON.parse(localStorage.getItem(ADMIN_
 
 async function hashPassword(password) {
   const encoder = new TextEncoder();
-  const data = encoder.encode(password + 'youmma_salt_2025');
+  const data = encoder.encode(password);
   const hash = await crypto.subtle.digest('SHA-256', data);
   return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
@@ -5207,7 +5207,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Fonctions auth disponibles immédiatement
 async function hashPassword(password) {
   const encoder = new TextEncoder();
-  const data = encoder.encode(password + 'youmma_salt_2025');
+  const data = encoder.encode(password);
   const hash = await crypto.subtle.digest('SHA-256', data);
   return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
