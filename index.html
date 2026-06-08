@@ -2931,10 +2931,12 @@ document.addEventListener('keydown', e => {
   </div>
 
   <div class="form-group">
-    <label>Mot de passe</label>
-    <div class="input-wrap">
-      <span class="input-prefix">🔒</span>
-      <input type="password" id="password" class="has-prefix" placeholder="Votre mot de passe" autocomplete="current-password"/>
+    <label>Code PIN (4 chiffres)</label>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;">
+      <input id="lpin1" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:52px;height:52px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('lpin2').focus()"/>
+      <input id="lpin2" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:52px;height:52px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('lpin3').focus()"/>
+      <input id="lpin3" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:52px;height:52px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('lpin4').focus()"/>
+      <input id="lpin4" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:52px;height:52px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value.length===1)document.getElementById('btnConnexion').click()"/>
     </div>
   </div>
 
@@ -2965,25 +2967,33 @@ document.getElementById('password').addEventListener('keydown', e => {
 
 async function connexion() {
   const tel = document.getElementById('telephone').value.trim();
-  const pwd = document.getElementById('password').value;
+  const pin = (document.getElementById('lpin1')?.value||'') +
+              (document.getElementById('lpin2')?.value||'') +
+              (document.getElementById('lpin3')?.value||'') +
+              (document.getElementById('lpin4')?.value||'');
   const btn = document.getElementById('btnConnexion');
   const err = document.getElementById('errorBox');
 
   err.classList.remove('show');
-  if (!tel || !pwd) { showError('Remplissez tous les champs'); return; }
+  if (!tel) { showError('Entrez votre numéro de téléphone'); return; }
+  if (pin.length < 4) { showError('Entrez votre code PIN 4 chiffres'); return; }
 
-  btn.classList.add('loading');
   btn.disabled = true;
+  btn.querySelector('.spinner').style.display = 'inline-block';
 
-  const res = await connexionPrestataire(tel, pwd);
+  const res = await connexionPrestataire(tel, pin);
 
-  btn.classList.remove('loading');
   btn.disabled = false;
+  btn.querySelector('.spinner').style.display = 'none';
 
   if (res.success) {
     navigate('dashboard');
+    if (typeof chargerDashboard === 'function') {
+      const pid = res.provider?.id || await verifierSession();
+      if (pid) await chargerDashboard(pid);
+    }
   } else {
-    showError(res.message || 'Erreur de connexion');
+    showError(res.message || 'Téléphone ou PIN incorrect');
   }
 }
 
@@ -3050,13 +3060,15 @@ async function connexion() {
       <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Numéro de téléphone (WhatsApp) *</label>
       <input id="i-tel" type="tel" placeholder="+224 6XX XX XX XX" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
     </div>
-    <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Mot de passe *</label>
-      <input id="i-pwd" type="password" placeholder="Minimum 8 caractères" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
-    </div>
     <div style="margin-bottom:20px;">
-      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Confirmer le mot de passe *</label>
-      <input id="i-pwd2" type="password" placeholder="Répétez le mot de passe" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Code PIN (4 chiffres) *</label>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;">
+        <input id="i-pin1" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:56px;height:56px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('i-pin2').focus()"/>
+        <input id="i-pin2" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:56px;height:56px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('i-pin3').focus()"/>
+        <input id="i-pin3" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:56px;height:56px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('i-pin4').focus()"/>
+        <input id="i-pin4" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:56px;height:56px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1)"/>
+      </div>
+      <div style="text-align:center;font-size:11px;color:#9CA3AF;margin-top:6px;">Ce code vous servira à vous connecter</div>
     </div>
     <button id="i-btn1" style="width:100%;padding:14px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Suivant →</button>
   </div>
@@ -3192,11 +3204,13 @@ async function connexion() {
       var p = (document.getElementById('i-prenom')||{}).value||'';
       var n = (document.getElementById('i-nom')||{}).value||'';
       var t = (document.getElementById('i-tel')||{}).value||'';
-      var pw = (document.getElementById('i-pwd')||{}).value||'';
-      var pw2 = (document.getElementById('i-pwd2')||{}).value||'';
-      if (!p.trim()||!n.trim()||!t.trim()||!pw) { showErr('Remplissez tous les champs obligatoires'); return; }
-      if (pw.length < 6) { showErr('Mot de passe trop court (min 6 caractères)'); return; }
-      if (pw !== pw2) { showErr('Les mots de passe ne correspondent pas'); return; }
+      var p1 = (document.getElementById('i-pin1')||{}).value||'';
+      var p2 = (document.getElementById('i-pin2')||{}).value||'';
+      var p3 = (document.getElementById('i-pin3')||{}).value||'';
+      var p4 = (document.getElementById('i-pin4')||{}).value||'';
+      var pin = p1+p2+p3+p4;
+      if (!p.trim()||!n.trim()||!t.trim()) { showErr('Remplissez tous les champs obligatoires'); return; }
+      if (pin.length < 4) { showErr('Entrez votre code PIN 4 chiffres'); return; }
       goTo(2);
     };
 
@@ -3216,11 +3230,15 @@ async function connexion() {
       b3.disabled = true;
       b3.textContent = '⏳ Inscription en cours...';
       try {
+        var pin = (document.getElementById('i-pin1').value||'') +
+                   (document.getElementById('i-pin2').value||'') +
+                   (document.getElementById('i-pin3').value||'') +
+                   (document.getElementById('i-pin4').value||'');
         var formData = {
           prenom: document.getElementById('i-prenom').value.trim(),
           nom: document.getElementById('i-nom').value.trim(),
           telephone: document.getElementById('i-tel').value.trim(),
-          password: document.getElementById('i-pwd').value,
+          password: pin,
           categorie: document.getElementById('i-cat').value,
           metier: document.getElementById('i-metier').value.trim(),
           description: document.getElementById('i-desc').value.trim(),
@@ -3431,41 +3449,49 @@ async function connexion() {
 
     <!-- ── PHOTOS ── -->
     <div class="section" id="section-photos">
-      <div class="photos-section">
-        <div class="photos-header">
-          <div class="photos-title">📷 Photo de profil</div>
-          <label style="cursor:pointer;background:#E85D04;color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;">
-            📷 Changer la photo
+
+      <!-- Photo de profil -->
+      <div class="edit-section" style="margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div style="font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;color:#1A1A4E;">📷 Photo de profil</div>
+          <label style="cursor:pointer;background:#E85D04;color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;">
+            📷 Changer
             <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="uploadPhoto(this,'profil')"/>
           </label>
         </div>
         <div style="display:flex;align-items:center;gap:20px;padding:16px;background:#F4F6FB;border-radius:14px;">
-          <div id="profilPhotoPreview" style="width:80px;height:80px;border-radius:16px;background:#E4E8F5;display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;font-family:'Libre Baskerville',serif;font-weight:700;color:#7A7F9A;">?</div>
-          <div style="font-size:13px;color:#7A7F9A;line-height:1.7;">Photo de profil visible par tous les clients.<br>Format : JPG, PNG, WebP — Max 5 Mo</div>
+          <div id="profilPhotoPreview" style="width:80px;height:80px;border-radius:16px;background:#E4E8F5;display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;font-family:'Libre Baskerville',serif;font-weight:700;color:#7A7F9A;flex-shrink:0;">?</div>
+          <div>
+            <div style="font-size:13.5px;font-weight:700;color:#1A1A4E;margin-bottom:4px;">Photo de profil</div>
+            <div style="font-size:12px;color:#6B7280;line-height:1.6;">Visible par tous les clients.<br>Format : JPG, PNG, WebP — Max 5 Mo</div>
+          </div>
         </div>
-        <div class="upload-progress" id="progressProfil"><div class="upload-progress-bar"></div></div>
       </div>
 
-      <div class="photos-section">
-        <div class="photos-header">
-          <div class="photos-title">🖼️ Réalisations <span style="font-size:12px;color:#7A7F9A;font-weight:400;">(max 5 photos)</span></div>
-          <label id="addRealLabel" style="cursor:pointer;background:#1A1A4E;color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;">
-            + Ajouter une réalisation
+      <!-- Photos réalisations -->
+      <div class="edit-section">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div style="font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;color:#1A1A4E;">🖼️ Réalisations <span style="font-size:12px;color:#6B7280;font-weight:400;">(max 5)</span></div>
+          <label id="addRealLabel" style="cursor:pointer;background:#1A1A4E;color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;">
+            + Ajouter
             <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="uploadPhoto(this,'realisation')"/>
           </label>
         </div>
-        <div class="photos-grid" id="realisationsGrid">
-          <div class="photo-slot" onclick="document.querySelector('[onchange*=realisation]').click()">
-            <div style="font-size:28px;">📷</div>
-            <div class="add-text">Ajouter</div>
-          </div>
+        <div id="realisationsGrid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
+          <label style="aspect-ratio:1;border-radius:12px;border:2px dashed #E5E7EB;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='#E85D04'" onmouseout="this.style.borderColor='#E5E7EB'">
+            <span style="font-size:24px;">📷</span>
+            <span style="font-size:10px;color:#9CA3AF;margin-top:4px;">Ajouter</span>
+            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="uploadPhoto(this,'realisation')"/>
+          </label>
         </div>
-        <div class="upload-progress" id="progressReal"><div class="upload-progress-bar"></div></div>
-        <div style="font-size:12px;color:#7A7F9A;margin-top:10px;">Montrez vos meilleures réalisations pour attirer plus de clients.</div>
+        <div style="font-size:11.5px;color:#9CA3AF;margin-top:10px;line-height:1.6;">
+          📸 Montrez vos meilleures réalisations — avant/après, chantiers, travaux terminés.
+        </div>
       </div>
+
     </div>
 
-    <!-- ── ABONNEMENT ── -->
+<!-- ── ABONNEMENT ── -->
     <div class="section" id="section-abonnement">
       <div class="abo-card">
         <div class="abo-header">
@@ -3665,66 +3691,80 @@ function showSection(name) {
 
 // ── PHOTOS ──
 function renderPhotos() {
-  const profil = providerPhotos.find(p => p.type === 'profil');
-  const reals = providerPhotos.filter(p => p.type === 'realisation');
+  const photos = providerPhotos || _dashPhotos || [];
+  const profil = photos.find(p => p.type === 'profil');
+  const reals = photos.filter(p => p.type === 'realisation');
+  const p = providerData || _dashData;
 
   // Photo profil preview
   const preview = document.getElementById('profilPhotoPreview');
-  if (profil) {
-    preview.innerHTML = `<img src="${profil.url}" style="width:100%;height:100%;object-fit:cover;"/>`;
-  } else {
-    const p = providerData;
-    preview.textContent = (p?.prenom?.[0] || '') + (p?.nom?.[0] || '');
+  if (preview) {
+    if (profil) {
+      preview.innerHTML = `<img src="${profil.url}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;"/>`;
+    } else {
+      preview.textContent = ((p?.prenom||'?')[0] + (p?.nom||'?')[0]).toUpperCase();
+    }
   }
 
   // Réalisations grid
   const grid = document.getElementById('realisationsGrid');
-  const slots = [];
-  reals.forEach(photo => {
-    slots.push(`
-      <div class="photo-slot filled">
-        <img src="${photo.url}" alt="Réalisation" loading="lazy"/>
-        <button class="photo-delete" onclick="supprimerPhoto('${photo.id}')">×</button>
-      </div>
-    `);
-  });
+  if (!grid) return;
+
+  const slots = reals.map(photo => `
+    <div style="aspect-ratio:1;border-radius:12px;overflow:hidden;position:relative;border:1.5px solid #E5E7EB;">
+      <img src="${photo.url}" alt="Réalisation" loading="lazy" style="width:100%;height:100%;object-fit:cover;"/>
+      <button onclick="supprimerPhoto('${photo.id}')" style="position:absolute;top:4px;right:4px;width:22px;height:22px;background:rgba(239,68,68,.9);border:none;border-radius:50%;color:#fff;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;line-height:1;">×</button>
+    </div>
+  `);
 
   if (reals.length < 5) {
     slots.push(`
-      <label class="photo-slot" style="cursor:pointer;">
-        <div style="font-size:28px;">📷</div>
-        <div class="add-text">Ajouter</div>
+      <label style="aspect-ratio:1;border-radius:12px;border:2px dashed #E5E7EB;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;" onmouseover="this.style.borderColor='#E85D04'" onmouseout="this.style.borderColor='#E5E7EB'">
+        <span style="font-size:24px;">📷</span>
+        <span style="font-size:10px;color:#9CA3AF;margin-top:4px;">Ajouter</span>
         <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="uploadPhoto(this,'realisation')"/>
       </label>
     `);
   }
 
   grid.innerHTML = slots.join('');
-
   const lbl = document.getElementById('addRealLabel');
-  if (lbl) lbl.style.display = reals.length >= 5 ? 'none' : 'block';
+  if (lbl) lbl.style.display = reals.length >= 5 ? 'none' : 'flex';
 }
 
 async function uploadPhoto(input, type) {
   const file = input.files[0];
   if (!file) return;
 
-  if (file.size > 5 * 1024 * 1024) { showToast('Fichier trop volumineux (max 5 Mo)', 'error'); return; }
+  if (file.size > 5 * 1024 * 1024) { showToast('Fichier trop volumineux (max 5 Mo)', 'error'); input.value=''; return; }
 
-  const progressId = type === 'profil' ? 'progressProfil' : 'progressReal';
-  document.getElementById(progressId).classList.add('show');
+  const pid = providerId || _dashProviderId;
+  if (!pid) { showToast('Session expirée, reconnectez-vous', 'error'); return; }
 
-  const res = await uploadProviderPhoto(providerId, file, type);
-  document.getElementById(progressId).classList.remove('show');
+  showToast('⏳ Upload en cours...');
 
-  if (res.success) {
-    showToast('✅ Photo ajoutée avec succès !', 'success');
-    providerPhotos = await getProviderPhotos(providerId);
-    providerData = await getDashboardData(providerId);
-    renderPhotos();
-    updateUI();
-  } else {
-    showToast(res.message || 'Erreur upload', 'error');
+  try {
+    const res = await uploadProviderPhoto(pid, file, type);
+    if (res.success) {
+      showToast('✅ Photo ajoutée !', 'success');
+      // Recharger les photos
+      const photos = await getProviderPhotos(pid);
+      providerPhotos = photos;
+      _dashPhotos = photos;
+      renderPhotos();
+      _dashRenderPhotos();
+      // Mettre à jour avatar si photo profil
+      if (type === 'profil' && res.url) {
+        const preview = document.getElementById('profilPhotoPreview');
+        if (preview) preview.innerHTML = `<img src="${res.url}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;"/>`;
+        const pbAv = document.getElementById('pbAvatar');
+        if (pbAv) pbAv.outerHTML = `<img id="pbAvatar" class="pb-avatar" src="${res.url}" style="width:72px;height:72px;border-radius:18px;object-fit:cover;" alt="Photo"/>`;
+      }
+    } else {
+      showToast(res.message || 'Erreur upload', 'error');
+    }
+  } catch(e) {
+    showToast('Erreur: ' + e.message, 'error');
   }
   input.value = '';
 }
