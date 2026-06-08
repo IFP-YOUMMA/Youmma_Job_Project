@@ -3900,16 +3900,28 @@ let allProviders = {};
 async function loginAdmin() {
   const tel = document.getElementById('adminTel').value.trim();
   const pwd = document.getElementById('adminPwd').value;
-  document.getElementById('loginError').textContent = '';
+  document.getElementById('loginError').textContent = 'Connexion en cours...';
 
-  const res = await connexionAdmin(tel, pwd);
-  if (res.success) {
-    adminData = res.admin;
-    document.getElementById('loginWrap').style.display = 'none';
-    document.getElementById('adminWrap').classList.add('visible');
-    await loadAll();
-  } else {
-    document.getElementById('loginError').textContent = res.message || 'Identifiants incorrects';
+  if (!tel || !pwd) {
+    document.getElementById('loginError').textContent = 'Remplissez tous les champs';
+    return;
+  }
+
+  try {
+    const res = await connexionAdmin(tel, pwd);
+    document.getElementById('loginError').textContent = 'Résultat: ' + JSON.stringify(res);
+    if (res.success) {
+      adminData = res.admin;
+      document.getElementById('loginWrap').style.display = 'none';
+      document.getElementById('adminWrap').classList.add('visible');
+      await loadAll();
+    } else {
+      document.getElementById('loginError').style.color = 'red';
+      document.getElementById('loginError').textContent = res.message || 'Identifiants incorrects';
+    }
+  } catch(e) {
+    document.getElementById('loginError').style.color = 'red';
+    document.getElementById('loginError').textContent = 'ERREUR: ' + e.message;
   }
 }
 
