@@ -3028,41 +3028,7 @@ async function connexion() {
       <button class="btn-next" style="flex:1;" id="btnS1">Suivant →</button>
     </div>
   </div>
-  <script>
-  document.getElementById('btnS1').onclick = function() {
-    var p = document.getElementById('prenom').value.trim();
-    var n = document.getElementById('nom').value.trim();
-    var t = document.getElementById('telephone').value.trim();
-    var pw = document.getElementById('password').value;
-    var pw2 = document.getElementById('password2').value;
-    var err = document.getElementById('errorBox');
-    if (!p || !n || !t || !pw) {
-      err.textContent = 'Remplissez tous les champs obligatoires';
-      err.style.display = 'block';
-      return;
-    }
-    if (pw.length < 6) {
-      err.textContent = 'Mot de passe trop court (min 6 caractères)';
-      err.style.display = 'block';
-      return;
-    }
-    if (pw !== pw2) {
-      err.textContent = 'Les mots de passe ne correspondent pas';
-      err.style.display = 'block';
-      return;
-    }
-    err.style.display = 'none';
-    document.getElementById('step1').classList.remove('active');
-    document.getElementById('step2').classList.add('active');
-    var d1 = document.getElementById('step-dot-1');
-    var d2 = document.getElementById('step-dot-2');
-    var l1 = document.getElementById('step-line-1');
-    if (d1) d1.className = 'step done';
-    if (d2) d2.className = 'step active';
-    if (l1) l1.className = 'step-line done';
-    window.scrollTo(0, 0);
-  };
-  </script>
+
 
 <div class="step-section" id="step2">
     <div class="section-title">💼 Profil professionnel</div>
@@ -3101,29 +3067,7 @@ async function connexion() {
   </div>
 
   <!-- ÉTAPE 3 : Localisation -->
-  <script>
-  document.getElementById('btnS2').onclick = function() {
-    var cat = document.getElementById('categorie').value;
-    var met = document.getElementById('metier').value.trim();
-    var desc = document.getElementById('description').value.trim();
-    var err = document.getElementById('errorBox');
-    if (!cat || !met || !desc) {
-      err.textContent = 'Remplissez tous les champs obligatoires';
-      err.style.display = 'block';
-      return;
-    }
-    err.style.display = 'none';
-    document.getElementById('step2').classList.remove('active');
-    document.getElementById('step3').classList.add('active');
-    var d2 = document.getElementById('step-dot-2');
-    var d3 = document.getElementById('step-dot-3');
-    var l2 = document.getElementById('step-line-2');
-    if (d2) d2.className = 'step done';
-    if (d3) d3.className = 'step active';
-    if (l2) l2.className = 'step-line done';
-    window.scrollTo(0, 0);
-  };
-  </script>
+  
 
 <div class="step-section" id="step3">
     <div class="section-title">📍 Localisation</div>
@@ -5483,6 +5427,76 @@ window.addEventListener('hashchange', async function() {
     navigate('home');
   }
 });
+</script>
+
+<script>
+// ── INSCRIPTION BOUTONS ──
+// Attacher après chargement DOM complet
+(function attachInscr() {
+  function doStep1() {
+    var p = (document.getElementById('prenom')||{}).value||'';
+    var n = (document.getElementById('nom')||{}).value||'';
+    var t = (document.getElementById('telephone')||{}).value||'';
+    var pw = (document.getElementById('password')||{}).value||'';
+    var pw2 = (document.getElementById('password2')||{}).value||'';
+    var err = document.getElementById('errorBox');
+    p=p.trim();n=n.trim();t=t.trim();
+    if(!p||!n||!t||!pw){if(err){err.textContent='Remplissez tous les champs';err.style.display='block';}return;}
+    if(pw.length<6){if(err){err.textContent='Mot de passe trop court';err.style.display='block';}return;}
+    if(pw!==pw2){if(err){err.textContent='Mots de passe différents';err.style.display='block';}return;}
+    if(err)err.style.display='none';
+    var s1=document.getElementById('step1');
+    var s2=document.getElementById('step2');
+    if(s1)s1.classList.remove('active');
+    if(s2)s2.classList.add('active');
+    var d1=document.getElementById('step-dot-1');
+    var d2=document.getElementById('step-dot-2');
+    var l1=document.getElementById('step-line-1');
+    if(d1)d1.className='step done';
+    if(d2)d2.className='step active';
+    if(l1)l1.className='step-line done';
+    window.scrollTo(0,0);
+  }
+
+  function doStep2() {
+    var cat=(document.getElementById('categorie')||{}).value||'';
+    var met=(document.getElementById('metier')||{}).value||'';
+    var desc=(document.getElementById('description')||{}).value||'';
+    var err=document.getElementById('errorBox');
+    met=met.trim();desc=desc.trim();
+    if(!cat||!met||!desc){if(err){err.textContent='Remplissez tous les champs';err.style.display='block';}return;}
+    if(err)err.style.display='none';
+    var s2=document.getElementById('step2');
+    var s3=document.getElementById('step3');
+    if(s2)s2.classList.remove('active');
+    if(s3)s3.classList.add('active');
+    var d2=document.getElementById('step-dot-2');
+    var d3=document.getElementById('step-dot-3');
+    var l2=document.getElementById('step-line-2');
+    if(d2)d2.className='step done';
+    if(d3)d3.className='step active';
+    if(l2)l2.className='step-line done';
+    window.scrollTo(0,0);
+  }
+
+  function attach() {
+    var b1=document.getElementById('btnS1');
+    var b2=document.getElementById('btnS2');
+    if(b1){b1.onclick=doStep1;console.log('btnS1 OK');}
+    if(b2){b2.onclick=doStep2;console.log('btnS2 OK');}
+  }
+
+  // Essayer immédiatement
+  attach();
+  // Et aussi après load complet
+  window.addEventListener('load', attach);
+  // Et aussi quand navigate() est appelé
+  var origNav = window.navigate;
+  window.navigate = function(page) {
+    if(origNav) origNav(page);
+    if(page==='inscription') setTimeout(attach, 100);
+  };
+})();
 </script>
 </body>
 </html>
