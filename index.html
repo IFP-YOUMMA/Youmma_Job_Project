@@ -2947,7 +2947,25 @@ function showError(msg) {
       <input type="password" id="password2" placeholder="Répétez le mot de passe" autocomplete="new-password"/>
     </div>
     <div class="nav-btns">
-      <button class="btn-next" style="flex:1;" onclick="nextStep(1)">Suivant →</button>
+      <button class="btn-next" style="flex:1;" onclick="
+  try {
+    var p=document.getElementById('prenom').value.trim();
+    var n=document.getElementById('nom').value.trim();
+    var t=document.getElementById('telephone').value.trim();
+    var pw=document.getElementById('password').value;
+    var pw2=document.getElementById('password2').value;
+    var err=document.getElementById('errorBox');
+    if(!p||!n||!t||!pw){err.textContent='Remplissez tous les champs';err.style.display='block';return;}
+    if(pw.length<8){err.textContent='Mot de passe: min 8 caractères';err.style.display='block';return;}
+    if(pw!==pw2){err.textContent='Mots de passe différents';err.style.display='block';return;}
+    err.style.display='none';
+    document.getElementById('step1').classList.remove('active');
+    document.getElementById('step2').classList.add('active');
+    document.getElementById('step-dot-1').className='step done';
+    document.getElementById('step-dot-2').className='step active';
+    document.getElementById('step-line-1').className='step-line done';
+  } catch(e){ alert('Erreur: '+e.message); }
+">Suivant →</button>
     </div>
   </div>
 
@@ -2984,7 +3002,19 @@ function showError(msg) {
     </div>
     <div class="nav-btns">
       <button class="btn-back" onclick="prevStep(2)">← Retour</button>
-      <button class="btn-next" onclick="nextStep(2)">Suivant →</button>
+      <button class="btn-next" onclick="
+  var cat=document.getElementById('categorie').value;
+  var metier=document.getElementById('metier').value.trim();
+  var desc=document.getElementById('description').value.trim();
+  var err=document.getElementById('errorBox');
+  if(!cat||!metier||!desc){err.textContent='Remplissez tous les champs';err.style.display='block';return;}
+  err.style.display='none';
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step3').classList.add('active');
+  document.getElementById('step-dot-2').className='step done';
+  document.getElementById('step-dot-3').className='step active';
+  document.getElementById('step-line-2').className='step-line done';
+">Suivant →</button>
     </div>
   </div>
 
