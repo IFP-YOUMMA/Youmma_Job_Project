@@ -1272,6 +1272,7 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
     <a href="#artisans" onclick="toggleMenu()">🔧 Artisans</a>
     <a href="#prestataires" onclick="toggleMenu()">👥 Annuaire</a>
     <a href="#categories" onclick="toggleMenu()">📂 Catégories</a>
+    <a href="#partenaires" onclick="toggleMenu()">🤝 Partenaires</a>
     <a href="#temoignages" onclick="toggleMenu()">⭐ Avis clients</a>
     <a href="#tarifs" onclick="toggleMenu()">💰 Tarifs</a>
     <a href="#faq" onclick="toggleMenu()">❓ FAQ</a>
@@ -1730,8 +1731,6 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 </section>
 
 <!-- ── PARTENAIRES ── -->
-
-
 
 <!-- ── TEMOIGNAGES ── -->
 
@@ -2222,7 +2221,7 @@ function initNavScroll() {
     if (window.scrollY > 60) nav.classList.add('scrolled');
     else nav.classList.remove('scrolled');
     // Active nav link
-    const sections = ['accueil','artisans','prestataires','categories','temoignages','tarifs','faq','contact'];
+    const sections = ['accueil','artisans','prestataires','categories','partenaires','temoignages','tarifs','faq','contact'];
     let current = 'accueil';
     sections.forEach(id => {
       const el = document.getElementById(id);
@@ -4202,16 +4201,16 @@ async function uploadProviderPhoto(providerId, file, type='realisation') {
   if (type==='realisation' && reals.length>=5) return { success:false, message:'Maximum 5 photos atteint' };
   const ext = file.name.split('.').pop();
   const filename = `${providerId}/${type}_${Date.now()}.${ext}`;
-  const { error:uploadError } = await sb.storage.from('provider-photos').upload(filename, file, { cacheControl:'3600', upsert:false });
+  const { error:uploadError } = await sb.storage.from('Photos').upload(filename, file, { cacheControl:'3600', upsert:false });
   if (uploadError) return { success:false, message:uploadError.message };
-  const { data:urlData } = sb.storage.from('provider-photos').getPublicUrl(filename);
+  const { data:urlData } = sb.storage.from('Photos').getPublicUrl(filename);
   const publicUrl = urlData.publicUrl;
   if (type==='profil') {
     const oldProfil = photos.find(p => p.type==='profil');
     if (oldProfil) {
       await sb.from('provider_photos').delete().eq('id',oldProfil.id);
-      const op = oldProfil.url.split('provider-photos/')[1];
-      if (op) await sb.storage.from('provider-photos').remove([op]);
+      const op = oldProfil.url.split('Photos/')[1];
+      if (op) await sb.storage.from('Photos').remove([op]);
     }
     await sb.from('providers').update({ photo_url:publicUrl }).eq('id',providerId);
   }
@@ -4221,8 +4220,8 @@ async function uploadProviderPhoto(providerId, file, type='realisation') {
 async function deleteProviderPhoto(photoId, providerId) {
   const { data:photo } = await sb.from('provider_photos').select('*').eq('id',photoId).single();
   if (!photo) return { success:false };
-  const path = photo.url.split('provider-photos/')[1];
-  if (path) await sb.storage.from('provider-photos').remove([path]);
+  const path = photo.url.split('Photos/')[1];
+  if (path) await sb.storage.from('Photos').remove([path]);
   await sb.from('provider_photos').delete().eq('id',photoId);
   if (photo.type==='profil') await sb.from('providers').update({ photo_url:null }).eq('id',providerId);
   return { success:true };
