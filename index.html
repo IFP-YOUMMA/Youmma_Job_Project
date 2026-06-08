@@ -1256,8 +1256,20 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-ctas">
-      <button class="btn-nav-ghost" onclick="navigate('login')">🔐 Connexion</button>
-      <button class="btn-nav-ghost" onclick="ouvrirInscription()">+ Devenir artisan</button>
+      <button class="btn-nav-ghost" onclick="
+  document.getElementById('mainContent').style.display='none';
+  document.getElementById('mainNav').style.display='none';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-login').classList.add('active');
+  window.scrollTo(0,0);
+">🔐 Connexion</button>
+      <button class="btn-nav-ghost" onclick="
+  document.getElementById('mainContent').style.display='none';
+  document.getElementById('mainNav').style.display='none';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-inscription').classList.add('active');
+  window.scrollTo(0,0);
+">+ Devenir artisan</button>
       <button class="btn-nav-primary" onclick="document.getElementById('prestataires').scrollIntoView({behavior:'smooth'})">Trouver un artisan</button>
     </div>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -4551,15 +4563,16 @@ function navigate(page) {
   // Masquer toutes les pages
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   
-  // Masquer/afficher le site principal
   const mainContent = document.getElementById('mainContent');
+  const mainNav = document.getElementById('mainNav');
+
   if (page === 'home') {
     if (mainContent) mainContent.style.display = '';
-    document.getElementById('mainNav').style.display = '';
+    if (mainNav) mainNav.style.display = '';
     window.scrollTo(0,0);
   } else {
     if (mainContent) mainContent.style.display = 'none';
-    document.getElementById('mainNav').style.display = 'none';
+    if (mainNav) mainNav.style.display = 'none';
     const pageEl = document.getElementById('page-' + page);
     if (pageEl) pageEl.classList.add('active');
   }
@@ -5245,3 +5258,24 @@ function openMaps(nom, ville) {
 </script>
 </body>
 </html>
+<script>
+// Navigate disponible immédiatement
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const mainContent = document.getElementById('mainContent');
+  const mainNav = document.getElementById('mainNav');
+  if (page === 'home') {
+    if (mainContent) mainContent.style.display = '';
+    if (mainNav) mainNav.style.display = '';
+    window.scrollTo(0,0);
+  } else {
+    if (mainContent) mainContent.style.display = 'none';
+    if (mainNav) mainNav.style.display = 'none';
+    const pageEl = document.getElementById('page-' + page);
+    if (pageEl) {
+      pageEl.classList.add('active');
+      window.scrollTo(0,0);
+    }
+  }
+}
+</script>
