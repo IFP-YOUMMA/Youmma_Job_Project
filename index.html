@@ -2846,7 +2846,7 @@ async function connexion() {
   btn.classList.add('loading');
   btn.disabled = true;
 
-  const res = await YJ.connexionPrestataire(tel, pwd);
+  const res = await connexionPrestataire(tel, pwd);
 
   btn.classList.remove('loading');
   btn.disabled = false;
@@ -2866,7 +2866,7 @@ function showError(msg) {
 
 // Rediriger si déjà connecté
 (async () => {
-  const id = await YJ.verifierSession();
+  const id = await verifierSession();
   if (id) navigate('dashboard');
 })();
 </script>
@@ -3161,7 +3161,7 @@ async function inscrire() {
     quartier: document.getElementById('quartier').value.trim() || null
   };
 
-  const res = await YJ.inscrirePrestataire(formData);
+  const res = await inscrirePrestataire(formData);
 
   btn.disabled = false;
   btn.textContent = '🚀 Créer mon compte';
@@ -3208,7 +3208,7 @@ async function inscrire() {
     </a>
   </nav>
   <div class="sidebar-footer">
-    <button class="btn-deconnexion" onclick="YJ.deconnexion()">🚪 Se déconnecter</button>
+    <button class="btn-deconnexion" onclick="deconnexion()">🚪 Se déconnecter</button>
   </div>
 </div>
 
@@ -3456,7 +3456,7 @@ let providerPhotos = [];
 
 // ── INIT ──
 (async () => {
-  const pid = await YJ.verifierSession();
+  const pid = await verifierSession();
   if (!pid) { navigate('login'); return; }
   providerId = pid;
   await chargerDonnees();
@@ -3467,7 +3467,7 @@ async function chargerDonnees() {
   if (!providerData) { navigate('login'); return; }
 
   updateUI();
-  providerPhotos = await YJ.getProviderPhotos(providerId);
+  providerPhotos = await getProviderPhotos(providerId);
   renderPhotos();
   await chargerAvis();
 
@@ -3635,12 +3635,12 @@ async function uploadPhoto(input, type) {
   const progressId = type === 'profil' ? 'progressProfil' : 'progressReal';
   document.getElementById(progressId).classList.add('show');
 
-  const res = await YJ.uploadProviderPhoto(providerId, file, type);
+  const res = await uploadProviderPhoto(providerId, file, type);
   document.getElementById(progressId).classList.remove('show');
 
   if (res.success) {
     showToast('✅ Photo ajoutée avec succès !', 'success');
-    providerPhotos = await YJ.getProviderPhotos(providerId);
+    providerPhotos = await getProviderPhotos(providerId);
     providerData = await YJ.getDashboardData(providerId);
     renderPhotos();
     updateUI();
@@ -3652,10 +3652,10 @@ async function uploadPhoto(input, type) {
 
 async function supprimerPhoto(photoId) {
   if (!confirm('Supprimer cette photo ?')) return;
-  const res = await YJ.deleteProviderPhoto(photoId, providerId);
+  const res = await deleteProviderPhoto(photoId, providerId);
   if (res.success) {
     showToast('Photo supprimée', 'success');
-    providerPhotos = await YJ.getProviderPhotos(providerId);
+    providerPhotos = await getProviderPhotos(providerId);
     providerData = await YJ.getDashboardData(providerId);
     renderPhotos();
     updateUI();
@@ -3704,7 +3704,7 @@ async function sauvegarderProfil() {
     showToast('Remplissez les champs obligatoires', 'error'); return;
   }
 
-  const res = await YJ.updateProviderProfile(providerId, updates);
+  const res = await updateProviderProfile(providerId, updates);
   if (res.success) {
     providerData = { ...providerData, ...updates };
     updateUI();
@@ -3721,7 +3721,7 @@ async function geocoderLocalisation() {
   showToast('📍 Géolocalisation en cours...');
   const coords = await YJ.geocoderAdresse(commune, quartier);
   if (coords) {
-    await YJ.updateProviderProfile(providerId, { latitude: coords.lat, longitude: coords.lon });
+    await updateProviderProfile(providerId, { latitude: coords.lat, longitude: coords.lon });
     providerData.latitude = coords.lat;
     providerData.longitude = coords.lon;
     updateUI();
@@ -3902,7 +3902,7 @@ async function loginAdmin() {
   const pwd = document.getElementById('adminPwd').value;
   document.getElementById('loginError').textContent = '';
 
-  const res = await YJ.connexionAdmin(tel, pwd);
+  const res = await connexionAdmin(tel, pwd);
   if (res.success) {
     adminData = res.admin;
     document.getElementById('loginWrap').style.display = 'none';
@@ -3930,7 +3930,7 @@ function showAdmin(name) {
 
 // ── LOAD DATA ──
 async function loadAll() {
-  const stats = await YJ.getAdminStats();
+  const stats = await getAdminStats();
   document.getElementById('statTotal').textContent = stats.total;
   document.getElementById('statAttente').textContent = stats.en_attente;
   document.getElementById('statValides').textContent = stats.valides;
@@ -3939,7 +3939,7 @@ async function loadAll() {
 
   const statuts = ['en_attente', 'valide', 'rejete', 'suspendu'];
   await Promise.all(statuts.map(async s => {
-    allProviders[s] = await YJ.getProvidersAdmin({ statut: s });
+    allProviders[s] = await getProvidersAdmin({ statut: s });
     renderTable(s, allProviders[s]);
   }));
 
@@ -4045,10 +4045,10 @@ async function action(type, id) {
   if (!confirm(confirms[type])) return;
 
   switch(type) {
-    case 'valider': await YJ.validerProvider(id); break;
-    case 'rejeter': await YJ.rejeterProvider(id); break;
-    case 'suspendre': await YJ.suspendreProvider(id); break;
-    case 'supprimer': await YJ.supprimerProvider(id); break;
+    case 'valider': await validerProvider(id); break;
+    case 'rejeter': await rejeterProvider(id); break;
+    case 'suspendre': await suspendreProvider(id); break;
+    case 'supprimer': await supprimerProvider(id); break;
   }
 
   showToast('✅ Action effectuée');
@@ -4586,7 +4586,7 @@ window.addEventListener('popstate', (e) => {
   const hash = location.hash.replace('#','');
   
   // Vérifier session prestataire
-  const pid = await YJ.verifierSession();
+  const pid = await verifierSession();
   
   if (hash === 'dashboard') {
     if (!pid) { navigate('login'); return; }
