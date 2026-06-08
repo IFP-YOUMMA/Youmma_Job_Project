@@ -3908,28 +3908,41 @@ let allProviders = {};
 async function loginAdmin() {
   const tel = document.getElementById('adminTel').value.trim();
   const pwd = document.getElementById('adminPwd').value;
-  document.getElementById('loginError').textContent = 'Connexion en cours...';
-
-  if (!tel || !pwd) {
-    document.getElementById('loginError').textContent = 'Remplissez tous les champs';
-    return;
-  }
+  const errEl = document.getElementById('loginError');
+  errEl.style.color = 'blue';
+  errEl.textContent = 'Test Supabase...';
 
   try {
-    const res = await connexionAdmin(tel, pwd);
-    document.getElementById('loginError').textContent = 'Résultat: ' + JSON.stringify(res);
-    if (res.success) {
-      adminData = res.admin;
+    // Test 1: Supabase accessible?
+    const test = await sb.from('admin_users').select('telephone, password_hash');
+    if (test.error) {
+      errEl.style.color = 'red';
+      errEl.textContent = 'Supabase error: ' + test.error.message;
+      return;
+    }
+    const rows = test.data;
+    errEl.textContent = 'Trouvé ' + rows.length + ' admin(s). Tel saisi: [' + tel + '] DB: [' + (rows[0]?.telephone||'?') + '] Pwd DB: [' + (rows[0]?.password_hash||'?') + '] Pwd saisi: [' + pwd + ']';
+    errEl.style.color = 'orange';
+
+    // Test 2: Correspondance exacte?
+    const match = rows.find(r => r.telephone === tel && r.password_hash === pwd);
+    if (match) {
+      errEl.style.color = 'green';
+      errEl.textContent = 'MATCH! Connexion...';
+      const fullData = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).single();
+      const token = generateToken();
+      await sb.from('admin_sessions').insert({admin_id: fullData.data.id, token});
+      localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({admin_id: fullData.data.id, token, nom: fullData.data.nom, role: fullData.data.role}));
+      adminData = fullData.data;
       document.getElementById('loginWrap').style.display = 'none';
       document.getElementById('adminWrap').classList.add('visible');
       await loadAll();
     } else {
-      document.getElementById('loginError').style.color = 'red';
-      document.getElementById('loginError').textContent = res.message || 'Identifiants incorrects';
+      errEl.style.color = 'red';
     }
   } catch(e) {
-    document.getElementById('loginError').style.color = 'red';
-    document.getElementById('loginError').textContent = 'ERREUR: ' + e.message;
+    errEl.style.color = 'red';
+    errEl.textContent = 'Exception: ' + e.message;
   }
 }
 
