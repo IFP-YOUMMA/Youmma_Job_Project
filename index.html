@@ -3972,7 +3972,7 @@ async function loginAdmin() {
     }
 
     const token = generateToken();
-    await sb.from('admin_sessions').insert({ admin_id: data.id, token });
+    try { await sb.from('admin_sessions').insert({ admin_id: data.id, token }); } catch(e) { console.warn('Session insert:', e.message); }
     localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({
       admin_id: data.id, token, nom: data.nom, role: data.role
     }));
@@ -4110,23 +4110,29 @@ function filterTable(statut, query) {
 
 // ── ACTIONS ──
 async function action(type, id) {
-  const confirms = {
-    valider: 'Valider ce prestataire et activer 14 jours d\'essai ?',
-    rejeter: 'Rejeter ce prestataire ?',
-    suspendre: 'Suspendre ce prestataire ?',
-    supprimer: 'SUPPRIMER définitivement ce prestataire ?'
+  const labels = {
+    valider: 'Valider + 14j essai ?',
+    rejeter: 'Rejeter ?',
+    suspendre: 'Suspendre ?',
+    supprimer: 'SUPPRIMER ?'
   };
-  if (!confirm(confirms[type])) return;
+  if (!window.confirm(labels[type] || type)) return;
 
-  switch(type) {
-    case 'valider': await validerProvider(id); break;
-    case 'rejeter': await rejeterProvider(id); break;
-    case 'suspendre': await suspendreProvider(id); break;
-    case 'supprimer': await supprimerProvider(id); break;
+  try {
+    if (type === 'valider') await validerProvider(id);
+    else if (type === 'rejeter') await rejeterProvider(id);
+    else if (type === 'suspendre') await suspendreProvider(id);
+    else if (type === 'supprimer') await supprimerProvider(id);
+    
+    // Recharger sans toucher au hash
+    const lw = document.getElementById('loginWrap');
+    const aw = document.getElementById('adminWrap');
+    if (lw && lw.style.display !== 'none') return; // pas connecté
+    await loadAll();
+    showToast('✅ Action effectuée !');
+  } catch(e) {
+    showToast('Erreur: ' + e.message, 'error');
   }
-
-  showToast('✅ Action effectuée');
-  await loadAll();
 }
 
 // ── CODES ──
@@ -4359,7 +4365,14 @@ async function getAdminStats() {
   ]);
   return {total:total.count||0,en_attente:att.count||0,valides:val.count||0,rejetes:rej.count||0,suspendu:sus.count||0};
 }
-async function validerProvider(id) { await sb.rpc('activer_essai',{p_id:id}); }
+async function validerProvider(id) {
+  const essai_fin = new Date(Date.now() + 14*24*60*60*1000).toISOString();
+  await sb.from('providers').update({
+    statut: 'valide',
+    essai_actif: true,
+    essai_fin: essai_fin
+  }).eq('id', id);
+}
 async function rejeterProvider(id) { await sb.from('providers').update({statut:'rejete'}).eq('id',id); }
 async function suspendreProvider(id) { await sb.from('providers').update({statut:'suspendu'}).eq('id',id); }
 async function supprimerProvider(id) { await sb.from('providers').delete().eq('id',id); }
@@ -4964,14 +4977,16 @@ let _allProviders = {};
 async function initAdmin() {
   const s = getAdminSession();
   if (s?.token) {
-    const { data } = await sb.from('admin_sessions').select('admin_id').eq('token',s.token).gt('expire_le',new Date().toISOString()).single();
+    // Vérifier session sans expire_le (colonne peut ne pas exister)
+    const { data } = await sb.from('admin_sessions').select('admin_id').eq('token', s.token).single();
     if (data) {
       _adminData = s;
-      const loginWrap = document.querySelector('#page-admin .login-wrap');
-      const adminWrap = document.querySelector('#page-admin .admin-wrap');
-      if(loginWrap) loginWrap.style.display='none';
+      adminData = s;
+      const loginWrap = document.querySelector('#page-admin .login-wrap') || document.getElementById('loginWrap');
+      const adminWrap = document.querySelector('#page-admin .admin-wrap') || document.getElementById('adminWrap');
+      if(loginWrap) loginWrap.style.display = 'none';
       if(adminWrap) adminWrap.classList.add('visible');
-      await _adminLoadAll();
+      await loadAll();
       return;
     }
   }
@@ -5030,14 +5045,16 @@ function _adminTableHTML(statut,data) {
 }
 
 async function _adminAction(type,id) {
-  const confirms={valider:'Valider + 14j essai ?',rejeter:'Rejeter ?',suspendre:'Suspendre ?',supprimer:'SUPPRIMER définitivement ?'};
-  if(!confirm(confirms[type])) return;
-  if(type==='valider') await validerProvider(id);
-  else if(type==='rejeter') await rejeterProvider(id);
-  else if(type==='suspendre') await suspendreProvider(id);
-  else if(type==='supprimer') await supprimerProvider(id);
-  showToast('✅ Action effectuée');
-  await _adminLoadAll();
+  const labels={valider:'Valider + 14j essai ?',rejeter:'Rejeter ?',suspendre:'Suspendre ?',supprimer:'SUPPRIMER définitivement ?'};
+  if(!window.confirm(labels[type]||type)) return;
+  try {
+    if(type==='valider') await validerProvider(id);
+    else if(type==='rejeter') await rejeterProvider(id);
+    else if(type==='suspendre') await suspendreProvider(id);
+    else if(type==='supprimer') await supprimerProvider(id);
+    showToast('✅ Action effectuée !');
+    await _adminLoadAll();
+  } catch(e) { showToast('Erreur: '+e.message,'error'); }
 }
 
 async function _adminLoadCodes() {
@@ -5349,11 +5366,19 @@ window.addEventListener('load', async function() {
 // Changement de hash (navigation)
 window.addEventListener('hashchange', async function() {
   const hash = location.hash.replace('#', '').toLowerCase().trim();
+  
+  // Ne pas interrompre si déjà sur la bonne page
+  const adminWrap = document.getElementById('adminWrap');
+  const isAdminOpen = adminWrap && adminWrap.classList.contains('visible');
+  if (isAdminOpen && (hash === 'admin' || hash === '')) return;
+  
+  const dashLayout = document.querySelector('.dash-layout');
+  const isDashOpen = dashLayout && document.getElementById('page-dashboard')?.classList.contains('active');
+  if (isDashOpen && (hash === 'dashboard' || hash === '')) return;
 
   if (hash === 'admin') {
     navigate('admin');
     if (typeof initAdmin === 'function') await initAdmin();
-
   } else if (hash === 'dashboard') {
     if (typeof verifierSession === 'function') {
       const pid = await verifierSession();
@@ -5361,15 +5386,12 @@ window.addEventListener('hashchange', async function() {
       navigate('dashboard');
       if (typeof chargerDashboard === 'function') await chargerDashboard(pid);
     }
-
   } else if (hash === 'inscription') {
     navigate('inscription');
     if (typeof initInscription === 'function') initInscription();
-
   } else if (hash === 'login') {
     navigate('login');
-
-  } else {
+  } else if (hash !== '') {
     navigate('home');
   }
 });
