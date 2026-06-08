@@ -4314,11 +4314,10 @@ async function getAvis(providerId) {
 }
 async function connexionAdmin(telephone, password) {
   try {
-    const hash = await hashPassword(password);
     const { data, error } = await sb.from('admin_users')
       .select('id,nom,role,telephone,password_hash')
       .eq('telephone', telephone)
-      .eq('password_hash', hash)
+      .eq('password_hash', password)
       .single();
     if (error || !data) return { success:false, message:'Email ou mot de passe incorrect' };
     const token = generateToken();
@@ -5222,11 +5221,10 @@ function generateToken() {
 
 async function connexionAdmin(telephone, password) {
   try {
-    const hash = await hashPassword(password);
     const { data, error } = await sb.from('admin_users')
       .select('id,nom,role,telephone,password_hash')
       .eq('telephone', telephone)
-      .eq('password_hash', hash)
+      .eq('password_hash', password)
       .single();
     if (error || !data) return { success:false, message:'Email ou mot de passe incorrect' };
     const token = generateToken();
