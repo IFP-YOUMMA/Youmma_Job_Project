@@ -2217,19 +2217,6 @@ try { favorites = JSON.parse(localStorage.getItem('yj_fav') || '[]'); } catch(e)
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
 
-  // HASH ROUTER
-  function handleHash() {
-    const hash = window.location.hash.replace('#', '').toLowerCase();
-    const pages = ['login', 'inscription', 'dashboard', 'admin'];
-    if (pages.includes(hash)) {
-      navigate(hash);
-    } else if (hash === '' || hash === 'accueil') {
-      navigate('home');
-    }
-  }
-  window.addEventListener('hashchange', handleHash);
-  handleHash();
-
   filteredData = [...PRESTATAIRES];
   renderArtisans();
   renderProviders();
@@ -5264,7 +5251,7 @@ function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const mainContent = document.getElementById('mainContent');
   const mainNav = document.getElementById('mainNav');
-  if (page === 'home') {
+  if (page === 'home' || page === '' || page === 'accueil') {
     if (mainContent) mainContent.style.display = '';
     if (mainNav) mainNav.style.display = '';
     window.scrollTo(0,0);
@@ -5278,4 +5265,18 @@ function navigate(page) {
     }
   }
 }
+
+// Hash router — se déclenche au chargement ET au changement de hash
+function handleHash() {
+  const hash = window.location.hash.replace('#','').toLowerCase().trim();
+  const pages = ['login','inscription','dashboard','admin'];
+  if (pages.includes(hash)) {
+    navigate(hash);
+  } else {
+    navigate('home');
+  }
+}
+
+window.addEventListener('hashchange', handleHash);
+window.addEventListener('load', handleHash);
 </script>
