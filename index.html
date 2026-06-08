@@ -3985,28 +3985,44 @@ let allProviders = {};
 async function loginAdmin() {
   const tel = document.getElementById('adminTel').value.trim();
   const pwd = document.getElementById('adminPwd').value;
-  document.getElementById('loginError').textContent = 'Connexion en cours...';
+  const errEl = document.getElementById('loginError');
+  errEl.textContent = '';
+  errEl.style.color = '#DC2626';
 
   if (!tel || !pwd) {
-    document.getElementById('loginError').textContent = 'Remplissez tous les champs';
+    errEl.textContent = 'Remplissez tous les champs';
     return;
   }
 
+  const btn = document.querySelector('#loginWrap .btn-login');
+  if (btn) { btn.disabled = true; btn.textContent = 'Connexion...'; }
+
   try {
-    const res = await connexionAdmin(tel, pwd);
-    document.getElementById('loginError').textContent = 'Résultat: ' + JSON.stringify(res);
-    if (res.success) {
-      adminData = res.admin;
-      document.getElementById('loginWrap').style.display = 'none';
-      document.getElementById('adminWrap').classList.add('visible');
-      await loadAll();
-    } else {
-      document.getElementById('loginError').style.color = 'red';
-      document.getElementById('loginError').textContent = res.message || 'Identifiants incorrects';
+    const { data, error } = await sb.from('admin_users')
+      .select('id,nom,role')
+      .eq('telephone', tel)
+      .eq('password_hash', pwd)
+      .single();
+
+    if (error || !data) {
+      errEl.textContent = 'Email ou mot de passe incorrect';
+      if (btn) { btn.disabled = false; btn.textContent = 'Se connecter →'; }
+      return;
     }
+
+    const token = generateToken();
+    await sb.from('admin_sessions').insert({ admin_id: data.id, token });
+    localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({
+      admin_id: data.id, token, nom: data.nom, role: data.role
+    }));
+    adminData = data;
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('adminWrap').classList.add('visible');
+    await loadAll();
+
   } catch(e) {
-    document.getElementById('loginError').style.color = 'red';
-    document.getElementById('loginError').textContent = 'ERREUR: ' + e.message;
+    errEl.textContent = 'Erreur: ' + e.message;
+    if (btn) { btn.disabled = false; btn.textContent = 'Se connecter →'; }
   }
 }
 
@@ -5247,26 +5263,41 @@ function generateToken() {
 
 async function connexionAdmin(telephone, password) {
   try {
-    const hash = await hashPassword(password);
-    const { data, error } = await sb.from('admin_users').select('id,nom,role,telephone').eq('telephone',telephone).eq('password_hash',hash).single();
-    if (error||!data) return { success:false, message:'Identifiants incorrects' };
+    // Comparer directement (mot de passe stocké en clair dans DB)
+    const { data, error } = await sb.from('admin_users')
+      .select('id,nom,role,telephone')
+      .eq('telephone', telephone)
+      .eq('password_hash', password)
+      .single();
+    if (error || !data) return { success:false, message:'Email ou mot de passe incorrect' };
     const token = generateToken();
-    await sb.from('admin_sessions').insert({admin_id:data.id,token});
-    localStorage.setItem(ADMIN_SESSION_KEY,JSON.stringify({admin_id:data.id,token,nom:data.nom,role:data.role}));
+    await sb.from('admin_sessions').insert({ admin_id:data.id, token });
+    localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({
+      admin_id:data.id, token, nom:data.nom, role:data.role
+    }));
     return { success:true, admin:data };
-  } catch(e) { return { success:false, message:'Erreur' }; }
+  } catch(e) { return { success:false, message:'Erreur: ' + e.message }; }
 }
 
 async function connexionPrestataire(telephone, password) {
   try {
     const hash = await hashPassword(password);
-    const { data, error } = await sb.from('providers').select('id,nom,prenom,metier,categorie,telephone,statut').eq('telephone',telephone).eq('password_hash',hash).single();
+    const { data, error } = await sb.from('providers')
+      .select('id,nom,prenom,metier,categorie,telephone,statut,photo_url')
+      .eq('telephone', telephone)
+      .eq('password_hash', hash)
+      .single();
     if (error || !data) return { success:false, message:'Téléphone ou mot de passe incorrect' };
+    if (data.statut === 'rejete') return { success:false, message:'Profil rejeté. Contactez le support.' };
+    if (data.statut === 'suspendu') return { success:false, message:'Compte suspendu. Contactez le support.' };
     const token = generateToken();
-    await sb.from('provider_sessions').insert({ provider_id:data.id, token });
-    setSession({ provider_id:data.id, token, nom:data.nom, prenom:data.prenom });
+    const expire = new Date(Date.now() + 30*24*60*60*1000).toISOString();
+    await sb.from('provider_sessions').insert({ 
+      provider_id: data.id, token, appareil: 'web', expire_le: expire 
+    });
+    setSession({ provider_id: data.id, token, nom: data.nom, prenom: data.prenom });
     return { success:true, provider:data };
-  } catch(e) { return { success:false, message:'Erreur de connexion' }; }
+  } catch(e) { return { success:false, message:'Erreur: ' + e.message }; }
 }
 
 </script>
@@ -5363,14 +5394,16 @@ function navigate(page) {
 // Hash router — se déclenche au chargement ET au changement de hash
 function handleHash() {
   const hash = window.location.hash.replace('#','').toLowerCase().trim();
-  const pages = ['login','inscription','dashboard','admin'];
-  if (pages.includes(hash)) {
-    navigate(hash);
-  } else {
-    navigate('home');
+  // login et inscription gérés directement
+  if (hash === 'login') {
+    navigate('login');
+  } else if (hash === 'inscription') {
+    navigate('inscription');
   }
+  // admin et dashboard gérés par initRouter() avec vérification session
+  // home géré par défaut
 }
 
 window.addEventListener('hashchange', handleHash);
-window.addEventListener('load', handleHash);
+// Ne pas appeler handleHash au load - initRouter() s'en charge
 </script>
