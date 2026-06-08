@@ -1254,6 +1254,10 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .step.done { background: var(--vert); border-color: var(--vert); color: #fff; }
 .step-line { flex: 1; height: 2px; background: var(--bordure); }
 .step-line.done { background: var(--vert); }
+
+/* Menu mobile */
+.mobile-menu { display: none !important; }
+.mobile-menu.open { display: block !important; }
 </style>
 
 <body>
@@ -2711,7 +2715,7 @@ function toggleFaq(item) {
 // ── MENU MOBILE ──
 function toggleMenu() {
   const menu = document.getElementById('mobileMenu');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+  menu.classList.toggle('open');
 }
 
 // ── COMPTEURS ANIMÉS ──
