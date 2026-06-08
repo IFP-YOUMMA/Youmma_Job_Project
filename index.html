@@ -1265,6 +1265,34 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .step.active { background: var(--orange) !important; border-color: var(--orange) !important; color: #fff !important; }
 .step.done { background: var(--vert) !important; border-color: var(--vert) !important; color: #fff !important; }
 .step-line.done { background: var(--vert) !important; }
+
+/* ── ADMIN PANEL AMÉLIORÉ ── */
+.admin-wrap .admin-main { overflow-x: auto; }
+.admin-section table { min-width: 800px; }
+.admin-section td, .admin-section th { white-space: nowrap; }
+.admin-section td:first-child, .admin-section th:first-child { white-space: normal; min-width: 180px; }
+.admin-section td:last-child { white-space: normal; min-width: 200px; }
+.admin-wrap .admin-sidebar { width: 200px; }
+.admin-wrap .admin-main { margin-left: 200px; padding: 20px; }
+
+/* Stats row admin */
+.stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat-box { background: #fff; border-radius: 12px; padding: 16px; text-align: center; border: 1.5px solid #E5E7EB; }
+.stat-box .val { font-family: 'Libre Baskerville', serif; font-size: 28px; font-weight: 700; color: #1A1A4E; }
+.stat-box .lbl { font-size: 11px; color: #6B7280; margin-top: 4px; }
+
+@media(max-width:900px) {
+  .admin-wrap .admin-sidebar { width: 56px; }
+  .admin-wrap .admin-main { margin-left: 56px; padding: 14px; }
+  .stats-row { grid-template-columns: repeat(3, 1fr); }
+  .admin-wrap .admin-logo h2, .admin-wrap .admin-logo p, .anav span { display: none; }
+  .anav { text-align: center; padding: 10px 4px; font-size: 18px; }
+}
+@media(max-width:600px) {
+  .admin-wrap .admin-sidebar { display: none; }
+  .admin-wrap .admin-main { margin-left: 0; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+}
 </style>
 
 <body>
@@ -4031,69 +4059,65 @@ function renderTable(statut, data) {
 }
 
 function renderTableHTML(statut, data) {
-  if (!data || data.length === 0) {
-    return `<div style="text-align:center;padding:40px;color:#7A7F9A;">Aucun prestataire dans cette catégorie</div>`;
-  }
-
-  const formatDate = d => d ? new Date(d).toLocaleDateString('fr-FR') : '—';
+  if (!data || !data.length) return '<div style="text-align:center;padding:40px;color:#7A7F9A;">Aucun prestataire</div>';
+  const fd = d => d ? new Date(d).toLocaleDateString('fr-FR') : '—';
+  const now = new Date();
   const aboBadge = p => {
-    const now = new Date();
-    if (p.essai_actif && p.essai_fin && new Date(p.essai_fin) > now) return '<span class="badge essai">🎁 Essai</span>';
-    if (p.abonnement_actif && p.abonnement_fin && new Date(p.abonnement_fin) > now) return '<span class="badge abonne">💳 Abonné</span>';
-    return '<span style="color:#7A7F9A;font-size:11px;">Inactif</span>';
+    if (p.essai_actif && p.essai_fin && new Date(p.essai_fin) > now) return '<span style="background:rgba(22,163,74,.15);color:#16A34A;border-radius:6px;padding:2px 7px;font-size:10px;font-weight:700;">🎁 Essai</span>';
+    if (p.abonnement_actif && p.abonnement_fin && new Date(p.abonnement_fin) > now) return '<span style="background:rgba(59,130,246,.12);color:#1D4ED8;border-radius:6px;padding:2px 7px;font-size:10px;font-weight:700;">💳 Abonné</span>';
+    return '<span style="color:#9CA3AF;font-size:10px;">Inactif</span>';
   };
 
-  const actionsHTML = p => {
-    const btns = [];
-    if (p.statut === 'en_attente') btns.push(`<button class="abtn valider" onclick="action('valider','${p.id}')">✅ Valider + Essai</button>`);
-    if (p.statut !== 'rejete') btns.push(`<button class="abtn rejeter" onclick="action('rejeter','${p.id}')">❌ Rejeter</button>`);
-    if (p.statut !== 'suspendu') btns.push(`<button class="abtn suspendre" onclick="action('suspendre','${p.id}')">🚫 Suspendre</button>`);
-    if (p.statut !== 'valide') btns.push(`<button class="abtn valider" onclick="action('valider','${p.id}')">✅ Valider</button>`);
-    btns.push(`<button class="abtn supprimer" onclick="action('supprimer','${p.id}')">🗑️ Supprimer</button>`);
-    return `<div class="action-row">${btns.join('')}</div>`;
-  };
+  const rows = data.map(p => {
+    const ini = ((p.prenom||'?')[0] + (p.nom||'?')[0]).toUpperCase();
+    const nomComplet = `${p.prenom||''} ${p.nom||''}`.trim() || '—';
+    const actions = `
+      <div style="display:flex;flex-wrap:wrap;gap:5px;">
+        ${p.statut !== 'valide' ? `<button onclick="_adminAction('valider','${p.id}')" style="padding:5px 10px;background:rgba(22,163,74,.15);color:#16A34A;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">✅ Valider</button>` : ''}
+        ${p.statut !== 'rejete' ? `<button onclick="_adminAction('rejeter','${p.id}')" style="padding:5px 10px;background:rgba(239,68,68,.1);color:#DC2626;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">❌ Rejeter</button>` : ''}
+        ${p.statut !== 'suspendu' ? `<button onclick="_adminAction('suspendre','${p.id}')" style="padding:5px 10px;background:rgba(245,200,66,.12);color:#92400E;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">🚫 Suspendre</button>` : ''}
+        <button onclick="_adminAction('supprimer','${p.id}')" style="padding:5px 10px;background:rgba(239,68,68,.08);color:#DC2626;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">🗑️</button>
+      </div>`;
+    return `
+      <tr style="border-bottom:1px solid #F3F4F6;">
+        <td style="padding:12px 14px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:#FDE8D8;color:#C74B00;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;">${ini}</div>
+            <div>
+              <div style="font-weight:700;font-size:13px;color:#0F1020;">${nomComplet}</div>
+              <div style="font-size:11px;color:#6B7280;margin-top:1px;">${p.metier||'—'}</div>
+            </div>
+          </div>
+        </td>
+        <td style="padding:12px 14px;">
+          <span style="background:#F0F0FF;color:#2D2D6B;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;">${(p.statut||'').replace('_',' ')}</span>
+          <div style="font-size:11px;color:#9CA3AF;margin-top:3px;">${p.categorie||'—'}</div>
+        </td>
+        <td style="padding:12px 14px;font-size:12px;color:#6B7280;">${p.ville||'—'}${p.commune ? '<br><span style="font-size:11px;">'+p.commune+'</span>' : ''}</td>
+        <td style="padding:12px 14px;"><a href="tel:${p.telephone}" style="color:#2D2D6B;font-weight:600;font-size:12px;text-decoration:none;">${p.telephone||'—'}</a></td>
+        <td style="padding:12px 14px;font-size:11px;color:#9CA3AF;">${fd(p.created_at)}</td>
+        <td style="padding:12px 14px;">${aboBadge(p)}</td>
+        <td style="padding:12px 14px;">${actions}</td>
+      </tr>`;
+  }).join('');
 
   return `
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th>Prestataire</th>
-          <th>Catégorie</th>
-          <th>Localisation</th>
-          <th>Téléphone</th>
-          <th>Inscrit le</th>
-          <th>Abonnement</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${data.map(p => `
-          <tr>
-            <td>
-              <div style="display:flex;align-items:center;gap:10px;">
-                <div class="provider-row-avatar" style="background:#FDE8D8;color:#C74B00;">
-                  ${p.photo_url ? `<img src="${p.photo_url}" alt=""/>` : (p.prenom?.[0]||'') + (p.nom?.[0]||'')}
-                </div>
-                <div>
-                  <div style="font-weight:700;color:#fff;">${p.prenom} ${p.nom}</div>
-                  <div style="font-size:11px;color:#7A7F9A;">${p.metier || '—'}</div>
-                </div>
-              </div>
-            </td>
-            <td>
-              <span class="badge ${p.statut}">${p.statut?.replace('_',' ')}</span><br>
-              <span style="font-size:11px;color:#7A7F9A;">${p.categorie || '—'}</span>
-            </td>
-            <td style="font-size:12px;color:#94A3B8;">${p.ville || '—'}${p.commune ? ' · ' + p.commune : ''}${p.quartier ? '<br>' + p.quartier : ''}</td>
-            <td><a href="tel:${p.telephone}" style="color:#60A5FA;text-decoration:none;">${p.telephone}</a></td>
-            <td style="font-size:12px;color:#7A7F9A;">${formatDate(p.created_at)}</td>
-            <td>${aboBadge(p)}</td>
-            <td>${actionsHTML(p)}</td>
+    <div style="background:#fff;border-radius:14px;border:1.5px solid #E5E7EB;overflow:hidden;margin-bottom:20px;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="background:#F9FAFB;border-bottom:1.5px solid #E5E7EB;">
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Prestataire</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Statut / Catégorie</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Localisation</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Téléphone</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Inscrit</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Abo.</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Actions</th>
           </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
 }
 
 function filterTable(statut, query) {
@@ -5032,16 +5056,66 @@ function _adminRenderTable(statut,data) {
   const el=document.getElementById(ids[statut]);if(el) el.innerHTML=_adminTableHTML(statut,data);
 }
 
-function _adminTableHTML(statut,data) {
-  if(!data||!data.length) return '<div style="text-align:center;padding:40px;color:#7A7F9A;">Aucun prestataire</div>';
-  const fd=d=>d?new Date(d).toLocaleDateString('fr-FR'):'—';
-  const now=new Date();
-  const aboBadge=p=>{
-    if(p.essai_actif&&p.essai_fin&&new Date(p.essai_fin)>now)return'<span class="badge essai">🎁 Essai</span>';
-    if(p.abonnement_actif&&p.abonnement_fin&&new Date(p.abonnement_fin)>now)return'<span class="badge abonne">💳 Abonné</span>';
-    return'<span style="color:#7A7F9A;font-size:11px;">Inactif</span>';
+function _adminTableHTML(statut, data) {
+  if (!data || !data.length) return '<div style="text-align:center;padding:40px;color:#7A7F9A;">Aucun prestataire</div>';
+  const fd = d => d ? new Date(d).toLocaleDateString('fr-FR') : '—';
+  const now = new Date();
+  const aboBadge = p => {
+    if (p.essai_actif && p.essai_fin && new Date(p.essai_fin) > now) return '<span style="background:rgba(22,163,74,.15);color:#16A34A;border-radius:6px;padding:2px 7px;font-size:10px;font-weight:700;">🎁 Essai</span>';
+    if (p.abonnement_actif && p.abonnement_fin && new Date(p.abonnement_fin) > now) return '<span style="background:rgba(59,130,246,.12);color:#1D4ED8;border-radius:6px;padding:2px 7px;font-size:10px;font-weight:700;">💳 Abonné</span>';
+    return '<span style="color:#9CA3AF;font-size:10px;">Inactif</span>';
   };
-  return `<table class="admin-table"><thead><tr><th>Prestataire</th><th>Catégorie</th><th>Localisation</th><th>Téléphone</th><th>Inscrit</th><th>Abo.</th><th>Actions</th></tr></thead><tbody>${data.map(p=>`<tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="provider-row-avatar" style="background:#FDE8D8;color:#C74B00;">${p.photo_url?`<img src="${p.photo_url}"/>`:(p.prenom?.[0]||'')+(p.nom?.[0]||'')}</div><div><div style="font-weight:700;color:#fff;">${p.prenom||''} ${p.nom||''}</div><div style="font-size:11px;color:#7A7F9A;">${p.metier||'—'}</div></div></div></td><td><span class="badge ${p.statut}">${(p.statut||'').replace('_',' ')}</span><br><span style="font-size:11px;color:#7A7F9A;">${p.categorie||'—'}</span></td><td style="font-size:12px;color:#94A3B8;">${p.ville||'—'}${p.commune?' · '+p.commune:''}</td><td><a href="tel:${p.telephone}" style="color:#60A5FA;">${p.telephone||'—'}</a></td><td style="font-size:12px;color:#7A7F9A;">${fd(p.created_at)}</td><td>${aboBadge(p)}</td><td><div class="action-row">${p.statut==='en_attente'?`<button class="abtn valider" onclick="_adminAction('valider','${p.id}')">✅ Valider</button>`:''}<button class="abtn rejeter" onclick="_adminAction('rejeter','${p.id}')">❌ Rejeter</button><button class="abtn suspendre" onclick="_adminAction('suspendre','${p.id}')">🚫</button><button class="abtn supprimer" onclick="_adminAction('supprimer','${p.id}')">🗑️</button></div></td></tr>`).join('')}</tbody></table>`;
+
+  const rows = data.map(p => {
+    const ini = ((p.prenom||'?')[0] + (p.nom||'?')[0]).toUpperCase();
+    const nomComplet = `${p.prenom||''} ${p.nom||''}`.trim() || '—';
+    const actions = `
+      <div style="display:flex;flex-wrap:wrap;gap:5px;">
+        ${p.statut !== 'valide' ? `<button onclick="_adminAction('valider','${p.id}')" style="padding:5px 10px;background:rgba(22,163,74,.15);color:#16A34A;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">✅ Valider</button>` : ''}
+        ${p.statut !== 'rejete' ? `<button onclick="_adminAction('rejeter','${p.id}')" style="padding:5px 10px;background:rgba(239,68,68,.1);color:#DC2626;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">❌ Rejeter</button>` : ''}
+        ${p.statut !== 'suspendu' ? `<button onclick="_adminAction('suspendre','${p.id}')" style="padding:5px 10px;background:rgba(245,200,66,.12);color:#92400E;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">🚫 Suspendre</button>` : ''}
+        <button onclick="_adminAction('supprimer','${p.id}')" style="padding:5px 10px;background:rgba(239,68,68,.08);color:#DC2626;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">🗑️</button>
+      </div>`;
+    return `
+      <tr style="border-bottom:1px solid #F3F4F6;">
+        <td style="padding:12px 14px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:#FDE8D8;color:#C74B00;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;">${ini}</div>
+            <div>
+              <div style="font-weight:700;font-size:13px;color:#0F1020;">${nomComplet}</div>
+              <div style="font-size:11px;color:#6B7280;margin-top:1px;">${p.metier||'—'}</div>
+            </div>
+          </div>
+        </td>
+        <td style="padding:12px 14px;">
+          <span style="background:#F0F0FF;color:#2D2D6B;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;">${(p.statut||'').replace('_',' ')}</span>
+          <div style="font-size:11px;color:#9CA3AF;margin-top:3px;">${p.categorie||'—'}</div>
+        </td>
+        <td style="padding:12px 14px;font-size:12px;color:#6B7280;">${p.ville||'—'}${p.commune ? '<br><span style="font-size:11px;">'+p.commune+'</span>' : ''}</td>
+        <td style="padding:12px 14px;"><a href="tel:${p.telephone}" style="color:#2D2D6B;font-weight:600;font-size:12px;text-decoration:none;">${p.telephone||'—'}</a></td>
+        <td style="padding:12px 14px;font-size:11px;color:#9CA3AF;">${fd(p.created_at)}</td>
+        <td style="padding:12px 14px;">${aboBadge(p)}</td>
+        <td style="padding:12px 14px;">${actions}</td>
+      </tr>`;
+  }).join('');
+
+  return `
+    <div style="background:#fff;border-radius:14px;border:1.5px solid #E5E7EB;overflow:hidden;margin-bottom:20px;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="background:#F9FAFB;border-bottom:1.5px solid #E5E7EB;">
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Prestataire</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Statut / Catégorie</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Localisation</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Téléphone</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Inscrit</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Abo.</th>
+            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
 }
 
 async function _adminAction(type,id) {
