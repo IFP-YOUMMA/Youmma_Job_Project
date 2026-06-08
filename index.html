@@ -10,6 +10,9 @@
 <meta property="og:description" content="Trouvez rapidement le bon artisan pour tous vos projets en Guinée — Électriciens, plombiers, maçons, soudeurs et 100+ professionnels vérifiés."/>
 <meta property="og:type" content="website"/>
 <meta name="robots" content="index, follow"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
 <link rel="canonical" href="https://yoummajobs.com"/>
 <meta name="description" content="Trouvez rapidement le bon artisan pour tous vos projets en Guinée. Électriciens, plombiers, maçons, soudeurs et 100+ artisans qualifiés vérifiés à Conakry."/>
 <meta name="keywords" content="artisan Guinée, électricien Conakry, plombier Guinée, maçon Conakry, soudeur Guinée, menuisier Guinée, artisan qualifié Guinée, YOUMMA JOBS"/>
@@ -1258,6 +1261,28 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 /* Menu mobile */
 .mobile-menu { display: none !important; }
 .mobile-menu.open { display: block !important; }
+
+/* ═══ VISIBILITÉ DES PAGES ET MODALES ═══ */
+
+/* Pages SPA — cachées par défaut */
+.page { display: none !important; }
+.page.active { display: block !important; }
+
+/* Menu mobile — caché par défaut */
+#mobileMenu { display: none !important; }
+#mobileMenu.open { display: block !important; }
+
+/* Modales — cachées par défaut */
+#modalOverlay { display: none !important; }
+#modalOverlay.open { display: flex !important; }
+#inscrOverlay { display: none !important; }
+#inscrOverlay.open { display: flex !important; }
+
+/* Toast — caché par défaut */
+#toast { display: none !important; }
+#toast.show { display: block !important; }
+
+/* Compteurs — forcer les valeurs correctes via animation */
 </style>
 
 <body>
@@ -1364,9 +1389,9 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
         <button class="btn-hero-outline" onclick="ouvrirInscription()">🚀 Devenir artisan</button>
       </div>
       <div class="hero-kpis">
-        <div class="kpi"><div class="kpi-num" data-target="500">0+</div><div class="kpi-label">Prestataires vérifiés</div></div>
-        <div class="kpi"><div class="kpi-num" data-target="20">0+</div><div class="kpi-label">Catégories</div></div>
-        <div class="kpi"><div class="kpi-num" data-target="10000">0+</div><div class="kpi-label">Clients</div></div>
+        <div class="kpi"><div class="kpi-num" data-target="500">500+</div><div class="kpi-label">Prestataires vérifiés</div></div>
+        <div class="kpi"><div class="kpi-num" data-target="20">20+</div><div class="kpi-label">Catégories</div></div>
+        <div class="kpi"><div class="kpi-num" data-target="10000">10K+</div><div class="kpi-label">Clients</div></div>
         <div class="kpi"><div class="kpi-num">100%</div><div class="kpi-label">Profils vérifiés</div></div>
       </div>
     </div>
@@ -1497,19 +1522,19 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
   <div class="counters-inner">
     <div class="counter-card fade-in">
       <div class="cc-icon" style="background:linear-gradient(135deg,#FDE8D8,#FFE4CC);">🔧</div>
-      <div class="cc-num"><span id="cnt1" data-target="500">0</span><span class="cc-suffix">+</span></div>
+      <div class="cc-num"><span id="cnt1" data-target="500">500</span><span class="cc-suffix">+</span></div>
       <div class="cc-label">Prestataires vérifiés</div>
       <div class="cc-sub">Professionnels qualifiés</div>
     </div>
     <div class="counter-card fade-in fade-in-delay-1">
       <div class="cc-icon" style="background:linear-gradient(135deg,#E0E0F8,#EDE9FE);">📂</div>
-      <div class="cc-num"><span id="cnt2" data-target="20">0</span><span class="cc-suffix">+</span></div>
+      <div class="cc-num"><span id="cnt2" data-target="20">20</span><span class="cc-suffix">+</span></div>
       <div class="cc-label">Catégories</div>
       <div class="cc-sub">Tous secteurs couverts</div>
     </div>
     <div class="counter-card fade-in fade-in-delay-2">
       <div class="cc-icon" style="background:linear-gradient(135deg,#E6FBF3,#DCFCE7);">👥</div>
-      <div class="cc-num"><span id="cnt3" data-target="10000">0</span><span class="cc-suffix">+</span></div>
+      <div class="cc-num"><span id="cnt3" data-target="10000">10K</span><span class="cc-suffix">+</span></div>
       <div class="cc-label">Clients satisfaits</div>
       <div class="cc-sub">Partout en Guinée</div>
     </div>
@@ -3182,6 +3207,85 @@ async function inscrire() {
 }
 </script>
   </div>
+<script>
+// ═══ INSCRIPTION STEPS JS ═══
+(function() {
+  function goStep(from, to) {
+    var err = document.getElementById('errorBox');
+
+    if (from === 1) {
+      var p  = (document.getElementById('prenom')   || {}).value || '';
+      var n  = (document.getElementById('nom')      || {}).value || '';
+      var t  = (document.getElementById('telephone')|| {}).value || '';
+      var pw = (document.getElementById('password') || {}).value || '';
+      var p2 = (document.getElementById('password2')|| {}).value || '';
+      p = p.trim(); n = n.trim(); t = t.trim();
+      if (!p || !n || !t || !pw) {
+        err.textContent = 'Remplissez tous les champs obligatoires';
+        err.style.display = 'block';
+        return;
+      }
+      if (pw.length < 6) {
+        err.textContent = 'Mot de passe trop court (min 6 caractères)';
+        err.style.display = 'block';
+        return;
+      }
+      if (pw !== p2) {
+        err.textContent = 'Les mots de passe ne correspondent pas';
+        err.style.display = 'block';
+        return;
+      }
+    }
+
+    if (from === 2) {
+      var cat    = (document.getElementById('categorie') || {}).value || '';
+      var metier = (document.getElementById('metier')    || {}).value || '';
+      var desc   = (document.getElementById('description') || {}).value || '';
+      metier = metier.trim(); desc = desc.trim();
+      if (!cat || !metier || !desc) {
+        err.textContent = 'Remplissez tous les champs obligatoires';
+        err.style.display = 'block';
+        return;
+      }
+    }
+
+    err.style.display = 'none';
+    err.textContent = '';
+
+    // Masquer step actuel, afficher suivant
+    var stepFrom = document.getElementById('step' + from);
+    var stepTo   = document.getElementById('step' + to);
+    if (stepFrom) stepFrom.classList.remove('active');
+    if (stepTo)   stepTo.classList.add('active');
+
+    // Mettre à jour les dots
+    var dotFrom = document.getElementById('step-dot-' + from);
+    var dotTo   = document.getElementById('step-dot-' + to);
+    if (dotFrom) dotFrom.className = 'step done';
+    if (dotTo)   dotTo.className   = 'step active';
+
+    // Mettre à jour les lignes
+    var line = document.getElementById('step-line-' + from);
+    if (line) line.className = 'step-line done';
+
+    window.scrollTo(0, 0);
+  }
+
+  // Attacher les événements quand le DOM est prêt
+  document.addEventListener('DOMContentLoaded', function() {
+    var b1 = document.getElementById('btnNext1');
+    var b2 = document.getElementById('btnNext2');
+    if (b1) b1.addEventListener('click', function() { goStep(1, 2); });
+    if (b2) b2.addEventListener('click', function() { goStep(2, 3); });
+  });
+
+  // Aussi attacher immédiatement au cas où DOMContentLoaded est déjà passé
+  var b1 = document.getElementById('btnNext1');
+  var b2 = document.getElementById('btnNext2');
+  if (b1) b1.addEventListener('click', function() { goStep(1, 2); });
+  if (b2) b2.addEventListener('click', function() { goStep(2, 3); });
+})();
+</script>
 </div>
 
 <!-- PAGE : DASHBOARD -->
@@ -3776,12 +3880,6 @@ async function chargerAvis() {
 }
 
 // ── TOAST ──
-function showToast(msg, type = '') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show' + (type ? ' ' + type : '');
-  setTimeout(() => t.classList.remove('show'), 3500);
-}
 </script>
 </div>
 </div><!-- /dash-layout -->
@@ -4306,7 +4404,47 @@ async function getAvis(providerId) {
   const { data } = await sb.from('reviews').select('*').eq('provider_id',providerId).eq('valide',true).order('created_at',{ascending:false});
   return data||[];
 }
-// connexionAdmin défini plus bas
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function generateToken() {
+  return 'tk_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2,9);
+}
+
+async function connexionAdmin(telephone, password) {
+  try {
+    const { data, error } = await sb.from('admin_users')
+      .select('id,nom,role,telephone,password_hash')
+      .eq('telephone', telephone)
+      .eq('password_hash', password)
+      .single();
+    if (error || !data) return { success:false, message:'Email ou mot de passe incorrect' };
+    const token = generateToken();
+    await sb.from('admin_sessions').insert({admin_id:data.id, token});
+    localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({admin_id:data.id, token, nom:data.nom, role:data.role}));
+    return { success:true, admin:data };
+  } catch(e) { return { success:false, message:'Erreur: ' + e.message }; }
+}
+
+async function connexionPrestataire(telephone, password) {
+  try {
+    const { data, error } = await sb.from('providers')
+      .select('id,nom,prenom,metier,categorie,telephone,statut,photo_url')
+      .eq('telephone', telephone)
+      .eq('password_hash', password)
+      .single();
+    if (error || !data) return { success:false, message:'Téléphone ou mot de passe incorrect' };
+    if (data.statut === 'rejete') return { success:false, message:'Profil rejeté. Contactez le support.' };
+    const token = generateToken();
+    await sb.from('provider_sessions').insert({ provider_id:data.id, token, appareil:'web' });
+    localStorage.setItem(SESSION_KEY, JSON.stringify({ provider_id:data.id, token, nom:data.nom, prenom:data.prenom }));
+    return { success:true, provider:data };
+  } catch(e) { return { success:false, message:'Erreur: ' + e.message }; }
+}
 async function getProvidersAdmin({ statut='',limite=100 }={}) {
   let q = sb.from('providers').select('*').order('created_at',{ascending:false}).limit(limite);
   if (statut) q = q.eq('statut',statut);
@@ -5187,47 +5325,7 @@ document.addEventListener('DOMContentLoaded', function() {
   setTimeout(addExpressBtn, 500);
 });
 </script>
-<script>
-// Fonctions auth disponibles immédiatement
-async function hashPassword(password) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hash = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
 
-function generateToken() {
-  return Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b => b.toString(16).padStart(2,'0')).join('');
-}
-
-async function connexionAdmin(telephone, password) {
-  try {
-    const { data, error } = await sb.from('admin_users')
-      .select('id,nom,role,telephone,password_hash')
-      .eq('telephone', telephone)
-      .eq('password_hash', password)
-      .single();
-    if (error || !data) return { success:false, message:'Email ou mot de passe incorrect' };
-    const token = generateToken();
-    await sb.from('admin_sessions').insert({admin_id:data.id, token});
-    localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({admin_id:data.id, token, nom:data.nom, role:data.role}));
-    return { success:true, admin:data };
-  } catch(e) { return { success:false, message:'Erreur: ' + e.message }; }
-}
-
-async function connexionPrestataire(telephone, password) {
-  try {
-    const hash = await hashPassword(password);
-    const { data, error } = await sb.from('providers').select('id,nom,prenom,metier,categorie,telephone,statut').eq('telephone',telephone).eq('password_hash',hash).single();
-    if (error || !data) return { success:false, message:'Téléphone ou mot de passe incorrect' };
-    const token = generateToken();
-    await sb.from('provider_sessions').insert({ provider_id:data.id, token });
-    setSession({ provider_id:data.id, token, nom:data.nom, prenom:data.prenom });
-    return { success:true, provider:data };
-  } catch(e) { return { success:false, message:'Erreur de connexion' }; }
-}
-
-</script>
 
 
 <script>
@@ -5296,85 +5394,7 @@ function openMaps(nom, ville) {
 }
 </script>
 
-<script>
-// ═══ INSCRIPTION STEPS JS ═══
-(function() {
-  function goStep(from, to) {
-    var err = document.getElementById('errorBox');
 
-    if (from === 1) {
-      var p  = (document.getElementById('prenom')   || {}).value || '';
-      var n  = (document.getElementById('nom')      || {}).value || '';
-      var t  = (document.getElementById('telephone')|| {}).value || '';
-      var pw = (document.getElementById('password') || {}).value || '';
-      var p2 = (document.getElementById('password2')|| {}).value || '';
-      p = p.trim(); n = n.trim(); t = t.trim();
-      if (!p || !n || !t || !pw) {
-        err.textContent = 'Remplissez tous les champs obligatoires';
-        err.style.display = 'block';
-        return;
-      }
-      if (pw.length < 6) {
-        err.textContent = 'Mot de passe trop court (min 6 caractères)';
-        err.style.display = 'block';
-        return;
-      }
-      if (pw !== p2) {
-        err.textContent = 'Les mots de passe ne correspondent pas';
-        err.style.display = 'block';
-        return;
-      }
-    }
-
-    if (from === 2) {
-      var cat    = (document.getElementById('categorie') || {}).value || '';
-      var metier = (document.getElementById('metier')    || {}).value || '';
-      var desc   = (document.getElementById('description') || {}).value || '';
-      metier = metier.trim(); desc = desc.trim();
-      if (!cat || !metier || !desc) {
-        err.textContent = 'Remplissez tous les champs obligatoires';
-        err.style.display = 'block';
-        return;
-      }
-    }
-
-    err.style.display = 'none';
-    err.textContent = '';
-
-    // Masquer step actuel, afficher suivant
-    var stepFrom = document.getElementById('step' + from);
-    var stepTo   = document.getElementById('step' + to);
-    if (stepFrom) stepFrom.classList.remove('active');
-    if (stepTo)   stepTo.classList.add('active');
-
-    // Mettre à jour les dots
-    var dotFrom = document.getElementById('step-dot-' + from);
-    var dotTo   = document.getElementById('step-dot-' + to);
-    if (dotFrom) dotFrom.className = 'step done';
-    if (dotTo)   dotTo.className   = 'step active';
-
-    // Mettre à jour les lignes
-    var line = document.getElementById('step-line-' + from);
-    if (line) line.className = 'step-line done';
-
-    window.scrollTo(0, 0);
-  }
-
-  // Attacher les événements quand le DOM est prêt
-  document.addEventListener('DOMContentLoaded', function() {
-    var b1 = document.getElementById('btnNext1');
-    var b2 = document.getElementById('btnNext2');
-    if (b1) b1.addEventListener('click', function() { goStep(1, 2); });
-    if (b2) b2.addEventListener('click', function() { goStep(2, 3); });
-  });
-
-  // Aussi attacher immédiatement au cas où DOMContentLoaded est déjà passé
-  var b1 = document.getElementById('btnNext1');
-  var b2 = document.getElementById('btnNext2');
-  if (b1) b1.addEventListener('click', function() { goStep(1, 2); });
-  if (b2) b2.addEventListener('click', function() { goStep(2, 3); });
-})();
-</script>
 </body>
 </html>
 <script>
