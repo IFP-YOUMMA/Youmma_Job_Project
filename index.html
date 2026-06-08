@@ -2972,308 +2972,261 @@ async function connexion() {
 
 <!-- PAGE : INSCRIPTION -->
 <div class="page" id="page-inscription">
-  <div style="background:linear-gradient(135deg,#1A1A4E 0%,#0D0D2E 100%);min-height:100vh;padding:40px 20px;">
-    <div class="card">
-  <div class="logo">
-    <div class="logo-icon">YJ</div>
-    <div class="logo-text">YOUMMA <span>JOBS</span></div>
-  </div>
-  <h1>Créer mon profil prestataire</h1>
-  <p class="subtitle">Rejoignez YOUMMA JOBS et trouvez de nouveaux clients à Conakry</p>
+<div style="background:linear-gradient(135deg,#1A1A4E 0%,#0D0D2E 100%);min-height:100vh;padding:40px 20px;display:flex;align-items:flex-start;justify-content:center;">
+<div style="background:#fff;border-radius:24px;padding:32px;width:100%;max-width:500px;box-shadow:0 32px 80px rgba(0,0,0,.3);">
 
-  <div class="badge-info">
-    <div class="badge-info-icon">🎯</div>
+  <!-- Logo -->
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;justify-content:center;">
+    <div style="width:42px;height:42px;background:#E85D04;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Libre Baskerville',serif;font-weight:700;font-size:14px;">YJ</div>
+    <div style="font-family:'Libre Baskerville',serif;font-weight:700;font-size:17px;color:#1A1A4E;">YOUMMA <span style="color:#E85D04;">JOBS</span></div>
+  </div>
+
+  <h2 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;text-align:center;margin-bottom:6px;">Créer mon profil prestataire</h2>
+  <p style="font-size:13px;color:#6B7280;text-align:center;margin-bottom:18px;">Rejoignez YOUMMA JOBS et trouvez de nouveaux clients à Conakry</p>
+
+  <!-- Badge -->
+  <div style="background:linear-gradient(135deg,#E85D04,#C74B00);border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:center;margin-bottom:20px;">
+    <span style="font-size:22px;">🎯</span>
     <div>
-      <div class="badge-info-title">14 jours d'essai gratuit après validation</div>
-      <div class="badge-info-text">Abonnement 50 000 GNF/mois — Orange Money, MTN MoMo, Wave</div>
+      <div style="font-size:12.5px;font-weight:700;color:#fff;">14 jours d'essai gratuit après validation</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.8);">Abonnement 50 000 GNF/mois — Orange Money, MTN MoMo, Wave</div>
     </div>
   </div>
 
-  <div class="step-indicator" id="stepIndicator">
-    <div class="step active" id="step-dot-1">1</div>
-    <div class="step-line" id="step-line-1"></div>
-    <div class="step pending" id="step-dot-2">2</div>
-    <div class="step-line" id="step-line-2"></div>
-    <div class="step pending" id="step-dot-3">3</div>
+  <!-- Étapes indicateur -->
+  <div style="display:flex;align-items:center;margin-bottom:24px;" id="i-steps">
+    <div id="i-dot-1" style="width:30px;height:30px;border-radius:50%;background:#E85D04;border:2px solid #E85D04;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">1</div>
+    <div id="i-line-1" style="flex:1;height:2px;background:#E5E7EB;"></div>
+    <div id="i-dot-2" style="width:30px;height:30px;border-radius:50%;background:#fff;border:2px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#6B7280;flex-shrink:0;">2</div>
+    <div id="i-line-2" style="flex:1;height:2px;background:#E5E7EB;"></div>
+    <div id="i-dot-3" style="width:30px;height:30px;border-radius:50%;background:#fff;border:2px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#6B7280;flex-shrink:0;">3</div>
   </div>
 
-  <div class="error-box" id="errorBox"></div>
+  <!-- Message erreur -->
+  <div id="i-err" style="display:none;background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:13px;color:#DC2626;margin-bottom:14px;"></div>
 
-  <!-- ÉTAPE 1 : Identité & Connexion -->
-  <div class="step-section active" id="step1">
-    <div class="section-title">👤 Informations personnelles</div>
-    <div class="row-2">
-      <div class="form-group">
-        <label>Prénom <span class="req">*</span></label>
-        <input type="text" id="prenom" placeholder="Mamadou" autocomplete="given-name"/>
+  <!-- ÉTAPE 1 -->
+  <div id="i-step1">
+    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:16px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">👤 Informations personnelles</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div>
+        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Prénom *</label>
+        <input id="i-prenom" type="text" placeholder="Mamadou" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
       </div>
-      <div class="form-group">
-        <label>Nom <span class="req">*</span></label>
-        <input type="text" id="nom" placeholder="Diallo" autocomplete="family-name"/>
+      <div>
+        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Nom *</label>
+        <input id="i-nom" type="text" placeholder="Diallo" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
       </div>
     </div>
-    <div class="form-group">
-      <label>Numéro de téléphone (WhatsApp) <span class="req">*</span></label>
-      <input type="tel" id="telephone" placeholder="+224 6XX XX XX XX" autocomplete="tel"/>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Numéro de téléphone (WhatsApp) *</label>
+      <input id="i-tel" type="tel" placeholder="+224 6XX XX XX XX" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
     </div>
-    <div class="form-group">
-      <label>Mot de passe <span class="req">*</span></label>
-      <input type="password" id="password" placeholder="Minimum 8 caractères" autocomplete="new-password"/>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Mot de passe *</label>
+      <input id="i-pwd" type="password" placeholder="Minimum 8 caractères" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
     </div>
-    <div class="form-group">
-      <label>Confirmer le mot de passe <span class="req">*</span></label>
-      <input type="password" id="password2" placeholder="Répétez le mot de passe" autocomplete="new-password"/>
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Confirmer le mot de passe *</label>
+      <input id="i-pwd2" type="password" placeholder="Répétez le mot de passe" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
     </div>
-    <div class="nav-btns">
-      <button class="btn-next" style="flex:1;" id="btnS1">Suivant →</button>
-    </div>
+    <button id="i-btn1" style="width:100%;padding:14px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Suivant →</button>
   </div>
 
-
-<div class="step-section" id="step2">
-    <div class="section-title">💼 Profil professionnel</div>
-    <div class="form-group">
-      <label>Catégorie <span class="req">*</span></label>
-      <select id="categorie" onchange="renderSousCatsSelect(this.value,'sousCat')">
+  <!-- ÉTAPE 2 -->
+  <div id="i-step2" style="display:none;">
+    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:16px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">💼 Profil professionnel</div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Catégorie *</label>
+      <select id="i-cat" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;">
         <option value="">Choisir votre catégorie</option>
+        <option>Artisans</option>
+        <option>Santé &amp; Beauté</option>
+        <option>Construction &amp; BTP</option>
+        <option>IT &amp; Digital</option>
+        <option>Éducation</option>
+        <option>Transport</option>
+        <option>Juridique</option>
+        <option>Services Express</option>
+        <option>Aide à domicile</option>
+        <option>Autre</option>
       </select>
     </div>
-    <div class="form-group">
-      <label>Spécialité / Sous-catégorie</label>
-      <select id="sousCat">
-        <option value="">Choisir d'abord une catégorie</option>
-      </select>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Intitulé du métier *</label>
+      <input id="i-metier" type="text" placeholder="Ex: Électricien certifié, Médecin généraliste..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
     </div>
-    <div class="form-group">
-      <label>Intitulé du métier <span class="req">*</span></label>
-      <input type="text" id="metier" placeholder="Ex: Électricien certifié, Médecin généraliste..."/>
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Description de vos services *</label>
+      <textarea id="i-desc" placeholder="Décrivez vos services, votre expérience, vos spécialités..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;min-height:90px;resize:vertical;box-sizing:border-box;"></textarea>
     </div>
-    <div class="form-group">
-      <label>Description de vos services <span class="req">*</span></label>
-      <textarea id="description" placeholder="Décrivez vos services, votre expérience, vos spécialités..."></textarea>
-    </div>
-    <div class="form-group">
-      <label>Compétences clés</label>
-      <div class="skill-input-row">
-        <input type="text" id="skillInput" placeholder="Ex: Installation électrique" onkeydown="if(event.key==='Enter'){addSkill();event.preventDefault();}"/>
-        <button class="btn-add" onclick="addSkill()">+ Ajouter</button>
-      </div>
-      <div class="skills-wrap" id="skillsList"></div>
-    </div>
-    <div class="nav-btns">
-      <button class="btn-back" onclick="prevStep(2)">← Retour</button>
-      <button class="btn-next" id="btnS2">Suivant →</button>
+    <div style="display:flex;gap:10px;">
+      <button id="i-back2" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">← Retour</button>
+      <button id="i-btn2" style="flex:2;padding:13px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Suivant →</button>
     </div>
   </div>
 
-  <!-- ÉTAPE 3 : Localisation -->
-  
-
-<div class="step-section" id="step3">
-    <div class="section-title">📍 Localisation</div>
-    <div class="form-group">
-      <label>Ville <span class="req">*</span></label>
-      <select id="ville">
+  <!-- ÉTAPE 3 -->
+  <div id="i-step3" style="display:none;">
+    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:16px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">📍 Localisation</div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Ville *</label>
+      <select id="i-ville" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;">
         <option value="Conakry">Conakry</option>
-        <option value="Kindia">Kindia</option>
-        <option value="Labé">Labé</option>
-        <option value="Kankan">Kankan</option>
-        <option value="Nzérékoré">Nzérékoré</option>
-        <option value="Boké">Boké</option>
-        <option value="Faranah">Faranah</option>
+        <option>Kindia</option><option>Labé</option><option>Kankan</option>
+        <option>Nzérékoré</option><option>Boké</option><option>Faranah</option>
       </select>
     </div>
-    <div class="row-2">
-      <div class="form-group">
-        <label>Commune</label>
-        <select id="commune">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div>
+        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Commune</label>
+        <select id="i-commune" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;">
           <option value="">Choisir une commune</option>
-          <option>Kaloum</option>
-          <option>Dixinn</option>
-          <option>Matam</option>
-          <option>Ratoma</option>
-          <option>Matoto</option>
-          <option>Lambanyi</option>
-          <option>Kipé</option>
-          <option>Wanindara</option>
-          <option>Bambéto</option>
-          <option>Cosa</option>
+          <option>Kaloum</option><option>Dixinn</option><option>Matam</option>
+          <option>Ratoma</option><option>Matoto</option><option>Lambanyi</option>
+          <option>Kipé</option><option>Wanindara</option><option>Bambéto</option><option>Cosa</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Quartier</label>
-        <input type="text" id="quartier" placeholder="Ex: Hamdallaye, Coleah..."/>
+      <div>
+        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Quartier</label>
+        <input id="i-quartier" type="text" placeholder="Ex: Hamdallaye, Coleah..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
       </div>
     </div>
-    <div class="nav-btns">
-      <button class="btn-back" onclick="prevStep(3)">← Retour</button>
-      <button class="btn-next" id="btnInscrire" onclick="inscrire()">🚀 Créer mon compte</button>
+    <div style="display:flex;gap:10px;margin-bottom:16px;">
+      <button id="i-back3" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">← Retour</button>
+      <button id="i-submit" style="flex:2;padding:13px;background:#1A1A4E;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'Libre Baskerville',serif;">🚀 Créer mon compte</button>
     </div>
   </div>
 
   <!-- SUCCÈS -->
-  <div class="step-section" id="stepSuccess">
-    <div class="success-box">
-      <div class="success-icon">🎉</div>
-      <div class="success-title">Inscription envoyée !</div>
-      <div class="success-text">
-        Votre demande est en cours d'examen par notre équipe.<br>
-        Vous serez contacté(e) sous <strong>24h</strong> sur WhatsApp.<br><br>
-        Après validation, vous bénéficierez de <strong>14 jours d'essai gratuit</strong>.
-      </div>
-      <a href="https://wa.me/22461252510?text=Bonjour%20YOUMMA%20JOBS%2C%20je%20viens%20de%20m\'inscrire%20comme%20prestataire"
-         target="_blank"
-         style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:14px 24px;border-radius:50px;text-decoration:none;font-weight:700;font-size:14px;margin-bottom:16px;">
-        💬 Confirmer sur WhatsApp
-      </a>
-      <br>
-      <a href="#" onclick="navigate('login');return false;" style="color:#E85D04;text-decoration:none;font-weight:600;font-size:14px;">
-        Se connecter →
-      </a>
-    </div>
+  <div id="i-success" style="display:none;text-align:center;padding:20px 0;">
+    <div style="font-size:56px;margin-bottom:16px;">🎉</div>
+    <h3 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;margin-bottom:10px;">Inscription envoyée !</h3>
+    <p style="font-size:13.5px;color:#6B7280;line-height:1.7;margin-bottom:20px;">Votre demande est en cours d'examen.<br>Vous serez contacté(e) sous <strong>24h</strong> sur WhatsApp.</p>
+    <a href="https://wa.me/22461252510?text=Bonjour%20YOUMMA%20JOBS%2C%20je%20viens%20de%20m%27inscrire" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:13px 24px;border-radius:50px;text-decoration:none;font-weight:700;font-size:13.5px;margin-bottom:14px;">💬 Confirmer sur WhatsApp</a>
+    <br>
+    <a href="#login" style="color:#E85D04;font-weight:600;font-size:13.5px;text-decoration:none;">Se connecter →</a>
   </div>
 
-  <div class="link-row">
-    <a href="#" onclick="navigate('login');return false;">Déjà inscrit ? Se connecter</a>
+  <div style="text-align:center;margin-top:16px;font-size:13px;">
+    <a href="#login" style="color:#E85D04;text-decoration:none;font-weight:600;">Déjà inscrit ? Se connecter</a>
     &nbsp;·&nbsp;
-    <a href="/">← Retour au site</a>
+    <a href="#" onclick="navigate('home');return false;" style="color:#6B7280;text-decoration:none;">← Retour au site</a>
   </div>
+
+</div>
 </div>
 
 <script>
-let currentStep = 1;
-let skills = [];
-
-// Init catégories
-document.addEventListener('DOMContentLoaded', () => {
-  if(typeof renderCategoriesSelect==='function') renderCategoriesSelect('categorie');
-  else window._pendingCatSelect = 'categorie';
-});
-
-function showError(msg) {
-  const el = document.getElementById('errorBox');
-  el.textContent = '⚠️ ' + msg;
-  el.classList.add('show');
-  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-function clearError() {
-  document.getElementById('errorBox').classList.remove('show');
-}
-
-function checkPwd(val) {
-  const bar = document.getElementById('pwdBar');
-  const len = val.length;
-  let strength = 0;
-  if (len >= 8) strength++;
-  if (/[A-Z]/.test(val)) strength++;
-  if (/[0-9]/.test(val)) strength++;
-  if (/[^a-zA-Z0-9]/.test(val)) strength++;
-  const colors = ['#EF4444','#F97316','#EAB308','#22C55E'];
-  const widths = ['25%','50%','75%','100%'];
-  bar.style.width = widths[strength - 1] || '0';
-  bar.style.background = colors[strength - 1] || '#E4E8F5';
-}
-
-function updateStepUI() {
-  [1,2,3].forEach(s => {
-    document.getElementById(`step${s}`).classList.toggle('active', s === currentStep);
-    const dot = document.getElementById(`step-dot-${s}`);
-    dot.className = 'step ' + (s < currentStep ? 'done' : s === currentStep ? 'active' : 'pending');
-    dot.textContent = s < currentStep ? '✓' : s;
-  });
-  [1,2].forEach(s => {
-    document.getElementById(`step-line-${s}`).className = 'step-line' + (s < currentStep ? ' done' : '');
-  });
-}
-
-function nextStep(from) {
-  clearError();
-  if (from === 1) {
-    const prenom = document.getElementById('prenom').value.trim();
-    const nom = document.getElementById('nom').value.trim();
-    const tel = document.getElementById('telephone').value.trim();
-    const pwd = document.getElementById('password').value;
-    const pwd2 = document.getElementById('password2').value;
-    if (!prenom || !nom || !tel || !pwd) { showError('Remplissez tous les champs obligatoires'); return; }
-    if (pwd.length < 8) { showError('Le mot de passe doit contenir au moins 8 caractères'); return; }
-    if (pwd !== pwd2) { showError('Les mots de passe ne correspondent pas'); return; }
+// ── INSCRIPTION AUTONOME ──
+(function() {
+  function showErr(msg) {
+    var e = document.getElementById('i-err');
+    if (e) { e.textContent = msg; e.style.display = 'block'; }
   }
-  if (from === 2) {
-    const cat = document.getElementById('categorie').value;
-    const metier = document.getElementById('metier').value.trim();
-    const desc = document.getElementById('description').value.trim();
-    if (!cat || !metier || !desc) { showError('Remplissez tous les champs obligatoires'); return; }
+  function hideErr() {
+    var e = document.getElementById('i-err');
+    if (e) e.style.display = 'none';
   }
-  currentStep = from + 1;
-  updateStepUI();
-}
-
-function prevStep(from) {
-  currentStep = from - 1;
-  updateStepUI();
-  clearError();
-}
-
-function addSkill() {
-  const input = document.getElementById('skillInput');
-  const val = input.value.trim();
-  if (!val || skills.includes(val)) { input.value = ''; return; }
-  skills.push(val);
-  input.value = '';
-  renderSkills();
-}
-
-function removeSkill(s) {
-  skills = skills.filter(x => x !== s);
-  renderSkills();
-}
-
-function renderSkills() {
-  document.getElementById('skillsList').innerHTML = skills.map(s =>
-    `<span class="skill-tag selected">${s} <span onclick="removeSkill('${s}')" style="cursor:pointer;font-size:14px;">×</span></span>`
-  ).join('');
-}
-
-async function inscrire() {
-  clearError();
-  const ville = document.getElementById('ville').value;
-  if (!ville) { showError('Choisissez une ville'); return; }
-
-  const btn = document.getElementById('btnInscrire');
-  btn.disabled = true;
-  btn.textContent = '⏳ Inscription en cours...';
-
-  const formData = {
-    prenom: document.getElementById('prenom').value.trim(),
-    nom: document.getElementById('nom').value.trim(),
-    telephone: document.getElementById('telephone').value.trim(),
-    password: document.getElementById('password').value,
-    categorie: document.getElementById('categorie').value,
-    sous_categorie: document.getElementById('sousCat').value || null,
-    metier: document.getElementById('metier').value.trim(),
-    description: document.getElementById('description').value.trim(),
-    skills: skills,
-    ville: ville,
-    commune: document.getElementById('commune').value || null,
-    quartier: document.getElementById('quartier').value.trim() || null
-  };
-
-  const res = await inscrirePrestataire(formData);
-
-  btn.disabled = false;
-  btn.textContent = '🚀 Créer mon compte';
-
-  if (res.success) {
-    [1,2,3].forEach(s => document.getElementById(`step${s}`).classList.remove('active'));
-    document.getElementById('stepSuccess').classList.add('active');
-    document.getElementById('stepIndicator').style.display = 'none';
-  } else {
-    showError(res.message || 'Erreur lors de l\'inscription');
+  function setDot(n, state) {
+    var d = document.getElementById('i-dot-' + n);
+    if (!d) return;
+    if (state === 'active') { d.style.background='#E85D04'; d.style.borderColor='#E85D04'; d.style.color='#fff'; }
+    else if (state === 'done') { d.style.background='#16A34A'; d.style.borderColor='#16A34A'; d.style.color='#fff'; d.textContent='✓'; }
+    else { d.style.background='#fff'; d.style.borderColor='#E5E7EB'; d.style.color='#6B7280'; }
   }
-}
+  function setLine(n, done) {
+    var l = document.getElementById('i-line-' + n);
+    if (l) l.style.background = done ? '#16A34A' : '#E5E7EB';
+  }
+  function goTo(step) {
+    [1,2,3].forEach(function(s) {
+      var el = document.getElementById('i-step' + s);
+      if (el) el.style.display = s === step ? 'block' : 'none';
+    });
+    setDot(1, step > 1 ? 'done' : 'active');
+    setDot(2, step > 2 ? 'done' : step === 2 ? 'active' : '');
+    setDot(3, step === 3 ? 'active' : '');
+    setLine(1, step > 1);
+    setLine(2, step > 2);
+    hideErr();
+    window.scrollTo(0, 0);
+  }
+
+  function init() {
+    var b1 = document.getElementById('i-btn1');
+    var b2 = document.getElementById('i-btn2');
+    var ba2 = document.getElementById('i-back2');
+    var b3 = document.getElementById('i-submit');
+    var ba3 = document.getElementById('i-back3');
+
+    if (b1) b1.onclick = function() {
+      var p = (document.getElementById('i-prenom')||{}).value||'';
+      var n = (document.getElementById('i-nom')||{}).value||'';
+      var t = (document.getElementById('i-tel')||{}).value||'';
+      var pw = (document.getElementById('i-pwd')||{}).value||'';
+      var pw2 = (document.getElementById('i-pwd2')||{}).value||'';
+      if (!p.trim()||!n.trim()||!t.trim()||!pw) { showErr('Remplissez tous les champs obligatoires'); return; }
+      if (pw.length < 6) { showErr('Mot de passe trop court (min 6 caractères)'); return; }
+      if (pw !== pw2) { showErr('Les mots de passe ne correspondent pas'); return; }
+      goTo(2);
+    };
+
+    if (b2) b2.onclick = function() {
+      var cat = (document.getElementById('i-cat')||{}).value||'';
+      var met = ((document.getElementById('i-metier')||{}).value||'').trim();
+      var desc = ((document.getElementById('i-desc')||{}).value||'').trim();
+      if (!cat||!met||!desc) { showErr('Remplissez tous les champs obligatoires'); return; }
+      goTo(3);
+    };
+
+    if (ba2) ba2.onclick = function() { goTo(1); };
+    if (ba3) ba3.onclick = function() { goTo(2); };
+
+    if (b3) b3.onclick = async function() {
+      var ville = (document.getElementById('i-ville')||{}).value||'Conakry';
+      b3.disabled = true;
+      b3.textContent = '⏳ Inscription en cours...';
+      try {
+        var formData = {
+          prenom: document.getElementById('i-prenom').value.trim(),
+          nom: document.getElementById('i-nom').value.trim(),
+          telephone: document.getElementById('i-tel').value.trim(),
+          password: document.getElementById('i-pwd').value,
+          categorie: document.getElementById('i-cat').value,
+          metier: document.getElementById('i-metier').value.trim(),
+          description: document.getElementById('i-desc').value.trim(),
+          ville: ville,
+          commune: (document.getElementById('i-commune')||{}).value||null,
+          quartier: ((document.getElementById('i-quartier')||{}).value||'').trim()||null,
+          skills: []
+        };
+        var res = await inscrirePrestataire(formData);
+        if (res.success) {
+          [1,2,3].forEach(function(s){var el=document.getElementById('i-step'+s);if(el)el.style.display='none';});
+          var succ = document.getElementById('i-success');
+          if (succ) succ.style.display = 'block';
+          var steps = document.getElementById('i-steps');
+          if (steps) steps.style.display = 'none';
+        } else {
+          showErr(res.message || "Erreur lors de l'inscription");
+          b3.disabled = false;
+          b3.textContent = '🚀 Créer mon compte';
+        }
+      } catch(e) {
+        showErr('Erreur: ' + e.message);
+        b3.disabled = false;
+        b3.textContent = '🚀 Créer mon compte';
+      }
+    };
+  }
+
+  // Attacher immédiatement et après load
+  init();
+  document.addEventListener('DOMContentLoaded', init);
+  window.addEventListener('load', init);
+})();
 </script>
-  </div>
 </div>
 
 <!-- PAGE : DASHBOARD -->
