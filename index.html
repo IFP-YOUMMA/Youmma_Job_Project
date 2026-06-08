@@ -4315,13 +4315,17 @@ async function getAvis(providerId) {
 async function connexionAdmin(telephone, password) {
   try {
     const hash = await hashPassword(password);
-    const { data, error } = await sb.from('admin_users').select('id,nom,role,telephone').eq('telephone',telephone).eq('password_hash',hash).single();
-    if (error||!data) return { success:false, message:'Identifiants incorrects' };
+    // DEBUG: afficher le hash généré
+    const { data, error } = await sb.from('admin_users').select('id,nom,role,telephone,password_hash').eq('telephone',telephone).single();
+    if (error || !data) return { success:false, message:'Tel introuvable: ' + (error?.message||'?') };
+    if (data.password_hash !== hash) {
+      return { success:false, message:'Hash DB:' + data.password_hash.substring(0,10) + ' Hash saisi:' + hash.substring(0,10) };
+    }
     const token = generateToken();
     await sb.from('admin_sessions').insert({admin_id:data.id,token});
     localStorage.setItem(ADMIN_SESSION_KEY,JSON.stringify({admin_id:data.id,token,nom:data.nom,role:data.role}));
     return { success:true, admin:data };
-  } catch(e) { return { success:false, message:'Erreur' }; }
+  } catch(e) { return { success:false, message:'Exception: ' + e.message }; }
 }
 async function getProvidersAdmin({ statut='',limite=100 }={}) {
   let q = sb.from('providers').select('*').order('created_at',{ascending:false}).limit(limite);
@@ -5219,13 +5223,17 @@ function generateToken() {
 async function connexionAdmin(telephone, password) {
   try {
     const hash = await hashPassword(password);
-    const { data, error } = await sb.from('admin_users').select('id,nom,role,telephone').eq('telephone',telephone).eq('password_hash',hash).single();
-    if (error||!data) return { success:false, message:'Identifiants incorrects' };
+    // DEBUG: afficher le hash généré
+    const { data, error } = await sb.from('admin_users').select('id,nom,role,telephone,password_hash').eq('telephone',telephone).single();
+    if (error || !data) return { success:false, message:'Tel introuvable: ' + (error?.message||'?') };
+    if (data.password_hash !== hash) {
+      return { success:false, message:'Hash DB:' + data.password_hash.substring(0,10) + ' Hash saisi:' + hash.substring(0,10) };
+    }
     const token = generateToken();
     await sb.from('admin_sessions').insert({admin_id:data.id,token});
     localStorage.setItem(ADMIN_SESSION_KEY,JSON.stringify({admin_id:data.id,token,nom:data.nom,role:data.role}));
     return { success:true, admin:data };
-  } catch(e) { return { success:false, message:'Erreur' }; }
+  } catch(e) { return { success:false, message:'Exception: ' + e.message }; }
 }
 
 async function connexionPrestataire(telephone, password) {
