@@ -3799,8 +3799,8 @@ function showToast(msg, type = '') {
       <p>YOUMMA JOBS — Accès restreint</p>
     </div>
     <div class="form-group">
-      <label>Téléphone</label>
-      <input type="tel" id="adminTel" placeholder="+224 612 52 52 10"/>
+      <label>Email</label>
+      <input type="email" id="adminTel" placeholder="admin@yoummajobs.com"/>
     </div>
     <div class="form-group">
       <label>Mot de passe</label>
@@ -4315,17 +4315,17 @@ async function getAvis(providerId) {
 async function connexionAdmin(telephone, password) {
   try {
     const hash = await hashPassword(password);
-    // DEBUG: afficher le hash généré
-    const { data, error } = await sb.from('admin_users').select('id,nom,role,telephone,password_hash').eq('telephone',telephone).single();
-    if (error || !data) return { success:false, message:'Tel introuvable: ' + (error?.message||'?') };
-    if (data.password_hash !== hash) {
-      return { success:false, message:'Hash DB:' + data.password_hash.substring(0,10) + ' Hash saisi:' + hash.substring(0,10) };
-    }
+    const { data, error } = await sb.from('admin_users')
+      .select('id,nom,role,telephone,password_hash')
+      .eq('telephone', telephone)
+      .eq('password_hash', hash)
+      .single();
+    if (error || !data) return { success:false, message:'Email ou mot de passe incorrect' };
     const token = generateToken();
-    await sb.from('admin_sessions').insert({admin_id:data.id,token});
-    localStorage.setItem(ADMIN_SESSION_KEY,JSON.stringify({admin_id:data.id,token,nom:data.nom,role:data.role}));
+    await sb.from('admin_sessions').insert({admin_id:data.id, token});
+    localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({admin_id:data.id, token, nom:data.nom, role:data.role}));
     return { success:true, admin:data };
-  } catch(e) { return { success:false, message:'Exception: ' + e.message }; }
+  } catch(e) { return { success:false, message:'Erreur: ' + e.message }; }
 }
 async function getProvidersAdmin({ statut='',limite=100 }={}) {
   let q = sb.from('providers').select('*').order('created_at',{ascending:false}).limit(limite);
@@ -5223,17 +5223,17 @@ function generateToken() {
 async function connexionAdmin(telephone, password) {
   try {
     const hash = await hashPassword(password);
-    // DEBUG: afficher le hash généré
-    const { data, error } = await sb.from('admin_users').select('id,nom,role,telephone,password_hash').eq('telephone',telephone).single();
-    if (error || !data) return { success:false, message:'Tel introuvable: ' + (error?.message||'?') };
-    if (data.password_hash !== hash) {
-      return { success:false, message:'Hash DB:' + data.password_hash.substring(0,10) + ' Hash saisi:' + hash.substring(0,10) };
-    }
+    const { data, error } = await sb.from('admin_users')
+      .select('id,nom,role,telephone,password_hash')
+      .eq('telephone', telephone)
+      .eq('password_hash', hash)
+      .single();
+    if (error || !data) return { success:false, message:'Email ou mot de passe incorrect' };
     const token = generateToken();
-    await sb.from('admin_sessions').insert({admin_id:data.id,token});
-    localStorage.setItem(ADMIN_SESSION_KEY,JSON.stringify({admin_id:data.id,token,nom:data.nom,role:data.role}));
+    await sb.from('admin_sessions').insert({admin_id:data.id, token});
+    localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({admin_id:data.id, token, nom:data.nom, role:data.role}));
     return { success:true, admin:data };
-  } catch(e) { return { success:false, message:'Exception: ' + e.message }; }
+  } catch(e) { return { success:false, message:'Erreur: ' + e.message }; }
 }
 
 async function connexionPrestataire(telephone, password) {
