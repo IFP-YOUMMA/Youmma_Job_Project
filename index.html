@@ -1336,6 +1336,81 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
   .admin-wrap .admin-sidebar { display: none !important; }
   .admin-wrap .admin-main { margin-left: 0 !important; }
 }
+
+/* ── FIX ADMIN LAYOUT ── */
+.admin-wrap {
+  display: flex !important;
+  min-height: 100vh !important;
+  position: relative !important;
+}
+.admin-wrap .admin-sidebar {
+  width: 210px !important;
+  background: #0D0D2E !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100vh !important;
+  z-index: 200 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+.admin-wrap .admin-main {
+  margin-left: 210px !important;
+  flex: 1 !important;
+  padding: 20px !important;
+  background: #F4F6FB !important;
+  min-height: 100vh !important;
+  overflow-x: auto !important;
+}
+.admin-topbar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+  background: #fff !important;
+  border-radius: 14px !important;
+  padding: 14px 20px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 20px !important;
+  border: 1.5px solid #E5E7EB !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06) !important;
+}
+/* Empêcher chevauchement des items nav admin */
+.admin-wrap nav .anav {
+  position: relative !important;
+  z-index: 1 !important;
+}
+@media(max-width:900px) {
+  .admin-wrap .admin-sidebar { width: 56px !important; }
+  .admin-wrap .admin-main { margin-left: 56px !important; }
+}
+@media(max-width:640px) {
+  .admin-wrap .admin-sidebar { display: none !important; }
+  .admin-wrap .admin-main { margin-left: 0 !important; }
+}
+
+/* ── ISOLATION PAGES SPA ── */
+/* Cacher sidebar prestataire quand pas actif */
+#page-dashboard:not(.active) .sidebar { display: none !important; }
+#page-dashboard:not(.active) .topbar { display: none !important; }
+#page-dashboard:not(.active) .main { display: none !important; }
+
+/* Cacher admin quand pas actif */
+#page-admin:not(.active) .admin-sidebar { display: none !important; }
+#page-admin:not(.active) .admin-main { display: none !important; }
+#page-admin:not(.active) .admin-wrap { display: none !important; }
+
+/* S'assurer que la sidebar prestataire ne déborde pas */
+#page-dashboard .sidebar {
+  position: fixed !important;
+  z-index: 100 !important;
+}
+#page-admin .admin-sidebar {
+  position: fixed !important;
+  z-index: 100 !important;
+}
 </style>
 
 <body>
