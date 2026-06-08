@@ -3018,40 +3018,53 @@ async function connexion() {
     </div>
     <div class="form-group">
       <label>Mot de passe <span class="req">*</span></label>
-      <input type="password" id="password" placeholder="Minimum 8 caractères" oninput="checkPwd(this.value)" autocomplete="new-password"/>
-      <div class="pwd-strength"><div class="pwd-strength-bar" id="pwdBar"></div></div>
+      <input type="password" id="password" placeholder="Minimum 8 caractères" autocomplete="new-password"/>
     </div>
     <div class="form-group">
       <label>Confirmer le mot de passe <span class="req">*</span></label>
       <input type="password" id="password2" placeholder="Répétez le mot de passe" autocomplete="new-password"/>
     </div>
     <div class="nav-btns">
-      <button class="btn-next" style="flex:1;" onclick="(function(){
-  var p=document.getElementById('prenom').value.trim();
-  var n=document.getElementById('nom').value.trim();
-  var t=document.getElementById('telephone').value.trim();
-  var pw=document.getElementById('password').value;
-  var pw2=document.getElementById('password2').value;
-  var err=document.getElementById('errorBox');
-  if(!p||!n||!t||!pw){err.textContent='Remplissez tous les champs';err.classList.add('show');return;}
-  if(pw.length<6){err.textContent='Mot de passe trop court (min 6 car.)';err.classList.add('show');return;}
-  if(pw!==pw2){err.textContent='Mots de passe différents';err.classList.add('show');return;}
-  err.classList.remove('show');
-  document.getElementById('step1').classList.remove('active');
-  document.getElementById('step2').classList.add('active');
-  var d1=document.getElementById('step-dot-1');
-  var d2=document.getElementById('step-dot-2');
-  var l1=document.getElementById('step-line-1');
-  if(d1)d1.className='step done';
-  if(d2)d2.className='step active';
-  if(l1)l1.className='step-line done';
-  window.scrollTo(0,0);
-})()">Suivant →</button>
+      <button class="btn-next" style="flex:1;" id="btnS1">Suivant →</button>
     </div>
   </div>
+  <script>
+  document.getElementById('btnS1').onclick = function() {
+    var p = document.getElementById('prenom').value.trim();
+    var n = document.getElementById('nom').value.trim();
+    var t = document.getElementById('telephone').value.trim();
+    var pw = document.getElementById('password').value;
+    var pw2 = document.getElementById('password2').value;
+    var err = document.getElementById('errorBox');
+    if (!p || !n || !t || !pw) {
+      err.textContent = 'Remplissez tous les champs obligatoires';
+      err.style.display = 'block';
+      return;
+    }
+    if (pw.length < 6) {
+      err.textContent = 'Mot de passe trop court (min 6 caractères)';
+      err.style.display = 'block';
+      return;
+    }
+    if (pw !== pw2) {
+      err.textContent = 'Les mots de passe ne correspondent pas';
+      err.style.display = 'block';
+      return;
+    }
+    err.style.display = 'none';
+    document.getElementById('step1').classList.remove('active');
+    document.getElementById('step2').classList.add('active');
+    var d1 = document.getElementById('step-dot-1');
+    var d2 = document.getElementById('step-dot-2');
+    var l1 = document.getElementById('step-line-1');
+    if (d1) d1.className = 'step done';
+    if (d2) d2.className = 'step active';
+    if (l1) l1.className = 'step-line done';
+    window.scrollTo(0, 0);
+  };
+  </script>
 
-  <!-- ÉTAPE 2 : Profil professionnel -->
-  <div class="step-section" id="step2">
+<div class="step-section" id="step2">
     <div class="section-title">💼 Profil professionnel</div>
     <div class="form-group">
       <label>Catégorie <span class="req">*</span></label>
@@ -3083,28 +3096,36 @@ async function connexion() {
     </div>
     <div class="nav-btns">
       <button class="btn-back" onclick="prevStep(2)">← Retour</button>
-      <button class="btn-next" onclick="(function(){
-  var cat=document.getElementById('categorie').value;
-  var met=document.getElementById('metier').value.trim();
-  var desc=document.getElementById('description').value.trim();
-  var err=document.getElementById('errorBox');
-  if(!cat||!met||!desc){err.textContent='Remplissez tous les champs';err.classList.add('show');return;}
-  err.classList.remove('show');
-  document.getElementById('step2').classList.remove('active');
-  document.getElementById('step3').classList.add('active');
-  var d2=document.getElementById('step-dot-2');
-  var d3=document.getElementById('step-dot-3');
-  var l2=document.getElementById('step-line-2');
-  if(d2)d2.className='step done';
-  if(d3)d3.className='step active';
-  if(l2)l2.className='step-line done';
-  window.scrollTo(0,0);
-})()">Suivant →</button>
+      <button class="btn-next" id="btnS2">Suivant →</button>
     </div>
   </div>
 
   <!-- ÉTAPE 3 : Localisation -->
-  <div class="step-section" id="step3">
+  <script>
+  document.getElementById('btnS2').onclick = function() {
+    var cat = document.getElementById('categorie').value;
+    var met = document.getElementById('metier').value.trim();
+    var desc = document.getElementById('description').value.trim();
+    var err = document.getElementById('errorBox');
+    if (!cat || !met || !desc) {
+      err.textContent = 'Remplissez tous les champs obligatoires';
+      err.style.display = 'block';
+      return;
+    }
+    err.style.display = 'none';
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step3').classList.add('active');
+    var d2 = document.getElementById('step-dot-2');
+    var d3 = document.getElementById('step-dot-3');
+    var l2 = document.getElementById('step-line-2');
+    if (d2) d2.className = 'step done';
+    if (d3) d3.className = 'step active';
+    if (l2) l2.className = 'step-line done';
+    window.scrollTo(0, 0);
+  };
+  </script>
+
+<div class="step-section" id="step3">
     <div class="section-title">📍 Localisation</div>
     <div class="form-group">
       <label>Ville <span class="req">*</span></label>
