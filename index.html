@@ -1256,8 +1256,9 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-ctas">
+      <button class="btn-nav-ghost" onclick="navigate('login')">🔐 Connexion</button>
       <button class="btn-nav-ghost" onclick="ouvrirInscription()">+ Devenir artisan</button>
-      <button class="btn-nav-primary" onclick="document.getElementById('searchInput').focus();document.getElementById('prestataires').scrollIntoView({behavior:'smooth'})">Trouver un artisan</button>
+      <button class="btn-nav-primary" onclick="document.getElementById('prestataires').scrollIntoView({behavior:'smooth'})">Trouver un artisan</button>
     </div>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -2203,6 +2204,20 @@ try { favorites = JSON.parse(localStorage.getItem('yj_fav') || '[]'); } catch(e)
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
+
+  // HASH ROUTER
+  function handleHash() {
+    const hash = window.location.hash.replace('#', '').toLowerCase();
+    const pages = ['login', 'inscription', 'dashboard', 'admin'];
+    if (pages.includes(hash)) {
+      navigate(hash);
+    } else if (hash === '' || hash === 'accueil') {
+      navigate('home');
+    }
+  }
+  window.addEventListener('hashchange', handleHash);
+  handleHash();
+
   filteredData = [...PRESTATAIRES];
   renderArtisans();
   renderProviders();
