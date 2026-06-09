@@ -1,4 +1,12 @@
-<!DOCTYPE html>
+function actionsHTML(p) {
+  const btnStyle = (bg, color) => `style="padding:6px 12px;background:${bg};color:${color};border:none;border-radius:8px;font-size:11.5px;font-weight:700;cursor:pointer;margin:2px;"`;
+  let btns = '';
+  if (p.statut !== 'valide')   btns += `<button ${btnStyle('rgba(22,163,74,.12)','#16A34A')} onclick="_adminAction('valider','${p.id}')">Valider</button>`;
+  if (p.statut !== 'rejete')   btns += `<button ${btnStyle('rgba(239,68,68,.1)','#DC2626')} onclick="_adminAction('rejeter','${p.id}')">Rejeter</button>`;
+  if (p.statut !== 'suspendu') btns += `<button ${btnStyle('rgba(245,158,11,.1)','#B45309')} onclick="_adminAction('suspendre','${p.id}')">Suspendre</button>`;
+  btns += `<button ${btnStyle('rgba(239,68,68,.08)','#DC2626')} onclick="_adminAction('supprimer','${p.id}')">Supprimer</button>`;
+  return `<div style="display:flex;flex-wrap:wrap;gap:3px;">${btns}</div>`;
+}<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
@@ -1252,6 +1260,174 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 
 nav{display:none;}
 body.on-home nav{display:flex!important;}
+
+/* ══ ANIMATIONS PROFESSIONNELLES ══ */
+
+/* Fade up - éléments qui montent au scroll */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Fade in simple */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Slide in depuis la gauche */
+@keyframes slideLeft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Underline animé pour les titres */
+@keyframes underlineGrow {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+/* Classes d'animation */
+.anim-fade-up   { opacity: 0; animation: fadeUp .7s cubic-bezier(.4,0,.2,1) forwards; }
+.anim-fade-in   { opacity: 0; animation: fadeIn .6s ease forwards; }
+.anim-slide-left{ opacity: 0; animation: slideLeft .6s cubic-bezier(.4,0,.2,1) forwards; }
+
+/* Délais */
+.delay-1 { animation-delay: .15s; }
+.delay-2 { animation-delay: .3s; }
+.delay-3 { animation-delay: .45s; }
+.delay-4 { animation-delay: .6s; }
+.delay-5 { animation-delay: .75s; }
+
+/* Hover sur les cartes artisans */
+.card-artisan, .provider-card {
+  transition: transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s ease !important;
+}
+.card-artisan:hover, .provider-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 16px 48px rgba(0,0,0,.12) !important;
+}
+
+/* Boutons primaires */
+.btn-primary, .cta-btn, button[style*="background:#E85D04"],
+button[style*="background:var(--orange)"] {
+  transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease !important;
+}
+.btn-primary:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 24px rgba(232,93,4,.35) !important; }
+.btn-primary:active { transform: translateY(0) !important; }
+
+/* Titres avec soulignement animé */
+.titre-anime {
+  position: relative;
+  display: inline-block;
+}
+.titre-anime::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: var(--orange, #E85D04);
+  border-radius: 2px;
+  transition: width .5s cubic-bezier(.4,0,.2,1);
+}
+.titre-anime.visible::after { width: 100%; }
+
+/* Compteur animé */
+@keyframes countUp {
+  from { opacity: 0; transform: scale(.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.kpi-num { animation: countUp .6s cubic-bezier(.4,0,.2,1) forwards; }
+
+/* Image hover zoom subtil */
+.img-zoom {
+  overflow: hidden;
+  border-radius: inherit;
+}
+.img-zoom img {
+  transition: transform .5s cubic-bezier(.4,0,.2,1) !important;
+}
+.img-zoom:hover img {
+  transform: scale(1.04) !important;
+}
+
+/* Section fade-in au scroll via IntersectionObserver */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .65s ease, transform .65s cubic-bezier(.4,0,.2,1);
+}
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ligne décorative */
+.section-divider {
+  width: 48px;
+  height: 3px;
+  background: var(--orange, #E85D04);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+
+/* Section tags professionnels */
+.section-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin-bottom: 16px !important;
+}
+.stag-line {
+  width: 28px !important;
+  height: 2px !important;
+  background: var(--orange, #E85D04) !important;
+  display: inline-block !important;
+}
+.stag-text {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: var(--orange, #E85D04) !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase !important;
+}
+
+/* Titres section plus sobres */
+.section-title {
+  font-size: 32px !important;
+  line-height: 1.2 !important;
+  margin-bottom: 14px !important;
+}
+
+/* Hero plus aéré */
+.hero-title { letter-spacing: -.02em; }
+.hero-subtitle { opacity: .75; }
+
+/* KPI hero - animation compteur */
+.kpi { transition: transform .2s ease; }
+.kpi:hover { transform: translateY(-2px); }
+.kpi-num {
+  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Image zoom sur portfolio */
+#portfolio .real-slide img {
+  transition: transform .6s cubic-bezier(.4,0,.2,1) !important;
+}
+#portfolio .real-slide:hover img {
+  transform: scale(1.03) !important;
+}
+
+/* Texte hero animé au chargement */
+.hero-title { animation: fadeUp .8s cubic-bezier(.4,0,.2,1) forwards; }
+.hero-subtitle { animation: fadeUp .8s .15s cubic-bezier(.4,0,.2,1) both; }
+.hero-search { animation: fadeUp .8s .3s cubic-bezier(.4,0,.2,1) both; }
+.hero-kpis { animation: fadeUp .8s .45s cubic-bezier(.4,0,.2,1) both; }
 </style>
 
 <body>
@@ -1320,14 +1496,14 @@ async function verifierSession() {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-login').classList.add('active');
   window.scrollTo(0,0);
-">🔐 Connexion</button>
+">Connexion</button>
       <button class="btn-nav-ghost" onclick="
   document.getElementById('mainContent').style.display='none';
   document.getElementById('mainNav').style.display='none';
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-inscription').classList.add('active');
   window.scrollTo(0,0);
-">+ Devenir artisan</button>
+">Devenir artisan</button>
       <button class="btn-nav-primary" onclick="document.getElementById('prestataires').scrollIntoView({behavior:'smooth'})">Trouver un artisan</button>
     </div>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -1371,7 +1547,7 @@ async function verifierSession() {
         Trouvez votre<br>
         <em>artisan</em> en Guinée
       </h1>
-      <p class="hero-subtitle">Trouvez rapidement le bon artisan pour tous vos projets — électriciens, plombiers, maçons, soudeurs, menuisiers, mécaniciens et bien plus.</p>
+      <p class="hero-subtitle anim-fade-up delay-1">Trouvez rapidement le bon artisan pour tous vos projets — électriciens, plombiers, maçons, soudeurs, menuisiers, mécaniciens et bien plus.</p>
       
       <!-- SLIDESHOW HERO -->
       <div style="position:relative;border-radius:20px;overflow:hidden;margin-bottom:28px;height:230px;" id="heroSlide">
@@ -1384,7 +1560,7 @@ async function verifierSession() {
           </div>
           <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:8px;">Besoin d'une<br>intervention rapide ?</div>
           <div style="font-size:12px;color:rgba(255,255,255,.65);margin-bottom:14px;">Artisans Express disponibles aujourd'hui à Conakry 🇬🇳</div>
-          <button onclick="filterByExpress()" style="display:inline-flex;align-items:center;gap:6px;background:var(--orange);border:none;border-radius:50px;color:#fff;font-size:12px;font-weight:700;padding:9px 18px;cursor:pointer;width:fit-content;">⚡ Voir les artisans Express →</button>
+          <button onclick="filterByExpress()" style="display:inline-flex;align-items:center;gap:6px;background:var(--orange);border:none;border-radius:50px;color:#fff;font-size:12px;font-weight:700;padding:9px 18px;cursor:pointer;width:fit-content;">Voir les artisans Express →</button>
         </div>
         <div style="position:absolute;bottom:14px;right:14px;z-index:3;text-align:right;">
           <div id="hSlideNom" style="font-family:'Libre Baskerville',serif;font-size:13px;font-weight:700;color:#fff;"></div>
@@ -1400,7 +1576,7 @@ async function verifierSession() {
         <button class="btn-hero-main" onclick="document.getElementById('artisans').scrollIntoView({behavior:'smooth'})">🔍 Trouver un artisan</button>
         <button class="btn-hero-outline" onclick="ouvrirInscription()">🚀 Devenir artisan</button>
       </div>
-      <div class="hero-kpis">
+      <div class="hero-kpis anim-fade-up delay-3">
         <div class="kpi"><div class="kpi-num" data-target="500">0+</div><div class="kpi-label">Prestataires vérifiés</div></div>
         <div class="kpi"><div class="kpi-num" data-target="20">0+</div><div class="kpi-label">Catégories</div></div>
         <div class="kpi"><div class="kpi-num" data-target="10000">0+</div><div class="kpi-label">Clients</div></div>
@@ -1536,7 +1712,7 @@ async function verifierSession() {
 <!-- ── ARTISANS SPOTLIGHT ── -->
 <section class="artisans-bg" id="artisans">
   <div class="section-header">
-    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">🔧 Artisans à l'honneur</span></div>
+    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">Artisans à l'honneur</span></div>
     <h2 class="section-title">Meilleurs <span class="hl">artisans</span><br>qualifiés &amp; vérifiés</h2>
     <p class="section-desc">Électriciens · Plombiers · Maçons · Soudeurs · Menuisiers · Mécaniciens · Carreleurs · Peintres · Couturiers · Climaticiens — chaque artisan est validé par YOUMMA JOBS.</p>
   </div>
@@ -1562,7 +1738,7 @@ async function verifierSession() {
 <!-- ── CATEGORIES ── -->
 <section class="cats-bg" id="categories">
   <div class="cats-inner">
-    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">📂 10 catégories professionnelles</span></div>
+    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">10 catégories professionnelles</span></div>
     <h2 class="section-title">Trouvez par <span class="hl">catégorie</span></h2>
     <p class="section-desc">Artisans, santé, IT, éducation et bien plus — prestataires vérifiés partout en Guinée.</p>
     <div class="cats-grid" id="catsGrid">
@@ -1626,7 +1802,7 @@ async function verifierSession() {
   <div class="providers-inner">
     <div class="providers-header">
       <div>
-        <div class="section-tag"><span class="stag-line"></span><span class="stag-text">👥 500+ Artisans vérifiés</span></div>
+        <div class="section-tag"><span class="stag-line"></span><span class="stag-text">500+ Artisans vérifiés</span></div>
         <h2 class="section-title">Tous nos <span class="hl">artisans</span> vérifiés</h2>
         <p style="font-size:12.5px;color:var(--gris);margin-top:4px;">📍 Ratoma · Lambanyi · Matam · Kaloum · Dixinn · Dubréka · Coyah · et toute la Guinée</p>
       </div>
@@ -1654,7 +1830,7 @@ async function verifierSession() {
 <section id="portfolio" style="padding:70px 20px;background:#F9FAFB;">
   <div style="max-width:1100px;margin:0 auto;">
     <div style="text-align:center;margin-bottom:44px;">
-      <div style="display:inline-flex;align-items:center;gap:8px;background:#FDE8D8;border-radius:50px;padding:6px 16px;font-size:12px;font-weight:700;color:#C74B00;margin-bottom:12px;">📸 Réalisations</div>
+      <div style="display:inline-flex;align-items:center;gap:8px;background:#FDE8D8;border-radius:50px;padding:6px 16px;font-size:12px;font-weight:700;color:#C74B00;margin-bottom:12px;">Réalisations</div>
       <h2 style="font-family:'Libre Baskerville',serif;font-size:30px;font-weight:700;color:#1A1A4E;margin-bottom:10px;">Le travail <span style="color:#E85D04;">parle</span> de lui-même</h2>
       <p style="font-size:14px;color:#6B7280;max-width:480px;margin:0 auto;">Des projets réels réalisés par nos artisans vérifiés à Conakry.</p>
     </div>
@@ -1814,7 +1990,7 @@ async function verifierSession() {
 <!-- ── HOW IT WORKS ── -->
 <section class="how-bg" id="comment">
   <div class="how-inner">
-    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">❓ Comment ça marche</span></div>
+    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">Comment ça marche</span></div>
     <h2 class="section-title">Simple, rapide<br>et <span class="hl">efficace</span></h2>
     <div class="how-grid">
       <div class="how-steps">
@@ -1874,7 +2050,7 @@ async function verifierSession() {
         <div class="dp-sub">Dernières missions</div>
         <div class="dp-mission"><div class="dm-text">Installation électrique — Ratoma</div><div class="dm-ok">✅ Validée</div></div>
         <div class="dp-mission"><div class="dm-text">Réparation tableau — Kaloum</div><div class="dm-ok">✅ Validée</div></div>
-        <div class="dp-mission"><div class="dm-text">Câblage bureau — Matam</div><div class="dm-wait">⏳ En attente</div></div>
+        <div class="dp-mission"><div class="dm-text">Câblage bureau — Matam</div><div class="dm-wait">En attente</div></div>
       </div>
     </div>
   </div>
@@ -1988,7 +2164,7 @@ async function verifierSession() {
 <section class="tarifs-bg" id="tarifs">
   <div class="tarifs-inner">
     <div style="text-align:center;">
-      <div class="section-tag" style="justify-content:center;"><span class="stag-line"></span><span class="stag-text">💰 Tarification simple</span><span class="stag-line"></span></div>
+      <div class="section-tag" style="justify-content:center;"><span class="stag-line"></span><span class="stag-text">Tarification simple</span><span class="stag-line"></span></div>
       <h2 class="section-title" style="text-align:center;">Des tarifs <span class="hl">accessibles</span></h2>
       <p class="section-desc" style="margin:0 auto;text-align:center;">Commencez gratuitement pour les clients, passez au professionnel quand vous êtes prêt.</p>
     </div>
@@ -2051,7 +2227,7 @@ async function verifierSession() {
 
 <section class="faq-bg" id="faq">
   <div class="faq-inner">
-    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">❓ Questions fréquentes</span></div>
+    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">Questions fréquentes</span></div>
     <h2 class="section-title">Toutes vos <span class="hl">questions</span></h2>
     <div class="faq-grid">
       <div class="faq-list">
@@ -2081,7 +2257,7 @@ async function verifierSession() {
 
 <section class="contact-bg" id="contact">
   <div class="contact-inner">
-    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">📞 Nous contacter</span></div>
+    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">Nous contacter</span></div>
     <h2 class="section-title">Parlons de votre <span class="hl">projet</span></h2>
     <div class="contact-grid">
       <div>
@@ -2147,7 +2323,7 @@ async function verifierSession() {
         <div class="inscr-badge-sub">14 jours d'essai gratuit · Abonnement 50 000 GNF/mois</div>
       </div>
     </div>
-    <div class="inscr-section">👤 Informations personnelles</div>
+    <div class="inscr-section">Informations personnelles</div>
     <div class="form-row-2">
       <div class="form-group"><label>Prénom *</label><input type="text" id="iPrenom" placeholder="Mamadou"/></div>
       <div class="form-group"><label>Nom *</label><input type="text" id="iNom" placeholder="Diallo"/></div>
@@ -2196,7 +2372,7 @@ async function verifierSession() {
         </select>
       </div>
     </div>
-    <div class="inscr-section">📍 Localisation</div>
+    <div class="inscr-section">Localisation</div>
     <div class="form-row-2">
       <div class="form-group">
         <label>Ville *</label>
@@ -2293,7 +2469,7 @@ async function verifierSession() {
           <h4>Mon compte</h4>
           <ul>
             <li><span onclick="ouvrirInscription()">📝 Inscription</span></li>
-            <li><a href="#login" onclick="navigate && navigate('login')">🔐 Connexion</a></li>
+            <li><a href="#login" onclick="navigate && navigate('login')">Connexion</a></li>
             <li><a href="#dashboard" onclick="navigate && navigate('dashboard')">📊 Mon espace</a></li>
             <li><span onclick="ouvrirInscription()">🚀 Devenir artisan</span></li>
           </ul>
@@ -2339,7 +2515,51 @@ const PRESTATAIRES = [
 
 </script>
 
-<script>// ── CARROUSEL RÉALISATIONS ──
+<script>
+// ── SCROLL REVEAL ──
+(function() {
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  function initScrollReveal() {
+    // Sections principales
+    document.querySelectorAll('section').forEach(function(el) {
+      el.classList.add('scroll-reveal');
+      observer.observe(el);
+    });
+    // Cards artisans
+    document.querySelectorAll('.card-artisan, .provider-card, .cat-card').forEach(function(el, i) {
+      el.classList.add('scroll-reveal');
+      el.style.transitionDelay = (i % 4 * 0.1) + 's';
+      observer.observe(el);
+    });
+    // Titres animés
+    document.querySelectorAll('.section-title, h2').forEach(function(el) {
+      const span = el.querySelector('span');
+      if (span) span.classList.add('titre-anime');
+    });
+    // Observer les titres
+    document.querySelectorAll('.titre-anime').forEach(function(el) {
+      new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting) el.classList.add('visible');
+      }, { threshold: 0.5 }).observe(el);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollReveal);
+  } else {
+    initScrollReveal();
+  }
+})();
+
+// ── CARROUSEL RÉALISATIONS ──
 let _rIdx = 0, _rTimer = null;
 const _rTotal = 5;
 
@@ -2400,10 +2620,10 @@ function renderAdminRealisations() {
         </div>
         <!-- Bouton changer image -->
         <label style="display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:10px;background:#F4F6FB;border:2px dashed #E5E7EB;border-radius:10px;font-size:13px;font-weight:700;color:#1A1A4E;cursor:pointer;margin-bottom:10px;box-sizing:border-box;" onmouseover="this.style.borderColor='#E85D04';this.style.color='#E85D04'" onmouseout="this.style.borderColor='#E5E7EB';this.style.color='#1A1A4E'">
-          📷 Choisir une image
+          Choisir une image
           <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="previewRealImage(this,${s.idx})"/>
         </label>
-        <button onclick="validerReal(${s.idx})" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">✅ Valider et publier</button>
+        <button onclick="validerReal(${s.idx})" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">Valider et publier</button>
       </div>
     </div>
   `).join('');
@@ -2503,7 +2723,7 @@ document.addEventListener('keydown', e => {
   <div class="divider">ou</div>
 
   <button class="btn-whatsapp" onclick="window.open('https://wa.me/22461252510?text=Bonjour%20YOUMMA%20JOBS%2C%20j\'ai%20besoin%20d\'aide%20pour%20me%20connecter','_blank')">
-    💬 Aide via WhatsApp
+    Aide via WhatsApp
   </button>
 
   <div class="link-row" style="margin-top:16px;">
@@ -2573,7 +2793,7 @@ async function connexion() {
 
   <!-- ÉTAPE 1 -->
   <div id="i-step1">
-    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">👤 Informations personnelles</div>
+    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">Informations personnelles</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
       <div><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Prénom *</label><input id="i-prenom" type="text" placeholder="Mamadou" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
       <div><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Nom *</label><input id="i-nom" type="text" placeholder="Diallo" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
@@ -2597,7 +2817,7 @@ async function connexion() {
 
   <!-- ÉTAPE 2 -->
   <div id="i-step2" style="display:none;">
-    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">💼 Profil professionnel</div>
+    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">Profil professionnel</div>
     <div style="margin-bottom:12px;">
       <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Catégorie *</label>
       <select id="i-cat" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;background:#fff;">
@@ -2623,7 +2843,7 @@ async function connexion() {
 
   <!-- ÉTAPE 3 -->
   <div id="i-step3" style="display:none;">
-    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">📍 Localisation</div>
+    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">Localisation</div>
     <div style="margin-bottom:12px;">
       <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Ville *</label>
       <select id="i-ville" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;background:#fff;">
@@ -2646,7 +2866,7 @@ async function connexion() {
     </div>
     <div style="display:flex;gap:10px;">
       <button id="i-back3" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;">← Retour</button>
-      <button id="i-submit" style="flex:2;padding:13px;background:#1A1A4E;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">🚀 Créer mon compte</button>
+      <button id="i-submit" style="flex:2;padding:13px;background:#1A1A4E;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">Créer mon compte</button>
     </div>
   </div>
 
@@ -2726,8 +2946,8 @@ async function inscrirePrestataire(formData) {
       try{
         var res=await inscrirePrestataire(fd);
         if(res.success){[1,2,3].forEach(function(s){var el=document.getElementById('i-step'+s);if(el)el.style.display='none';});var su=document.getElementById('i-success');if(su)su.style.display='block';}
-        else{showErr(res.message||"Erreur");b3.disabled=false;b3.textContent='🚀 Créer mon compte';}
-      }catch(e){showErr('Erreur: '+e.message);b3.disabled=false;b3.textContent='🚀 Créer mon compte';}
+        else{showErr(res.message||"Erreur");b3.disabled=false;b3.textContent='Créer mon compte';}
+      }catch(e){showErr('Erreur: '+e.message);b3.disabled=false;b3.textContent='Créer mon compte';}
     };
   }
   init();document.addEventListener('DOMContentLoaded',init);window.addEventListener('load',init);
@@ -2804,7 +3024,7 @@ async function inscrirePrestataire(formData) {
           <div class="pb-badges" id="pbBadges"></div>
         </div>
         <div style="position:relative;z-index:1;text-align:right;">
-          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px;">📍 Localisation</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px;">Localisation</div>
           <div style="font-size:14px;color:#fff;font-weight:600;" id="pbVille">—</div>
           <div style="font-size:12px;color:rgba(255,255,255,0.5);" id="pbCommune">—</div>
           <a id="pbMapsBtn" style="display:none;" class="maps-btn" target="_blank">🗺️ Google Maps</a>
@@ -3083,9 +3303,9 @@ function updateUI() {
   // Badges
   const badges = [];
   if (p.statut === 'valide') badges.push('<span class="pb-badge verified">✅ Vérifié</span>');
-  if (p.statut === 'en_attente') badges.push('<span class="pb-badge pending">⏳ En attente</span>');
-  if (p.essai_actif && new Date(p.essai_fin) > new Date()) badges.push('<span class="pb-badge trial">🎁 Essai gratuit</span>');
-  if (p.abonnement_actif && new Date(p.abonnement_fin) > new Date()) badges.push('<span class="pb-badge active">💳 Abonné</span>');
+  if (p.statut === 'en_attente') badges.push('<span class="pb-badge pending">En attente</span>');
+  if (p.essai_actif && new Date(p.essai_fin) > new Date()) badges.push('<span class="pb-badge trial">Essai gratuit</span>');
+  if (p.abonnement_actif && new Date(p.abonnement_fin) > new Date()) badges.push('<span class="pb-badge active">Abonné</span>');
   document.getElementById('pbBadges').innerHTML = badges.join('');
 
   // Stats
@@ -3109,7 +3329,7 @@ function updateAbonnementUI(p) {
     if (!el) return;
     if (actif) {
       el.className = isEssai ? 'abo-status-trial' : 'abo-status-active';
-      el.textContent = isEssai ? '🎁 Essai actif' : '✅ Actif';
+      el.textContent = isEssai ? 'Essai actif' : '✅ Actif';
     } else {
       el.className = 'abo-status-expired';
       el.textContent = '❌ Expiré';
@@ -3369,16 +3589,16 @@ async function chargerAvis() {
     </div>
   </div>
   <div style="padding:8px;">
-    <div onclick="showAdmin('dashboard')" id="amenu-dashboard" style="padding:10px 12px;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:2px;background:rgba(232,93,4,.25);">📊 Tableau de bord</div>
-    <div onclick="showAdmin('en_attente')" id="amenu-en_attente" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">⏳ En attente</div>
-    <div onclick="showAdmin('valide')" id="amenu-valide" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">✅ Validés</div>
-    <div onclick="showAdmin('rejete')" id="amenu-rejete" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">❌ Rejetés</div>
-    <div onclick="showAdmin('suspendu')" id="amenu-suspendu" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">🚫 Suspendus</div>
-    <div onclick="showAdmin('codes')" id="amenu-codes" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">🔑 Codes d'activation</div>
-    <div onclick="showAdmin('realisations')" id="amenu-realisations" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">📸 Réalisations</div>
+    <div onclick="showAdmin('dashboard')" id="amenu-dashboard" style="padding:10px 12px;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:2px;background:rgba(232,93,4,.25);">Tableau de bord</div>
+    <div onclick="showAdmin('en_attente')" id="amenu-en_attente" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">En attente</div>
+    <div onclick="showAdmin('valide')" id="amenu-valide" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">Validés</div>
+    <div onclick="showAdmin('rejete')" id="amenu-rejete" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">Rejetés</div>
+    <div onclick="showAdmin('suspendu')" id="amenu-suspendu" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">Suspendus</div>
+    <div onclick="showAdmin('codes')" id="amenu-codes" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">Codes d'activation</div>
+    <div onclick="showAdmin('realisations')" id="amenu-realisations" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">Réalisations</div>
   </div>
   <div style="padding:8px;border-top:1px solid rgba(255,255,255,.08);margin-top:10px;">
-    <div onclick="logoutAdmin()" style="padding:10px 12px;border-radius:8px;color:#FCA5A5;font-size:13px;font-weight:600;cursor:pointer;background:rgba(239,68,68,.1);">🚪 Déconnexion</div>
+    <div onclick="logoutAdmin()" style="padding:10px 12px;border-radius:8px;color:#FCA5A5;font-size:13px;font-weight:600;cursor:pointer;background:rgba(239,68,68,.1);">Déconnexion</div>
   </div>
 </div>
 
@@ -3426,7 +3646,7 @@ async function chargerAvis() {
 
     <!-- CODES D'ACTIVATION -->
     <div class="admin-section" id="admin-codes">
-      <div class="section-title">🔑 Codes d'activation</div>
+      <div class="section-title">Codes d'activation</div>
 
       <div class="gen-code-wrap">
         <div class="gen-code-title">Générer un nouveau code</div>
@@ -3598,8 +3818,8 @@ function renderTableHTML(statut, data) {
   const formatDate = d => d ? new Date(d).toLocaleDateString('fr-FR') : '—';
   const aboBadge = p => {
     const now = new Date();
-    if (p.essai_actif && p.essai_fin && new Date(p.essai_fin) > now) return '<span class="badge essai">🎁 Essai</span>';
-    if (p.abonnement_actif && p.abonnement_fin && new Date(p.abonnement_fin) > now) return '<span class="badge abonne">💳 Abonné</span>';
+    if (p.essai_actif && p.essai_fin && new Date(p.essai_fin) > now) return '<span class="badge essai">Essai</span>';
+    if (p.abonnement_actif && p.abonnement_fin && new Date(p.abonnement_fin) > now) return '<span class="badge abonne">Abonné</span>';
     return '<span style="color:#7A7F9A;font-size:11px;">Inactif</span>';
   };
 
@@ -3670,25 +3890,8 @@ function filterTable(statut, query) {
 
 // ── ACTIONS ──
 async function action(type, id) {
-  const confirms = {
-    valider: 'Valider ce prestataire et activer 14 jours d\'essai ?',
-    rejeter: 'Rejeter ce prestataire ?',
-    suspendre: 'Suspendre ce prestataire ?',
-    supprimer: 'SUPPRIMER définitivement ce prestataire ?'
-  };
-  if (!confirm(confirms[type])) return;
-
-  switch(type) {
-    case 'valider': await validerProvider(id); break;
-    case 'rejeter': await rejeterProvider(id); break;
-    case 'suspendre': await suspendreProvider(id); break;
-    case 'supprimer': await supprimerProvider(id); break;
-  }
-
-  showToast('✅ Action effectuée');
-  await loadAll();
+  await _adminAction(type, id);
 }
-
 // ── CODES ──
 async function loadCodes() {
   const codes = await getCodesActivation();
@@ -3883,7 +4086,15 @@ async function getAvis(providerId) {
   return data||[];
 }
 
-async function validerProvider(id) { await sb.rpc('activer_essai',{p_id:id}); }
+async function validerProvider(id) {
+  const essai_fin = new Date(Date.now() + 14*24*60*60*1000).toISOString();
+  const { error } = await sb.from('providers').update({
+    statut: 'valide',
+    essai_actif: true,
+    essai_fin: essai_fin
+  }).eq('id', id);
+  if (error) throw new Error(error.message);
+}
 async function rejeterProvider(id) { await sb.from('providers').update({statut:'rejete'}).eq('id',id); }
 async function suspendreProvider(id) { await sb.from('providers').update({statut:'suspendu'}).eq('id',id); }
 async function supprimerProvider(id) { await sb.from('providers').delete().eq('id',id); }
@@ -4359,9 +4570,9 @@ function _dashUpdateUI() {
   // Badges
   const badges = [];
   if (p.statut==='valide') badges.push('<span class="pb-badge verified">✅ Vérifié</span>');
-  if (p.statut==='en_attente') badges.push('<span class="pb-badge pending">⏳ En attente</span>');
-  if (p.essai_actif && new Date(p.essai_fin)>new Date()) badges.push('<span class="pb-badge trial">🎁 Essai gratuit</span>');
-  if (p.abonnement_actif && p.abonnement_fin && new Date(p.abonnement_fin)>new Date()) badges.push('<span class="pb-badge active">💳 Abonné</span>');
+  if (p.statut==='en_attente') badges.push('<span class="pb-badge pending">En attente</span>');
+  if (p.essai_actif && new Date(p.essai_fin)>new Date()) badges.push('<span class="pb-badge trial">Essai gratuit</span>');
+  if (p.abonnement_actif && p.abonnement_fin && new Date(p.abonnement_fin)>new Date()) badges.push('<span class="pb-badge active">Abonné</span>');
   const pbBadges = document.getElementById('pbBadges');
   if (pbBadges) pbBadges.innerHTML = badges.join('');
 
@@ -4381,7 +4592,7 @@ function _dashUpdateAbonnement(p) {
   const isEssai = p.essai_actif && new Date(p.essai_fin)>new Date();
   ['aboStatusBadge','aboStatusBadge2'].forEach(id => {
     const el=document.getElementById(id); if(!el) return;
-    if(actif) { el.className=isEssai?'abo-status-trial':'abo-status-active'; el.textContent=isEssai?'🎁 Essai actif':'✅ Actif'; }
+    if(actif) { el.className=isEssai?'abo-status-trial':'abo-status-active'; el.textContent=isEssai?'Essai actif':'✅ Actif'; }
     else { el.className='abo-status-expired'; el.textContent='❌ Expiré'; }
   });
   const typeText = isEssai?'Essai gratuit (14j)':actif?'Abonnement Pro':'Aucun';
@@ -4574,11 +4785,11 @@ function _adminTableHTML(statut,data) {
   const fd=d=>d?new Date(d).toLocaleDateString('fr-FR'):'—';
   const now=new Date();
   const aboBadge=p=>{
-    if(p.essai_actif&&p.essai_fin&&new Date(p.essai_fin)>now)return'<span class="badge essai">🎁 Essai</span>';
-    if(p.abonnement_actif&&p.abonnement_fin&&new Date(p.abonnement_fin)>now)return'<span class="badge abonne">💳 Abonné</span>';
+    if(p.essai_actif&&p.essai_fin&&new Date(p.essai_fin)>now)return'<span class="badge essai">Essai</span>';
+    if(p.abonnement_actif&&p.abonnement_fin&&new Date(p.abonnement_fin)>now)return'<span class="badge abonne">Abonné</span>';
     return'<span style="color:#7A7F9A;font-size:11px;">Inactif</span>';
   };
-  return `<table class="admin-table"><thead><tr><th>Prestataire</th><th>Catégorie</th><th>Localisation</th><th>Téléphone</th><th>Inscrit</th><th>Abo.</th><th>Actions</th></tr></thead><tbody>${data.map(p=>`<tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="provider-row-avatar" style="background:#FDE8D8;color:#C74B00;">${p.photo_url?`<img src="${p.photo_url}"/>`:(p.prenom?.[0]||'')+(p.nom?.[0]||'')}</div><div><div style="font-weight:700;color:#fff;">${p.prenom||''} ${p.nom||''}</div><div style="font-size:11px;color:#7A7F9A;">${p.metier||'—'}</div></div></div></td><td><span class="badge ${p.statut}">${(p.statut||'').replace('_',' ')}</span><br><span style="font-size:11px;color:#7A7F9A;">${p.categorie||'—'}</span></td><td style="font-size:12px;color:#94A3B8;">${p.ville||'—'}${p.commune?' · '+p.commune:''}</td><td><a href="tel:${p.telephone}" style="color:#60A5FA;">${p.telephone||'—'}</a></td><td style="font-size:12px;color:#7A7F9A;">${fd(p.created_at)}</td><td>${aboBadge(p)}</td><td><div class="action-row">${p.statut==='en_attente'?`<button class="abtn valider" onclick="_adminAction('valider','${p.id}')">✅ Valider</button>`:''}<button class="abtn rejeter" onclick="_adminAction('rejeter','${p.id}')">❌ Rejeter</button><button class="abtn suspendre" onclick="_adminAction('suspendre','${p.id}')">🚫</button><button class="abtn supprimer" onclick="_adminAction('supprimer','${p.id}')">🗑️</button></div></td></tr>`).join('')}</tbody></table>`;
+  return `<table class="admin-table"><thead><tr><th>Prestataire</th><th>Catégorie</th><th>Localisation</th><th>Téléphone</th><th>Inscrit</th><th>Abo.</th><th>Actions</th></tr></thead><tbody>${data.map(p=>`<tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="provider-row-avatar" style="background:#FDE8D8;color:#C74B00;">${p.photo_url?`<img src="${p.photo_url}"/>`:(p.prenom?.[0]||'')+(p.nom?.[0]||'')}</div><div><div style="font-weight:700;color:#fff;">${p.prenom||''} ${p.nom||''}</div><div style="font-size:11px;color:#7A7F9A;">${p.metier||'—'}</div></div></div></td><td><span class="badge ${p.statut}">${(p.statut||'').replace('_',' ')}</span><br><span style="font-size:11px;color:#7A7F9A;">${p.categorie||'—'}</span></td><td style="font-size:12px;color:#94A3B8;">${p.ville||'—'}${p.commune?' · '+p.commune:''}</td><td><a href="tel:${p.telephone}" style="color:#60A5FA;">${p.telephone||'—'}</a></td><td style="font-size:12px;color:#7A7F9A;">${fd(p.created_at)}</td><td>${aboBadge(p)}</td><td><div class="action-row">${actionsHTML(p)}</div></td></tr>`).join('')}</tbody></table>`;
 }
 
 async function _adminAction(type,id) {
@@ -4707,7 +4918,7 @@ async function _inscrSoumettre(){
     quartier:document.getElementById('quartier')?.value.trim()||null
   };
   const res=await inscrirePrestataire(formData);
-  if(btn){btn.disabled=false;btn.textContent='🚀 Créer mon compte';}
+  if(btn){btn.disabled=false;btn.textContent='Créer mon compte';}
   if(res.success){[1,2,3].forEach(s=>{const el=document.getElementById('step'+s);if(el)el.classList.remove('active');});const succ=document.getElementById('stepSuccess');if(succ)succ.classList.add('active');const si=document.getElementById('stepIndicator');if(si)si.style.display='none';}
   else _inscrShowError(res.message||'Erreur inscription');
 }
