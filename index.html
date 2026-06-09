@@ -1255,6 +1255,44 @@ body.on-home nav{display:flex!important;}
 </style>
 
 <body>
+<script>
+// ── FONCTIONS CRITIQUES (doivent être définies tôt) ──
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+
+function generateToken() {
+  return Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+
+async function connexionPrestataire(telephone, password) {
+  try {
+    const hash = await hashPassword(password);
+    const { data, error } = await sb.from('providers').select('id,nom,prenom,metier,categorie,telephone,statut').eq('telephone',telephone).eq('password_hash',hash).single();
+    if (error || !data) return { success:false, message:'Téléphone ou mot de passe incorrect' };
+    const token = generateToken();
+    await sb.from('provider_sessions').insert({ provider_id:data.id, token });
+    setSession({ provider_id:data.id, token, nom:data.nom, prenom:data.prenom });
+    return { success:true, provider:data };
+  } catch(e) { return { success:false, message:'Erreur de connexion' }; }
+}
+
+
+async function verifierSession() {
+  const s = getSession();
+  if (!s?.token) return null;
+  const { data } = await sb.from('provider_sessions').select('provider_id,expire_le').eq('token',s.token).gt('expire_le',new Date().toISOString()).single();
+  if (!data) { clearSession(); return null; }
+  return data.provider_id;
+}
+
+</script>
+
 <div class="notif-center" id="notifCenter"></div>
 <div class="toast" id="toast"></div>
 
@@ -2630,6 +2668,23 @@ async function connexion() {
 </div>
 
 <script>
+async function inscrirePrestataire(formData) {
+  try {
+    const hash = await hashPassword(formData.password);
+    const { data, error } = await sb.from('providers').insert({
+      telephone:formData.telephone, password_hash:hash, nom:formData.nom, prenom:formData.prenom,
+      metier:formData.metier, categorie:formData.categorie, sous_categorie:formData.sous_categorie||null,
+      ville:formData.ville, commune:formData.commune||null, quartier:formData.quartier||null,
+      description:formData.description||null, skills:formData.skills||[], statut:'en_attente'
+    }).select().single();
+    if (error) { if (error.code==='23505') return { success:false, message:'Ce numéro est déjà inscrit' }; return { success:false, message:error.message }; }
+    return { success:true, provider:data };
+  } catch(e) { return { success:false, message:"Erreur lors de l\'inscription" }; }
+}
+
+</script>
+
+<script>
 (function() {
   function showErr(msg){var e=document.getElementById('i-err');if(e){e.textContent=msg;e.style.display='block';}}
   function hideErr(){var e=document.getElementById('i-err');if(e)e.style.display='none';}
@@ -3681,32 +3736,12 @@ function getAdminSession() { try { return JSON.parse(localStorage.getItem(ADMIN_
 
 
 
-async function verifierSession() {
-  const s = getSession();
-  if (!s?.token) return null;
-  const { data } = await sb.from('provider_sessions').select('provider_id,expire_le').eq('token',s.token).gt('expire_le',new Date().toISOString()).single();
-  if (!data) { clearSession(); return null; }
-  return data.provider_id;
-}
 
 async function deconnexion() {
   const s = getSession();
   if (s?.token) await sb.from('provider_sessions').delete().eq('token',s.token);
   clearSession();
   navigate('home');
-}
-async function inscrirePrestataire(formData) {
-  try {
-    const hash = await hashPassword(formData.password);
-    const { data, error } = await sb.from('providers').insert({
-      telephone:formData.telephone, password_hash:hash, nom:formData.nom, prenom:formData.prenom,
-      metier:formData.metier, categorie:formData.categorie, sous_categorie:formData.sous_categorie||null,
-      ville:formData.ville, commune:formData.commune||null, quartier:formData.quartier||null,
-      description:formData.description||null, skills:formData.skills||[], statut:'en_attente'
-    }).select().single();
-    if (error) { if (error.code==='23505') return { success:false, message:'Ce numéro est déjà inscrit' }; return { success:false, message:error.message }; }
-    return { success:true, provider:data };
-  } catch(e) { return { success:false, message:"Erreur lors de l\'inscription" }; }
 }
 async function getProviders({ categorie='',recherche='',limite=15,offset=0 }={}) {
   let query = sb.from('providers').select('id,nom,prenom,metier,categorie,sous_categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_favoris,nb_avis,nb_appels,nb_whatsapp,telephone,skills,description,latitude,longitude').eq('statut','valide').order('note_moyenne',{ ascending:false }).range(offset,offset+limite-1);
@@ -4662,16 +4697,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script>
 // Fonctions auth disponibles immédiatement
-async function hashPassword(password) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hash = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
 
-function generateToken() {
-  return Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b => b.toString(16).padStart(2,'0')).join('');
-}
 
 async function connexionAdmin(telephone, password) {
   try {
@@ -4685,17 +4711,6 @@ async function connexionAdmin(telephone, password) {
   } catch(e) { return { success:false, message:'Erreur' }; }
 }
 
-async function connexionPrestataire(telephone, password) {
-  try {
-    const hash = await hashPassword(password);
-    const { data, error } = await sb.from('providers').select('id,nom,prenom,metier,categorie,telephone,statut').eq('telephone',telephone).eq('password_hash',hash).single();
-    if (error || !data) return { success:false, message:'Téléphone ou mot de passe incorrect' };
-    const token = generateToken();
-    await sb.from('provider_sessions').insert({ provider_id:data.id, token });
-    setSession({ provider_id:data.id, token, nom:data.nom, prenom:data.prenom });
-    return { success:true, provider:data };
-  } catch(e) { return { success:false, message:'Erreur de connexion' }; }
-}
 
 </script>
 
