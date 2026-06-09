@@ -58,7 +58,7 @@ button{font-family:'DM Sans',sans-serif;}
 a{text-decoration:none;color:inherit;}
 
 /* ── NAVIGATION ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;transition:all .3s;}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;transition:all .3s;display:none;}
 nav.scrolled{background:rgba(15,16,32,.96);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.07);box-shadow:0 4px 24px rgba(0,0,0,.2);}
 .nav-inner{max-width:1320px;margin:0 auto;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:76px;}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
@@ -1509,6 +1509,9 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 /* Cacher navbar principale sur admin/dashboard */
 #page-admin.active ~ nav,
 #page-dashboard.active ~ nav { display: none !important; }
+
+/* Nav visible seulement sur home */
+body.on-home nav { display: flex !important; }
 </style>
 
 <body>
@@ -5717,11 +5720,12 @@ function navigate(page) {
   const mainNav = document.getElementById('mainNav');
 
   if (!page || page === 'home' || page === 'accueil') {
+    document.body.classList.add('on-home');
     if (mainContent) mainContent.style.cssText = '';
     if (mainNav) mainNav.style.cssText = '';
     window.scrollTo(0, 0);
   } else {
-    // Cacher nav et contenu principal sur toutes les autres pages
+    document.body.classList.remove('on-home');
     if (mainContent) mainContent.style.cssText = 'display:none!important';
     if (mainNav) mainNav.style.cssText = 'display:none!important';
     const el = document.getElementById('page-' + page);
