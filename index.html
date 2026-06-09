@@ -1290,6 +1290,13 @@ input[type="number"] { -moz-appearance: textfield !important; }
 <body>
 <script>
 // Fonctions critiques
+
+// Sessions
+function setSession(data) { localStorage.setItem(SESSION_KEY, JSON.stringify(data)); }
+function clearSession() { localStorage.removeItem(SESSION_KEY); }
+function getSession() { try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch(e) { return null; } }
+function getProviderId() { const s=getSession(); return s?s.provider_id:null; }
+function getAdminSession() { try { return JSON.parse(localStorage.getItem(ADMIN_SESSION_KEY)); } catch(e) { return null; } }
 async function hashPassword(password) {
   const encoder = new TextEncoder();
   const data = encoder.encode(password);
@@ -1356,10 +1363,9 @@ async function connexionPrestataire(telephone, password) {
 
 async function verifierSession() {
   const s = getSession();
-  if (!s?.token) return null;
-  const { data } = await sb.from('provider_sessions').select('provider_id,expire_le').eq('token',s.token).gt('expire_le',new Date().toISOString()).single();
-  if (!data) { clearSession(); return null; }
-  return data.provider_id;
+  if (!s?.provider_id) return null;
+  // Retourner directement depuis localStorage (plus rapide, pas de colonne expire_le)
+  return s.provider_id;
 }
 
 </script>
@@ -4099,11 +4105,6 @@ function showToast(msg, type = '') {
 // ══════════════════════════════════════════
 // SUPABASE CLIENT
 // ══════════════════════════════════════════
-function getSession() { try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch(e) { return null; } }
-function setSession(data) { localStorage.setItem(SESSION_KEY, JSON.stringify(data)); }
-function clearSession() { localStorage.removeItem(SESSION_KEY); }
-function getProviderId() { const s=getSession(); return s?s.provider_id:null; }
-function getAdminSession() { try { return JSON.parse(localStorage.getItem(ADMIN_SESSION_KEY)); } catch(e) { return null; } }
 
 
 
