@@ -1275,6 +1275,16 @@ body.on-home nav { display:flex!important; }
 button .fa-solid, a .fa-solid, button .fa-brands, a .fa-brands {
   margin-right: 4px;
 }
+
+/* Cacher flèches inputs PIN */
+input[inputmode="numeric"]::-webkit-outer-spin-button,
+input[inputmode="numeric"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+input[type="number"] { -moz-appearance: textfield !important; }
 </style>
 
 <body>
@@ -2888,10 +2898,10 @@ document.addEventListener('keydown', e => {
   <div class="form-group">
     <label>Code PIN (4 chiffres)</label>
     <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;">
-      <input id="lpin1" type="number" min="0" max="9" placeholder="•" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('lpin2').focus()"/>
-      <input id="lpin2" type="number" min="0" max="9" placeholder="•" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('lpin3').focus()"/>
-      <input id="lpin3" type="number" min="0" max="9" placeholder="•" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('lpin4').focus()"/>
-      <input id="lpin4" type="number" min="0" max="9" placeholder="•" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value.length===1)document.getElementById('btnConnexion').click()"/>
+      <input id="lpin1" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('lpin2').focus()"/>
+      <input id="lpin2" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('lpin3').focus()"/>
+      <input id="lpin3" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('lpin4').focus()"/>
+      <input id="lpin4" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value.length===1)document.getElementById('btnConnexion').click()"/>
     </div>
   </div>
   <button class="btn-primary" id="btnConnexion" onclick="connexion()">
@@ -2982,10 +2992,10 @@ async function connexion() {
     <div style="margin-bottom:20px;">
       <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:8px;">Code PIN 4 chiffres *</label>
       <div style="display:flex;gap:12px;justify-content:center;">
-        <input id="i-pin1" type="number" min="0" max="9" placeholder="•" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('i-pin2').focus()"/>
-        <input id="i-pin2" type="number" min="0" max="9" placeholder="•" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('i-pin3').focus()"/>
-        <input id="i-pin3" type="number" min="0" max="9" placeholder="•" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('i-pin4').focus()"/>
-        <input id="i-pin4" type="number" min="0" max="9" placeholder="•" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1)"/>
+        <input id="i-pin1" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('i-pin2').focus()"/>
+        <input id="i-pin2" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('i-pin3').focus()"/>
+        <input id="i-pin3" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('i-pin4').focus()"/>
+        <input id="i-pin4" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1)"/>
       </div>
       <div style="text-align:center;font-size:11px;color:#9CA3AF;margin-top:6px;">Ce code vous servira à vous connecter</div>
     </div>
