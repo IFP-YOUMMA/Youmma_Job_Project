@@ -3236,6 +3236,113 @@ function loadMoreProviders() {
   renderProviderCards();
 }
 
+
+// ── ADMIN RÉALISATIONS ──
+const _realData = [
+  {idx:0, label:'Réalisation 1', metier:'Construction', gradient:'linear-gradient(135deg,#1A1A4E,#C74B00)'},
+  {idx:1, label:'Réalisation 2', metier:'Électricité',  gradient:'linear-gradient(135deg,#1A0A4E,#7C3AED)'},
+  {idx:2, label:'Réalisation 3', metier:'Plomberie',    gradient:'linear-gradient(135deg,#0A2E1A,#0F6E56)'},
+  {idx:3, label:'Réalisation 4', metier:'Soudure',      gradient:'linear-gradient(135deg,#2E1A0A,#B45309)'},
+  {idx:4, label:'Réalisation 5', metier:'Menuiserie',   gradient:'linear-gradient(135deg,#2E0A0A,#92400E)'},
+];
+
+function renderAdminRealisations() {
+  const container = document.getElementById('adminRealCards');
+  if (!container) return;
+
+  container.innerHTML = _realData.map(s => {
+    const imgEl = document.getElementById('real-img-' + s.idx);
+    const titreEl = document.getElementById('real-titre-' + s.idx);
+    const descEl = document.getElementById('real-desc-' + s.idx);
+    const artisanEl = document.getElementById('real-artisan-' + s.idx);
+
+    const currentTitre = titreEl?.textContent || '';
+    const currentDesc = descEl?.textContent || '';
+    const currentArtisan = artisanEl?.textContent || '';
+
+    // Preview image actuelle
+    let previewHtml = '';
+    if (imgEl) {
+      const img = imgEl.querySelector('img');
+      if (img) {
+        previewHtml = `<img src="${img.src}" style="width:100%;height:100%;object-fit:cover;"/>`;
+      } else {
+        previewHtml = `<div style="width:100%;height:100%;background:${s.gradient};display:flex;align-items:center;justify-content:center;font-size:13px;color:rgba(255,255,255,.6);">${s.metier}</div>`;
+      }
+    }
+
+    return `
+    <div style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;overflow:hidden;">
+      <!-- Preview -->
+      <div style="aspect-ratio:4/3;overflow:hidden;background:#F4F6FB;">
+        <div id="areal-preview-wrap-${s.idx}" style="width:100%;height:100%;">${previewHtml}</div>
+      </div>
+      <div style="padding:16px;">
+        <div style="font-size:12px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">${s.label} — ${s.metier}</div>
+        <div style="margin-bottom:8px;">
+          <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Titre</label>
+          <input id="areal-titre-${s.idx}" value="${currentTitre}" style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/>
+        </div>
+        <div style="margin-bottom:8px;">
+          <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Description</label>
+          <textarea id="areal-desc-${s.idx}" style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12px;box-sizing:border-box;min-height:60px;resize:none;outline:none;">${currentDesc}</textarea>
+        </div>
+        <div style="margin-bottom:12px;">
+          <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Artisan</label>
+          <input id="areal-artisan-${s.idx}" value="${currentArtisan}" style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/>
+        </div>
+        <!-- Upload image -->
+        <label style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px;background:#F4F6FB;border:2px dashed #E5E7EB;border-radius:10px;font-size:13px;font-weight:700;color:#1A1A4E;cursor:pointer;margin-bottom:8px;box-sizing:border-box;" onmouseover="this.style.borderColor='#E85D04';this.style.color='#E85D04'" onmouseout="this.style.borderColor='#E5E7EB';this.style.color='#1A1A4E'">
+          <i class="fa-solid fa-camera"></i> Choisir une image
+          <input type="file" accept="image/*" style="display:none;" onchange="previewRealImage(this,${s.idx})"/>
+        </label>
+        <button onclick="validerReal(${s.idx})" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+          <i class="fa-solid fa-check"></i> Valider et publier
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function previewRealImage(input, idx) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const wrap = document.getElementById('areal-preview-wrap-' + idx);
+    if (wrap) wrap.innerHTML = '<img src="' + e.target.result + '" style="width:100%;height:100%;object-fit:cover;"/>';
+    const label = input.parentElement;
+    if (label) label.innerHTML = '<i class="fa-solid fa-check" style="color:#16A34A;"></i> ' + file.name;
+  };
+  reader.readAsDataURL(file);
+}
+
+function validerReal(idx) {
+  const titre = document.getElementById('real-titre-' + idx);
+  const desc = document.getElementById('real-desc-' + idx);
+  const artisan = document.getElementById('real-artisan-' + idx);
+  const imgContainer = document.getElementById('real-img-' + idx);
+  const previewWrap = document.getElementById('areal-preview-wrap-' + idx);
+
+  const newTitre = document.getElementById('areal-titre-' + idx)?.value;
+  const newDesc = document.getElementById('areal-desc-' + idx)?.value;
+  const newArtisan = document.getElementById('areal-artisan-' + idx)?.value;
+
+  if (newTitre && titre) titre.textContent = newTitre;
+  if (newDesc && desc) desc.textContent = newDesc;
+  if (newArtisan && artisan) artisan.textContent = newArtisan;
+
+  // Mettre l'image sur le carrousel
+  if (previewWrap && imgContainer) {
+    const previewImg = previewWrap.querySelector('img');
+    if (previewImg) {
+      imgContainer.innerHTML = '<img src="' + previewImg.src + '" style="width:100%;height:100%;object-fit:cover;"/>';
+    }
+  }
+
+  showToast('Réalisation ' + (idx+1) + ' publiée !');
+}
+
 // ── KEYBOARD ──
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeModal(); fermerInscription(); }
@@ -4251,6 +4358,24 @@ async function chargerAvis() {
 
       <div id="codesTable"></div>
     </div>
+
+    <!-- RÉALISATIONS -->
+    <div class="admin-section" id="admin-realisations">
+      <div style="margin-bottom:24px;">
+        <h2 style="font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;color:#1A1A4E;margin-bottom:6px;"><i class="fa-solid fa-images"></i> Gestion des réalisations</h2>
+        <p style="font-size:13.5px;color:#6B7280;">Modifiez les réalisations affichées sur la page d'accueil</p>
+      </div>
+
+      <!-- Conseil dimensions -->
+      <div style="background:#FEF3C7;border-radius:12px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:#92400E;">
+        <strong>Dimensions recommandées :</strong> 800 × 600 px — Format JPG ou WebP — Max 2 Mo par image
+      </div>
+
+      <!-- Grille des 5 réalisations -->
+      <div id="adminRealCards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;"></div>
+    </div>
+
+
 
   </div>
 </div>
