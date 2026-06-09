@@ -3801,6 +3801,26 @@ function logoutAdmin() {
 
 
 // ── LOAD DATA ──
+async function getProvidersAdmin({ statut='',limite=100 }={}) {
+  let q = sb.from('providers').select('*').order('created_at',{ascending:false}).limit(limite);
+  if (statut) q = q.eq('statut',statut);
+  const { data } = await q;
+  return data||[];
+}
+
+
+async function getAdminStats() {
+  const [total,att,val,rej,sus] = await Promise.all([
+    sb.from('providers').select('id',{count:'exact',head:true}),
+    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','en_attente'),
+    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','valide'),
+    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','rejete'),
+    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','suspendu'),
+  ]);
+  return {total:total.count||0,en_attente:att.count||0,valides:val.count||0,rejetes:rej.count||0,suspendu:sus.count||0};
+}
+
+
 async function loadAll() {
   try {
     const stats = await getAdminStats();
@@ -4122,22 +4142,6 @@ async function getAvis(providerId) {
   return data||[];
 }
 
-async function getProvidersAdmin({ statut='',limite=100 }={}) {
-  let q = sb.from('providers').select('*').order('created_at',{ascending:false}).limit(limite);
-  if (statut) q = q.eq('statut',statut);
-  const { data } = await q;
-  return data||[];
-}
-async function getAdminStats() {
-  const [total,att,val,rej,sus] = await Promise.all([
-    sb.from('providers').select('id',{count:'exact',head:true}),
-    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','en_attente'),
-    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','valide'),
-    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','rejete'),
-    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','suspendu'),
-  ]);
-  return {total:total.count||0,en_attente:att.count||0,valides:val.count||0,rejetes:rej.count||0,suspendu:sus.count||0};
-}
 async function validerProvider(id) {
   const essai_fin = new Date(Date.now()+14*24*60*60*1000).toISOString();
   const {error} = await sb.from('providers').update({statut:'valide',essai_actif:true,essai_fin}).eq('id',id);
