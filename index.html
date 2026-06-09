@@ -1,3 +1,19 @@
+function showAdmin(section) {
+  // Mettre à jour les items nav
+  const NAV_NORMAL = 'display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:3px;transition:background .2s;white-space:nowrap;';
+  const NAV_ACTIVE = 'display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:3px;background:rgba(232,93,4,.2);white-space:nowrap;';
+  ['dashboard','en_attente','valide','rejete','suspendu','codes'].forEach(s => {
+    const el = document.getElementById('anav-' + s);
+    if (el) el.style.cssText = s === section ? NAV_ACTIVE : NAV_NORMAL;
+  });
+  // Afficher la bonne section
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('admin-' + section);
+  if (target) target.classList.add('active');
+  if (section !== 'dashboard') {
+    _adminLoadAll();
+  }
+}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -4151,12 +4167,12 @@ async function chargerAvis() {
     </div>
     <!-- Navigation -->
     <nav style="flex:1;padding:10px 8px;overflow-y:auto;">
-      <div class="anav active" onclick="showAdmin('dashboard')">📊 <span>Tableau de bord</span></div>
-      <div class="anav" onclick="showAdmin('en_attente')">⏳ <span>En attente</span></div>
-      <div class="anav" onclick="showAdmin('valide')">✅ <span>Validés</span></div>
-      <div class="anav" onclick="showAdmin('rejete')">❌ <span>Rejetés</span></div>
-      <div class="anav" onclick="showAdmin('suspendu')">🚫 <span>Suspendus</span></div>
-      <div class="anav" onclick="showAdmin('codes')">🔑 <span>Codes d'activation</span></div>
+      <div id="anav-dashboard" style="display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:3px;background:rgba(232,93,4,.2);white-space:nowrap;" onclick="showAdmin('dashboard')" onmouseover="this.style.background='rgba(232,93,4,.25)'" onmouseout="this.style.background='rgba(232,93,4,.2)'">📊 Tableau de bord</div>
+      <div id="anav-en_attente" style="display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:3px;transition:background .2s;white-space:nowrap;" onclick="showAdmin('en_attente')" onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">⏳ En attente</div>
+      <div id="anav-valide" style="display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:3px;transition:background .2s;white-space:nowrap;" onclick="showAdmin('valide')" onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">✅ Validés</div>
+      <div id="anav-rejete" style="display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:3px;transition:background .2s;white-space:nowrap;" onclick="showAdmin('rejete')" onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">❌ Rejetés</div>
+      <div id="anav-suspendu" style="display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:3px;transition:background .2s;white-space:nowrap;" onclick="showAdmin('suspendu')" onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">🚫 Suspendus</div>
+      <div id="anav-codes" style="display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:3px;transition:background .2s;white-space:nowrap;" onclick="showAdmin('codes')" onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">🔑 Codes d'activation</div>
     </nav>
     <!-- Déconnexion -->
     <div style="padding:10px 8px;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;">
