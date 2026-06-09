@@ -1549,6 +1549,141 @@ img { max-width:100%; }
 
 <body>
 <script>
+// ── PRESTATAIRES PUBLICS ──
+async function loadProvidersFromSupabase() {
+  try {
+    const { data, error } = await sb.from('providers')
+      .select('id,prenom,nom,metier,categorie,ville,commune,note_moyenne,nb_avis,photo_url,statut')
+      .order('created_at', { ascending: false })
+      .limit(100);
+
+    const loader = document.getElementById('providersLoader');
+    if (error) {
+        if (loader) loader.innerHTML = '❌ ' + error.message;
+      return;
+    }
+
+
+    _allProviders = data || [];
+    console.log('Prestataires chargés:', _allProviders.length);
+    _filteredProviders = [..._allProviders];
+    _provPage = 0;
+    if (loader) loader.style.display = 'none';
+    renderProviderCards();
+
+  } catch(e) {
+    console.error('loadProviders:', e);
+  }
+}
+
+
+function renderProviderCards() {
+  const grid = document.getElementById('providersGrid');
+  const loadMoreWrap = document.getElementById('loadMoreWrap');
+  if (!grid) return;
+
+  const start = 0;
+  const end = (_provPage + 1) * _provPerPage;
+  const visible = _filteredProviders.slice(start, end);
+
+  if (visible.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#9CA3AF;font-size:14px;"><i class=\"fa-solid fa-users-slash\" style=\"font-size:32px;margin-bottom:12px;display:block;\"></i>Aucun artisan trouvé pour le moment</div>';
+    if (loadMoreWrap) loadMoreWrap.style.display = 'none';
+    return;
+  }
+
+  grid.innerHTML = visible.map(p => {
+    const ini = ((p.prenom||'?')[0] + (p.nom||'?')[0]).toUpperCase();
+    const nom = (p.prenom||'') + ' ' + (p.nom||'');
+    const note = p.note_moyenne ? p.note_moyenne.toFixed(1) : '—';
+    const avis = p.nb_avis || 0;
+    const colors = ['#FDE8D8','#E8F5E9','#E8F0FE','#FFF3E0','#F3E8FF','#E0F2F1'];
+    const textColors = ['#C74B00','#2E7D32','#1A73E8','#E65100','#7B1FA2','#00695C'];
+    const ci = (p.prenom||'A').charCodeAt(0) % 6;
+
+    return `
+    <div onclick="openModal(${JSON.stringify(p.id)})" style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;padding:20px;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.04);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,.1)';this.style.borderColor='#E85D04'" onmouseout="this.style.transform='none';this.style.boxShadow='0 2px 8px rgba(0,0,0,.04)';this.style.borderColor='#E5E7EB'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div style="width:52px;height:52px;border-radius:14px;background:${colors[ci]};color:${textColors[ci]};display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;flex-shrink:0;overflow:hidden;">
+          ${p.photo_url ? `<img src="${p.photo_url}" style="width:100%;height:100%;object-fit:cover;" alt="${nom}"/>` : ini}
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${nom}</div>
+          <div style="font-size:12.5px;color:#E85D04;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.metier||'—'}</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+        ${p.badge_verifie ? '<span style="background:#DCFCE7;color:#16A34A;border-radius:20px;padding:2px 8px;font-size:10.5px;font-weight:700;"><i class='fa-solid fa-circle-check'></i> Vérifié</span>' : ''}
+        ${p.badge_express ? '<span style="background:#EDE9FE;color:#7C3AED;border-radius:20px;padding:2px 8px;font-size:10.5px;font-weight:700;">Express</span>' : ''}
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:12px;color:#6B7280;"><i class="fa-solid fa-location-dot" style="color:#9CA3AF;margin-right:3px;"></i>${p.ville||'—'}${p.commune?' · '+p.commune:''}</div>
+        <div style="font-size:12px;color:#F5C842;font-weight:700;">★ ${note} <span style="color:#9CA3AF;font-weight:400;">(${avis})</span></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  if (loadMoreWrap) {
+    loadMoreWrap.style.display = _filteredProviders.length > end ? 'block' : 'none';
+  }
+}
+
+
+function filterProviders() {
+  const q = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+  const cat = document.getElementById('catFilter')?.value || '';
+  const ville = document.getElementById('villeFilter')?.value || '';
+  const noteMin = parseFloat(document.getElementById('noteFilter')?.value || '0');
+  const dispoFilter = document.getElementById('dispoFilter')?.value || '';
+
+  filteredData = PRESTATAIRES.filter(p => {
+    const mq = !q || p.nom.toLowerCase().includes(q) || p.metier.toLowerCase().includes(q)
+      || p.ville.toLowerCase().includes(q) || (p.skills||[]).some(s=>s.toLowerCase().includes(q))
+      || (p.desc||'').toLowerCase().includes(q);
+    const mc = !cat || p.cat === cat || p.cat.includes(cat);
+    const mv = !ville || p.ville.toLowerCase().includes(ville.toLowerCase());
+    const mn = !noteMin || p.note >= noteMin;
+    const md = !dispoFilter
+      || (dispoFilter === 'maintenant' && p.dispo && (p.dispo.includes('maintenant')||p.dispo.includes("aujourd'hui")))
+      || (dispoFilter === 'semaine' && p.dispo)
+      || dispoFilter === 'all';
+
+    // Chip filters
+    const mchip = activeFilter === 'all' ? true
+      : activeFilter === 'express' ? p.badge_express
+      : activeFilter === 'verifie' ? p.badge_verifie
+      : activeFilter === 'top' ? p.badge_top
+      : activeFilter === 'recommande' ? p.recommande
+      : activeFilter === 'artisans' ? p.cat === 'Artisans'
+      : true;
+
+    return mq && mc && mv && mn && md && mchip;
+  });
+
+  displayedCount = 9;
+  renderProviders();
+
+  // Update count badge
+  const countEl = document.getElementById('resultsCount');
+  if (countEl) countEl.textContent = filteredData.length + ' artisan' + (filteredData.length > 1 ? 's' : '');
+  // Show/hide reset button
+  const rb = document.getElementById('resetBtn');
+  if (rb) {
+    const hasFilter = ['searchInput','catFilter','villeFilter','dispoFilter','noteFilter'].some(id=>{
+      const el = document.getElementById(id); return el && el.value;
+    }) || activeFilter !== 'all';
+    rb.style.display = hasFilter ? 'block' : 'none';
+  }
+}
+
+
+function loadMoreProviders() {
+  _provPage++;
+  renderProviderCards();
+}
+
+
+
 // Fonctions critiques
 
 // Sessions
@@ -2756,52 +2891,6 @@ function renderProviders() {
 }
 
 // ── FILTERS ──
-function filterProviders() {
-  const q = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
-  const cat = document.getElementById('catFilter')?.value || '';
-  const ville = document.getElementById('villeFilter')?.value || '';
-  const noteMin = parseFloat(document.getElementById('noteFilter')?.value || '0');
-  const dispoFilter = document.getElementById('dispoFilter')?.value || '';
-
-  filteredData = PRESTATAIRES.filter(p => {
-    const mq = !q || p.nom.toLowerCase().includes(q) || p.metier.toLowerCase().includes(q)
-      || p.ville.toLowerCase().includes(q) || (p.skills||[]).some(s=>s.toLowerCase().includes(q))
-      || (p.desc||'').toLowerCase().includes(q);
-    const mc = !cat || p.cat === cat || p.cat.includes(cat);
-    const mv = !ville || p.ville.toLowerCase().includes(ville.toLowerCase());
-    const mn = !noteMin || p.note >= noteMin;
-    const md = !dispoFilter
-      || (dispoFilter === 'maintenant' && p.dispo && (p.dispo.includes('maintenant')||p.dispo.includes("aujourd'hui")))
-      || (dispoFilter === 'semaine' && p.dispo)
-      || dispoFilter === 'all';
-
-    // Chip filters
-    const mchip = activeFilter === 'all' ? true
-      : activeFilter === 'express' ? p.badge_express
-      : activeFilter === 'verifie' ? p.badge_verifie
-      : activeFilter === 'top' ? p.badge_top
-      : activeFilter === 'recommande' ? p.recommande
-      : activeFilter === 'artisans' ? p.cat === 'Artisans'
-      : true;
-
-    return mq && mc && mv && mn && md && mchip;
-  });
-
-  displayedCount = 9;
-  renderProviders();
-
-  // Update count badge
-  const countEl = document.getElementById('resultsCount');
-  if (countEl) countEl.textContent = filteredData.length + ' artisan' + (filteredData.length > 1 ? 's' : '');
-  // Show/hide reset button
-  const rb = document.getElementById('resetBtn');
-  if (rb) {
-    const hasFilter = ['searchInput','catFilter','villeFilter','dispoFilter','noteFilter'].some(id=>{
-      const el = document.getElementById(id); return el && el.value;
-    }) || activeFilter !== 'all';
-    rb.style.display = hasFilter ? 'block' : 'none';
-  }
-}
 
 function filterCat(cat) {
   const sel = document.getElementById('catFilter');
@@ -3136,82 +3225,7 @@ let _filteredProviders = [];
 let _provPage = 0;
 const _provPerPage = 9;
 
-async function loadProvidersFromSupabase() {
-  try {
-    const { data, error } = await sb.from('providers')
-      .select('id,prenom,nom,metier,categorie,ville,commune,note_moyenne,nb_avis,photo_url,statut')
-      .order('created_at', { ascending: false })
-      .limit(100);
 
-    const loader = document.getElementById('providersLoader');
-    if (error) {
-        if (loader) loader.innerHTML = '❌ ' + error.message;
-      return;
-    }
-
-
-    _allProviders = data || [];
-    console.log('Prestataires chargés:', _allProviders.length);
-    _filteredProviders = [..._allProviders];
-    _provPage = 0;
-    if (loader) loader.style.display = 'none';
-    renderProviderCards();
-
-  } catch(e) {
-    console.error('loadProviders:', e);
-  }
-}
-
-function renderProviderCards() {
-  const grid = document.getElementById('providersGrid');
-  const loadMoreWrap = document.getElementById('loadMoreWrap');
-  if (!grid) return;
-
-  const start = 0;
-  const end = (_provPage + 1) * _provPerPage;
-  const visible = _filteredProviders.slice(start, end);
-
-  if (visible.length === 0) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#9CA3AF;font-size:14px;"><i class=\"fa-solid fa-users-slash\" style=\"font-size:32px;margin-bottom:12px;display:block;\"></i>Aucun artisan trouvé pour le moment</div>';
-    if (loadMoreWrap) loadMoreWrap.style.display = 'none';
-    return;
-  }
-
-  grid.innerHTML = visible.map(p => {
-    const ini = ((p.prenom||'?')[0] + (p.nom||'?')[0]).toUpperCase();
-    const nom = (p.prenom||'') + ' ' + (p.nom||'');
-    const note = p.note_moyenne ? p.note_moyenne.toFixed(1) : '—';
-    const avis = p.nb_avis || 0;
-    const colors = ['#FDE8D8','#E8F5E9','#E8F0FE','#FFF3E0','#F3E8FF','#E0F2F1'];
-    const textColors = ['#C74B00','#2E7D32','#1A73E8','#E65100','#7B1FA2','#00695C'];
-    const ci = (p.prenom||'A').charCodeAt(0) % 6;
-
-    return `
-    <div onclick="openModal(${JSON.stringify(p.id)})" style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;padding:20px;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.04);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,.1)';this.style.borderColor='#E85D04'" onmouseout="this.style.transform='none';this.style.boxShadow='0 2px 8px rgba(0,0,0,.04)';this.style.borderColor='#E5E7EB'">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-        <div style="width:52px;height:52px;border-radius:14px;background:${colors[ci]};color:${textColors[ci]};display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;flex-shrink:0;overflow:hidden;">
-          ${p.photo_url ? `<img src="${p.photo_url}" style="width:100%;height:100%;object-fit:cover;" alt="${nom}"/>` : ini}
-        </div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${nom}</div>
-          <div style="font-size:12.5px;color:#E85D04;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.metier||'—'}</div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
-        ${p.badge_verifie ? '<span style="background:#DCFCE7;color:#16A34A;border-radius:20px;padding:2px 8px;font-size:10.5px;font-weight:700;"><i class='fa-solid fa-circle-check'></i> Vérifié</span>' : ''}
-        ${p.badge_express ? '<span style="background:#EDE9FE;color:#7C3AED;border-radius:20px;padding:2px 8px;font-size:10.5px;font-weight:700;">Express</span>' : ''}
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <div style="font-size:12px;color:#6B7280;"><i class="fa-solid fa-location-dot" style="color:#9CA3AF;margin-right:3px;"></i>${p.ville||'—'}${p.commune?' · '+p.commune:''}</div>
-        <div style="font-size:12px;color:#F5C842;font-weight:700;">★ ${note} <span style="color:#9CA3AF;font-weight:400;">(${avis})</span></div>
-      </div>
-    </div>`;
-  }).join('');
-
-  if (loadMoreWrap) {
-    loadMoreWrap.style.display = _filteredProviders.length > end ? 'block' : 'none';
-  }
-}
 
 function filterProviders() {
   const search = (document.getElementById('searchProviders')?.value || '').toLowerCase().trim();
@@ -3231,10 +3245,6 @@ function filterProviders() {
   renderProviderCards();
 }
 
-function loadMoreProviders() {
-  _provPage++;
-  renderProviderCards();
-}
 
 
 // ── ADMIN RÉALISATIONS ──
