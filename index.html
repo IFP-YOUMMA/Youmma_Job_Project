@@ -5284,19 +5284,36 @@ let _allProviders = {};
 
 async function initAdmin() {
   const s = getAdminSession();
+  
+  function showAdminPanel() {
+    _adminData = s;
+    adminData = s;
+    const loginWrap = document.getElementById('loginWrap');
+    const adminWrap = document.getElementById('adminWrap');
+    const pageAdmin = document.getElementById('page-admin');
+    if (loginWrap) loginWrap.style.cssText = 'display:none!important';
+    if (adminWrap) adminWrap.classList.add('visible');
+    if (pageAdmin) pageAdmin.classList.add('logged');
+  }
+
   if (s?.token) {
-    // Vérifier session sans expire_le (colonne peut ne pas exister)
-    const { data } = await sb.from('admin_sessions').select('admin_id').eq('token', s.token).single();
-    if (data) {
-      _adminData = s;
-      adminData = s;
-      const loginWrap = document.querySelector('#page-admin .login-wrap') || document.getElementById('loginWrap');
-      const adminWrap = document.querySelector('#page-admin .admin-wrap') || document.getElementById('adminWrap');
-      if(loginWrap) loginWrap.style.cssText = 'display:none!important';
-      if(adminWrap) adminWrap.classList.add('visible');
-      document.getElementById('page-admin')?.classList.add('logged');
-      await loadAll();
-      return;
+    // Afficher le panel immédiatement (UX rapide)
+    showAdminPanel();
+    await loadAll();
+    
+    // Vérifier session en arrière-plan
+    try {
+      const { data } = await sb.from('admin_sessions')
+        .select('admin_id')
+        .eq('token', s.token)
+        .single();
+      if (!data) {
+        // Session invalide - déconnecter
+        localStorage.removeItem(ADMIN_SESSION_KEY);
+        location.reload();
+      }
+    } catch(e) {
+      // Ignorer erreur réseau - garder connecté
     }
   }
 }
