@@ -2192,7 +2192,131 @@ const PRESTATAIRES = [
 
 </script>
 
-<script>
+<script>// ── GESTION RÉALISATIONS ──
+const REAL_KEY = 'yj_realisations';
+let _realIdx = 0;
+let _realTimer = null;
+
+const REAL_DEFAUT = [
+  {id:1, img:'https://picsum.photos/id/1040/600/450', badge:'🏗️ Construction', badgeColor:'#E85D04', titre:'Villa moderne à Ratoma', desc:'Construction complète d'une villa R+1 en 6 mois. Maçonnerie, carrelage et peinture inclus.', artisan:'Mamadou Kouyaté', ini:'MK', note:'4.9'},
+  {id:2, img:'https://picsum.photos/id/1080/600/450', badge:'⚡ Électricité', badgeColor:'#7C3AED', titre:'Installation électrique bureau', desc:'Câblage complet d'un immeuble de bureaux 3 étages. Tableau électrique et climatisation.', artisan:'Amadou Diallo', ini:'AD', note:'5.0'},
+  {id:3, img:'https://picsum.photos/id/1062/600/450', badge:'🔧 Plomberie', badgeColor:'#0F6E56', titre:'Réseau plomberie résidentiel', desc:'Installation eau froide/chaude pour une résidence de 8 appartements à Kaloum.', artisan:'Ibrahima Bah', ini:'IB', note:'4.8'},
+  {id:4, img:'https://picsum.photos/id/1035/600/450', badge:'🔩 Soudure', badgeColor:'#B45309', titre:'Portail & clôture métallique', desc:'Fabrication et pose d'un portail coulissant et d'une clôture sur 80m linéaires à Dixinn.', artisan:'Sékou Camara', ini:'SC', note:'4.7'},
+  {id:5, img:'https://picsum.photos/id/1025/600/450', badge:'🪚 Menuiserie', badgeColor:'#92400E', titre:'Cuisine équipée sur mesure', desc:'Fabrication et pose d'une cuisine complète en bois massif avec plan de travail en marbre.', artisan:'Souleymane Barry', ini:'SB', note:'4.9'},
+];
+
+function getRealisations() {
+  try { return JSON.parse(localStorage.getItem(REAL_KEY)) || REAL_DEFAUT; } catch(e) { return REAL_DEFAUT; }
+}
+function saveRealisations(data) { localStorage.setItem(REAL_KEY, JSON.stringify(data)); }
+
+function loadRealisations() {
+  const data = getRealisations();
+  const track = document.getElementById('realTrack');
+  const dots = document.getElementById('realDots');
+  if (!track) return;
+
+  track.innerHTML = data.map((r,i) => `
+    <div style="min-width:100%;padding:0 4px;box-sizing:border-box;">
+      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:0;border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.1);min-height:380px;">
+        <!-- Image -->
+        <div style="position:relative;overflow:hidden;">
+          <img src="${r.img}" id="real-img-${i+1}" alt="${r.titre}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='#E5E7EB';this.style.display='none'"/>
+          <div style="position:absolute;top:16px;left:16px;background:${r.badgeColor||'#E85D04'};color:#fff;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;" id="real-badge-${i+1}">${r.badge}</div>
+        </div>
+        <!-- Contenu -->
+        <div style="background:#fff;padding:36px 32px;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:12px;color:#9CA3AF;font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;">Réalisation ${i+1} / ${data.length}</div>
+          <h3 id="real-titre-${i+1}" style="font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;color:#1A1A4E;margin-bottom:12px;line-height:1.3;">${r.titre}</h3>
+          <p id="real-desc-${i+1}" style="font-size:14px;color:#6B7280;line-height:1.7;margin-bottom:24px;">${r.desc}</p>
+          <div style="display:flex;align-items:center;gap:12px;padding-top:20px;border-top:1.5px solid #F3F4F6;">
+            <div style="width:40px;height:40px;border-radius:50%;background:#FDE8D8;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#C74B00;">${r.ini}</div>
+            <div>
+              <div id="real-artisan-${i+1}" style="font-size:13.5px;font-weight:700;color:#1A1A4E;">${r.artisan}</div>
+              <div style="font-size:12px;color:#F5C842;font-weight:700;">★★★★★ ${r.note}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  if (dots) {
+    dots.innerHTML = data.map((_,i) => `
+      <div onclick="realGo(${i})" id="rdot-${i}" style="width:${i===0?'24px':'8px'};height:8px;border-radius:4px;background:${i===0?'#E85D04':'#E5E7EB'};cursor:pointer;transition:all .3s;"></div>
+    `).join('');
+  }
+
+  clearInterval(_realTimer);
+  _realTimer = setInterval(() => realGo(_realIdx + 1), 5000);
+}
+
+function realGo(n) {
+  const data = getRealisations();
+  const total = data.length;
+  _realIdx = ((n % total) + total) % total;
+  const track = document.getElementById('realTrack');
+  if (track) track.style.transform = `translateX(-${_realIdx * 100}%)`;
+  data.forEach((_, i) => {
+    const dot = document.getElementById('rdot-' + i);
+    if (dot) { dot.style.width = i === _realIdx ? '24px' : '8px'; dot.style.background = i === _realIdx ? '#E85D04' : '#E5E7EB'; }
+  });
+}
+
+// Admin réalisations
+function renderAdminRealisations() {
+  const container = document.getElementById('adminRealCards');
+  if (!container) return;
+  const data = getRealisations();
+  container.innerHTML = data.map((r,i) => `
+    <div style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;overflow:hidden;">
+      <div style="position:relative;aspect-ratio:4/3;overflow:hidden;">
+        <img id="areal-img-${i}" src="${r.img}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='#E5E7EB'"/>
+        <label style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.65);color:#fff;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;">
+          📷 Changer
+          <input type="file" accept="image/*" style="display:none;" onchange="changerImageReal(this,${i})"/>
+        </label>
+      </div>
+      <div style="padding:14px;">
+        <div style="margin-bottom:8px;"><label style="font-size:11px;font-weight:700;color:#6B7280;">Badge</label><input id="areal-badge-${i}" value="${r.badge}" style="width:100%;padding:7px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;margin-top:3px;box-sizing:border-box;"/></div>
+        <div style="margin-bottom:8px;"><label style="font-size:11px;font-weight:700;color:#6B7280;">Titre</label><input id="areal-titre-${i}" value="${r.titre}" style="width:100%;padding:7px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;margin-top:3px;box-sizing:border-box;"/></div>
+        <div style="margin-bottom:8px;"><label style="font-size:11px;font-weight:700;color:#6B7280;">Description</label><textarea id="areal-desc-${i}" style="width:100%;padding:7px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12px;margin-top:3px;box-sizing:border-box;min-height:60px;resize:none;">${r.desc}</textarea></div>
+        <div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:700;color:#6B7280;">Artisan</label><input id="areal-artisan-${i}" value="${r.artisan}" style="width:100%;padding:7px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;margin-top:3px;box-sizing:border-box;"/></div>
+        <button onclick="sauvegarderReal(${i})" style="width:100%;padding:10px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">✅ Sauvegarder</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function changerImageReal(input, idx) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = document.getElementById('areal-img-'+idx);
+    if (img) img.src = e.target.result;
+    const data = getRealisations();
+    data[idx].img = e.target.result;
+    saveRealisations(data);
+    loadRealisations();
+    showToast('✅ Image mise à jour !');
+  };
+  reader.readAsDataURL(file);
+}
+
+function sauvegarderReal(idx) {
+  const data = getRealisations();
+  data[idx].badge = document.getElementById('areal-badge-'+idx)?.value || data[idx].badge;
+  data[idx].titre = document.getElementById('areal-titre-'+idx)?.value || data[idx].titre;
+  data[idx].desc = document.getElementById('areal-desc-'+idx)?.value || data[idx].desc;
+  data[idx].artisan = document.getElementById('areal-artisan-'+idx)?.value || data[idx].artisan;
+  saveRealisations(data);
+  loadRealisations();
+  showToast('✅ Réalisation mise à jour !');
+}
+
+
+
 // ════════════════════════════════════════════════════
 // YOUMMA JOBS 2026 — JS PRINCIPAL (site public)
 // ════════════════════════════════════════════════════
@@ -2209,7 +2333,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   filteredData = [...PRESTATAIRES];
   renderArtisans();
-  loadRealisations();
+  setTimeout(function() { if(typeof loadRealisations==='function') loadRealisations(); }, 300);
   renderProviders();
   initCounters();
   observeFadeIn();
@@ -2790,129 +2914,6 @@ function hSlideInfo(s) {
   if(n)n.textContent=s.nom; if(m)m.textContent=s.metier+' · 📍'+s.ville; if(r)r.textContent=s.note;
 }
 
-
-// ── GESTION RÉALISATIONS ──
-const REAL_KEY = 'yj_realisations';
-let _realIdx = 0;
-let _realTimer = null;
-
-const REAL_DEFAUT = [
-  {id:1, img:'https://picsum.photos/id/1040/600/450', badge:'🏗️ Construction', badgeColor:'#E85D04', titre:'Villa moderne à Ratoma', desc:'Construction complète d'une villa R+1 en 6 mois. Maçonnerie, carrelage et peinture inclus.', artisan:'Mamadou Kouyaté', ini:'MK', note:'4.9'},
-  {id:2, img:'https://picsum.photos/id/1080/600/450', badge:'⚡ Électricité', badgeColor:'#7C3AED', titre:'Installation électrique bureau', desc:'Câblage complet d'un immeuble de bureaux 3 étages. Tableau électrique et climatisation.', artisan:'Amadou Diallo', ini:'AD', note:'5.0'},
-  {id:3, img:'https://picsum.photos/id/1062/600/450', badge:'🔧 Plomberie', badgeColor:'#0F6E56', titre:'Réseau plomberie résidentiel', desc:'Installation eau froide/chaude pour une résidence de 8 appartements à Kaloum.', artisan:'Ibrahima Bah', ini:'IB', note:'4.8'},
-  {id:4, img:'https://picsum.photos/id/1035/600/450', badge:'🔩 Soudure', badgeColor:'#B45309', titre:'Portail & clôture métallique', desc:'Fabrication et pose d'un portail coulissant et d'une clôture sur 80m linéaires à Dixinn.', artisan:'Sékou Camara', ini:'SC', note:'4.7'},
-  {id:5, img:'https://picsum.photos/id/1025/600/450', badge:'🪚 Menuiserie', badgeColor:'#92400E', titre:'Cuisine équipée sur mesure', desc:'Fabrication et pose d'une cuisine complète en bois massif avec plan de travail en marbre.', artisan:'Souleymane Barry', ini:'SB', note:'4.9'},
-];
-
-function getRealisations() {
-  try { return JSON.parse(localStorage.getItem(REAL_KEY)) || REAL_DEFAUT; } catch(e) { return REAL_DEFAUT; }
-}
-function saveRealisations(data) { localStorage.setItem(REAL_KEY, JSON.stringify(data)); }
-
-function loadRealisations() {
-  const data = getRealisations();
-  const track = document.getElementById('realTrack');
-  const dots = document.getElementById('realDots');
-  if (!track) return;
-
-  track.innerHTML = data.map((r,i) => `
-    <div style="min-width:100%;padding:0 4px;box-sizing:border-box;">
-      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:0;border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.1);min-height:380px;">
-        <!-- Image -->
-        <div style="position:relative;overflow:hidden;">
-          <img src="${r.img}" id="real-img-${i+1}" alt="${r.titre}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='#E5E7EB';this.style.display='none'"/>
-          <div style="position:absolute;top:16px;left:16px;background:${r.badgeColor||'#E85D04'};color:#fff;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;" id="real-badge-${i+1}">${r.badge}</div>
-        </div>
-        <!-- Contenu -->
-        <div style="background:#fff;padding:36px 32px;display:flex;flex-direction:column;justify-content:center;">
-          <div style="font-size:12px;color:#9CA3AF;font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;">Réalisation ${i+1} / ${data.length}</div>
-          <h3 id="real-titre-${i+1}" style="font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;color:#1A1A4E;margin-bottom:12px;line-height:1.3;">${r.titre}</h3>
-          <p id="real-desc-${i+1}" style="font-size:14px;color:#6B7280;line-height:1.7;margin-bottom:24px;">${r.desc}</p>
-          <div style="display:flex;align-items:center;gap:12px;padding-top:20px;border-top:1.5px solid #F3F4F6;">
-            <div style="width:40px;height:40px;border-radius:50%;background:#FDE8D8;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#C74B00;">${r.ini}</div>
-            <div>
-              <div id="real-artisan-${i+1}" style="font-size:13.5px;font-weight:700;color:#1A1A4E;">${r.artisan}</div>
-              <div style="font-size:12px;color:#F5C842;font-weight:700;">★★★★★ ${r.note}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `).join('');
-
-  if (dots) {
-    dots.innerHTML = data.map((_,i) => `
-      <div onclick="realGo(${i})" id="rdot-${i}" style="width:${i===0?'24px':'8px'};height:8px;border-radius:4px;background:${i===0?'#E85D04':'#E5E7EB'};cursor:pointer;transition:all .3s;"></div>
-    `).join('');
-  }
-
-  clearInterval(_realTimer);
-  _realTimer = setInterval(() => realGo(_realIdx + 1), 5000);
-}
-
-function realGo(n) {
-  const data = getRealisations();
-  const total = data.length;
-  _realIdx = ((n % total) + total) % total;
-  const track = document.getElementById('realTrack');
-  if (track) track.style.transform = `translateX(-${_realIdx * 100}%)`;
-  data.forEach((_, i) => {
-    const dot = document.getElementById('rdot-' + i);
-    if (dot) { dot.style.width = i === _realIdx ? '24px' : '8px'; dot.style.background = i === _realIdx ? '#E85D04' : '#E5E7EB'; }
-  });
-}
-
-// Admin réalisations
-function renderAdminRealisations() {
-  const container = document.getElementById('adminRealCards');
-  if (!container) return;
-  const data = getRealisations();
-  container.innerHTML = data.map((r,i) => `
-    <div style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;overflow:hidden;">
-      <div style="position:relative;aspect-ratio:4/3;overflow:hidden;">
-        <img id="areal-img-${i}" src="${r.img}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='#E5E7EB'"/>
-        <label style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.65);color:#fff;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;">
-          📷 Changer
-          <input type="file" accept="image/*" style="display:none;" onchange="changerImageReal(this,${i})"/>
-        </label>
-      </div>
-      <div style="padding:14px;">
-        <div style="margin-bottom:8px;"><label style="font-size:11px;font-weight:700;color:#6B7280;">Badge</label><input id="areal-badge-${i}" value="${r.badge}" style="width:100%;padding:7px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;margin-top:3px;box-sizing:border-box;"/></div>
-        <div style="margin-bottom:8px;"><label style="font-size:11px;font-weight:700;color:#6B7280;">Titre</label><input id="areal-titre-${i}" value="${r.titre}" style="width:100%;padding:7px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;margin-top:3px;box-sizing:border-box;"/></div>
-        <div style="margin-bottom:8px;"><label style="font-size:11px;font-weight:700;color:#6B7280;">Description</label><textarea id="areal-desc-${i}" style="width:100%;padding:7px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12px;margin-top:3px;box-sizing:border-box;min-height:60px;resize:none;">${r.desc}</textarea></div>
-        <div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:700;color:#6B7280;">Artisan</label><input id="areal-artisan-${i}" value="${r.artisan}" style="width:100%;padding:7px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;margin-top:3px;box-sizing:border-box;"/></div>
-        <button onclick="sauvegarderReal(${i})" style="width:100%;padding:10px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">✅ Sauvegarder</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function changerImageReal(input, idx) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const img = document.getElementById('areal-img-'+idx);
-    if (img) img.src = e.target.result;
-    const data = getRealisations();
-    data[idx].img = e.target.result;
-    saveRealisations(data);
-    loadRealisations();
-    showToast('✅ Image mise à jour !');
-  };
-  reader.readAsDataURL(file);
-}
-
-function sauvegarderReal(idx) {
-  const data = getRealisations();
-  data[idx].badge = document.getElementById('areal-badge-'+idx)?.value || data[idx].badge;
-  data[idx].titre = document.getElementById('areal-titre-'+idx)?.value || data[idx].titre;
-  data[idx].desc = document.getElementById('areal-desc-'+idx)?.value || data[idx].desc;
-  data[idx].artisan = document.getElementById('areal-artisan-'+idx)?.value || data[idx].artisan;
-  saveRealisations(data);
-  loadRealisations();
-  showToast('✅ Réalisation mise à jour !');
-}
 
 // ── KEYBOARD ──
 document.addEventListener('keydown', e => {
@@ -5279,6 +5280,7 @@ function navigate(page) {
     if (mc) mc.style.cssText = '';
     if (mn) mn.style.cssText = '';
     window.scrollTo(0,0);
+    setTimeout(function() { if(typeof loadRealisations==='function') loadRealisations(); if(typeof renderHeroSlideshow==='function') renderHeroSlideshow(); }, 200);
   } else {
     document.body.classList.remove('on-home');
     if (mc) mc.style.cssText = 'display:none!important';
@@ -5306,6 +5308,7 @@ window.addEventListener('load', async function() {
   } else {
     navigate('home');
     if (typeof renderHeroSlideshow === 'function') renderHeroSlideshow();
+    if (typeof loadRealisations === 'function') loadRealisations();
     if (typeof loadProvidersFromSupabase === 'function') await loadProvidersFromSupabase();
     if (typeof renderCategoriesGrid === 'function') renderCategoriesGrid('catsGrid');
   }
