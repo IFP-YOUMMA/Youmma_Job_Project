@@ -1346,14 +1346,29 @@ body.on-home nav{display:flex!important;}
         <span class="hm-tag">🧵 Couturier</span>
         <span class="hm-tag">❄️ Climaticien</span>
       </div>
-      <div class="hero-express">
-        <span class="express-icon">⚡</span>
-        <div class="express-text">
-          <strong>Besoin d'une intervention rapide ?</strong>
-          Découvrez nos artisans Express disponibles aujourd'hui.
+      <!-- SLIDESHOW HERO -->
+      <div style="position:relative;border-radius:20px;overflow:hidden;margin-bottom:28px;height:230px;" id="heroSlide">
+        <div id="hSlides" style="display:flex;height:100%;transition:transform .7s ease;"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(5,5,20,.92) 0%,rgba(5,5,20,.5) 50%,rgba(5,5,20,.1) 100%);z-index:2;pointer-events:none;"></div>
+        <div style="position:absolute;top:0;left:0;bottom:0;z-index:3;padding:22px 24px;display:flex;flex-direction:column;justify-content:center;max-width:320px;">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#22C55E;box-shadow:0 0 8px #22C55E;animation:pulse 2s infinite;"></span>
+            <span style="font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em;">Disponible maintenant</span>
+          </div>
+          <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:8px;">Besoin d'une<br>intervention rapide ?</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.65);margin-bottom:14px;">Artisans Express disponibles aujourd'hui à Conakry 🇬🇳</div>
+          <button onclick="filterByExpress()" style="display:inline-flex;align-items:center;gap:6px;background:var(--orange);border:none;border-radius:50px;color:#fff;font-size:12px;font-weight:700;padding:9px 18px;cursor:pointer;width:fit-content;">⚡ Voir les artisans Express →</button>
         </div>
-        <button class="btn-express" onclick="filterByExpress()">Voir les artisans Express →</button>
+        <div style="position:absolute;bottom:14px;right:14px;z-index:3;text-align:right;">
+          <div id="hSlideNom" style="font-family:'Libre Baskerville',serif;font-size:13px;font-weight:700;color:#fff;"></div>
+          <div id="hSlideMetier" style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px;"></div>
+          <div id="hSlideNote" style="font-size:11px;color:var(--or);font-weight:700;margin-top:2px;"></div>
+        </div>
+        <div id="hSlideDots" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:5px;"></div>
+        <button onclick="hSlideGo(_hIdx-1)" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);z-index:4;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;cursor:pointer;font-size:12px;">←</button>
+        <button onclick="hSlideGo(_hIdx+1)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);z-index:4;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;cursor:pointer;font-size:12px;">→</button>
       </div>
+      <style>@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
       <div class="hero-actions">
         <button class="btn-hero-main" onclick="document.getElementById('artisans').scrollIntoView({behavior:'smooth'})">🔍 Trouver un artisan</button>
         <button class="btn-hero-outline" onclick="ouvrirInscription()">🚀 Devenir artisan</button>
@@ -2776,6 +2791,49 @@ function showNotif(title, desc, bg) {
   setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 400); }, 5000);
 }
 
+
+// ── SLIDESHOW HERO ──
+let _hIdx = 0, _hTimer = null;
+const H_SLIDES = [
+  {id:1080,overlay:'rgba(232,93,4,.45)',nom:'Amadou Diallo',metier:'Électricien certifié',note:'⭐ 5.0',ville:'Ratoma'},
+  {id:1040,overlay:'rgba(22,163,74,.4)',nom:'Mamadou Kouyaté',metier:'Maçon — BTP & Rénovation',note:'⭐ 4.8',ville:'Matam'},
+  {id:1062,overlay:'rgba(26,26,78,.5)',nom:'Ibrahima Bah',metier:'Plombier — Urgences 7j/7',note:'⭐ 4.6',ville:'Kaloum'},
+  {id:1035,overlay:'rgba(180,83,9,.45)',nom:'Sékou Camara',metier:'Soudeur professionnel',note:'⭐ 4.7',ville:'Matam'},
+  {id:1025,overlay:'rgba(139,69,19,.4)',nom:'Souleymane Barry',metier:'Menuisier — Bois & Aluminium',note:'⭐ 4.9',ville:'Dixinn'},
+  {id:1074,overlay:'rgba(124,58,237,.35)',nom:'Mohamed Soumah',metier:'Peintre en bâtiment',note:'⭐ 4.7',ville:'Kipé'},
+  {id:1011,overlay:'rgba(15,110,86,.4)',nom:'Oumar Diallo',metier:'Climaticien',note:'⭐ 4.6',ville:'Kaloum'},
+  {id:1059,overlay:'rgba(26,26,78,.45)',nom:'Alpha Sow',metier:'Développeur web',note:'⭐ 4.7',ville:'Matam'},
+  {id:1047,overlay:'rgba(139,69,19,.45)',nom:'Ibrahima Kouyaté',metier:'Carreleur',note:'⭐ 4.8',ville:'Ratoma'},
+  {id:1066,overlay:'rgba(220,38,38,.35)',nom:'Moussa Konaté',metier:'Mécanicien',note:'⭐ 4.6',ville:'Lambanyi'},
+];
+function renderHeroSlideshow() {
+  const el = document.getElementById('hSlides');
+  const dots = document.getElementById('hSlideDots');
+  if (!el) return;
+  el.style.width = (H_SLIDES.length*100)+'%';
+  el.innerHTML = H_SLIDES.map((s,i) => `
+    <div style="width:${100/H_SLIDES.length}%;height:100%;flex-shrink:0;position:relative;overflow:hidden;">
+      <img src="https://picsum.photos/id/${s.id}/800/400" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentNode.style.background='linear-gradient(135deg,#1A1A4E,#E85D04)';this.style.display='none';"/>
+      <div style="position:absolute;inset:0;background:${s.overlay};"></div>
+    </div>`).join('');
+  if (dots) dots.innerHTML = H_SLIDES.map((_,i) => `<div id="hd${i}" onclick="hSlideGo(${i})" style="width:${i===0?'18px':'7px'};height:7px;border-radius:4px;background:${i===0?'var(--orange)':'rgba(255,255,255,.35)'};cursor:pointer;transition:all .3s;"></div>`).join('');
+  hSlideInfo(H_SLIDES[0]);
+  clearInterval(_hTimer);
+  _hTimer = setInterval(() => hSlideGo(_hIdx+1), 4000);
+}
+function hSlideGo(n) {
+  const total = H_SLIDES.length;
+  _hIdx = ((n%total)+total)%total;
+  const el = document.getElementById('hSlides');
+  if (el) el.style.transform = `translateX(-${(100/total)*_hIdx}%)`;
+  hSlideInfo(H_SLIDES[_hIdx]);
+  H_SLIDES.forEach((_,i) => { const d=document.getElementById('hd'+i); if(d){d.style.width=i===_hIdx?'18px':'7px';d.style.background=i===_hIdx?'var(--orange)':'rgba(255,255,255,.35)';} });
+}
+function hSlideInfo(s) {
+  const n=document.getElementById('hSlideNom'),m=document.getElementById('hSlideMetier'),r=document.getElementById('hSlideNote');
+  if(n)n.textContent=s.nom; if(m)m.textContent=s.metier+' · 📍'+s.ville; if(r)r.textContent=s.note;
+}
+
 // ── KEYBOARD ──
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeModal(); fermerInscription(); }
@@ -2808,10 +2866,12 @@ document.addEventListener('keydown', e => {
   </div>
 
   <div class="form-group">
-    <label>Mot de passe</label>
-    <div class="input-wrap">
-      <span class="input-prefix">🔒</span>
-      <input type="password" id="password" class="has-prefix" placeholder="Votre mot de passe" autocomplete="current-password"/>
+    <label>Code PIN (4 chiffres)</label>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;">
+      <input id="lpin1" type="number" min="0" max="9" placeholder="•" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('lpin2').focus()"/>
+      <input id="lpin2" type="number" min="0" max="9" placeholder="•" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('lpin3').focus()"/>
+      <input id="lpin3" type="number" min="0" max="9" placeholder="•" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('lpin4').focus()"/>
+      <input id="lpin4" type="number" min="0" max="9" placeholder="•" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value.length===1)document.getElementById('btnConnexion').click()"/>
     </div>
   </div>
 
@@ -2842,28 +2902,21 @@ document.getElementById('password').addEventListener('keydown', e => {
 
 async function connexion() {
   const tel = document.getElementById('telephone').value.trim();
-  const pwd = document.getElementById('password').value;
+  const pin = (document.getElementById('lpin1')?.value||'')+(document.getElementById('lpin2')?.value||'')+(document.getElementById('lpin3')?.value||'')+(document.getElementById('lpin4')?.value||'');
   const btn = document.getElementById('btnConnexion');
   const err = document.getElementById('errorBox');
-
   err.classList.remove('show');
-  if (!tel || !pwd) { showError('Remplissez tous les champs'); return; }
-
-  btn.classList.add('loading');
-  btn.disabled = true;
-
-  const res = await connexionPrestataire(tel, pwd);
-
-  btn.classList.remove('loading');
-  btn.disabled = false;
-
+  if (!tel) { showError('Entrez votre numéro de téléphone'); return; }
+  if (pin.length < 4) { showError('Entrez votre code PIN 4 chiffres'); return; }
+  btn.disabled = true; btn.classList.add('loading');
+  const res = await connexionPrestataire(tel, pin);
+  btn.disabled = false; btn.classList.remove('loading');
   if (res.success) {
     navigate('dashboard');
-  } else {
-    showError(res.message || 'Erreur de connexion');
-  }
+    const pid = res.provider?.id || await verifierSession();
+    if (pid && typeof chargerDashboard === 'function') await chargerDashboard(pid);
+  } else { showError(res.message || 'Téléphone ou PIN incorrect'); }
 }
-
 
 
 // Rediriger si déjà connecté
@@ -2877,307 +2930,177 @@ async function connexion() {
 
 <!-- PAGE : INSCRIPTION -->
 <div class="page" id="page-inscription">
-  <div style="background:linear-gradient(135deg,#1A1A4E 0%,#0D0D2E 100%);min-height:100vh;padding:40px 20px;">
-    <div class="card">
-  <div class="logo">
-    <div class="logo-icon">YJ</div>
-    <div class="logo-text">YOUMMA <span>JOBS</span></div>
+<div style="background:linear-gradient(135deg,#1A1A4E 0%,#0D0D2E 100%);min-height:100vh;padding:40px 20px;display:flex;align-items:flex-start;justify-content:center;">
+<div style="background:#fff;border-radius:24px;padding:32px;width:100%;max-width:500px;box-shadow:0 32px 80px rgba(0,0,0,.3);">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;justify-content:center;">
+    <div style="width:42px;height:42px;background:#E85D04;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Libre Baskerville',serif;font-weight:700;font-size:14px;">YJ</div>
+    <div style="font-family:'Libre Baskerville',serif;font-weight:700;font-size:17px;color:#1A1A4E;">YOUMMA <span style="color:#E85D04;">JOBS</span></div>
   </div>
-  <h1>Créer mon profil prestataire</h1>
-  <p class="subtitle">Rejoignez YOUMMA JOBS et trouvez de nouveaux clients à Conakry</p>
-
-  <div class="badge-info">
-    <div class="badge-info-icon">🎯</div>
+  <h2 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;text-align:center;margin-bottom:6px;">Créer mon profil prestataire</h2>
+  <p style="font-size:13px;color:#6B7280;text-align:center;margin-bottom:16px;">Rejoignez YOUMMA JOBS et trouvez de nouveaux clients à Conakry</p>
+  <div style="background:linear-gradient(135deg,#E85D04,#C74B00);border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:center;margin-bottom:20px;">
+    <span style="font-size:22px;">🎯</span>
     <div>
-      <div class="badge-info-title">14 jours d'essai gratuit après validation</div>
-      <div class="badge-info-text">Abonnement 50 000 GNF/mois — Orange Money, MTN MoMo, Wave</div>
+      <div style="font-size:12.5px;font-weight:700;color:#fff;">14 jours d'essai gratuit après validation</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.8);">Abonnement 50 000 GNF/mois — Orange Money, MTN MoMo, Wave</div>
     </div>
   </div>
-
-  <div class="step-indicator" id="stepIndicator">
-    <div class="step active" id="step-dot-1">1</div>
-    <div class="step-line" id="step-line-1"></div>
-    <div class="step pending" id="step-dot-2">2</div>
-    <div class="step-line" id="step-line-2"></div>
-    <div class="step pending" id="step-dot-3">3</div>
+  <!-- Indicateur étapes -->
+  <div style="display:flex;align-items:center;margin-bottom:24px;">
+    <div id="i-dot-1" style="width:30px;height:30px;border-radius:50%;background:#E85D04;border:2px solid #E85D04;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">1</div>
+    <div id="i-line-1" style="flex:1;height:2px;background:#E5E7EB;"></div>
+    <div id="i-dot-2" style="width:30px;height:30px;border-radius:50%;background:#fff;border:2px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#6B7280;flex-shrink:0;">2</div>
+    <div id="i-line-2" style="flex:1;height:2px;background:#E5E7EB;"></div>
+    <div id="i-dot-3" style="width:30px;height:30px;border-radius:50%;background:#fff;border:2px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#6B7280;flex-shrink:0;">3</div>
   </div>
+  <div id="i-err" style="display:none;background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:13px;color:#DC2626;margin-bottom:14px;"></div>
 
-  <div class="error-box" id="errorBox"></div>
-
-  <!-- ÉTAPE 1 : Identité & Connexion -->
-  <div class="step-section active" id="step1">
-    <div class="section-title">👤 Informations personnelles</div>
-    <div class="row-2">
-      <div class="form-group">
-        <label>Prénom <span class="req">*</span></label>
-        <input type="text" id="prenom" placeholder="Mamadou" autocomplete="given-name"/>
+  <!-- ÉTAPE 1 -->
+  <div id="i-step1">
+    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">👤 Informations personnelles</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Prénom *</label><input id="i-prenom" type="text" placeholder="Mamadou" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
+      <div><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Nom *</label><input id="i-nom" type="text" placeholder="Diallo" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Numéro de téléphone (WhatsApp) *</label>
+      <input id="i-tel" type="tel" placeholder="+224 6XX XX XX XX" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/>
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:8px;">Code PIN 4 chiffres *</label>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <input id="i-pin1" type="number" min="0" max="9" placeholder="•" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('i-pin2').focus()"/>
+        <input id="i-pin2" type="number" min="0" max="9" placeholder="•" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('i-pin3').focus()"/>
+        <input id="i-pin3" type="number" min="0" max="9" placeholder="•" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('i-pin4').focus()"/>
+        <input id="i-pin4" type="number" min="0" max="9" placeholder="•" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1)"/>
       </div>
-      <div class="form-group">
-        <label>Nom <span class="req">*</span></label>
-        <input type="text" id="nom" placeholder="Diallo" autocomplete="family-name"/>
-      </div>
+      <div style="text-align:center;font-size:11px;color:#9CA3AF;margin-top:6px;">Ce code vous servira à vous connecter</div>
     </div>
-    <div class="form-group">
-      <label>Numéro de téléphone (WhatsApp) <span class="req">*</span></label>
-      <input type="tel" id="telephone" placeholder="+224 6XX XX XX XX" autocomplete="tel"/>
-    </div>
-    <div class="form-group">
-      <label>Mot de passe <span class="req">*</span></label>
-      <input type="password" id="password" placeholder="Minimum 8 caractères" oninput="checkPwd(this.value)" autocomplete="new-password"/>
-      <div class="pwd-strength"><div class="pwd-strength-bar" id="pwdBar"></div></div>
-    </div>
-    <div class="form-group">
-      <label>Confirmer le mot de passe <span class="req">*</span></label>
-      <input type="password" id="password2" placeholder="Répétez le mot de passe" autocomplete="new-password"/>
-    </div>
-    <div class="nav-btns">
-      <button class="btn-next" style="flex:1;" onclick="nextStep(1)">Suivant →</button>
-    </div>
+    <button id="i-btn1" style="width:100%;padding:14px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Suivant →</button>
   </div>
 
-  <!-- ÉTAPE 2 : Profil professionnel -->
-  <div class="step-section" id="step2">
-    <div class="section-title">💼 Profil professionnel</div>
-    <div class="form-group">
-      <label>Catégorie <span class="req">*</span></label>
-      <select id="categorie" onchange="renderSousCatsSelect(this.value,'sousCat')">
+  <!-- ÉTAPE 2 -->
+  <div id="i-step2" style="display:none;">
+    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">💼 Profil professionnel</div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Catégorie *</label>
+      <select id="i-cat" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;background:#fff;">
         <option value="">Choisir votre catégorie</option>
+        <option>Artisans</option><option>Santé &amp; Beauté</option><option>Construction &amp; BTP</option>
+        <option>IT &amp; Digital</option><option>Éducation</option><option>Transport</option>
+        <option>Juridique</option><option>Services Express</option><option>Aide à domicile</option><option>Autre</option>
       </select>
     </div>
-    <div class="form-group">
-      <label>Spécialité / Sous-catégorie</label>
-      <select id="sousCat">
-        <option value="">Choisir d'abord une catégorie</option>
-      </select>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Intitulé du métier *</label>
+      <input id="i-metier" type="text" placeholder="Ex: Électricien certifié..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/>
     </div>
-    <div class="form-group">
-      <label>Intitulé du métier <span class="req">*</span></label>
-      <input type="text" id="metier" placeholder="Ex: Électricien certifié, Médecin généraliste..."/>
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Description *</label>
+      <textarea id="i-desc" placeholder="Décrivez vos services..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;min-height:80px;resize:vertical;box-sizing:border-box;"></textarea>
     </div>
-    <div class="form-group">
-      <label>Description de vos services <span class="req">*</span></label>
-      <textarea id="description" placeholder="Décrivez vos services, votre expérience, vos spécialités..."></textarea>
-    </div>
-    <div class="form-group">
-      <label>Compétences clés</label>
-      <div class="skill-input-row">
-        <input type="text" id="skillInput" placeholder="Ex: Installation électrique" onkeydown="if(event.key==='Enter'){addSkill();event.preventDefault();}"/>
-        <button class="btn-add" onclick="addSkill()">+ Ajouter</button>
-      </div>
-      <div class="skills-wrap" id="skillsList"></div>
-    </div>
-    <div class="nav-btns">
-      <button class="btn-back" onclick="prevStep(2)">← Retour</button>
-      <button class="btn-next" onclick="nextStep(2)">Suivant →</button>
+    <div style="display:flex;gap:10px;">
+      <button id="i-back2" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;">← Retour</button>
+      <button id="i-btn2" style="flex:2;padding:13px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">Suivant →</button>
     </div>
   </div>
 
-  <!-- ÉTAPE 3 : Localisation -->
-  <div class="step-section" id="step3">
-    <div class="section-title">📍 Localisation</div>
-    <div class="form-group">
-      <label>Ville <span class="req">*</span></label>
-      <select id="ville">
-        <option value="Conakry">Conakry</option>
-        <option value="Kindia">Kindia</option>
-        <option value="Labé">Labé</option>
-        <option value="Kankan">Kankan</option>
-        <option value="Nzérékoré">Nzérékoré</option>
-        <option value="Boké">Boké</option>
-        <option value="Faranah">Faranah</option>
+  <!-- ÉTAPE 3 -->
+  <div id="i-step3" style="display:none;">
+    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">📍 Localisation</div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Ville *</label>
+      <select id="i-ville" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;background:#fff;">
+        <option value="Conakry">Conakry</option><option>Kindia</option><option>Labé</option>
+        <option>Kankan</option><option>Nzérékoré</option><option>Boké</option><option>Faranah</option>
       </select>
     </div>
-    <div class="row-2">
-      <div class="form-group">
-        <label>Commune</label>
-        <select id="commune">
-          <option value="">Choisir une commune</option>
-          <option>Kaloum</option>
-          <option>Dixinn</option>
-          <option>Matam</option>
-          <option>Ratoma</option>
-          <option>Matoto</option>
-          <option>Lambanyi</option>
-          <option>Kipé</option>
-          <option>Wanindara</option>
-          <option>Bambéto</option>
-          <option>Cosa</option>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+      <div>
+        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Commune</label>
+        <select id="i-commune" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;background:#fff;">
+          <option value="">Choisir</option><option>Kaloum</option><option>Dixinn</option><option>Matam</option>
+          <option>Ratoma</option><option>Matoto</option><option>Lambanyi</option><option>Kipé</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Quartier</label>
-        <input type="text" id="quartier" placeholder="Ex: Hamdallaye, Coleah..."/>
+      <div>
+        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Quartier</label>
+        <input id="i-quartier" type="text" placeholder="Ex: Hamdallaye..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/>
       </div>
     </div>
-    <div class="nav-btns">
-      <button class="btn-back" onclick="prevStep(3)">← Retour</button>
-      <button class="btn-next" id="btnInscrire" onclick="inscrire()">🚀 Créer mon compte</button>
+    <div style="display:flex;gap:10px;">
+      <button id="i-back3" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;">← Retour</button>
+      <button id="i-submit" style="flex:2;padding:13px;background:#1A1A4E;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">🚀 Créer mon compte</button>
     </div>
   </div>
 
   <!-- SUCCÈS -->
-  <div class="step-section" id="stepSuccess">
-    <div class="success-box">
-      <div class="success-icon">🎉</div>
-      <div class="success-title">Inscription envoyée !</div>
-      <div class="success-text">
-        Votre demande est en cours d'examen par notre équipe.<br>
-        Vous serez contacté(e) sous <strong>24h</strong> sur WhatsApp.<br><br>
-        Après validation, vous bénéficierez de <strong>14 jours d'essai gratuit</strong>.
-      </div>
-      <a href="https://wa.me/22461252510?text=Bonjour%20YOUMMA%20JOBS%2C%20je%20viens%20de%20m\'inscrire%20comme%20prestataire"
-         target="_blank"
-         style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:14px 24px;border-radius:50px;text-decoration:none;font-weight:700;font-size:14px;margin-bottom:16px;">
-        💬 Confirmer sur WhatsApp
-      </a>
-      <br>
-      <a href="#" onclick="navigate('login');return false;" style="color:#E85D04;text-decoration:none;font-weight:600;font-size:14px;">
-        Se connecter →
-      </a>
-    </div>
+  <div id="i-success" style="display:none;text-align:center;padding:20px 0;">
+    <div style="font-size:56px;margin-bottom:16px;">🎉</div>
+    <h3 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;margin-bottom:10px;">Inscription envoyée !</h3>
+    <p style="font-size:13.5px;color:#6B7280;line-height:1.7;margin-bottom:20px;">Votre demande est en cours d'examen.<br>Vous serez contacté(e) sous <strong>24h</strong> sur WhatsApp.</p>
+    <a href="https://wa.me/22461252510" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:13px 24px;border-radius:50px;text-decoration:none;font-weight:700;font-size:13.5px;">💬 Confirmer sur WhatsApp</a>
+    <br><br><a href="#login" style="color:#E85D04;font-weight:600;font-size:13.5px;">Se connecter →</a>
   </div>
 
-  <div class="link-row">
-    <a href="#" onclick="navigate('login');return false;">Déjà inscrit ? Se connecter</a>
+  <div style="text-align:center;margin-top:16px;font-size:13px;">
+    <a href="#login" style="color:#E85D04;text-decoration:none;font-weight:600;">Déjà inscrit ? Se connecter</a>
     &nbsp;·&nbsp;
-    <a href="/">← Retour au site</a>
+    <a href="#" onclick="navigate('home');return false;" style="color:#6B7280;text-decoration:none;">← Retour au site</a>
   </div>
+</div>
 </div>
 
 <script>
-let currentStep = 1;
-let skills = [];
-
-// Init catégories
-document.addEventListener('DOMContentLoaded', () => {
-  if(typeof renderCategoriesSelect==='function') renderCategoriesSelect('categorie');
-  else window._pendingCatSelect = 'categorie';
-});
-
-function showError(msg) {
-  const el = document.getElementById('errorBox');
-  el.textContent = '⚠️ ' + msg;
-  el.classList.add('show');
-  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-function clearError() {
-  document.getElementById('errorBox').classList.remove('show');
-}
-
-function checkPwd(val) {
-  const bar = document.getElementById('pwdBar');
-  const len = val.length;
-  let strength = 0;
-  if (len >= 8) strength++;
-  if (/[A-Z]/.test(val)) strength++;
-  if (/[0-9]/.test(val)) strength++;
-  if (/[^a-zA-Z0-9]/.test(val)) strength++;
-  const colors = ['#EF4444','#F97316','#EAB308','#22C55E'];
-  const widths = ['25%','50%','75%','100%'];
-  bar.style.width = widths[strength - 1] || '0';
-  bar.style.background = colors[strength - 1] || '#E4E8F5';
-}
-
-function updateStepUI() {
-  [1,2,3].forEach(s => {
-    document.getElementById(`step${s}`).classList.toggle('active', s === currentStep);
-    const dot = document.getElementById(`step-dot-${s}`);
-    dot.className = 'step ' + (s < currentStep ? 'done' : s === currentStep ? 'active' : 'pending');
-    dot.textContent = s < currentStep ? '✓' : s;
-  });
-  [1,2].forEach(s => {
-    document.getElementById(`step-line-${s}`).className = 'step-line' + (s < currentStep ? ' done' : '');
-  });
-}
-
-function nextStep(from) {
-  clearError();
-  if (from === 1) {
-    const prenom = document.getElementById('prenom').value.trim();
-    const nom = document.getElementById('nom').value.trim();
-    const tel = document.getElementById('telephone').value.trim();
-    const pwd = document.getElementById('password').value;
-    const pwd2 = document.getElementById('password2').value;
-    if (!prenom || !nom || !tel || !pwd) { showError('Remplissez tous les champs obligatoires'); return; }
-    if (pwd.length < 8) { showError('Le mot de passe doit contenir au moins 8 caractères'); return; }
-    if (pwd !== pwd2) { showError('Les mots de passe ne correspondent pas'); return; }
+(function() {
+  function showErr(msg){var e=document.getElementById('i-err');if(e){e.textContent=msg;e.style.display='block';}}
+  function hideErr(){var e=document.getElementById('i-err');if(e)e.style.display='none';}
+  function goTo(step){
+    [1,2,3].forEach(function(s){var el=document.getElementById('i-step'+s);if(el)el.style.display=s===step?'block':'none';});
+    var ACTIVE='background:#E85D04;border-color:#E85D04;color:#fff;',DONE='background:#16A34A;border-color:#16A34A;color:#fff;',IDLE='background:#fff;border-color:#E5E7EB;color:#6B7280;';
+    var d1=document.getElementById('i-dot-1'),d2=document.getElementById('i-dot-2'),d3=document.getElementById('i-dot-3');
+    var l1=document.getElementById('i-line-1'),l2=document.getElementById('i-line-2');
+    if(d1)d1.style.cssText=(step>1?DONE:ACTIVE)+'width:30px;height:30px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;';
+    if(d1&&step>1)d1.textContent='✓';
+    if(d2)d2.style.cssText=(step>2?DONE:step===2?ACTIVE:IDLE)+'width:30px;height:30px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;';
+    if(d2&&step>2)d2.textContent='✓'; else if(d2&&step<=2)d2.textContent='2';
+    if(d3)d3.style.cssText=(step===3?ACTIVE:IDLE)+'width:30px;height:30px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;';
+    if(l1)l1.style.background=step>1?'#16A34A':'#E5E7EB';
+    if(l2)l2.style.background=step>2?'#16A34A':'#E5E7EB';
+    hideErr();window.scrollTo(0,0);
   }
-  if (from === 2) {
-    const cat = document.getElementById('categorie').value;
-    const metier = document.getElementById('metier').value.trim();
-    const desc = document.getElementById('description').value.trim();
-    if (!cat || !metier || !desc) { showError('Remplissez tous les champs obligatoires'); return; }
+  function init(){
+    var b1=document.getElementById('i-btn1'),b2=document.getElementById('i-btn2'),ba2=document.getElementById('i-back2'),b3=document.getElementById('i-submit'),ba3=document.getElementById('i-back3');
+    if(b1)b1.onclick=function(){
+      var p=(document.getElementById('i-prenom')||{}).value||'',n=(document.getElementById('i-nom')||{}).value||'',t=(document.getElementById('i-tel')||{}).value||'';
+      var p1=(document.getElementById('i-pin1')||{}).value||'',p2=(document.getElementById('i-pin2')||{}).value||'',p3=(document.getElementById('i-pin3')||{}).value||'',p4=(document.getElementById('i-pin4')||{}).value||'';
+      var pin=p1+p2+p3+p4;
+      if(!p.trim()||!n.trim()||!t.trim()){showErr('Remplissez tous les champs');return;}
+      if(pin.length<4){showErr('Entrez votre code PIN 4 chiffres');return;}
+      goTo(2);
+    };
+    if(b2)b2.onclick=function(){
+      var cat=(document.getElementById('i-cat')||{}).value||'',met=((document.getElementById('i-metier')||{}).value||'').trim(),desc=((document.getElementById('i-desc')||{}).value||'').trim();
+      if(!cat||!met||!desc){showErr('Remplissez tous les champs');return;}
+      goTo(3);
+    };
+    if(ba2)ba2.onclick=function(){goTo(1);};
+    if(ba3)ba3.onclick=function(){goTo(2);};
+    if(b3)b3.onclick=async function(){
+      b3.disabled=true;b3.textContent='⏳ Inscription...';
+      var pin=(document.getElementById('i-pin1').value||'')+(document.getElementById('i-pin2').value||'')+(document.getElementById('i-pin3').value||'')+(document.getElementById('i-pin4').value||'');
+      var fd={prenom:document.getElementById('i-prenom').value.trim(),nom:document.getElementById('i-nom').value.trim(),telephone:document.getElementById('i-tel').value.trim(),password:pin,categorie:document.getElementById('i-cat').value,metier:document.getElementById('i-metier').value.trim(),description:document.getElementById('i-desc').value.trim(),ville:(document.getElementById('i-ville')||{}).value||'Conakry',commune:(document.getElementById('i-commune')||{}).value||null,quartier:((document.getElementById('i-quartier')||{}).value||'').trim()||null,skills:[]};
+      try{
+        var res=await inscrirePrestataire(fd);
+        if(res.success){[1,2,3].forEach(function(s){var el=document.getElementById('i-step'+s);if(el)el.style.display='none';});var su=document.getElementById('i-success');if(su)su.style.display='block';}
+        else{showErr(res.message||"Erreur");b3.disabled=false;b3.textContent='🚀 Créer mon compte';}
+      }catch(e){showErr('Erreur: '+e.message);b3.disabled=false;b3.textContent='🚀 Créer mon compte';}
+    };
   }
-  currentStep = from + 1;
-  updateStepUI();
-}
-
-function prevStep(from) {
-  currentStep = from - 1;
-  updateStepUI();
-  clearError();
-}
-
-function addSkill() {
-  const input = document.getElementById('skillInput');
-  const val = input.value.trim();
-  if (!val || skills.includes(val)) { input.value = ''; return; }
-  skills.push(val);
-  input.value = '';
-  renderSkills();
-}
-
-function removeSkill(s) {
-  skills = skills.filter(x => x !== s);
-  renderSkills();
-}
-
-function renderSkills() {
-  document.getElementById('skillsList').innerHTML = skills.map(s =>
-    `<span class="skill-tag selected">${s} <span onclick="removeSkill('${s}')" style="cursor:pointer;font-size:14px;">×</span></span>`
-  ).join('');
-}
-
-async function inscrire() {
-  clearError();
-  const ville = document.getElementById('ville').value;
-  if (!ville) { showError('Choisissez une ville'); return; }
-
-  const btn = document.getElementById('btnInscrire');
-  btn.disabled = true;
-  btn.textContent = '⏳ Inscription en cours...';
-
-  const formData = {
-    prenom: document.getElementById('prenom').value.trim(),
-    nom: document.getElementById('nom').value.trim(),
-    telephone: document.getElementById('telephone').value.trim(),
-    password: document.getElementById('password').value,
-    categorie: document.getElementById('categorie').value,
-    sous_categorie: document.getElementById('sousCat').value || null,
-    metier: document.getElementById('metier').value.trim(),
-    description: document.getElementById('description').value.trim(),
-    skills: skills,
-    ville: ville,
-    commune: document.getElementById('commune').value || null,
-    quartier: document.getElementById('quartier').value.trim() || null
-  };
-
-  const res = await inscrirePrestataire(formData);
-
-  btn.disabled = false;
-  btn.textContent = '🚀 Créer mon compte';
-
-  if (res.success) {
-    [1,2,3].forEach(s => document.getElementById(`step${s}`).classList.remove('active'));
-    document.getElementById('stepSuccess').classList.add('active');
-    document.getElementById('stepIndicator').style.display = 'none';
-  } else {
-    showError(res.message || 'Erreur lors de l\'inscription');
-  }
-}
+  init();document.addEventListener('DOMContentLoaded',init);window.addEventListener('load',init);
+  var _origNav=window.navigate;window.navigate=function(p){if(_origNav)_origNav(p);if(p==='inscription')setTimeout(init,100);};
+})();
 </script>
-  </div>
 </div>
 
 <!-- PAGE : DASHBOARD -->
