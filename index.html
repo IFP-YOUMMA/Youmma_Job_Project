@@ -3520,24 +3520,67 @@ function showAdmin(name) {
   else if (name!=='dashboard') _adminLoadAll();
 }
 // ── LOAD DATA ──
+async function getProvidersAdmin({ statut='',limite=100 }={}) {
+  let q = sb.from('providers').select('*').order('created_at',{ascending:false}).limit(limite);
+  if (statut) q = q.eq('statut',statut);
+  const { data } = await q;
+  return data||[];
+}
+
+
+async function getAdminStats() {
+  const [total,att,val,rej,sus] = await Promise.all([
+    sb.from('providers').select('id',{count:'exact',head:true}),
+    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','en_attente'),
+    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','valide'),
+    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','rejete'),
+    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','suspendu'),
+  ]);
+  return {total:total.count||0,en_attente:att.count||0,valides:val.count||0,rejetes:rej.count||0,suspendu:sus.count||0};
+}
+
+
 async function loadAll() {
-  const stats = await getAdminStats();
-  document.getElementById('statTotal').textContent = stats.total;
-  document.getElementById('statAttente').textContent = stats.en_attente;
-  document.getElementById('statValides').textContent = stats.valides;
-  document.getElementById('statRejetes').textContent = stats.rejetes;
-  document.getElementById('statSuspendu').textContent = stats.suspendu;
+  try {
+    const stats = await getAdminStats();
+    const setS = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    setS('statTotal', stats.total);
+    setS('statAttente', stats.en_attente);
+    setS('statValides', stats.valides);
+    setS('statRejetes', stats.rejetes);
+    setS('statSuspendu', stats.suspendu);
 
-  const statuts = ['en_attente', 'valide', 'rejete', 'suspendu'];
-  await Promise.all(statuts.map(async s => {
-    allProviders[s] = await getProvidersAdmin({ statut: s });
-    renderTable(s, allProviders[s]);
-  }));
+    const statuts = ['en_attente', 'valide', 'rejete', 'suspendu'];
+    for (const s of statuts) {
+      try {
+        allProviders[s] = await getProvidersAdmin({ statut: s });
+        if (typeof renderTable === 'function') renderTable(s, allProviders[s]);
+      } catch(e) { console.warn('loadAll statut', s, e); }
+    }
 
-  // Dashboard : afficher en attente en priorité
-  document.getElementById('dashboardAll').innerHTML =
-    `<div style="font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:16px;">⏳ En attente de validation (${allProviders['en_attente']?.length || 0})</div>` +
-    renderTableHTML('en_attente', allProviders['en_attente'] || []);
+    // Dashboard: toutes les sections
+    const dash = document.getElementById('dashboardAll');
+    if (dash) {
+      const sections = [
+        { key:'en_attente', label:'⏳ En attente', color:'#E85D04' },
+        { key:'valide',     label:'✅ Validés',    color:'#16A34A' },
+        { key:'rejete',     label:'❌ Rejetés',    color:'#DC2626' },
+        { key:'suspendu',   label:'🚫 Suspendus',  color:'#9CA3AF' },
+      ];
+      const html = sections.map(s => {
+        const list = allProviders[s.key] || [];
+        if (!list.length) return '';
+        return `<div style="margin-bottom:28px;">
+          <div style="font-family:'Libre Baskerville',serif;font-size:15px;font-weight:700;color:${s.color};margin-bottom:12px;">${s.label} (${list.length})</div>
+          ${typeof renderTableHTML === 'function' ? renderTableHTML(s.key, list) : ''}
+        </div>`;
+      }).join('');
+      dash.innerHTML = html || '<div style="text-align:center;padding:40px;color:#9CA3AF;">Aucun prestataire</div>';
+    }
+  } catch(e) {
+    console.error('loadAll error:', e);
+    showToast('Erreur chargement: ' + e.message, 'error');
+  }
 }
 
 function renderTable(statut, data) {
@@ -3840,22 +3883,6 @@ async function getAvis(providerId) {
   return data||[];
 }
 
-async function getProvidersAdmin({ statut='',limite=100 }={}) {
-  let q = sb.from('providers').select('*').order('created_at',{ascending:false}).limit(limite);
-  if (statut) q = q.eq('statut',statut);
-  const { data } = await q;
-  return data||[];
-}
-async function getAdminStats() {
-  const [total,att,val,rej,sus] = await Promise.all([
-    sb.from('providers').select('id',{count:'exact',head:true}),
-    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','en_attente'),
-    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','valide'),
-    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','rejete'),
-    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','suspendu'),
-  ]);
-  return {total:total.count||0,en_attente:att.count||0,valides:val.count||0,rejetes:rej.count||0,suspendu:sus.count||0};
-}
 async function validerProvider(id) { await sb.rpc('activer_essai',{p_id:id}); }
 async function rejeterProvider(id) { await sb.from('providers').update({statut:'rejete'}).eq('id',id); }
 async function suspendreProvider(id) { await sb.from('providers').update({statut:'suspendu'}).eq('id',id); }
