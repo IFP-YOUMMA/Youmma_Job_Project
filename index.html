@@ -1482,6 +1482,18 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 #page-admin.active #loginWrap {
   display: flex !important;
 }
+
+/* Cacher admin-sidebar sur la page de login admin */
+#page-admin.active #loginWrap ~ .admin-wrap .admin-sidebar,
+#loginWrap:not([style*="none"]) ~ * .admin-sidebar { display: none !important; }
+
+/* Admin wrap: flex seulement quand visible */
+.admin-wrap { display: none !important; }
+.admin-wrap.visible { display: flex !important; }
+
+/* Admin sidebar visible seulement dans admin-wrap.visible */
+.admin-wrap.visible .admin-sidebar { display: flex !important; }
+.admin-wrap.visible .admin-main { display: block !important; }
 </style>
 
 <body>
@@ -4094,8 +4106,8 @@ async function chargerAvis() {
       <p>YOUMMA JOBS — Accès restreint</p>
     </div>
     <div class="form-group">
-      <label>Téléphone</label>
-      <input type="tel" id="adminTel" placeholder="+224 612 52 52 10"/>
+      <label>Email / Identifiant</label>
+      <input type="text" id="adminTel" placeholder="admin@yoummajobs.com" autocomplete="username"/>
     </div>
     <div class="form-group">
       <label>Mot de passe</label>
@@ -4215,7 +4227,6 @@ async function loginAdmin() {
   const pwd = document.getElementById('adminPwd').value;
   const errEl = document.getElementById('loginError');
   errEl.textContent = '';
-  errEl.style.color = '#DC2626';
 
   if (!tel || !pwd) {
     errEl.textContent = 'Remplissez tous les champs';
@@ -4226,20 +4237,22 @@ async function loginAdmin() {
   if (btn) { btn.disabled = true; btn.textContent = 'Connexion...'; }
 
   try {
-    const { data, error } = await sb.from('admin_users')
-      .select('id,nom,role')
+    const { data, error } = await sb
+      .from('admin_users')
+      .select('id, nom, role')
       .eq('telephone', tel)
       .eq('password_hash', pwd)
       .single();
 
     if (error || !data) {
-      errEl.textContent = 'Email ou mot de passe incorrect';
+      errEl.textContent = 'Identifiants incorrects';
+      errEl.style.color = '#DC2626';
       if (btn) { btn.disabled = false; btn.textContent = 'Se connecter →'; }
       return;
     }
 
     const token = generateToken();
-    try { await sb.from('admin_sessions').insert({ admin_id: data.id, token }); } catch(e) { console.warn('Session insert:', e.message); }
+    try { await sb.from('admin_sessions').insert({ admin_id: data.id, token }); } catch(e) {}
     localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({
       admin_id: data.id, token, nom: data.nom, role: data.role
     }));
@@ -4250,6 +4263,7 @@ async function loginAdmin() {
 
   } catch(e) {
     errEl.textContent = 'Erreur: ' + e.message;
+    errEl.style.color = '#DC2626';
     if (btn) { btn.disabled = false; btn.textContent = 'Se connecter →'; }
   }
 }
