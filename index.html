@@ -1696,18 +1696,7 @@ async function verifierSession() {
         <em>artisan</em> en Guinée
       </h1>
       <p class="hero-subtitle">Trouvez rapidement le bon artisan pour tous vos projets — électriciens, plombiers, maçons, soudeurs, menuisiers, mécaniciens et bien plus.</p>
-      <div class="hero-metiers-strip">
-        <span class="hm-tag"> Électricien</span>
-        <span class="hm-tag"> Plombier</span>
-        <span class="hm-tag"> Maçon</span>
-        <span class="hm-tag"> Soudeur</span>
-        <span class="hm-tag"> Menuisier</span>
-        <span class="hm-tag"> Mécanicien</span>
-        <span class="hm-tag"> Carreleur</span>
-        <span class="hm-tag"> Peintre</span>
-        <span class="hm-tag">🧵 Couturier</span>
-        <span class="hm-tag"> Climaticien</span>
-      </div>
+      
       <div class="hero-express">
         <span class="express-icon"></span>
         <div class="express-text">
@@ -1849,35 +1838,6 @@ async function verifierSession() {
 </div>
 
 
-<!-- ── COMPTEURS ── -->
-<div class="counters-bg">
-  <div class="counters-inner">
-    <div class="counter-card fade-in">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#FDE8D8,#FFE4CC);"></div>
-      <div class="cc-num"><span id="cnt1" data-target="500">0</span><span class="cc-suffix">+</span></div>
-      <div class="cc-label">Prestataires vérifiés</div>
-      <div class="cc-sub">Professionnels qualifiés</div>
-    </div>
-    <div class="counter-card fade-in fade-in-delay-1">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#E0E0F8,#EDE9FE);">📂</div>
-      <div class="cc-num"><span id="cnt2" data-target="20">0</span><span class="cc-suffix">+</span></div>
-      <div class="cc-label">Catégories</div>
-      <div class="cc-sub">Tous secteurs couverts</div>
-    </div>
-    <div class="counter-card fade-in fade-in-delay-2">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#E6FBF3,#DCFCE7);">👥</div>
-      <div class="cc-num"><span id="cnt3" data-target="10000">0</span><span class="cc-suffix">+</span></div>
-      <div class="cc-label">Clients satisfaits</div>
-      <div class="cc-sub">Partout en Guinée</div>
-    </div>
-    <div class="counter-card fade-in fade-in-delay-3">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#FEF9C3,#FFF7ED);">✅</div>
-      <div class="cc-num">100<span class="cc-suffix">%</span></div>
-      <div class="cc-label">Profils vérifiés</div>
-      <div class="cc-sub">Validation manuelle</div>
-    </div>
-  </div>
-</div>
 
 
 <!-- ── ARTISANS SPOTLIGHT ── -->
@@ -1906,95 +1866,8 @@ async function verifierSession() {
 </section>
 
 
-<!-- ── CATEGORIES ── -->
-<section class="cats-bg" id="categories">
-  <div class="cats-inner">
-    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">📂 10 catégories professionnelles</span></div>
-    <h2 class="section-title">Trouvez par <span class="hl">catégorie</span></h2>
-    <p class="section-desc">Artisans, santé, IT, éducation et bien plus — prestataires vérifiés partout en Guinée.</p>
-    <div class="cats-grid" id="catsGrid">
-      <a href="#prestataires" class="cat-card cat-artisan-hl" onclick="filterCat('Artisans')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#FDE8D8,#FEF3C7);"></div>
-        <div class="cat-name">Artisans</div><div class="cat-count">Électriciens, plombiers, maçons</div>
-        <span class="cat-badge-count">15+</span>
-      </a>
-      <a href="#prestataires" class="cat-card" onclick="filterCat('Santé &amp; Beauté')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#E0F8E9,#FCE4EC);">🏥</div>
-        <div class="cat-name">Santé &amp; Beauté</div><div class="cat-count">Médecins, infirmiers, coiffeurs</div>
-        <span class="cat-badge-count">12+</span>
-      </a>
-      <a href="#prestataires" class="cat-card" onclick="filterCat('Construction &amp; BTP')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#FEF3C7,#FDE8D8);"></div>
-        <div class="cat-name">Construction &amp; BTP</div><div class="cat-count">Maçons, architectes, ingénieurs</div>
-        <span class="cat-badge-count">8+</span>
-      </a>
-      <a href="#prestataires" class="cat-card" onclick="filterCat('IT')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#E0E0F8,#EDE9FE);"></div>
-        <div class="cat-name">IT &amp; Digital</div><div class="cat-count">Développeurs, graphistes, CM</div>
-        <span class="cat-badge-count">10+</span>
-      </a>
-      <a href="#prestataires" class="cat-card" onclick="filterCat('Éducation')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#E8F0FE,#EFF6FF);">📚</div>
-        <div class="cat-name">Éducation</div><div class="cat-count">Professeurs, formateurs, tuteurs</div>
-        <span class="cat-badge-count">10+</span>
-      </a>
-      <a href="#prestataires" class="cat-card" onclick="filterCat('Aide à domicile')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#E8F5E9,#F0FDF4);"><i class="fa-solid fa-house"></i></div>
-        <div class="cat-name">Aide à domicile</div><div class="cat-count">Ménage, garde d'enfants, cuisiniers</div>
-        <span class="cat-badge-count">8+</span>
-      </a>
-      <a href="#prestataires" class="cat-card" onclick="filterCat('Transport')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#FEF3C7,#FFF7ED);"></div>
-        <div class="cat-name">Logistique &amp; Transport</div><div class="cat-count">Chauffeurs, déménageurs, livreurs</div>
-        <span class="cat-badge-count">8+</span>
-      </a>
-      <a href="#prestataires" class="cat-card" onclick="filterCat('Recrutement &amp; RH')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#E0E7FF,#EDE9FE);">👥</div>
-        <div class="cat-name">Recrutement &amp; RH</div><div class="cat-count">Consultants RH, recruteurs</div>
-        <span class="cat-badge-count">5+</span>
-      </a>
-      <a href="#prestataires" class="cat-card" onclick="filterCat('Juridique')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#FEF3C7,#FFFBEB);">⚖️</div>
-        <div class="cat-name">Services Professionnels</div><div class="cat-count">Avocats, comptables, fiscalistes</div>
-        <span class="cat-badge-count">6+</span>
-      </a>
-      <a href="#prestataires" class="cat-card cat-express" onclick="filterCat('Services Express')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#EDE9FE,#F5F3FF);"></div>
-        <div class="cat-name">Services Express</div><div class="cat-count">Livraison, dépannage, réparations</div>
-        <span class="cat-badge-urgent">URGENT</span>
-      </a>
-    </div>
-  </div>
-</section>
 
 
-<!-- ── ANNUAIRE PRESTATAIRES ── -->
-<section class="providers-bg" id="prestataires">
-  <div class="providers-inner">
-    <div class="providers-header">
-      <div>
-        <div class="section-tag"><span class="stag-line"></span><span class="stag-text">👥 500+ Artisans vérifiés</span></div>
-        <h2 class="section-title">Tous nos <span class="hl">artisans</span> vérifiés</h2>
-        <p style="font-size:12.5px;color:var(--gris);margin-top:4px;"><i class="fa-solid fa-location-dot"></i> Ratoma · Lambanyi · Matam · Kaloum · Dixinn · Dubréka · Coyah · et toute la Guinée</p>
-      </div>
-      <div class="search-bar-simple">
-        <input type="text" class="input-search" id="searchInput2" placeholder="<i class="fa-solid fa-magnifying-glass"></i> Artisan, métier..." oninput="document.getElementById('searchInput').value=this.value;filterProviders()"/>
-        <select class="select-filter" id="catFilter2" onchange="document.getElementById('catFilter').value=this.value;filterProviders()">
-          <option value="">Toutes catégories</option>
-          <option value="Artisans"> Artisans</option>
-          <option value="Santé &amp; Beauté">🏥 Santé &amp; Beauté</option>
-          <option value="IT"> IT &amp; Digital</option>
-          <option value="Éducation">📚 Éducation</option>
-          <option value="Transport"> Transport</option>
-          <option value="Juridique">⚖️ Services Pro</option>
-          <option value="Services Express"> Express</option>
-        </select>
-      </div>
-    </div>
-    <div class="providers-grid" id="providersGrid"></div>
-    <button class="load-more-btn" onclick="loadMore()">Charger plus →</button>
-  </div>
-</section>
 
 
 <!-- ── SECTION PORTFOLIO ── -->
