@@ -3147,7 +3147,8 @@ async function loadProvidersFromSupabase() {
 
     const loader = document.getElementById('providersLoader');
     if (error) {
-      if (loader) loader.textContent = 'Erreur de chargement';
+      console.error('Erreur Supabase:', error);
+      if (loader) loader.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#E85D04;margin-right:8px;"></i>Erreur: ' + error.message;
       return;
     }
 
