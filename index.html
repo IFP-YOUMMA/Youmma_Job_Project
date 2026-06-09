@@ -1697,14 +1697,65 @@ async function verifierSession() {
       </h1>
       <p class="hero-subtitle">Trouvez rapidement le bon artisan pour tous vos projets — électriciens, plombiers, maçons, soudeurs, menuisiers, mécaniciens et bien plus.</p>
       
-      <div class="hero-express">
-        <span class="express-icon"></span>
-        <div class="express-text">
-          <strong>Besoin d'une intervention rapide ?</strong>
-          Découvrez nos artisans Express disponibles aujourd'hui.
+      <!-- BANNIÈRE EXPRESS AVEC CARROUSEL -->
+      <div style="position:relative;border-radius:16px;overflow:hidden;margin-bottom:28px;height:120px;">
+
+        <!-- Slides images fond -->
+        <div id="expSlides" style="position:absolute;inset:0;display:flex;transition:transform .8s cubic-bezier(.4,0,.2,1);">
+          <div style="min-width:100%;height:100%;background:linear-gradient(135deg,#1A0A4E,#7C3AED);flex-shrink:0;"></div>
+          <div style="min-width:100%;height:100%;background:linear-gradient(135deg,#1A2E0A,#16A34A);flex-shrink:0;"></div>
+          <div style="min-width:100%;height:100%;background:linear-gradient(135deg,#2E1A0A,#E85D04);flex-shrink:0;"></div>
+          <div style="min-width:100%;height:100%;background:linear-gradient(135deg,#0A1A2E,#0F6E56);flex-shrink:0;"></div>
+          <div style="min-width:100%;height:100%;background:linear-gradient(135deg,#2E0A0A,#DC2626);flex-shrink:0;"></div>
         </div>
-        <button class="btn-express" onclick="filterByExpress()">Voir les artisans Express →</button>
+
+        <!-- Overlay sombre pour lisibilité -->
+        <div style="position:absolute;inset:0;background:rgba(5,5,20,.55);z-index:1;"></div>
+
+        <!-- Contenu texte + bouton -->
+        <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:20px;">
+          <div>
+            <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:4px;">Besoin d'une intervention rapide ?</div>
+            <div style="font-size:13px;color:rgba(255,255,255,.75);">Découvrez nos artisans Express disponibles aujourd'hui.</div>
+          </div>
+          <button onclick="filterByExpress()" style="flex-shrink:0;padding:11px 22px;background:#7C3AED;border:none;border-radius:50px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .2s;box-shadow:0 4px 16px rgba(124,58,237,.4);" onmouseover="this.style.background='#6D28D9'" onmouseout="this.style.background='#7C3AED'">
+            Voir les artisans Express →
+          </button>
+        </div>
+
+        <!-- Dots navigation -->
+        <div id="expDots" style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:5px;"></div>
       </div>
+
+      <script>
+      (function() {
+        var _ei = 0, _et = null, _en = 5;
+        function expGo(n) {
+          _ei = ((n % _en) + _en) % _en;
+          var s = document.getElementById('expSlides');
+          if (s) s.style.transform = 'translateX(-' + (_ei * 100) + '%)';
+          for (var i = 0; i < _en; i++) {
+            var d = document.getElementById('exd' + i);
+            if (d) { d.style.width = i === _ei ? '18px' : '7px'; d.style.background = i === _ei ? '#fff' : 'rgba(255,255,255,.35)'; }
+          }
+        }
+        function expInit() {
+          var dots = document.getElementById('expDots');
+          if (!dots || dots.children.length > 0) return;
+          for (var i = 0; i < _en; i++) {
+            var d = document.createElement('div');
+            d.id = 'exd' + i;
+            d.style.cssText = 'width:' + (i===0?'18px':'7px') + ';height:7px;border-radius:4px;background:' + (i===0?'#fff':'rgba(255,255,255,.35)') + ';cursor:pointer;transition:all .3s;';
+            (function(idx){d.onclick=function(){expGo(idx);clearInterval(_et);_et=setInterval(function(){expGo(_ei+1);},3500);};})(i);
+            dots.appendChild(d);
+          }
+          clearInterval(_et);
+          _et = setInterval(function() { expGo(_ei + 1); }, 3500);
+        }
+        window.addEventListener('load', expInit);
+        document.addEventListener('DOMContentLoaded', expInit);
+      })();
+      </script>
       <div class="hero-actions">
         <button class="btn-hero-main" onclick="document.getElementById('artisans').scrollIntoView({behavior:'smooth'})"><i class="fa-solid fa-magnifying-glass"></i> Trouver un artisan</button>
         <button class="btn-hero-outline" onclick="ouvrirInscription()">🚀 Devenir artisan</button>
