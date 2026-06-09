@@ -1451,6 +1451,87 @@ input[type="number"] { -moz-appearance: textfield !important; }
 /* Overflow global */
 body { overflow-x:hidden; }
 img { max-width:100%; }
+
+/* ── SIDEBAR DASHBOARD PROPRE ── */
+.sidebar {
+  width: 240px !important;
+  background: var(--bleu) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  position: fixed !important;
+  top: 0; left: 0;
+  height: 100vh !important;
+  z-index: 100 !important;
+  overflow-y: auto !important;
+}
+.sidebar-logo {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 20px 16px !important;
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  flex-shrink: 0 !important;
+}
+.sidebar-nav {
+  flex: 1 !important;
+  padding: 10px 8px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+.nav-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 11px 12px !important;
+  border-radius: 10px !important;
+  color: rgba(255,255,255,.6) !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all .2s !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+.nav-item:hover { background: rgba(255,255,255,.07) !important; color: rgba(255,255,255,.9) !important; }
+.nav-item.active { background: rgba(232,93,4,.2) !important; color: #fff !important; }
+.nav-item .icon { width: 18px; text-align: center; flex-shrink: 0; }
+.sidebar-footer {
+  padding: 12px 8px !important;
+  border-top: 1px solid rgba(255,255,255,.08) !important;
+  flex-shrink: 0 !important;
+}
+.btn-deconnexion {
+  width: 100% !important;
+  padding: 10px 12px !important;
+  background: rgba(239,68,68,.12) !important;
+  border: none !important;
+  border-radius: 10px !important;
+  color: #FCA5A5 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  transition: background .2s !important;
+}
+.btn-deconnexion:hover { background: rgba(239,68,68,.2) !important; }
+
+/* Main avec marge pour la sidebar */
+.main { margin-left: 240px !important; }
+
+@media(max-width:768px) {
+  .sidebar { width: 56px !important; }
+  .sidebar .logo-text, .nav-item span:last-child, .btn-deconnexion span { display: none !important; }
+  .nav-item { justify-content: center !important; padding: 12px !important; }
+  .sidebar-logo { justify-content: center !important; padding: 16px 8px !important; }
+  .main { margin-left: 56px !important; }
+}
+@media(max-width:480px) {
+  .sidebar { display: none !important; }
+  .main { margin-left: 0 !important; }
+}
 </style>
 
 <body>
@@ -3321,32 +3402,45 @@ async function connexion() {
 <div class="dash-layout">
   <!-- SIDEBAR -->
 <div class="sidebar">
+  <!-- Logo -->
   <div class="sidebar-logo">
     <div class="logo-icon">YJ</div>
     <div class="logo-text">YOUMMA <span>JOBS</span></div>
   </div>
+
+  <!-- Navigation -->
   <nav class="sidebar-nav">
     <a class="nav-item active" onclick="showSection('dashboard')">
-      <span class="icon"><i class="fa-solid fa-chart-bar"></i></span> Tableau de bord
+      <span class="icon"><i class="fa-solid fa-chart-bar"></i></span>
+      <span>Tableau de bord</span>
     </a>
     <a class="nav-item" onclick="showSection('profil')">
-      <span class="icon">👤</span> Mon profil
+      <span class="icon"><i class="fa-solid fa-user"></i></span>
+      <span>Mon profil</span>
     </a>
     <a class="nav-item" onclick="showSection('photos')">
-      <span class="icon">📸</span> Photos & Galerie
+      <span class="icon"><i class="fa-solid fa-camera"></i></span>
+      <span>Photos & Galerie</span>
     </a>
     <a class="nav-item" onclick="showSection('abonnement')">
-      <span class="icon"><i class="fa-solid fa-credit-card"></i></span> Abonnement
+      <span class="icon"><i class="fa-solid fa-credit-card"></i></span>
+      <span>Abonnement</span>
     </a>
     <a class="nav-item" onclick="showSection('avis')">
-      <span class="icon"><i class="fa-solid fa-star" style="color:#F5C842;"></i></span> Mes avis
+      <span class="icon"><i class="fa-solid fa-star"></i></span>
+      <span>Mes avis</span>
     </a>
     <a class="nav-item" onclick="navigate('home')">
-      <span class="icon">🌐</span> Voir le site
+      <span class="icon"><i class="fa-solid fa-globe"></i></span>
+      <span>Voir le site</span>
     </a>
   </nav>
+
+  <!-- Footer sidebar -->
   <div class="sidebar-footer">
-    <button class="btn-deconnexion" onclick="deconnexion()"><i class="fa-solid fa-right-from-bracket"></i> Se déconnecter</button>
+    <button class="btn-deconnexion" onclick="deconnexion()">
+      <i class="fa-solid fa-right-from-bracket"></i> Se déconnecter
+    </button>
   </div>
 </div>
 
