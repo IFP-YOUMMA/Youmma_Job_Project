@@ -1945,7 +1945,6 @@ async function verifierSession() {
     <div id="providersLoader" style="text-align:center;padding:40px;color:#9CA3AF;font-size:14px;">
       <i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i>Chargement des artisans...
     </div>
-    <div id="debugBox" style="background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:12px;padding:16px;margin-top:16px;font-size:13px;color:#92400E;display:none;"></div>
 
     <!-- Voir plus -->
     <div style="text-align:center;margin-top:32px;" id="loadMoreWrap" style="display:none;">
@@ -3138,10 +3137,7 @@ let _provPage = 0;
 const _provPerPage = 9;
 
 async function loadProvidersFromSupabase() {
-  const debug = document.getElementById('debugBox');
-  function dbg(msg) { if(debug){debug.style.display='block';debug.innerHTML+=msg+'<br>';} }
   try {
-    dbg('Connexion Supabase...');
     const { data, error } = await sb.from('providers')
       .select('id,prenom,nom,metier,categorie,ville,commune,note_moyenne,nb_avis,photo_url,statut')
       .order('created_at', { ascending: false })
@@ -3149,11 +3145,10 @@ async function loadProvidersFromSupabase() {
 
     const loader = document.getElementById('providersLoader');
     if (error) {
-      dbg('❌ Erreur: ' + error.message + ' (code: ' + error.code + ')');
-      if (loader) loader.innerHTML = '❌ Erreur: ' + error.message;
+        if (loader) loader.innerHTML = '❌ ' + error.message;
       return;
     }
-    dbg('✅ ' + (data ? data.length : 0) + ' prestataires chargés');
+
 
     _allProviders = data || [];
     console.log('Prestataires chargés:', _allProviders.length);
@@ -5574,7 +5569,7 @@ window.addEventListener('load', async function() {
   else if (hash === 'login') { navigate('login'); }
   else {
     navigate('home');
-    if (typeof loadProvidersFromSupabase==='function') await loadProvidersFromSupabase();
+    setTimeout(async function(){ if (typeof loadProvidersFromSupabase==='function') await loadProvidersFromSupabase(); }, 100);
     if (typeof renderCategoriesGrid==='function') renderCategoriesGrid('catsGrid');
   }
 });
@@ -5590,7 +5585,7 @@ window.addEventListener('hashchange', async function() {
     if (typeof chargerDashboard==='function') await chargerDashboard(pid);
   } else if (hash==='inscription') { navigate('inscription'); }
   else if (hash==='login') { navigate('login'); }
-  else if (hash!=='') { navigate('home'); if(typeof loadProvidersFromSupabase==='function') loadProvidersFromSupabase(); }
+  else { navigate('home'); setTimeout(function(){ if(typeof loadProvidersFromSupabase==='function') loadProvidersFromSupabase(); }, 100); }
 });
 </script>
 
