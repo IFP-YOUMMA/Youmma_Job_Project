@@ -3138,9 +3138,10 @@ const _provPerPage = 9;
 
 async function loadProvidersFromSupabase() {
   try {
+    console.log('Chargement prestataires...');
     const { data, error } = await sb.from('providers')
-      .select('id,prenom,nom,metier,categorie,ville,commune,note_moyenne,nb_avis,photo_url,statut,essai_actif,badge_express,badge_top,badge_verifie')
-      .eq('statut', 'valide')
+      .select('id,prenom,nom,metier,categorie,ville,commune,note_moyenne,nb_avis,photo_url,statut')
+      .in('statut', ['valide', 'en_attente'])
       .order('created_at', { ascending: false })
       .limit(100);
 
@@ -3151,10 +3152,11 @@ async function loadProvidersFromSupabase() {
     }
 
     _allProviders = data || [];
+    console.log('Prestataires chargés:', _allProviders.length);
     _filteredProviders = [..._allProviders];
     _provPage = 0;
-    renderProviderCards();
     if (loader) loader.style.display = 'none';
+    renderProviderCards();
 
   } catch(e) {
     console.error('loadProviders:', e);
@@ -3171,7 +3173,7 @@ function renderProviderCards() {
   const visible = _filteredProviders.slice(start, end);
 
   if (visible.length === 0) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#9CA3AF;font-size:14px;">Aucun artisan trouvé</div>';
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#9CA3AF;font-size:14px;"><i class=\"fa-solid fa-users-slash\" style=\"font-size:32px;margin-bottom:12px;display:block;\"></i>Aucun artisan trouvé pour le moment</div>';
     if (loadMoreWrap) loadMoreWrap.style.display = 'none';
     return;
   }
