@@ -4135,7 +4135,7 @@ async function chargerAvis() {
 
 <!-- ADMIN PANEL -->
 <div class="admin-wrap" id="adminWrap">
-  <div class="admin-sidebar">
+  <div class="admin-sidebar" id="adminSidebarEl" style="display:none;position:fixed;top:0;left:0;width:210px;height:100vh;background:#0D0D2E;z-index:9999;flex-direction:column;overflow:hidden;">
     <!-- Logo -->
     <div style="padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;">
       <div style="display:flex;align-items:center;gap:9px;">
@@ -4272,10 +4272,19 @@ async function loginAdmin() {
       admin_id: data.id, token, nom: data.nom, role: data.role
     }));
     adminData = data;
-    document.getElementById('loginWrap').style.display = 'none !important';
-    document.getElementById('loginWrap').style.cssText = 'display:none!important';
-    document.getElementById('adminWrap').classList.add('visible');
-    document.getElementById('page-admin').classList.add('logged');
+    const lw = document.getElementById('loginWrap');
+    const aw = document.getElementById('adminWrap');
+    const asb = document.getElementById('adminSidebarEl');
+    const amain = aw ? aw.querySelector('.admin-main') : null;
+    const mn = document.getElementById('mainNav');
+    const mc = document.getElementById('mainContent');
+    if (mn) mn.style.cssText = 'display:none!important';
+    if (mc) mc.style.cssText = 'display:none!important';
+    if (lw) lw.style.cssText = 'display:none!important';
+    if (asb) asb.style.cssText = 'display:flex!important;flex-direction:column;position:fixed;top:0;left:0;width:210px;height:100vh;background:#0D0D2E;z-index:9999;overflow:hidden;';
+    if (amain) amain.style.cssText = 'display:block!important;margin-left:210px;padding:24px;background:#F4F6FB;min-height:100vh;';
+    if (aw) { aw.classList.add('visible'); aw.style.cssText = 'display:block!important;min-height:100vh;'; }
+    document.getElementById('page-admin')?.classList.add('logged');
     await loadAll();
 
   } catch(e) {
@@ -5290,9 +5299,21 @@ async function initAdmin() {
     adminData = s;
     const loginWrap = document.getElementById('loginWrap');
     const adminWrap = document.getElementById('adminWrap');
+    const adminSidebar = document.getElementById('adminSidebarEl');
+    const adminMain = adminWrap ? adminWrap.querySelector('.admin-main') : null;
     const pageAdmin = document.getElementById('page-admin');
+    const mainNav = document.getElementById('mainNav');
+    const mainContent = document.getElementById('mainContent');
+    // Cacher navbar et contenu principal
+    if (mainNav) mainNav.style.cssText = 'display:none!important';
+    if (mainContent) mainContent.style.cssText = 'display:none!important';
+    // Cacher login
     if (loginWrap) loginWrap.style.cssText = 'display:none!important';
-    if (adminWrap) adminWrap.classList.add('visible');
+    // Montrer sidebar directement
+    if (adminSidebar) adminSidebar.style.cssText = 'display:flex!important;flex-direction:column;position:fixed;top:0;left:0;width:210px;height:100vh;background:#0D0D2E;z-index:9999;overflow:hidden;';
+    // Montrer main
+    if (adminMain) adminMain.style.cssText = 'display:block!important;margin-left:210px;padding:24px;background:#F4F6FB;min-height:100vh;';
+    if (adminWrap) { adminWrap.classList.add('visible'); adminWrap.style.cssText = 'display:block!important;min-height:100vh;'; }
     if (pageAdmin) pageAdmin.classList.add('logged');
   }
 
