@@ -1285,6 +1285,172 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0 !important;
 }
 input[type="number"] { -moz-appearance: textfield !important; }
+
+/* ══════════════════════════════════
+   RESPONSIVE — YOUMMA JOBS
+   Mobile: <480px | Tablet: 481-768px
+══════════════════════════════════ */
+
+/* Navigation */
+@media(max-width:768px) {
+  .nav-links, .btn-nav-secondary { display:none !important; }
+  .hamburger { display:flex !important; }
+  .nav-inner { padding:0 16px !important; }
+}
+
+/* Menu mobile */
+#mobileMenu { display:none; }
+#mobileMenu.open {
+  display:flex !important;
+  flex-direction:column;
+  position:fixed;
+  top:60px; left:0; right:0; bottom:0;
+  background:rgba(10,10,30,.97);
+  padding:20px 16px;
+  z-index:998;
+  gap:4px;
+  overflow-y:auto;
+}
+#mobileMenu a {
+  color:rgba(255,255,255,.8);
+  padding:14px 16px;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:600;
+  text-decoration:none;
+  display:block;
+  transition:background .2s;
+}
+#mobileMenu a:hover { background:rgba(255,255,255,.08); color:#fff; }
+
+/* Hero */
+@media(max-width:768px) {
+  .hero-section, #hero { padding:80px 16px 40px !important; }
+  .hero-title { font-size:32px !important; }
+  .hero-subtitle { font-size:14px !important; }
+  .hero-search { flex-direction:column !important; gap:10px !important; }
+  .hero-search input, .hero-search button { width:100% !important; }
+  .hero-kpis { flex-wrap:wrap !important; }
+  .kpi { width:calc(50% - 8px) !important; border-right:none !important; padding:8px !important; }
+  .hero-visual { display:none !important; }
+}
+@media(max-width:480px) {
+  .hero-title { font-size:26px !important; }
+}
+
+/* Slideshow hero */
+@media(max-width:768px) {
+  #heroSlide { height:220px !important; border-radius:14px !important; }
+  #heroSlide > div > div[style*="max-width:320px"] { max-width:180px !important; padding:14px !important; }
+  #heroSlide > div > div[style*="font-size:18px"] { font-size:13px !important; margin-bottom:8px !important; }
+  #heroSlide > div > div[style*="font-size:12px"] { display:none !important; }
+  #heroSlide button { width:32px !important; height:32px !important; font-size:13px !important; }
+}
+
+/* Sections */
+@media(max-width:768px) {
+  section { padding:48px 16px !important; }
+  .section-title, h2 { font-size:22px !important; }
+  .section-subtitle, h2 + p { font-size:13.5px !important; }
+}
+
+/* Grilles artisans */
+@media(max-width:768px) {
+  .providers-grid, #providersGrid, .artisans-grid, #artisansGrid {
+    grid-template-columns:1fr 1fr !important;
+    gap:12px !important;
+  }
+}
+@media(max-width:480px) {
+  .providers-grid, #providersGrid, .artisans-grid, #artisansGrid {
+    grid-template-columns:1fr !important;
+  }
+}
+
+/* Catégories */
+@media(max-width:768px) {
+  .cats-grid, #catsGrid { grid-template-columns:repeat(3,1fr) !important; gap:10px !important; }
+}
+@media(max-width:480px) {
+  .cats-grid, #catsGrid { grid-template-columns:repeat(2,1fr) !important; }
+}
+
+/* Portfolio carrousel */
+@media(max-width:768px) {
+  .real-slide { grid-template-columns:1fr !important; }
+  .real-slide > div:first-child { min-height:200px !important; }
+  .real-slide > div:last-child { padding:20px 16px !important; }
+  .real-slide h3 { font-size:16px !important; }
+}
+
+/* Page inscription */
+@media(max-width:480px) {
+  #page-inscription > div > div { padding:24px 16px !important; }
+  #page-inscription [style*="grid-template-columns:1fr 1fr"] { grid-template-columns:1fr !important; }
+  #i-pin1,#i-pin2,#i-pin3,#i-pin4 { width:52px !important; height:52px !important; font-size:20px !important; }
+}
+
+/* Page login */
+@media(max-width:480px) {
+  .login-card { padding:28px 16px !important; margin:12px !important; border-radius:16px !important; }
+  #lpin1,#lpin2,#lpin3,#lpin4 { width:50px !important; height:50px !important; font-size:20px !important; }
+}
+
+/* Dashboard prestataire */
+@media(max-width:768px) {
+  #page-dashboard .sidebar { width:0 !important; overflow:hidden !important; transition:width .3s; }
+  #page-dashboard .sidebar.open { width:220px !important; }
+  #page-dashboard .main { margin-left:0 !important; }
+  #page-dashboard .topbar { padding:12px 16px !important; }
+  .stats-grid { grid-template-columns:repeat(3,1fr) !important; gap:10px !important; }
+  .actions-grid { grid-template-columns:1fr 1fr !important; gap:10px !important; }
+}
+@media(max-width:480px) {
+  .stats-grid { grid-template-columns:repeat(2,1fr) !important; }
+  .stat-card .stat-value { font-size:22px !important; }
+}
+
+/* Admin panel */
+@media(max-width:768px) {
+  #adminWrap.visible .admin-sidebar { width:0 !important; overflow:hidden !important; }
+  #adminWrap.visible .admin-main { margin-left:0 !important; padding:14px !important; }
+  .stats-row { grid-template-columns:repeat(3,1fr) !important; }
+  #adminRealCards { grid-template-columns:1fr !important; }
+  #adminWrap.visible table { font-size:11.5px !important; }
+  #adminWrap.visible td,#adminWrap.visible th { padding:8px 8px !important; }
+}
+@media(max-width:480px) {
+  .stats-row { grid-template-columns:1fr 1fr !important; }
+}
+
+/* Modal */
+@media(max-width:768px) {
+  .modal-content, .modal-card, [class*="modal"] > div {
+    width:95vw !important;
+    max-height:90vh !important;
+    overflow-y:auto !important;
+    border-radius:16px !important;
+    margin:20px auto !important;
+  }
+}
+
+/* Footer */
+@media(max-width:768px) {
+  .footer-grid, .footer-cols { grid-template-columns:1fr 1fr !important; gap:24px !important; }
+  .footer-bottom, .footer-copy { flex-direction:column !important; gap:8px !important; text-align:center !important; }
+}
+@media(max-width:480px) {
+  .footer-grid, .footer-cols { grid-template-columns:1fr !important; }
+}
+
+/* Cards hover désactivé sur mobile */
+@media(hover:none) {
+  .card-artisan:hover, .provider-card:hover { transform:none !important; }
+}
+
+/* Overflow global */
+body { overflow-x:hidden; }
+img { max-width:100%; }
 </style>
 
 <body>
