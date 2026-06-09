@@ -5312,11 +5312,23 @@ async function initAdmin() {
     // Cacher login
     if (loginWrap) loginWrap.style.cssText = 'display:none!important';
     // Montrer sidebar directement
-    if (adminSidebar) adminSidebar.style.cssText = 'display:flex!important;flex-direction:column;position:fixed;top:0;left:0;width:210px;height:100vh;background:#0D0D2E;z-index:9999;overflow:hidden;';
+    if (adminSidebar) adminSidebar.style.cssText = 'display:flex!important;flex-direction:column;position:fixed;top:0;left:0;width:210px;height:100vh;background:#0D0D2E;z-index:9999;overflow-y:auto;overflow-x:hidden;';
     // Montrer main
     if (adminMain) adminMain.style.cssText = 'display:block!important;margin-left:210px;padding:24px;background:#F4F6FB;min-height:100vh;';
     if (adminWrap) { adminWrap.classList.add('visible'); adminWrap.style.cssText = 'display:block!important;min-height:100vh;'; }
     if (pageAdmin) pageAdmin.classList.add('logged');
+    // Forcer affichage items nav
+    setTimeout(function() {
+      const STYLE = 'display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:4px;white-space:nowrap;';
+      const ACTIVE = 'display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:4px;background:rgba(232,93,4,.25);white-space:nowrap;';
+      var items = ['en_attente','valide','rejete','suspendu','codes'];
+      var d = document.getElementById('anav-dashboard');
+      if (d) d.style.cssText = ACTIVE;
+      items.forEach(function(s) {
+        var el = document.getElementById('anav-' + s);
+        if (el) el.style.cssText = STYLE;
+      });
+    }, 100);
   }
 
   if (s?.token) {
