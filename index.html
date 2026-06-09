@@ -1247,8 +1247,8 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 
 #adminWrap.visible { display: flex; }
 
-nav { display:none; }
-body.on-home nav { display:flex!important; }
+#mainNav { display:none; }
+body.on-home #mainNav { display:flex!important; }
 .step-section { display:none!important; }
 .step-section.active { display:block!important; }
 
@@ -1398,7 +1398,7 @@ input[type="number"] { -moz-appearance: textfield !important; }
 
 /* Dashboard prestataire */
 @media(max-width:768px) {
-  #page-dashboard .sidebar { width:0 !important; overflow:hidden !important; transition:width .3s; }
+  #page-dashboard /* sidebar mobile handled by media query below */
   #page-dashboard .sidebar.open { width:220px !important; }
   #page-dashboard .main { margin-left:0 !important; }
   #page-dashboard .topbar { padding:12px 16px !important; }
@@ -4321,8 +4321,17 @@ async function getProviders({ categorie='',recherche='',limite=15,offset=0 }={})
   return error ? [] : (data||[]);
 }
 async function getDashboardData(providerId) {
-  const { data } = await sb.from('providers').select('*').eq('id',providerId).single();
-  return data;
+  try {
+    const { data, error } = await sb.from('providers').select('*').eq('id',providerId).single();
+    if (error) {
+      console.error('getDashboardData error:', error.message);
+      showToast('Erreur chargement profil: ' + error.message);
+    }
+    return data;
+  } catch(e) {
+    console.error('getDashboardData exception:', e.message);
+    return null;
+  }
 }
 async function updateProviderProfile(providerId, updates) {
   const { data, error } = await sb.from('providers').update(updates).eq('id',providerId).select().single();
@@ -4835,8 +4844,25 @@ let _dashPhotos = [];
 async function chargerDashboard(pid) {
   if (!pid) { navigate('login'); return; }
   _dashProviderId = pid;
+  
+  // Essayer de charger depuis Supabase
   _dashData = await getDashboardData(pid);
-  if (!_dashData) { navigate('login'); return; }
+  
+  // Si échec, utiliser les données de session
+  if (!_dashData) {
+    const s = getSession();
+    if (s) {
+      _dashData = { 
+        id: pid, 
+        nom: s.nom || '—', 
+        prenom: s.prenom || '',
+        metier: '—', ville: '—', statut: 'en_attente',
+        nb_vues:0, nb_favoris:0, nb_appels:0, nb_whatsapp:0, nb_avis:0
+      };
+    } else {
+      navigate('login'); return;
+    }
+  }
   _dashUpdateUI();
   _dashPhotos = await getProviderPhotos(pid);
   _dashRenderPhotos();
