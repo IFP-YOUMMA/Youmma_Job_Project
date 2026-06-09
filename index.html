@@ -3113,7 +3113,7 @@ document.addEventListener('keydown', e => {
   </button>
 
   <div class="link-row" style="margin-top:16px;">
-    <a href="#" onclick="navigate('home');return false;">← Retour au site</a>
+    <a href="#" onclick="navigate('home');return false;"><i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Retour au site</a>
   </div>
 </div>
 
@@ -3262,7 +3262,7 @@ async function connexion() {
   <div style="text-align:center;margin-top:16px;font-size:13px;">
     <a href="#login" style="color:#E85D04;text-decoration:none;font-weight:600;">Déjà inscrit ? Se connecter</a>
     &nbsp;·&nbsp;
-    <a href="#" onclick="navigate('home');return false;" style="color:#6B7280;text-decoration:none;">← Retour au site</a>
+    <a href="#" onclick="navigate('home');return false;" style="color:#6B7280;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Retour au site</a>
   </div>
 </div>
 </div>
@@ -3353,7 +3353,12 @@ async function connexion() {
 <!-- MAIN -->
 <div class="main">
   <div class="topbar">
-    <div class="topbar-title" id="topbarTitle"><i class="fa-solid fa-chart-line" style="width:16px;"></i> Tableau de bord</div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button onclick="navigate('home')" style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(255,255,255,.08);border:none;border-radius:10px;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.14)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">
+        <i class="fa-solid fa-arrow-left" style="font-size:12px;"></i> Retour au site
+      </button>
+      <div class="topbar-title" id="topbarTitle"><i class="fa-solid fa-chart-line" style="width:16px;"></i> Tableau de bord</div>
+    </div>
     <div class="topbar-right">
       <div class="provider-chip">
         <div class="provider-chip-avatar" id="chipAvatar">?</div>
@@ -3440,6 +3445,11 @@ async function connexion() {
 
     <!-- ── PROFIL EDIT ── -->
     <div class="section" id="section-profil">
+      <div style="margin-bottom:16px;">
+        <button onclick="showSection('dashboard')" style="display:inline-flex;align-items:center;gap:7px;padding:8px 14px;background:#F4F6FB;border:none;border-radius:10px;color:#1A1A4E;font-size:13px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#E8ECF5'" onmouseout="this.style.background='#F4F6FB'">
+          <i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Tableau de bord
+        </button>
+      </div>
       <div class="edit-section">
         <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:20px;"><i class="fa-solid fa-pen"></i> Modifier mon profil</div>
 
@@ -3490,6 +3500,11 @@ async function connexion() {
 
     <!-- ── PHOTOS ── -->
     <div class="section" id="section-photos">
+      <div style="margin-bottom:16px;">
+        <button onclick="showSection('dashboard')" style="display:inline-flex;align-items:center;gap:7px;padding:8px 14px;background:#F4F6FB;border:none;border-radius:10px;color:#1A1A4E;font-size:13px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#E8ECF5'" onmouseout="this.style.background='#F4F6FB'">
+          <i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Tableau de bord
+        </button>
+      </div>
       <div class="photos-section">
         <div class="photos-header">
           <div class="photos-title"><i class="fa-solid fa-camera"></i> Photo de profil</div>
@@ -3526,6 +3541,11 @@ async function connexion() {
 
     <!-- ── ABONNEMENT ── -->
     <div class="section" id="section-abonnement">
+      <div style="margin-bottom:16px;">
+        <button onclick="showSection('dashboard')" style="display:inline-flex;align-items:center;gap:7px;padding:8px 14px;background:#F4F6FB;border:none;border-radius:10px;color:#1A1A4E;font-size:13px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#E8ECF5'" onmouseout="this.style.background='#F4F6FB'">
+          <i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Tableau de bord
+        </button>
+      </div>
       <div class="abo-card">
         <div class="abo-header">
           <div class="abo-title"><i class="fa-solid fa-credit-card"></i> État de mon abonnement</div>
@@ -3576,6 +3596,11 @@ async function connexion() {
 
     <!-- ── AVIS ── -->
     <div class="section" id="section-avis">
+      <div style="margin-bottom:16px;">
+        <button onclick="showSection('dashboard')" style="display:inline-flex;align-items:center;gap:7px;padding:8px 14px;background:#F4F6FB;border:none;border-radius:10px;color:#1A1A4E;font-size:13px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#E8ECF5'" onmouseout="this.style.background='#F4F6FB'">
+          <i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Tableau de bord
+        </button>
+      </div>
       <div class="edit-section">
         <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:20px;"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Avis de mes clients</div>
         <div id="avisList"><div style="text-align:center;padding:40px;color:#7A7F9A;">Chargement des avis...</div></div>
@@ -3963,6 +3988,13 @@ async function chargerAvis() {
 </div>
 
   <div class="admin-main">
+
+    <!-- Bouton retour -->
+    <div style="margin-bottom:16px;">
+      <button onclick="logoutAdmin()" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;background:#fff;border:1.5px solid #E5E7EB;border-radius:10px;color:#6B7280;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.06);" onmouseover="this.style.borderColor='#1A1A4E';this.style.color='#1A1A4E'" onmouseout="this.style.borderColor='#E5E7EB';this.style.color='#6B7280'">
+        <i class="fa-solid fa-arrow-left" style="font-size:12px;"></i> Retour au site
+      </button>
+    </div>
 
     <!-- DASHBOARD -->
     <div class="admin-section active" id="admin-dashboard">
