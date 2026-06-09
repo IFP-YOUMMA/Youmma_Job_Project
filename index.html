@@ -3312,66 +3312,61 @@ function previewRealImage(input, idx) {
 }
 
 async function validerReal(idx) {
-  const btn = event ? event.target : null;
-  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publication...'; }
+  const btn = document.querySelectorAll('#admin-realisations .real-publish-btn')[idx];
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> En cours...'; }
 
   try {
-    const newTitre = document.getElementById('areal-titre-' + idx)?.value || '';
-    const newDesc = document.getElementById('areal-desc-' + idx)?.value || '';
-    const newArtisan = document.getElementById('areal-artisan-' + idx)?.value || '';
-    const previewWrap = document.getElementById('areal-preview-wrap-' + idx);
-    const previewImg = previewWrap ? previewWrap.querySelector('img') : null;
-    const base64 = previewImg ? previewImg.src : null;
+    const newTitre   = (document.getElementById('areal-titre-'   + idx) || {}).value || '';
+    const newDesc    = (document.getElementById('areal-desc-'    + idx) || {}).value || '';
+    const newArtisan = (document.getElementById('areal-artisan-' + idx) || {}).value || '';
+    const file       = window._realFiles && window._realFiles[idx];
 
-    // Sauvegarder dans Supabase table site_config
-    const { error } = await sb.from('site_config').upsert({
+    let imageUrl = null;
+
+    if (file) {
+      const ext      = file.name.split('.').pop().toLowerCase();
+      const fileName = 'real_' + idx + '_' + Date.now() + '.' + ext;
+      const { data, error } = await sb.storage
+        .from('photos')
+        .upload(fileName, file, { upsert: true, contentType: file.type });
+
+      if (error) {
+        showToast('Erreur upload image: ' + error.message);
+        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-check"></i> Valider et publier'; }
+        return;
+      }
+      const { data: urlData } = sb.storage.from('photos').getPublicUrl(fileName);
+      imageUrl = urlData.publicUrl;
+    }
+
+    // Sauvegarder dans site_config
+    const payload = { titre: newTitre, desc: newDesc, artisan: newArtisan };
+    if (imageUrl) payload.imageUrl = imageUrl;
+
+    await sb.from('site_config').upsert({
       cle: 'realisation_' + idx,
-      valeur: JSON.stringify({ titre: newTitre, desc: newDesc, artisan: newArtisan, image: base64 })
+      valeur: JSON.stringify(payload)
     }, { onConflict: 'cle' });
 
-    if (error) {
-      // Fallback: localStorage
-      console.warn('Supabase upsert error:', error.message, '- using localStorage');
-    }
+    // Mettre à jour le carrousel
+    const titre      = document.getElementById('real-titre-'   + idx);
+    const desc       = document.getElementById('real-desc-'    + idx);
+    const artisan    = document.getElementById('real-artisan-' + idx);
+    const imgBox     = document.getElementById('real-img-'     + idx);
 
-    // Toujours sauvegarder en localStorage
-    const stored = JSON.parse(localStorage.getItem('yj_realisations') || '{}');
-    stored[idx] = { titre: newTitre, desc: newDesc, artisan: newArtisan, image: base64 };
-    localStorage.setItem('yj_realisations', JSON.stringify(stored));
-
-    // Mettre à jour le carrousel immédiatement
-    const titre = document.getElementById('real-titre-' + idx);
-    const desc = document.getElementById('real-desc-' + idx);
-    const artisan = document.getElementById('real-artisan-' + idx);
-    const imgContainer = document.getElementById('real-img-' + idx);
-
-    if (titre && newTitre) titre.textContent = newTitre;
-    if (desc && newDesc) desc.textContent = newDesc;
+    if (titre   && newTitre)   titre.textContent   = newTitre;
+    if (desc    && newDesc)    desc.textContent    = newDesc;
     if (artisan && newArtisan) artisan.textContent = newArtisan;
-    if (imgContainer && base64) {
-      imgContainer.innerHTML = '<img src="' + base64 + '" style="width:100%;height:100%;object-fit:cover;"/>';
-    }
+    if (imgBox  && imageUrl)   imgBox.innerHTML    = '<img src="' + imageUrl + '" style="width:100%;height:100%;object-fit:cover;"/>';
 
-    showToast('Réalisation ' + (idx+1) + ' publiée !');
+    showToast('Réalisation ' + (idx+1) + ' publiée sur le site !');
 
   } catch(e) {
-    // Fallback localStorage uniquement
-    const newTitre = document.getElementById('areal-titre-' + idx)?.value || '';
-    const newDesc = document.getElementById('areal-desc-' + idx)?.value || '';
-    const newArtisan = document.getElementById('areal-artisan-' + idx)?.value || '';
-    const previewWrap = document.getElementById('areal-preview-wrap-' + idx);
-    const previewImg = previewWrap ? previewWrap.querySelector('img') : null;
-    const base64 = previewImg ? previewImg.src : null;
-    const stored = JSON.parse(localStorage.getItem('yj_realisations') || '{}');
-    stored[idx] = { titre: newTitre, desc: newDesc, artisan: newArtisan, image: base64 };
-    localStorage.setItem('yj_realisations', JSON.stringify(stored));
-    const imgContainer = document.getElementById('real-img-' + idx);
-    if (imgContainer && base64) imgContainer.innerHTML = '<img src="' + base64 + '" style="width:100%;height:100%;object-fit:cover;"/>';
-    showToast('Réalisation ' + (idx+1) + ' sauvegardée !');
+    showToast('Erreur: ' + e.message);
   }
-
   if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-check"></i> Valider et publier'; }
 }
+
 
 // ── KEYBOARD ──
 document.addEventListener('keydown', e => {
@@ -4424,7 +4419,7 @@ async function chargerAvis() {
               <i class="fa-solid fa-camera"></i> Choisir une image
               <input type="file" accept="image/*" style="display:none;" onchange="previewRealImage(this,0)"/>
             </label>
-            <button onclick="validerReal(0)" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+            <button onclick="validerReal(0)" class="real-publish-btn" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
               <i class="fa-solid fa-check"></i> Valider et publier
             </button>
           </div>
@@ -4450,7 +4445,7 @@ async function chargerAvis() {
               <i class="fa-solid fa-camera"></i> Choisir une image
               <input type="file" accept="image/*" style="display:none;" onchange="previewRealImage(this,1)"/>
             </label>
-            <button onclick="validerReal(1)" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+            <button onclick="validerReal(1)" class="real-publish-btn" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
               <i class="fa-solid fa-check"></i> Valider et publier
             </button>
           </div>
@@ -4476,7 +4471,7 @@ async function chargerAvis() {
               <i class="fa-solid fa-camera"></i> Choisir une image
               <input type="file" accept="image/*" style="display:none;" onchange="previewRealImage(this,2)"/>
             </label>
-            <button onclick="validerReal(2)" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+            <button onclick="validerReal(2)" class="real-publish-btn" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
               <i class="fa-solid fa-check"></i> Valider et publier
             </button>
           </div>
@@ -4502,7 +4497,7 @@ async function chargerAvis() {
               <i class="fa-solid fa-camera"></i> Choisir une image
               <input type="file" accept="image/*" style="display:none;" onchange="previewRealImage(this,3)"/>
             </label>
-            <button onclick="validerReal(3)" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+            <button onclick="validerReal(3)" class="real-publish-btn" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
               <i class="fa-solid fa-check"></i> Valider et publier
             </button>
           </div>
@@ -4528,7 +4523,7 @@ async function chargerAvis() {
               <i class="fa-solid fa-camera"></i> Choisir une image
               <input type="file" accept="image/*" style="display:none;" onchange="previewRealImage(this,4)"/>
             </label>
-            <button onclick="validerReal(4)" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+            <button onclick="validerReal(4)" class="real-publish-btn" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
               <i class="fa-solid fa-check"></i> Valider et publier
             </button>
           </div>
@@ -5828,23 +5823,26 @@ function openMaps(nom, ville) {
 <script>
 // ── CHARGER RÉALISATIONS SAUVEGARDÉES ──
 (function() {
-  function loadSavedRealisations() {
+  async function loadSavedRealisations() {
     try {
-      const stored = JSON.parse(localStorage.getItem('yj_realisations') || '{}');
-      Object.keys(stored).forEach(function(idx) {
-        const r = stored[idx];
-        const imgContainer = document.getElementById('real-img-' + idx);
-        const titre = document.getElementById('real-titre-' + idx);
-        const desc = document.getElementById('real-desc-' + idx);
-        const artisan = document.getElementById('real-artisan-' + idx);
-        if (titre && r.titre) titre.textContent = r.titre;
-        if (desc && r.desc) desc.textContent = r.desc;
-        if (artisan && r.artisan) artisan.textContent = r.artisan;
-        if (imgContainer && r.image) {
-          imgContainer.innerHTML = '<img src="' + r.image + '" style="width:100%;height:100%;object-fit:cover;"/>';
-        }
-      });
-    } catch(e) {}
+      const { data } = await sb.from('site_config')
+        .select('cle,valeur')
+        .like('cle', 'realisation_%');
+      if (data && data.length) {
+        data.forEach(function(row) {
+          const idx = row.cle.replace('realisation_', '');
+          const r = JSON.parse(row.valeur || '{}');
+          const imgBox  = document.getElementById('real-img-'     + idx);
+          const titre   = document.getElementById('real-titre-'   + idx);
+          const desc    = document.getElementById('real-desc-'    + idx);
+          const artisan = document.getElementById('real-artisan-' + idx);
+          if (titre   && r.titre)    titre.textContent   = r.titre;
+          if (desc    && r.desc)     desc.textContent    = r.desc;
+          if (artisan && r.artisan)  artisan.textContent = r.artisan;
+          if (imgBox  && r.imageUrl) imgBox.innerHTML    = '<img src="' + r.imageUrl + '" style="width:100%;height:100%;object-fit:cover;"/>';
+        });
+      }
+    } catch(e) { console.warn('loadSavedRealisations:', e); }
   }
   document.addEventListener('DOMContentLoaded', loadSavedRealisations);
   window.addEventListener('load', loadSavedRealisations);
