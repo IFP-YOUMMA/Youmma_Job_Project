@@ -382,7 +382,7 @@ nav.scrolled{background:rgba(15,16,32,.96);backdrop-filter:blur(20px) saturate(1
 .tarif-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:26px;}
 .tarif-features li{font-size:13px;color:var(--texte);display:flex;align-items:center;gap:8px;}
 .tarif-features li.light{color:rgba(255,255,255,.75);}
-.tarif-features li::before{content:'✓';color:var(--vert);font-weight:700;flex-shrink:0;}
+.tarif-features li::before{content:'<i class="fa-solid fa-check"></i>';color:var(--vert);font-weight:700;flex-shrink:0;}
 .tarif-features li.off{color:var(--gris);text-decoration:line-through;}
 .tarif-features li.off::before{content:'✕';color:var(--gris);}
 .btn-tarif{display:block;padding:13px;border:1.5px solid var(--bordure);border-radius:var(--radius-md);text-align:center;font-size:13.5px;font-weight:700;color:var(--texte);cursor:pointer;background:var(--fond);transition:all var(--transition);font-family:'DM Sans',sans-serif;}
@@ -1251,6 +1251,30 @@ nav { display:none; }
 body.on-home nav { display:flex!important; }
 .step-section { display:none!important; }
 .step-section.active { display:block!important; }
+
+/* Font Awesome dans l'interface */
+.fa-solid, .fa-brands, .fa-regular {
+  font-style: normal !important;
+}
+/* Icônes sidebar admin */
+#adminSidebarEl .fa-solid {
+  font-size: 13px;
+  opacity: .8;
+}
+/* Icônes dashboard prestataire */
+.nav-item .fa-solid {
+  font-size: 14px;
+  width: 18px;
+  text-align: center;
+}
+/* Stats dashboard */
+.stat-icon .fa-solid {
+  font-size: 20px;
+}
+/* Boutons avec icônes */
+button .fa-solid, a .fa-solid, button .fa-brands, a .fa-brands {
+  margin-right: 4px;
+}
 </style>
 
 <body>
@@ -1336,7 +1360,7 @@ async function verifierSession() {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-login').classList.add('active');
   window.scrollTo(0,0);
-">🔐 Connexion</button>
+"><i class="fa-solid fa-lock"></i> Connexion</button>
       <button class="btn-nav-ghost" onclick="
   document.getElementById('mainContent').style.display='none';
   document.getElementById('mainNav').style.display='none';
@@ -1355,15 +1379,15 @@ async function verifierSession() {
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu" onclick="toggleMenu()">
   <div class="mobile-menu-inner" onclick="event.stopPropagation()">
-    <a href="#accueil" onclick="toggleMenu()">🏠 Accueil</a>
-    <a href="#artisans" onclick="toggleMenu()">🔧 Artisans</a>
+    <a href="#accueil" onclick="toggleMenu()"><i class="fa-solid fa-house"></i> Accueil</a>
+    <a href="#artisans" onclick="toggleMenu()"> Artisans</a>
     <a href="#prestataires" onclick="toggleMenu()">👥 Annuaire</a>
     <a href="#categories" onclick="toggleMenu()">📂 Catégories</a>
     <a href="#partenaires" onclick="toggleMenu()">🤝 Partenaires</a>
-    <a href="#temoignages" onclick="toggleMenu()">⭐ Avis clients</a>
+    <a href="#temoignages" onclick="toggleMenu()"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Avis clients</a>
     <a href="#tarifs" onclick="toggleMenu()">💰 Tarifs</a>
     <a href="#faq" onclick="toggleMenu()">❓ FAQ</a>
-    <a href="#contact" onclick="toggleMenu()">📞 Contact</a>
+    <a href="#contact" onclick="toggleMenu()"><i class="fa-solid fa-phone"></i> Contact</a>
     <button onclick="toggleMenu();ouvrirInscription();" style="background:var(--orange);color:#fff;margin-top:12px;border-radius:12px;text-align:center;">🚀 Devenir artisan</button>
   </div>
 </div>
@@ -1389,19 +1413,19 @@ async function verifierSession() {
       </h1>
       <p class="hero-subtitle">Trouvez rapidement le bon artisan pour tous vos projets — électriciens, plombiers, maçons, soudeurs, menuisiers, mécaniciens et bien plus.</p>
       <div class="hero-metiers-strip">
-        <span class="hm-tag">⚡ Électricien</span>
-        <span class="hm-tag">🔧 Plombier</span>
-        <span class="hm-tag">🏗️ Maçon</span>
-        <span class="hm-tag">🔩 Soudeur</span>
-        <span class="hm-tag">🪚 Menuisier</span>
-        <span class="hm-tag">🔩 Mécanicien</span>
-        <span class="hm-tag">🔲 Carreleur</span>
-        <span class="hm-tag">🎨 Peintre</span>
+        <span class="hm-tag"> Électricien</span>
+        <span class="hm-tag"> Plombier</span>
+        <span class="hm-tag"> Maçon</span>
+        <span class="hm-tag"> Soudeur</span>
+        <span class="hm-tag"> Menuisier</span>
+        <span class="hm-tag"> Mécanicien</span>
+        <span class="hm-tag"> Carreleur</span>
+        <span class="hm-tag"> Peintre</span>
         <span class="hm-tag">🧵 Couturier</span>
-        <span class="hm-tag">❄️ Climaticien</span>
+        <span class="hm-tag"> Climaticien</span>
       </div>
       <div class="hero-express">
-        <span class="express-icon">⚡</span>
+        <span class="express-icon"></span>
         <div class="express-text">
           <strong>Besoin d'une intervention rapide ?</strong>
           Découvrez nos artisans Express disponibles aujourd'hui.
@@ -1409,7 +1433,7 @@ async function verifierSession() {
         <button class="btn-express" onclick="filterByExpress()">Voir les artisans Express →</button>
       </div>
       <div class="hero-actions">
-        <button class="btn-hero-main" onclick="document.getElementById('artisans').scrollIntoView({behavior:'smooth'})">🔍 Trouver un artisan</button>
+        <button class="btn-hero-main" onclick="document.getElementById('artisans').scrollIntoView({behavior:'smooth'})"><i class="fa-solid fa-magnifying-glass"></i> Trouver un artisan</button>
         <button class="btn-hero-outline" onclick="ouvrirInscription()">🚀 Devenir artisan</button>
       </div>
       <div class="hero-kpis">
@@ -1431,11 +1455,11 @@ async function verifierSession() {
             <div class="hc-avatar">AD</div>
             <div style="flex:1;">
               <div class="hc-name">Amadou Diallo</div>
-              <div class="hc-job">⚡ Électricien certifié · Ratoma</div>
+              <div class="hc-job"> Électricien certifié · Ratoma</div>
               <div class="hc-badges">
-                <span class="hc-badge hcb-verifie">✓ Vérifié</span>
-                <span class="hc-badge hcb-top">🏆 Top Artisan</span>
-                <span class="hc-badge hcb-express">⚡ Express</span>
+                <span class="hc-badge hcb-verifie"><i class="fa-solid fa-check"></i> Vérifié</span>
+                <span class="hc-badge hcb-top"><i class="fa-solid fa-trophy" style="color:#F5C842;"></i> Top Artisan</span>
+                <span class="hc-badge hcb-express"> Express</span>
               </div>
             </div>
           </div>
@@ -1446,17 +1470,17 @@ async function verifierSession() {
             <span class="hc-skill">Tableau électrique</span>
           </div>
           <div class="hc-stats">
-            <div class="hcs"><div class="hcs-val">142</div><div class="hcs-label">👁️ Vues</div></div>
-            <div class="hcs"><div class="hcs-val">47</div><div class="hcs-label">🎯 Missions</div></div>
-            <div class="hcs"><div class="hcs-val">5.0</div><div class="hcs-label">⭐ Note</div></div>
+            <div class="hcs"><div class="hcs-val">142</div><div class="hcs-label"><i class="fa-solid fa-eye"></i> Vues</div></div>
+            <div class="hcs"><div class="hcs-val">47</div><div class="hcs-label"><i class="fa-solid fa-bullseye"></i> Missions</div></div>
+            <div class="hcs"><div class="hcs-val">5.0</div><div class="hcs-label"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Note</div></div>
           </div>
           <div class="hc-actions">
-            <button class="btn-hca wa" onclick="openWA('+224620538290','Amadou Diallo')">💬 WhatsApp</button>
-            <button class="btn-hca call" onclick="callProvider('+224620538290')">📞 Appeler</button>
+            <button class="btn-hca wa" onclick="openWA('+224620538290','Amadou Diallo')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+            <button class="btn-hca call" onclick="callProvider('+224620538290')"><i class="fa-solid fa-phone"></i> Appeler</button>
           </div>
         </div>
         <div class="float-notif fn-bot">
-          <div class="fn-icon" style="background:#FEF9C3;">⭐</div>
+          <div class="fn-icon" style="background:#FEF9C3;"><i class="fa-solid fa-star" style="color:#F5C842;"></i></div>
           <div><div class="fn-label">Note moyenne</div><div class="fn-val">4.8 / 5 ★</div></div>
         </div>
       </div>
@@ -1468,15 +1492,15 @@ async function verifierSession() {
 <div class="search-section">
   <div class="search-container">
     <div class="search-box">
-      <div class="search-box-label">🔍 Rechercher</div>
+      <div class="search-box-label"><i class="fa-solid fa-magnifying-glass"></i> Rechercher</div>
       <div class="search-divider"></div>
       <div class="search-field">
-        <span class="search-field-icon">🔧</span>
+        <span class="search-field-icon"></span>
         <input type="text" id="searchInput" placeholder="Métier, artisan, service..." oninput="filterProviders()"/>
       </div>
       <div class="search-divider"></div>
       <div class="search-field">
-        <span class="search-field-icon">📍</span>
+        <span class="search-field-icon"><i class="fa-solid fa-location-dot"></i></span>
         <select id="villeFilter" onchange="filterProviders()">
           <option value="">Toutes les villes</option>
           <option>Kaloum</option><option>Ratoma</option><option>Matam</option>
@@ -1489,14 +1513,14 @@ async function verifierSession() {
         <span class="search-field-icon">📂</span>
         <select id="catFilter" onchange="filterProviders()">
           <option value="">Toutes catégories</option>
-          <option value="Artisans">🔧 Artisans</option>
+          <option value="Artisans"> Artisans</option>
           <option value="Santé &amp; Beauté">🏥 Santé &amp; Beauté</option>
-          <option value="Construction &amp; BTP">🏗️ Construction &amp; BTP</option>
-          <option value="IT">💻 IT &amp; Digital</option>
+          <option value="Construction &amp; BTP"> Construction &amp; BTP</option>
+          <option value="IT"> IT &amp; Digital</option>
           <option value="Éducation">📚 Éducation</option>
-          <option value="Transport">🚗 Transport</option>
+          <option value="Transport"> Transport</option>
           <option value="Juridique">⚖️ Services Pro</option>
-          <option value="Services Express">⚡ Services Express</option>
+          <option value="Services Express"> Services Express</option>
         </select>
       </div>
       <div class="search-divider"></div>
@@ -1511,7 +1535,7 @@ async function verifierSession() {
       </div>
       <div class="search-divider"></div>
       <div class="search-field" style="min-width:100px;">
-        <span class="search-field-icon">⭐</span>
+        <span class="search-field-icon"><i class="fa-solid fa-star" style="color:#F5C842;"></i></span>
         <select id="noteFilter" onchange="filterProviders()">
           <option value="0">Toutes notes</option>
           <option value="4">4+ étoiles</option>
@@ -1520,17 +1544,17 @@ async function verifierSession() {
         </select>
       </div>
       <button class="btn-search" onclick="filterProviders();document.getElementById('prestataires').scrollIntoView({behavior:'smooth'})">
-        🔍 Rechercher
+        <i class="fa-solid fa-magnifying-glass"></i> Rechercher
       </button>
     </div>
     <div class="search-filters-row">
       <div class="search-filters">
         <button class="filter-chip active" id="chip-all" onclick="setActiveFilter('all')">Tous</button>
-        <button class="filter-chip express-chip" id="chip-express" onclick="setActiveFilter('express')">⚡ Express</button>
-        <button class="filter-chip" id="chip-verifie" onclick="setActiveFilter('verifie')">✓ Vérifiés</button>
-        <button class="filter-chip top-chip" id="chip-top" onclick="setActiveFilter('top')">🏆 Top Artisans</button>
+        <button class="filter-chip express-chip" id="chip-express" onclick="setActiveFilter('express')"> Express</button>
+        <button class="filter-chip" id="chip-verifie" onclick="setActiveFilter('verifie')"><i class="fa-solid fa-check"></i> Vérifiés</button>
+        <button class="filter-chip top-chip" id="chip-top" onclick="setActiveFilter('top')"><i class="fa-solid fa-trophy" style="color:#F5C842;"></i> Top Artisans</button>
         <button class="filter-chip" id="chip-recommande" onclick="setActiveFilter('recommande')">👍 Recommandés</button>
-        <button class="filter-chip" id="chip-artisans" onclick="setActiveFilter('artisans')">🔧 BTP</button>
+        <button class="filter-chip" id="chip-artisans" onclick="setActiveFilter('artisans')"> BTP</button>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
         <span id="resultsCount" style="font-size:12px;color:var(--gris);font-weight:600;white-space:nowrap;">17 artisans</span>
@@ -1545,7 +1569,7 @@ async function verifierSession() {
 <div class="counters-bg">
   <div class="counters-inner">
     <div class="counter-card fade-in">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#FDE8D8,#FFE4CC);">🔧</div>
+      <div class="cc-icon" style="background:linear-gradient(135deg,#FDE8D8,#FFE4CC);"></div>
       <div class="cc-num"><span id="cnt1" data-target="500">0</span><span class="cc-suffix">+</span></div>
       <div class="cc-label">Prestataires vérifiés</div>
       <div class="cc-sub">Professionnels qualifiés</div>
@@ -1575,18 +1599,18 @@ async function verifierSession() {
 <!-- ── ARTISANS SPOTLIGHT ── -->
 <section class="artisans-bg" id="artisans">
   <div class="section-header">
-    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">🔧 Artisans à l'honneur</span></div>
+    <div class="section-tag"><span class="stag-line"></span><span class="stag-text"> Artisans à l'honneur</span></div>
     <h2 class="section-title">Meilleurs <span class="hl">artisans</span><br>qualifiés &amp; vérifiés</h2>
     <p class="section-desc">Électriciens · Plombiers · Maçons · Soudeurs · Menuisiers · Mécaniciens · Carreleurs · Peintres · Couturiers · Climaticiens — chaque artisan est validé par YOUMMA JOBS.</p>
   </div>
   <div style="max-width:1320px;margin:0 auto;padding:20px 5% 80px;">
     <div class="search-chips-row" style="margin-bottom:24px;">
-      <button class="chip chip-express" onclick="filterByExpress()">⚡ Express</button>
-      <button class="chip chip-verifie" onclick="filterByVerifie()">✓ Vérifiés</button>
-      <button class="chip chip-top" onclick="filterByTop()">🏆 Top Artisans</button>
-      <button class="chip" onclick="filterByCat('Artisans')">🔧 Artisans BTP</button>
+      <button class="chip chip-express" onclick="filterByExpress()"> Express</button>
+      <button class="chip chip-verifie" onclick="filterByVerifie()"><i class="fa-solid fa-check"></i> Vérifiés</button>
+      <button class="chip chip-top" onclick="filterByTop()"><i class="fa-solid fa-trophy" style="color:#F5C842;"></i> Top Artisans</button>
+      <button class="chip" onclick="filterByCat('Artisans')"> Artisans BTP</button>
       <button class="chip" onclick="filterByCat('Santé &amp; Beauté')">🏥 Santé</button>
-      <button class="chip" onclick="filterByCat('IT')">💻 IT &amp; Digital</button>
+      <button class="chip" onclick="filterByCat('IT')"> IT &amp; Digital</button>
       <button class="chip" onclick="resetFilters()" style="border-color:var(--gris);color:var(--gris);">Réinitialiser</button>
     </div>
     <div class="artisans-grid-3" id="artisansGrid"></div>
@@ -1606,7 +1630,7 @@ async function verifierSession() {
     <p class="section-desc">Artisans, santé, IT, éducation et bien plus — prestataires vérifiés partout en Guinée.</p>
     <div class="cats-grid" id="catsGrid">
       <a href="#prestataires" class="cat-card cat-artisan-hl" onclick="filterCat('Artisans')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#FDE8D8,#FEF3C7);">🔧</div>
+        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#FDE8D8,#FEF3C7);"></div>
         <div class="cat-name">Artisans</div><div class="cat-count">Électriciens, plombiers, maçons</div>
         <span class="cat-badge-count">15+</span>
       </a>
@@ -1616,12 +1640,12 @@ async function verifierSession() {
         <span class="cat-badge-count">12+</span>
       </a>
       <a href="#prestataires" class="cat-card" onclick="filterCat('Construction &amp; BTP')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#FEF3C7,#FDE8D8);">🏗️</div>
+        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#FEF3C7,#FDE8D8);"></div>
         <div class="cat-name">Construction &amp; BTP</div><div class="cat-count">Maçons, architectes, ingénieurs</div>
         <span class="cat-badge-count">8+</span>
       </a>
       <a href="#prestataires" class="cat-card" onclick="filterCat('IT')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#E0E0F8,#EDE9FE);">💻</div>
+        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#E0E0F8,#EDE9FE);"></div>
         <div class="cat-name">IT &amp; Digital</div><div class="cat-count">Développeurs, graphistes, CM</div>
         <span class="cat-badge-count">10+</span>
       </a>
@@ -1631,12 +1655,12 @@ async function verifierSession() {
         <span class="cat-badge-count">10+</span>
       </a>
       <a href="#prestataires" class="cat-card" onclick="filterCat('Aide à domicile')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#E8F5E9,#F0FDF4);">🏠</div>
+        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#E8F5E9,#F0FDF4);"><i class="fa-solid fa-house"></i></div>
         <div class="cat-name">Aide à domicile</div><div class="cat-count">Ménage, garde d'enfants, cuisiniers</div>
         <span class="cat-badge-count">8+</span>
       </a>
       <a href="#prestataires" class="cat-card" onclick="filterCat('Transport')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#FEF3C7,#FFF7ED);">🚗</div>
+        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#FEF3C7,#FFF7ED);"></div>
         <div class="cat-name">Logistique &amp; Transport</div><div class="cat-count">Chauffeurs, déménageurs, livreurs</div>
         <span class="cat-badge-count">8+</span>
       </a>
@@ -1651,7 +1675,7 @@ async function verifierSession() {
         <span class="cat-badge-count">6+</span>
       </a>
       <a href="#prestataires" class="cat-card cat-express" onclick="filterCat('Services Express')">
-        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#EDE9FE,#F5F3FF);">⚡</div>
+        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#EDE9FE,#F5F3FF);"></div>
         <div class="cat-name">Services Express</div><div class="cat-count">Livraison, dépannage, réparations</div>
         <span class="cat-badge-urgent">URGENT</span>
       </a>
@@ -1667,19 +1691,19 @@ async function verifierSession() {
       <div>
         <div class="section-tag"><span class="stag-line"></span><span class="stag-text">👥 500+ Artisans vérifiés</span></div>
         <h2 class="section-title">Tous nos <span class="hl">artisans</span> vérifiés</h2>
-        <p style="font-size:12.5px;color:var(--gris);margin-top:4px;">📍 Ratoma · Lambanyi · Matam · Kaloum · Dixinn · Dubréka · Coyah · et toute la Guinée</p>
+        <p style="font-size:12.5px;color:var(--gris);margin-top:4px;"><i class="fa-solid fa-location-dot"></i> Ratoma · Lambanyi · Matam · Kaloum · Dixinn · Dubréka · Coyah · et toute la Guinée</p>
       </div>
       <div class="search-bar-simple">
-        <input type="text" class="input-search" id="searchInput2" placeholder="🔍 Artisan, métier..." oninput="document.getElementById('searchInput').value=this.value;filterProviders()"/>
+        <input type="text" class="input-search" id="searchInput2" placeholder="<i class="fa-solid fa-magnifying-glass"></i> Artisan, métier..." oninput="document.getElementById('searchInput').value=this.value;filterProviders()"/>
         <select class="select-filter" id="catFilter2" onchange="document.getElementById('catFilter').value=this.value;filterProviders()">
           <option value="">Toutes catégories</option>
-          <option value="Artisans">🔧 Artisans</option>
+          <option value="Artisans"> Artisans</option>
           <option value="Santé &amp; Beauté">🏥 Santé &amp; Beauté</option>
-          <option value="IT">💻 IT &amp; Digital</option>
+          <option value="IT"> IT &amp; Digital</option>
           <option value="Éducation">📚 Éducation</option>
-          <option value="Transport">🚗 Transport</option>
+          <option value="Transport"> Transport</option>
           <option value="Juridique">⚖️ Services Pro</option>
-          <option value="Services Express">⚡ Express</option>
+          <option value="Services Express"> Express</option>
         </select>
       </div>
     </div>
@@ -1692,35 +1716,35 @@ async function verifierSession() {
 <!-- ── SECTION PORTFOLIO ── -->
 <section class="portfolio-section" id="portfolio">
   <div style="max-width:1320px;margin:0 auto;">
-    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">📸 Galerie des réalisations</span></div>
+    <div class="section-tag"><span class="stag-line"></span><span class="stag-text"><i class="fa-solid fa-images"></i> Galerie des réalisations</span></div>
     <h2 class="section-title">Le <span class="hl">savoir-faire</span> de nos artisans</h2>
     <p class="section-desc" style="max-width:580px;">Découvrez les réalisations récentes des artisans YOUMMA JOBS — installations électriques, plomberie, maçonnerie, couture et bien plus.</p>
     <div class="portfolio-grid" id="portfolioGrid">
       <!-- Réalisations dynamiques -->
       <div class="portfolio-item">
-        <div class="port-img" style="background:linear-gradient(135deg,#FDE8D8,#FFE4CC);">⚡</div>
+        <div class="port-img" style="background:linear-gradient(135deg,#FDE8D8,#FFE4CC);"></div>
         <div class="port-label">Installation électrique complète · Amadou D.</div>
-        <div class="port-overlay"><div class="port-overlay-icon">👁️</div></div>
+        <div class="port-overlay"><div class="port-overlay-icon"><i class="fa-solid fa-eye"></i></div></div>
       </div>
       <div class="portfolio-item">
         <div class="port-img" style="background:linear-gradient(135deg,#E8F5E9,#F0FDF4);">🚿</div>
         <div class="port-label">Plomberie résidentielle · Ibrahima B.</div>
-        <div class="port-overlay"><div class="port-overlay-icon">👁️</div></div>
+        <div class="port-overlay"><div class="port-overlay-icon"><i class="fa-solid fa-eye"></i></div></div>
       </div>
       <div class="portfolio-item">
-        <div class="port-img" style="background:linear-gradient(135deg,#FEF3C7,#FFFBEB);">🏗️</div>
+        <div class="port-img" style="background:linear-gradient(135deg,#FEF3C7,#FFFBEB);"></div>
         <div class="port-label">Maçonnerie villa · Mamadou K.</div>
-        <div class="port-overlay"><div class="port-overlay-icon">👁️</div></div>
+        <div class="port-overlay"><div class="port-overlay-icon"><i class="fa-solid fa-eye"></i></div></div>
       </div>
       <div class="portfolio-item">
-        <div class="port-img" style="background:linear-gradient(135deg,#E0E0F8,#EDE9FE);">🔩</div>
+        <div class="port-img" style="background:linear-gradient(135deg,#E0E0F8,#EDE9FE);"></div>
         <div class="port-label">Soudure portail · Sékou C.</div>
-        <div class="port-overlay"><div class="port-overlay-icon">👁️</div></div>
+        <div class="port-overlay"><div class="port-overlay-icon"><i class="fa-solid fa-eye"></i></div></div>
       </div>
       <div class="portfolio-item">
         <div class="port-img" style="background:linear-gradient(135deg,#FCE4EC,#F8BBD9);">🧵</div>
         <div class="port-label">Création tenue bogolan · Fatoumata B.</div>
-        <div class="port-overlay"><div class="port-overlay-icon">👁️</div></div>
+        <div class="port-overlay"><div class="port-overlay-icon"><i class="fa-solid fa-eye"></i></div></div>
       </div>
     </div>
     <div style="text-align:center;margin-top:32px;">
@@ -1733,16 +1757,16 @@ async function verifierSession() {
 <!-- ── WHY YOUMMA JOBS ── -->
 <section class="why-bg" id="features">
   <div class="why-inner">
-    <div class="section-tag"><span class="stag-line" style="background:var(--or);"></span><span class="stag-text" style="color:var(--or);">⭐ Pourquoi choisir YOUMMA JOBS</span></div>
+    <div class="section-tag"><span class="stag-line" style="background:var(--or);"></span><span class="stag-text" style="color:var(--or);"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Pourquoi choisir YOUMMA JOBS</span></div>
     <h2 class="section-title" style="color:#fff;">La plateforme <em style="color:var(--or);font-style:italic;">N°1</em><br>des artisans en Guinée</h2>
     <p class="section-desc" style="color:rgba(255,255,255,.42);">Tout ce dont vous avez besoin pour trouver ou proposer des services professionnels partout en Guinée.</p>
     <div class="why-grid">
       <div class="why-card fade-in"><div class="why-icon" style="background:rgba(232,93,4,.15);">🛡️</div><div class="why-title">Vérification des profils</div><div class="why-desc">Chaque prestataire est vérifié manuellement avant publication. Identité, compétences et références contrôlées. Zéro arnaque garantie.</div></div>
-      <div class="why-card fade-in"><div class="why-icon" style="background:rgba(37,211,102,.12);">💬</div><div class="why-title">Contact direct</div><div class="why-desc">WhatsApp et téléphone sans intermédiaire. Contactez directement le professionnel sans frais et sans commission cachée.</div></div>
+      <div class="why-card fade-in"><div class="why-icon" style="background:rgba(37,211,102,.12);"><i class="fa-brands fa-whatsapp"></i></div><div class="why-title">Contact direct</div><div class="why-desc">WhatsApp et téléphone sans intermédiaire. Contactez directement le professionnel sans frais et sans commission cachée.</div></div>
       <div class="why-card fade-in"><div class="why-icon" style="background:rgba(245,200,66,.12);">🌍</div><div class="why-title">Couverture nationale</div><div class="why-desc">Déploiement progressif dans toute la Guinée — Conakry, Kindia, Labé, Kankan et toutes les préfectures.</div></div>
       <div class="why-card fade-in"><div class="why-icon" style="background:rgba(124,58,237,.12);">🤝</div><div class="why-title">Assistance YOUMMA</div><div class="why-desc">Une équipe disponible 7j/7 pour accompagner les clients et les artisans à chaque étape de leur mission.</div></div>
-      <div class="why-card fade-in"><div class="why-icon" style="background:rgba(239,68,68,.1);">⭐</div><div class="why-title">Système d'avis</div><div class="why-desc">Avis clients authentiques, notes étoiles, badge Artisan recommandé. Construisez votre réputation professionnelle.</div></div>
-      <div class="why-card fade-in"><div class="why-icon" style="background:rgba(59,130,246,.1);">💳</div><div class="why-title">Paiement Mobile Money</div><div class="why-desc">Orange Money, MTN MoMo et Wave — paiement sécurisé, activation rapide du profil en moins de 24h.</div></div>
+      <div class="why-card fade-in"><div class="why-icon" style="background:rgba(239,68,68,.1);"><i class="fa-solid fa-star" style="color:#F5C842;"></i></div><div class="why-title">Système d'avis</div><div class="why-desc">Avis clients authentiques, notes étoiles, badge Artisan recommandé. Construisez votre réputation professionnelle.</div></div>
+      <div class="why-card fade-in"><div class="why-icon" style="background:rgba(59,130,246,.1);"><i class="fa-solid fa-credit-card"></i></div><div class="why-title">Paiement Mobile Money</div><div class="why-desc">Orange Money, MTN MoMo et Wave — paiement sécurisé, activation rapide du profil en moins de 24h.</div></div>
     </div>
   </div>
 </section>
@@ -1761,12 +1785,12 @@ async function verifierSession() {
         <div class="how-step fade-in"><div class="step-num">4</div><div class="step-content"><h4>Notez et recommandez</h4><p>Après la mission, laissez un avis pour aider la communauté guinéenne à trouver les meilleurs artisans.</p></div></div>
       </div>
       <div class="how-visual">
-        <h3 style="font-family:'Libre Baskerville',serif;color:#fff;font-size:17px;margin-bottom:20px;">📊 Tableau de bord artisan</h3>
+        <h3 style="font-family:'Libre Baskerville',serif;color:#fff;font-size:17px;margin-bottom:20px;"><i class="fa-solid fa-chart-bar"></i> Tableau de bord artisan</h3>
         <div class="how-kpis-grid">
-          <div class="hkpi"><div class="hkpi-icon">👁️</div><div class="hkpi-label">Vues ce mois</div><div class="hkpi-val">142</div><div class="hkpi-sub">+28% vs mois dernier</div></div>
-          <div class="hkpi"><div class="hkpi-icon">💬</div><div class="hkpi-label">Clics WhatsApp</div><div class="hkpi-val">38</div><div class="hkpi-sub">Contacts directs</div></div>
-          <div class="hkpi"><div class="hkpi-icon">🎯</div><div class="hkpi-label">Missions</div><div class="hkpi-val">47</div><div class="hkpi-sub">Validées</div></div>
-          <div class="hkpi"><div class="hkpi-icon">⭐</div><div class="hkpi-label">Note moyenne</div><div class="hkpi-val">4.8</div><div class="hkpi-sub">Sur 5 étoiles</div></div>
+          <div class="hkpi"><div class="hkpi-icon"><i class="fa-solid fa-eye"></i></div><div class="hkpi-label">Vues ce mois</div><div class="hkpi-val">142</div><div class="hkpi-sub">+28% vs mois dernier</div></div>
+          <div class="hkpi"><div class="hkpi-icon"><i class="fa-brands fa-whatsapp"></i></div><div class="hkpi-label">Clics WhatsApp</div><div class="hkpi-val">38</div><div class="hkpi-sub">Contacts directs</div></div>
+          <div class="hkpi"><div class="hkpi-icon"><i class="fa-solid fa-bullseye"></i></div><div class="hkpi-label">Missions</div><div class="hkpi-val">47</div><div class="hkpi-sub">Validées</div></div>
+          <div class="hkpi"><div class="hkpi-icon"><i class="fa-solid fa-star" style="color:#F5C842;"></i></div><div class="hkpi-label">Note moyenne</div><div class="hkpi-val">4.8</div><div class="hkpi-sub">Sur 5 étoiles</div></div>
         </div>
         <div style="margin-top:14px;background:rgba(255,255,255,.05);border-radius:12px;padding:13px;">
           <div style="font-size:10px;color:rgba(255,255,255,.3);margin-bottom:7px;letter-spacing:.07em;text-transform:uppercase;">Abonnement actif</div>
@@ -1792,21 +1816,21 @@ async function verifierSession() {
         <div class="devenir-features">
           <div class="df"><div class="df-icon">👥</div><div><div class="df-title">Visibilité nationale</div><div class="df-desc">Votre profil visible par tous les clients en Guinée — photo, réalisations, avis.</div></div></div>
           <div class="df"><div class="df-icon">📸</div><div><div class="df-title">Portfolio de réalisations</div><div class="df-desc">Ajoutez jusqu'à 5 photos de vos meilleures réalisations pour convaincre vos clients.</div></div></div>
-          <div class="df"><div class="df-icon">📊</div><div><div class="df-title">Tableau de bord complet</div><div class="df-desc">Vues, appels, WhatsApp, missions — suivez vos performances en temps réel.</div></div></div>
-          <div class="df"><div class="df-icon">💳</div><div><div class="df-title">Abonnement accessible</div><div class="df-desc">50 000 GNF/mois — Orange Money, MTN MoMo ou Wave. Activation en moins de 24h.</div></div></div>
+          <div class="df"><div class="df-icon"><i class="fa-solid fa-chart-bar"></i></div><div><div class="df-title">Tableau de bord complet</div><div class="df-desc">Vues, appels, WhatsApp, missions — suivez vos performances en temps réel.</div></div></div>
+          <div class="df"><div class="df-icon"><i class="fa-solid fa-credit-card"></i></div><div><div class="df-title">Abonnement accessible</div><div class="df-desc">50 000 GNF/mois — Orange Money, MTN MoMo ou Wave. Activation en moins de 24h.</div></div></div>
         </div>
         <div class="devenir-cta">
           <button class="btn-hero-main" onclick="ouvrirInscription()">🚀 Créer mon profil gratuit</button>
-          <a href="https://wa.me/22461252510?text=Bonjour%20YOUMMA%20JOBS%20je%20veux%20devenir%20prestataire" target="_blank" class="btn-hero-outline">💬 Nous contacter</a>
+          <a href="https://wa.me/22461252510?text=Bonjour%20YOUMMA%20JOBS%20je%20veux%20devenir%20prestataire" target="_blank" class="btn-hero-outline"><i class="fa-brands fa-whatsapp"></i> Nous contacter</a>
         </div>
       </div>
       <div class="dash-preview">
         <div class="dp-head"><div class="dp-title">Mon espace artisan</div><div class="dp-badge">✅ Actif</div></div>
         <div class="dp-stats">
-          <div class="dps"><div class="dps-val">142</div><div class="dps-label">👁️ Vues ce mois</div></div>
-          <div class="dps"><div class="dps-val">4.8</div><div class="dps-label">⭐ Note moyenne</div></div>
-          <div class="dps"><div class="dps-val">38</div><div class="dps-label">💬 Clics WhatsApp</div></div>
-          <div class="dps"><div class="dps-val">47</div><div class="dps-label">🎯 Missions</div></div>
+          <div class="dps"><div class="dps-val">142</div><div class="dps-label"><i class="fa-solid fa-eye"></i> Vues ce mois</div></div>
+          <div class="dps"><div class="dps-val">4.8</div><div class="dps-label"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Note moyenne</div></div>
+          <div class="dps"><div class="dps-val">38</div><div class="dps-label"><i class="fa-brands fa-whatsapp"></i> Clics WhatsApp</div></div>
+          <div class="dps"><div class="dps-val">47</div><div class="dps-label"><i class="fa-solid fa-bullseye"></i> Missions</div></div>
         </div>
         <div class="dp-sub">Dernières missions</div>
         <div class="dp-mission"><div class="dm-text">Installation électrique — Ratoma</div><div class="dm-ok">✅ Validée</div></div>
@@ -1824,7 +1848,7 @@ async function verifierSession() {
 <section class="temo-bg" id="temoignages">
   <div class="temo-inner">
     <div style="text-align:center;">
-      <div class="section-tag" style="justify-content:center;"><span class="stag-line"></span><span class="stag-text">⭐ Avis clients</span><span class="stag-line"></span></div>
+      <div class="section-tag" style="justify-content:center;"><span class="stag-line"></span><span class="stag-text"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Avis clients</span><span class="stag-line"></span></div>
       <h2 class="section-title" style="text-align:center;">Ils nous font <span class="hl">confiance</span></h2>
       <p class="section-desc" style="margin:0 auto;text-align:center;">Des centaines de Guinéens satisfaits utilisent YOUMMA JOBS pour trouver leurs artisans.</p>
     </div>
@@ -1888,7 +1912,7 @@ async function verifierSession() {
 <section class="trust-section" id="trust">
   <div class="trust-inner">
     <div style="text-align:center;margin-bottom:0;">
-      <div class="section-tag" style="justify-content:center;margin:0 auto 14px;"><span class="stag-line" style="background:var(--or);"></span><span class="stag-text" style="color:var(--or);">🏆 Confiance &amp; Qualité</span><span class="stag-line" style="background:var(--or);"></span></div>
+      <div class="section-tag" style="justify-content:center;margin:0 auto 14px;"><span class="stag-line" style="background:var(--or);"></span><span class="stag-text" style="color:var(--or);"><i class="fa-solid fa-trophy" style="color:#F5C842;"></i> Confiance &amp; Qualité</span><span class="stag-line" style="background:var(--or);"></span></div>
       <h2 class="section-title" style="color:#fff;text-align:center;">Pourquoi faire confiance<br><em style="color:var(--or);">à nos artisans ?</em></h2>
     </div>
     <div class="trust-grid">
@@ -1898,17 +1922,17 @@ async function verifierSession() {
         <div class="trust-label">Profils vérifiés manuellement</div>
       </div>
       <div class="trust-item">
-        <div class="trust-icon">⭐</div>
+        <div class="trust-icon"><i class="fa-solid fa-star" style="color:#F5C842;"></i></div>
         <div class="trust-val">4.8/5</div>
         <div class="trust-label">Note moyenne des artisans</div>
       </div>
       <div class="trust-item">
-        <div class="trust-icon">🎯</div>
+        <div class="trust-icon"><i class="fa-solid fa-bullseye"></i></div>
         <div class="trust-val">2 000+</div>
         <div class="trust-label">Missions réalisées</div>
       </div>
       <div class="trust-item">
-        <div class="trust-icon">⚡</div>
+        <div class="trust-icon"></div>
         <div class="trust-val">24h</div>
         <div class="trust-label">Délai de validation des profils</div>
       </div>
@@ -1945,13 +1969,13 @@ async function verifierSession() {
         <button onclick="document.getElementById('prestataires').scrollIntoView({behavior:'smooth'})" class="btn-tarif">Trouver un artisan →</button>
       </div>
       <div class="tarif-card featured fade-in">
-        <div class="tarif-badge-top">⭐ Le plus populaire</div>
+        <div class="tarif-badge-top"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Le plus populaire</div>
         <div class="tarif-name light">Artisan &amp; Pro</div>
         <div class="tarif-price light">50 000<span style="color:rgba(255,255,255,.35);"> GNF/mois</span></div>
         <div class="tarif-desc light">Tout ce qu'il faut pour développer votre activité en Guinée.</div>
         <ul class="tarif-features">
           <li class="light">Profil visible 24h/24 partout</li>
-          <li class="light">Badge "✓ Vérifié YOUMMA"</li>
+          <li class="light">Badge "<i class="fa-solid fa-check"></i> Vérifié YOUMMA"</li>
           <li class="light">5 photos de réalisations</li>
           <li class="light">Tableau de bord complet</li>
           <li class="light">Statistiques détaillées</li>
@@ -1964,7 +1988,7 @@ async function verifierSession() {
           <span class="pay-tag" style="background:#FFCC00;color:#000;">MTN MoMo</span>
           <span class="pay-tag" style="background:#1DA1F2;">Wave</span>
         </div>
-        <div class="tarif-secure">⚡ Activation rapide du profil</div>
+        <div class="tarif-secure"> Activation rapide du profil</div>
       </div>
       <div class="tarif-card fade-in">
         <div class="tarif-name">Entreprise</div>
@@ -1995,19 +2019,19 @@ async function verifierSession() {
         <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span class="faq-q-text">YOUMMA JOBS est-il gratuit pour les clients ?</span><span class="faq-icon">+</span></div><div class="faq-answer"><p>Oui, totalement gratuit ! Les clients peuvent rechercher, consulter tous les profils et contacter directement les artisans sans payer quoi que ce soit. Aucune commission, aucun frais caché.</p></div></div>
         <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span class="faq-q-text">Comment devenir artisan / prestataire sur YOUMMA JOBS ?</span><span class="faq-icon">+</span></div><div class="faq-answer"><p>Cliquez sur "Devenir artisan", remplissez le formulaire avec vos informations, photos et compétences. Notre équipe valide votre profil en moins de 24h. Vous bénéficiez ensuite de 14 jours d'essai gratuit.</p></div></div>
         <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span class="faq-q-text">Comment fonctionne le paiement de l'abonnement ?</span><span class="faq-icon">+</span></div><div class="faq-answer"><p>L'abonnement est de 50 000 GNF par mois. Payez via Orange Money, MTN MoMo ou Wave au +224 612 52 52 10, puis envoyez-nous la confirmation sur WhatsApp pour recevoir votre code d'activation.</p></div></div>
-        <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span class="faq-q-text">Comment les artisans sont-ils vérifiés ?</span><span class="faq-icon">+</span></div><div class="faq-answer"><p>Notre équipe vérifie manuellement chaque profil avant publication : identité, compétences déclarées et références. Chaque artisan approuvé reçoit le badge "✓ Vérifié YOUMMA JOBS".</p></div></div>
-        <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span class="faq-q-text">Que signifie le badge "⚡ Express" ?</span><span class="faq-icon">+</span></div><div class="faq-answer"><p>Le badge Express indique que l'artisan est disponible pour des interventions rapides, généralement dans la journée. Idéal pour les urgences — pannes électriques, fuites d'eau, dépannages rapides.</p></div></div>
+        <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span class="faq-q-text">Comment les artisans sont-ils vérifiés ?</span><span class="faq-icon">+</span></div><div class="faq-answer"><p>Notre équipe vérifie manuellement chaque profil avant publication : identité, compétences déclarées et références. Chaque artisan approuvé reçoit le badge "<i class="fa-solid fa-check"></i> Vérifié YOUMMA JOBS".</p></div></div>
+        <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span class="faq-q-text">Que signifie le badge " Express" ?</span><span class="faq-icon">+</span></div><div class="faq-answer"><p>Le badge Express indique que l'artisan est disponible pour des interventions rapides, généralement dans la journée. Idéal pour les urgences — pannes électriques, fuites d'eau, dépannages rapides.</p></div></div>
         <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span class="faq-q-text">YOUMMA JOBS couvre-t-il toute la Guinée ?</span><span class="faq-icon">+</span></div><div class="faq-answer"><p>Actuellement, nous couvrons principalement Conakry (Kaloum, Ratoma, Dixinn, Matam, Lambanyi, Kipé, Coyah, Dubréka). Nous travaillons activement à l'expansion vers Kindia, Labé et Kankan.</p></div></div>
         <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span class="faq-q-text">Puis-je ajouter des photos de mes réalisations ?</span><span class="faq-icon">+</span></div><div class="faq-answer"><p>Oui ! Chaque artisan peut ajouter jusqu'à 5 photos de ses meilleures réalisations dans son tableau de bord. Ces photos sont visibles sur votre profil public et renforcent votre crédibilité.</p></div></div>
       </div>
       <div class="faq-cta-box">
-        <div class="faq-cta-icon">💬</div>
+        <div class="faq-cta-icon"><i class="fa-brands fa-whatsapp"></i></div>
         <div class="faq-cta-title">Vous avez d'autres questions ?</div>
         <div class="faq-cta-desc">Notre équipe est disponible du lundi au samedi de 8h à 18h pour répondre à toutes vos questions.</div>
         <div class="faq-btns">
-          <a href="https://wa.me/22461252510?text=Bonjour%20YOUMMA%20JOBS%2C%20j'ai%20une%20question" target="_blank" class="faq-btn wa">💬 WhatsApp direct</a>
-          <a href="mailto:contact@yoummajobs.com" class="faq-btn email">📧 Envoyer un email</a>
-          <a href="tel:+22461252510" class="faq-btn tel">📞 Appeler maintenant</a>
+          <a href="https://wa.me/22461252510?text=Bonjour%20YOUMMA%20JOBS%2C%20j'ai%20une%20question" target="_blank" class="faq-btn wa"><i class="fa-brands fa-whatsapp"></i> WhatsApp direct</a>
+          <a href="mailto:contact@yoummajobs.com" class="faq-btn email"><i class="fa-solid fa-envelope"></i> Envoyer un email</a>
+          <a href="tel:+22461252510" class="faq-btn tel"><i class="fa-solid fa-phone"></i> Appeler maintenant</a>
         </div>
       </div>
     </div>
@@ -2018,19 +2042,19 @@ async function verifierSession() {
 
 <section class="contact-bg" id="contact">
   <div class="contact-inner">
-    <div class="section-tag"><span class="stag-line"></span><span class="stag-text">📞 Nous contacter</span></div>
+    <div class="section-tag"><span class="stag-line"></span><span class="stag-text"><i class="fa-solid fa-phone"></i> Nous contacter</span></div>
     <h2 class="section-title">Parlons de votre <span class="hl">projet</span></h2>
     <div class="contact-grid">
       <div>
         <p class="section-desc" style="margin-bottom:30px;">Notre équipe est disponible pour répondre à toutes vos questions sur YOUMMA JOBS.</p>
         <div class="contact-info-list">
-          <div class="ci-item"><div class="ci-icon" style="background:var(--orange-light);">📞</div><div><div class="ci-label">Téléphone</div><div class="ci-value">+224 612 52 52 10</div><div class="ci-sub">Lun–Sam, 8h–18h</div></div></div>
-          <div class="ci-item"><div class="ci-icon" style="background:#E6FBF3;">💬</div><div><div class="ci-label">WhatsApp</div><div class="ci-value">+224 612 52 52 10</div><div class="ci-sub">Réponse rapide garantie</div></div></div>
-          <div class="ci-item"><div class="ci-icon" style="background:var(--bleu-light);">📧</div><div><div class="ci-label">Email</div><div class="ci-value">contact@yoummajobs.com</div><div class="ci-sub">Réponse sous 24h</div></div></div>
-          <div class="ci-item"><div class="ci-icon" style="background:var(--or-light);">📍</div><div><div class="ci-label">Adresse</div><div class="ci-value">Lambanyi, Conakry 🇬🇳</div><div class="ci-sub">Guinée</div></div></div>
+          <div class="ci-item"><div class="ci-icon" style="background:var(--orange-light);"><i class="fa-solid fa-phone"></i></div><div><div class="ci-label">Téléphone</div><div class="ci-value">+224 612 52 52 10</div><div class="ci-sub">Lun–Sam, 8h–18h</div></div></div>
+          <div class="ci-item"><div class="ci-icon" style="background:#E6FBF3;"><i class="fa-brands fa-whatsapp"></i></div><div><div class="ci-label">WhatsApp</div><div class="ci-value">+224 612 52 52 10</div><div class="ci-sub">Réponse rapide garantie</div></div></div>
+          <div class="ci-item"><div class="ci-icon" style="background:var(--bleu-light);"><i class="fa-solid fa-envelope"></i></div><div><div class="ci-label">Email</div><div class="ci-value">contact@yoummajobs.com</div><div class="ci-sub">Réponse sous 24h</div></div></div>
+          <div class="ci-item"><div class="ci-icon" style="background:var(--or-light);"><i class="fa-solid fa-location-dot"></i></div><div><div class="ci-label">Adresse</div><div class="ci-value">Lambanyi, Conakry 🇬🇳</div><div class="ci-sub">Guinée</div></div></div>
         </div>
         <div style="margin-top:22px;">
-          <a href="https://wa.me/22461252510" target="_blank" style="display:inline-flex;align-items:center;gap:9px;background:#25D366;color:#fff;padding:14px 26px;border-radius:50px;text-decoration:none;font-weight:700;font-family:'Libre Baskerville',serif;font-size:14px;">💬 Ouvrir WhatsApp</a>
+          <a href="https://wa.me/22461252510" target="_blank" style="display:inline-flex;align-items:center;gap:9px;background:#25D366;color:#fff;padding:14px 26px;border-radius:50px;text-decoration:none;font-weight:700;font-family:'Libre Baskerville',serif;font-size:14px;"><i class="fa-brands fa-whatsapp"></i> Ouvrir WhatsApp</a>
         </div>
       </div>
       <div class="contact-form-box">
@@ -2064,7 +2088,7 @@ async function verifierSession() {
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
       <div class="modal-title">👤 Profil artisan</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+      <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-trash-can"></i></button>
     </div>
     <div class="modal-body" id="modalContent"></div>
   </div>
@@ -2075,10 +2099,10 @@ async function verifierSession() {
   <div class="inscr-modal" onclick="event.stopPropagation()">
     <div class="inscr-head">
       <div class="inscr-title">🚀 Rejoindre YOUMMA JOBS</div>
-      <button class="inscr-close" onclick="fermerInscription()">✕</button>
+      <button class="inscr-close" onclick="fermerInscription()"><i class="fa-solid fa-trash-can"></i></button>
     </div>
     <div class="inscr-badge">
-      <div class="inscr-badge-icon">🎯</div>
+      <div class="inscr-badge-icon"><i class="fa-solid fa-bullseye"></i></div>
       <div>
         <div class="inscr-badge-title">Profil vérifié en moins de 24h</div>
         <div class="inscr-badge-sub">14 jours d'essai gratuit · Abonnement 50 000 GNF/mois</div>
@@ -2103,20 +2127,20 @@ async function verifierSession() {
       <select id="iCat">
         <option value="">Choisir votre spécialité</option>
         <option disabled style="font-weight:700;color:#E85D04;">── Artisans ──</option>
-        <option>🔧 Électricien</option><option>🔧 Plombier</option><option>🔧 Maçon / BTP</option>
-        <option>🔧 Menuisier</option><option>🔧 Soudeur</option><option>🔧 Mécanicien</option>
-        <option>🔧 Carreleur</option><option>🔧 Peintre en bâtiment</option><option>🔧 Climaticien</option>
+        <option> Électricien</option><option> Plombier</option><option> Maçon / BTP</option>
+        <option> Menuisier</option><option> Soudeur</option><option> Mécanicien</option>
+        <option> Carreleur</option><option> Peintre en bâtiment</option><option> Climaticien</option>
         <option disabled style="font-weight:700;color:#E85D04;">── Construction ──</option>
-        <option>🏗️ Architecte</option><option>🏗️ Ingénieur BTP</option>
+        <option> Architecte</option><option> Ingénieur BTP</option>
         <option disabled style="font-weight:700;color:#E85D04;">── Santé &amp; Beauté ──</option>
         <option>🏥 Médecin</option><option>🏥 Infirmier / Infirmière</option>
         <option>✂️ Coiffeur / Coiffeuse</option><option>✂️ Couturier / Couturière</option>
         <option disabled style="font-weight:700;color:#E85D04;">── IT &amp; Digital ──</option>
-        <option>💻 Développeur web / Mobile</option><option>💻 Graphiste / Designer</option>
-        <option>💻 Community Manager</option><option>💻 Technicien informatique</option>
+        <option> Développeur web / Mobile</option><option> Graphiste / Designer</option>
+        <option> Community Manager</option><option> Technicien informatique</option>
         <option disabled style="font-weight:700;color:#E85D04;">── Autres ──</option>
-        <option>📚 Professeur / Formateur</option><option>🚗 Chauffeur VTC</option>
-        <option>⚖️ Avocat / Juriste</option><option>⚡ Services Express</option><option>Autre</option>
+        <option>📚 Professeur / Formateur</option><option> Chauffeur VTC</option>
+        <option>⚖️ Avocat / Juriste</option><option> Services Express</option><option>Autre</option>
       </select>
     </div>
     <div class="form-group"><label>Description de vos services *</label><textarea id="iDesc" placeholder="Décrivez vos services, votre expérience et vos spécialités..." style="min-height:80px;"></textarea></div>
@@ -2133,7 +2157,7 @@ async function verifierSession() {
         </select>
       </div>
     </div>
-    <div class="inscr-section">📍 Localisation</div>
+    <div class="inscr-section"><i class="fa-solid fa-location-dot"></i> Localisation</div>
     <div class="form-row-2">
       <div class="form-group">
         <label>Ville *</label>
@@ -2160,7 +2184,7 @@ async function verifierSession() {
       <div id="profilePhotoPreview" style="margin-top:10px;"></div>
     </div>
     <div style="margin-top:14px;">
-      <div style="font-size:12.5px;font-weight:700;color:var(--texte);margin-bottom:10px;">📷 Jusqu'à 5 photos de vos réalisations <span style="color:var(--gris);font-weight:400;">(avant/après, chantiers, travaux)</span></div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--texte);margin-bottom:10px;"><i class="fa-solid fa-camera"></i> Jusqu'à 5 photos de vos réalisations <span style="color:var(--gris);font-weight:400;">(avant/après, chantiers, travaux)</span></div>
       <div class="inscr-photos-preview" id="photosPreviewGrid">
         <label class="photo-thumb" id="photoSlot1" title="Photo 1" onclick="triggerPhotoUpload(1)">➕<input type="file" id="photoFile1" accept="image/*" style="display:none;" onchange="previewPhoto(this,1)"/></label>
         <label class="photo-thumb" id="photoSlot2" title="Photo 2" onclick="triggerPhotoUpload(2)">➕<input type="file" id="photoFile2" accept="image/*" style="display:none;" onchange="previewPhoto(this,2)"/></label>
@@ -2186,9 +2210,9 @@ async function verifierSession() {
         </div>
         <p class="footer-tagline">La plateforme N°1 des artisans et prestataires qualifiés en Guinée. Conakry et toutes les préfectures.</p>
         <div class="footer-contacts">
-          <a href="tel:+22461252510" class="fcontact"><span class="fcontact-icon">📞</span><span>+224 612 52 52 10</span></a>
-          <a href="mailto:contact@yoummajobs.com" class="fcontact"><span class="fcontact-icon">📧</span><span>contact@yoummajobs.com</span></a>
-          <div class="fcontact"><span class="fcontact-icon">📍</span><span>Lambanyi, Conakry, Guinée 🇬🇳</span></div>
+          <a href="tel:+22461252510" class="fcontact"><span class="fcontact-icon"><i class="fa-solid fa-phone"></i></span><span>+224 612 52 52 10</span></a>
+          <a href="mailto:contact@yoummajobs.com" class="fcontact"><span class="fcontact-icon"><i class="fa-solid fa-envelope"></i></span><span>contact@yoummajobs.com</span></a>
+          <div class="fcontact"><span class="fcontact-icon"><i class="fa-solid fa-location-dot"></i></span><span>Lambanyi, Conakry, Guinée 🇬🇳</span></div>
         </div>
         <div class="footer-social">
           <a href="https://facebook.com" target="_blank" class="fsocial fb">
@@ -2218,20 +2242,20 @@ async function verifierSession() {
         <div class="fcol">
           <h4>Artisans</h4>
           <ul>
-            <li><a href="#prestataires" onclick="filterCat('Artisans')">🔧 Artisans BTP</a></li>
+            <li><a href="#prestataires" onclick="filterCat('Artisans')"> Artisans BTP</a></li>
             <li><a href="#prestataires" onclick="filterCat('Santé &amp; Beauté')">🏥 Santé &amp; Beauté</a></li>
-            <li><a href="#prestataires" onclick="filterCat('IT')">💻 IT &amp; Digital</a></li>
+            <li><a href="#prestataires" onclick="filterCat('IT')"> IT &amp; Digital</a></li>
             <li><a href="#prestataires" onclick="filterCat('Éducation')">📚 Éducation</a></li>
-            <li><a href="#prestataires" onclick="filterCat('Transport')">🚗 Transport</a></li>
-            <li><a href="#prestataires" onclick="filterCat('Services Express')">⚡ Services Express</a></li>
+            <li><a href="#prestataires" onclick="filterCat('Transport')"> Transport</a></li>
+            <li><a href="#prestataires" onclick="filterCat('Services Express')"> Services Express</a></li>
           </ul>
         </div>
         <div class="fcol">
           <h4>Mon compte</h4>
           <ul>
             <li><span onclick="ouvrirInscription()">📝 Inscription</span></li>
-            <li><a href="#login" onclick="navigate && navigate('login')">🔐 Connexion</a></li>
-            <li><a href="#dashboard" onclick="navigate && navigate('dashboard')">📊 Mon espace</a></li>
+            <li><a href="#login" onclick="navigate && navigate('login')"><i class="fa-solid fa-lock"></i> Connexion</a></li>
+            <li><a href="#dashboard" onclick="navigate && navigate('dashboard')"><i class="fa-solid fa-chart-bar"></i> Mon espace</a></li>
             <li><span onclick="ouvrirInscription()">🚀 Devenir artisan</span></li>
           </ul>
         </div>
@@ -2255,23 +2279,23 @@ async function verifierSession() {
 
 <script>
 const PRESTATAIRES = [
-  {id:1,nom:'Amadou Diallo',metier:'Électricien certifié',cat:'Artisans',ville:'Ratoma',tel:'+224620538290',wa:'+224620538290',note:5.0,vues:142,missions:47,ini:'AD',bg:'#FDE8D8',color:'#C74B00',experience:8,dispo:'Disponible maintenant',tarif:'50 000 – 200 000 GNF',badge_express:true,badge_verifie:true,badge_top:true,recommande:true,desc:"Électricien certifié avec 8 ans d'expérience à Conakry. Installation électrique résidentielle, dépannage, câblage et tableau électrique. Intervention rapide dans tout Conakry.",skills:['Installation électrique','Dépannage urgent','Câblage','Tableau électrique'],avis:[{auteur:'Sékou K.',note:5,txt:'Excellent travail, rapide et professionnel !',date:'mai 2025'},{auteur:'Mariama B.',note:5,txt:'Très réactif, tableau électrique refait parfaitement.',date:'avr. 2025'},{auteur:'Alpha D.',note:5,txt:'Je recommande à 100% pour toute urgence.',date:'mars 2025'}],portfolio:['⚡ Installation tableau électrique moderne','⚡ Câblage résidentiel complet','⚡ Dépannage tableau RDC bureau','⚡ Installation prises & éclairage LED','⚡ Rénovation électrique villa Ratoma'],pb:'pb-artisan'},
-  {id:2,nom:'Ibrahima Bah',metier:'Plombier — Urgences 7j/7',cat:'Artisans',ville:'Kaloum',tel:'+224621000005',wa:'+224621000005',note:4.6,vues:94,missions:31,ini:'IB',bg:'#E8F5E9',color:'#1B5E20',experience:6,dispo:"Disponible aujourd'hui",tarif:'40 000 – 150 000 GNF',badge_express:true,badge_verifie:true,badge_top:false,recommande:false,desc:"Plombier expérimenté basé à Kaloum, interventions d'urgence 7j/7. Réparation de fuites, installations sanitaires, tuyauterie. Devis gratuit.",skills:['Réparation fuites','Installation sanitaire','Tuyauterie','Urgences 7j/7'],avis:[{auteur:'Fatoumata C.',note:5,txt:'Venu en urgence, très professionnel !',date:'juin 2025'},{auteur:'Oumar S.',note:4,txt:'Bon travail, devis respecté.',date:'mai 2025'}],portfolio:['🔧 Réparation fuite cuisine','🔧 Installation douche neuve','🔧 Remplacement robinetterie','🔧 Tuyauterie salle de bain','🔧 Urgence fuite appartement'],pb:'pb-artisan'},
-  {id:3,nom:'Mamadou Kouyaté',metier:'Maçon — BTP & Rénovation',cat:'Artisans',ville:'Matam',tel:'+224622100010',wa:'+224622100010',note:4.8,vues:118,missions:24,ini:'MK',bg:'#FEF3C7',color:'#B45309',experience:12,dispo:'Disponible cette semaine',tarif:'Sur devis',badge_express:false,badge_verifie:true,badge_top:true,recommande:true,desc:"Maçon qualifié avec 12 ans d'expérience dans le BTP. Construction, rénovation, carrelage, enduit, dalle béton. Travaux soignés dans les délais.",skills:['Construction','Rénovation','Carrelage','Béton armé'],avis:[{auteur:'Djibril M.',note:5,txt:'Construction de mur impeccable, délais respectés.',date:'mai 2025'},{auteur:'Hadja K.',note:5,txt:'Rénovation de ma maison parfaite !',date:'avr. 2025'},{auteur:'Boubacar T.',note:4,txt:'Bon travail, propre et soigné.',date:'mars 2025'}],portfolio:['🏗️ Construction villa Matam','🏗️ Rénovation cuisine moderne','🏗️ Dallage cour résidentielle','🏗️ Enduit façade immeuble','🏗️ Escalier béton armé'],pb:'pb-artisan'},
+  {id:1,nom:'Amadou Diallo',metier:'Électricien certifié',cat:'Artisans',ville:'Ratoma',tel:'+224620538290',wa:'+224620538290',note:5.0,vues:142,missions:47,ini:'AD',bg:'#FDE8D8',color:'#C74B00',experience:8,dispo:'Disponible maintenant',tarif:'50 000 – 200 000 GNF',badge_express:true,badge_verifie:true,badge_top:true,recommande:true,desc:"Électricien certifié avec 8 ans d'expérience à Conakry. Installation électrique résidentielle, dépannage, câblage et tableau électrique. Intervention rapide dans tout Conakry.",skills:['Installation électrique','Dépannage urgent','Câblage','Tableau électrique'],avis:[{auteur:'Sékou K.',note:5,txt:'Excellent travail, rapide et professionnel !',date:'mai 2025'},{auteur:'Mariama B.',note:5,txt:'Très réactif, tableau électrique refait parfaitement.',date:'avr. 2025'},{auteur:'Alpha D.',note:5,txt:'Je recommande à 100% pour toute urgence.',date:'mars 2025'}],portfolio:[' Installation tableau électrique moderne',' Câblage résidentiel complet',' Dépannage tableau RDC bureau',' Installation prises & éclairage LED',' Rénovation électrique villa Ratoma'],pb:'pb-artisan'},
+  {id:2,nom:'Ibrahima Bah',metier:'Plombier — Urgences 7j/7',cat:'Artisans',ville:'Kaloum',tel:'+224621000005',wa:'+224621000005',note:4.6,vues:94,missions:31,ini:'IB',bg:'#E8F5E9',color:'#1B5E20',experience:6,dispo:"Disponible aujourd'hui",tarif:'40 000 – 150 000 GNF',badge_express:true,badge_verifie:true,badge_top:false,recommande:false,desc:"Plombier expérimenté basé à Kaloum, interventions d'urgence 7j/7. Réparation de fuites, installations sanitaires, tuyauterie. Devis gratuit.",skills:['Réparation fuites','Installation sanitaire','Tuyauterie','Urgences 7j/7'],avis:[{auteur:'Fatoumata C.',note:5,txt:'Venu en urgence, très professionnel !',date:'juin 2025'},{auteur:'Oumar S.',note:4,txt:'Bon travail, devis respecté.',date:'mai 2025'}],portfolio:[' Réparation fuite cuisine',' Installation douche neuve',' Remplacement robinetterie',' Tuyauterie salle de bain',' Urgence fuite appartement'],pb:'pb-artisan'},
+  {id:3,nom:'Mamadou Kouyaté',metier:'Maçon — BTP & Rénovation',cat:'Artisans',ville:'Matam',tel:'+224622100010',wa:'+224622100010',note:4.8,vues:118,missions:24,ini:'MK',bg:'#FEF3C7',color:'#B45309',experience:12,dispo:'Disponible cette semaine',tarif:'Sur devis',badge_express:false,badge_verifie:true,badge_top:true,recommande:true,desc:"Maçon qualifié avec 12 ans d'expérience dans le BTP. Construction, rénovation, carrelage, enduit, dalle béton. Travaux soignés dans les délais.",skills:['Construction','Rénovation','Carrelage','Béton armé'],avis:[{auteur:'Djibril M.',note:5,txt:'Construction de mur impeccable, délais respectés.',date:'mai 2025'},{auteur:'Hadja K.',note:5,txt:'Rénovation de ma maison parfaite !',date:'avr. 2025'},{auteur:'Boubacar T.',note:4,txt:'Bon travail, propre et soigné.',date:'mars 2025'}],portfolio:[' Construction villa Matam',' Rénovation cuisine moderne',' Dallage cour résidentielle',' Enduit façade immeuble',' Escalier béton armé'],pb:'pb-artisan'},
   {id:4,nom:'Souleymane Barry',metier:'Menuisier — Bois & Aluminium',cat:'Artisans',ville:'Dixinn',tel:'+224623200020',wa:'+224623200020',note:4.9,vues:76,missions:19,ini:'SB',bg:'#FFF3E8',color:'#8B4513',experience:9,dispo:'Disponible cette semaine',tarif:'Sur devis',badge_express:false,badge_verifie:true,badge_top:true,recommande:true,desc:"Menuisier professionnel spécialisé bois et aluminium. Meubles sur mesure, portes, fenêtres, dressing, placards. Finitions soignées garanties.",skills:['Meubles sur mesure','Portes & fenêtres','Aluminium','Dressing'],avis:[{auteur:'Mariama D.',note:5,txt:'Dressing magnifique, exactement comme je voulais.',date:'juin 2025'},{auteur:'Alpha C.',note:5,txt:'Portes en bois de qualité supérieure.',date:'mai 2025'}],portfolio:['🪵 Dressing chambre sur mesure','🪵 Cuisine équipée bois','🪵 Fenêtres aluminium double vitrage','🪵 Porte d\'entrée sécurisée','🪵 Bibliothèque murale'],pb:'pb-artisan'},
   {id:5,nom:'Mariama Kouyaté',metier:'Coiffeuse — Spécialiste tresses',cat:'Santé & Beauté',ville:'Ratoma',tel:'+224621000004',wa:'+224621000004',note:4.9,vues:178,missions:67,ini:'MK',bg:'#FCE4EC',color:'#880E4F',experience:6,dispo:"Disponible aujourd'hui",tarif:'20 000 – 80 000 GNF',badge_express:false,badge_verifie:true,badge_top:true,recommande:true,desc:"Coiffeuse professionnelle spécialisée en coiffures africaines, tresses, extensions, tissages. Salon à Ratoma.",skills:['Tresses africaines','Extensions','Tissage','Soins capillaires'],avis:[{auteur:'Kadiatou S.',note:5,txt:'Tresses parfaites, je suis ravie !',date:'juin 2025'},{auteur:'Fatoumata B.',note:5,txt:'Très talentueuse et rapide.',date:'mai 2025'}],portfolio:['✂️ Tresses box braids','✂️ Extensions naturelles','✂️ Tissage complet','✂️ Coiffure cérémonie mariage','✂️ Soin kératine'],pb:'pb-sante'},
   {id:6,nom:'Aissatou Balde',metier:'Esthéticienne & Makeup Artist',cat:'Santé & Beauté',ville:'Kaloum',tel:'+224624300030',wa:'+224624300030',note:5.0,vues:134,missions:43,ini:'AB',bg:'#FCE4EC',color:'#880E4F',experience:5,dispo:"Disponible aujourd'hui",tarif:'30 000 – 120 000 GNF',badge_express:false,badge_verifie:true,badge_top:true,recommande:true,desc:"Esthéticienne certifiée et maquilleuse professionnelle. Maquillage mariage, soins visage, manucure, pédicure. Déplacement à domicile.",skills:['Maquillage mariage','Soins visage','Manucure','Pédicure'],avis:[{auteur:'Mariam T.',note:5,txt:'Maquillage du mariage inoubliable !',date:'juin 2025'},{auteur:'Hadja C.',note:5,txt:'Soins du visage excellents.',date:'avr. 2025'}],portfolio:['💄 Maquillage mariée','💄 Soins du visage deep clean','💄 Nail art designs','💄 Maquillage soirée gala','💄 Soin corps hydratant'],pb:'pb-sante'},
   {id:7,nom:'Dr. Fatoumata Diakité',metier:'Médecin généraliste',cat:'Santé & Beauté',ville:'Kaloum',tel:'+224621000001',wa:'+224621000001',note:4.8,vues:89,missions:45,ini:'FD',bg:'#E0E0F8',color:'#2D2D6B',experience:10,dispo:'Lun – Sam',tarif:'100 000 GNF / consultation',badge_express:false,badge_verifie:true,badge_top:false,recommande:true,desc:"Médecin généraliste diplômée Université de Conakry. Consultations cabinet et domicile. Médecine générale et pédiatrie de base.",skills:['Consultation générale','Pédiatrie','Visite domicile','Ordonnances'],avis:[{auteur:'Boubacar D.',note:5,txt:'Très professionnelle et à l\'écoute.',date:'mai 2025'},{auteur:'Aissatou M.',note:5,txt:'Consultation très sérieuse, je recommande.',date:'avr. 2025'}],portfolio:['🏥 Cabinet médical Kaloum','🏥 Consultation à domicile','🏥 Suivi pédiatrique','🏥 Bilan de santé complet','🏥 Consultation prénatale'],pb:'pb-sante'},
-  {id:8,nom:'Sékou Camara',metier:'Soudeur — Structures métalliques',cat:'Artisans',ville:'Matam',tel:'+224625400041',wa:'+224625400041',note:4.7,vues:84,missions:38,ini:'SC',bg:'#FDE8D8',color:'#C74B00',experience:7,dispo:"Disponible aujourd'hui",tarif:'Sur devis',badge_express:true,badge_verifie:true,badge_top:false,recommande:false,desc:"Soudeur professionnel spécialisé en structures métalliques, portails, grilles, escaliers. Travail soigné, délais respectés.",skills:['Soudure MIG/TIG','Portails','Grilles','Structures métalliques'],avis:[{auteur:'Mamadou K.',note:5,txt:'Portail magnifique, solide et bien fait.',date:'juin 2025'},{auteur:'Ibrahim S.',note:4,txt:'Bon travail, professionnel et ponctuel.',date:'mai 2025'}],portfolio:['🔩 Portail résidentiel sécurisé','🔩 Grilles de fenêtres','🔩 Escalier métallique villa','🔩 Charpente métallique','🔩 Garde-corps terrasse'],pb:'pb-artisan'},
+  {id:8,nom:'Sékou Camara',metier:'Soudeur — Structures métalliques',cat:'Artisans',ville:'Matam',tel:'+224625400041',wa:'+224625400041',note:4.7,vues:84,missions:38,ini:'SC',bg:'#FDE8D8',color:'#C74B00',experience:7,dispo:"Disponible aujourd'hui",tarif:'Sur devis',badge_express:true,badge_verifie:true,badge_top:false,recommande:false,desc:"Soudeur professionnel spécialisé en structures métalliques, portails, grilles, escaliers. Travail soigné, délais respectés.",skills:['Soudure MIG/TIG','Portails','Grilles','Structures métalliques'],avis:[{auteur:'Mamadou K.',note:5,txt:'Portail magnifique, solide et bien fait.',date:'juin 2025'},{auteur:'Ibrahim S.',note:4,txt:'Bon travail, professionnel et ponctuel.',date:'mai 2025'}],portfolio:[' Portail résidentiel sécurisé',' Grilles de fenêtres',' Escalier métallique villa',' Charpente métallique',' Garde-corps terrasse'],pb:'pb-artisan'},
   {id:9,nom:'Maître Mamadou Barry',metier:'Avocat — Droit des affaires',cat:'Juridique',ville:'Dixinn',tel:'+224621000002',wa:'+224621000002',note:5.0,vues:56,missions:28,ini:'MB',bg:'#FEF3C7',color:'#B45309',experience:15,dispo:'Sur rendez-vous',tarif:'Sur devis',badge_express:false,badge_verifie:true,badge_top:true,recommande:true,desc:"Avocat au barreau de Guinée, spécialisé droit des affaires, commercial et immobilier. Conseil juridique, rédaction contrats.",skills:['Droit des affaires','Contrats','Immobilier','Conseil juridique'],avis:[{auteur:'Alpha C.',note:5,txt:'Très compétent, mon dossier bien géré.',date:'mai 2025'},{auteur:'Fatoumata M.',note:5,txt:'Professionnel sérieux et disponible.',date:'mars 2025'}],portfolio:['⚖️ Contentieux commercial','⚖️ Rédaction contrats entreprise','⚖️ Conseil immobilier','⚖️ Création de société SARL','⚖️ Droit du travail'],pb:'pb-juridique'},
-  {id:10,nom:'Alpha Sow',metier:'Développeur web & Mobile',cat:'IT',ville:'Matam',tel:'+224621000003',wa:'+224621000003',note:4.7,vues:203,missions:18,ini:'AS',bg:'#E1F5EE',color:'#0F6E56',experience:5,dispo:'Disponible cette semaine',tarif:'Sur devis',badge_express:false,badge_verifie:true,badge_top:false,recommande:false,desc:"Développeur full stack React/Node.js et React Native. Sites web pro, applications mobiles, e-commerce. Portfolio sur demande.",skills:['React / Node.js','Sites web','Apps mobiles','E-commerce'],avis:[{auteur:'Mamadou D.',note:5,txt:'Site e-commerce livré dans les délais.',date:'juin 2025'},{auteur:'Ibrahima C.',note:4,txt:'Bon développeur, code propre.',date:'mai 2025'}],portfolio:['💻 Site e-commerce Conakry','💻 App mobile livraison','💻 Dashboard entreprise','💻 Landing page marketing','💻 Refonte site institutionnel'],pb:'pb-it'},
-  {id:11,nom:'Moussa Konaté',metier:'Mécanicien — Toutes marques',cat:'Artisans',ville:'Lambanyi',tel:'+224626500051',wa:'+224626500051',note:4.6,vues:88,missions:52,ini:'MK',bg:'#FEF3C7',color:'#B45309',experience:11,dispo:'Disponible maintenant',tarif:'Sur devis',badge_express:true,badge_verifie:true,badge_top:false,recommande:false,desc:"Mécanicien automobile expérimenté toutes marques. Révisions, réparations, diagnostics électroniques. Atelier à Lambanyi.",skills:['Mécanique auto','Diagnostic électronique','Révision','Réparation moteur'],avis:[{auteur:'Sékou B.',note:5,txt:'Ma voiture comme neuve, excellent !',date:'mai 2025'},{auteur:'Alpha K.',note:4,txt:'Diagnostic rapide et efficace.',date:'avr. 2025'}],portfolio:['🚗 Révision moteur Toyota','🚗 Remplacement boîte de vitesse','🚗 Diagnostic électronique','🚗 Réparation freins','🚗 Entretien climatisation auto'],pb:'pb-artisan'},
+  {id:10,nom:'Alpha Sow',metier:'Développeur web & Mobile',cat:'IT',ville:'Matam',tel:'+224621000003',wa:'+224621000003',note:4.7,vues:203,missions:18,ini:'AS',bg:'#E1F5EE',color:'#0F6E56',experience:5,dispo:'Disponible cette semaine',tarif:'Sur devis',badge_express:false,badge_verifie:true,badge_top:false,recommande:false,desc:"Développeur full stack React/Node.js et React Native. Sites web pro, applications mobiles, e-commerce. Portfolio sur demande.",skills:['React / Node.js','Sites web','Apps mobiles','E-commerce'],avis:[{auteur:'Mamadou D.',note:5,txt:'Site e-commerce livré dans les délais.',date:'juin 2025'},{auteur:'Ibrahima C.',note:4,txt:'Bon développeur, code propre.',date:'mai 2025'}],portfolio:[' Site e-commerce Conakry',' App mobile livraison',' Dashboard entreprise',' Landing page marketing',' Refonte site institutionnel'],pb:'pb-it'},
+  {id:11,nom:'Moussa Konaté',metier:'Mécanicien — Toutes marques',cat:'Artisans',ville:'Lambanyi',tel:'+224626500051',wa:'+224626500051',note:4.6,vues:88,missions:52,ini:'MK',bg:'#FEF3C7',color:'#B45309',experience:11,dispo:'Disponible maintenant',tarif:'Sur devis',badge_express:true,badge_verifie:true,badge_top:false,recommande:false,desc:"Mécanicien automobile expérimenté toutes marques. Révisions, réparations, diagnostics électroniques. Atelier à Lambanyi.",skills:['Mécanique auto','Diagnostic électronique','Révision','Réparation moteur'],avis:[{auteur:'Sékou B.',note:5,txt:'Ma voiture comme neuve, excellent !',date:'mai 2025'},{auteur:'Alpha K.',note:4,txt:'Diagnostic rapide et efficace.',date:'avr. 2025'}],portfolio:[' Révision moteur Toyota',' Remplacement boîte de vitesse',' Diagnostic électronique',' Réparation freins',' Entretien climatisation auto'],pb:'pb-artisan'},
   {id:12,nom:'Kadiatou Camara',metier:'Professeure de maths & physique',cat:'Éducation',ville:'Dixinn',tel:'+224621000006',wa:'+224621000006',note:5.0,vues:67,missions:89,ini:'KC',bg:'#E8F0FE',color:'#1A73E8',experience:9,dispo:'Lun – Sam',tarif:'50 000 GNF / séance',badge_express:false,badge_verifie:true,badge_top:true,recommande:true,desc:"Professeure de mathématiques et physique-chimie lycée et université. Cours particuliers domicile ou en ligne. 9 ans d'expérience.",skills:['Mathématiques','Physique-chimie','Lycée & Université','Cours domicile'],avis:[{auteur:'Mamadou S.',note:5,txt:'Mon fils a eu mention au BAC grâce à elle !',date:'juin 2025'},{auteur:'Fatoumata D.',note:5,txt:'Pédagogie exceptionnelle.',date:'avr. 2025'}],portfolio:['📚 Cours maths Terminale','📚 Préparation BAC physique','📚 Cours université L1','📚 Soutien collège','📚 Cours en ligne'],pb:'pb-education'},
-  {id:13,nom:'Ibrahima Kouyaté',metier:'Carreleur — Sols & Façades',cat:'Artisans',ville:'Ratoma',tel:'+224621500007',wa:'+224621500007',note:4.8,vues:95,missions:34,ini:'IK',bg:'#FFF3E8',color:'#8B4513',experience:8,dispo:'Disponible cette semaine',tarif:'Sur devis',badge_express:false,badge_verifie:true,badge_top:false,recommande:false,desc:"Carreleur professionnel spécialisé en pose de carrelage sol, murs et façades. Travaux neufs et rénovation. Devis gratuit.",skills:['Carrelage sol','Carrelage mural','Façades','Rénovation'],avis:[{auteur:'Boubacar M.',note:5,txt:'Carrelage salon parfaitement posé !',date:'mai 2025'},{auteur:'Djibril K.',note:5,txt:'Finitions impeccables.',date:'mars 2025'}],portfolio:['🔲 Carrelage salon grand format','🔲 Salle de bain complète','🔲 Façade extérieure villa','🔲 Cuisine carrelée moderne','🔲 Couloir immeuble'],pb:'pb-artisan'},
+  {id:13,nom:'Ibrahima Kouyaté',metier:'Carreleur — Sols & Façades',cat:'Artisans',ville:'Ratoma',tel:'+224621500007',wa:'+224621500007',note:4.8,vues:95,missions:34,ini:'IK',bg:'#FFF3E8',color:'#8B4513',experience:8,dispo:'Disponible cette semaine',tarif:'Sur devis',badge_express:false,badge_verifie:true,badge_top:false,recommande:false,desc:"Carreleur professionnel spécialisé en pose de carrelage sol, murs et façades. Travaux neufs et rénovation. Devis gratuit.",skills:['Carrelage sol','Carrelage mural','Façades','Rénovation'],avis:[{auteur:'Boubacar M.',note:5,txt:'Carrelage salon parfaitement posé !',date:'mai 2025'},{auteur:'Djibril K.',note:5,txt:'Finitions impeccables.',date:'mars 2025'}],portfolio:[' Carrelage salon grand format',' Salle de bain complète',' Façade extérieure villa',' Cuisine carrelée moderne',' Couloir immeuble'],pb:'pb-artisan'},
   {id:14,nom:'Aissatou Diallo',metier:'Chauffeur VTC — 24h/24',cat:'Transport',ville:'Kaloum',tel:'+224621000008',wa:'+224621000008',note:4.8,vues:256,missions:134,ini:'AD',bg:'#FEF3C7',color:'#B45309',experience:4,dispo:'Disponible 24h/24',tarif:'Prix fixes par trajet',badge_express:true,badge_verifie:true,badge_top:true,recommande:true,desc:"Chauffeur VTC professionnel, véhicule climatisé et propre. Disponible 24h/24 pour courses, aéroport, mariages, événements.",skills:['Aéroport','Courses ville','Mariages & événements','24h/24'],avis:[{auteur:'Mamadou C.',note:5,txt:'Ponctuel, propre, je recommande vivement.',date:'juin 2025'},{auteur:'Kadiatou B.',note:5,txt:'Excellent chauffeur, voiture propre.',date:'mai 2025'}],portfolio:['🚘 Transport aéroport Conakry','🚘 Course mariage cérémonie','🚘 Transfer hôtel VIP','🚘 Course longue distance','🚘 Mise à disposition journée'],pb:'pb-transport'},
-  {id:15,nom:'Mohamed Soumah',metier:'Peintre en bâtiment',cat:'Artisans',ville:'Kipé',tel:'+224627600060',wa:'+224627600060',note:4.7,vues:63,missions:15,ini:'MS',bg:'#FFF3E8',color:'#8B4513',experience:6,dispo:'Disponible cette semaine',tarif:'Sur devis',badge_express:false,badge_verifie:true,badge_top:false,recommande:false,desc:"Peintre professionnel bâtiment. Peinture intérieure, extérieure, décoration murale, ravalement façade. Devis gratuit, matériaux qualité.",skills:['Peinture intérieure','Peinture extérieure','Décoration murale','Ravalement'],avis:[{auteur:'Sékou D.',note:5,txt:'Peinture salon magnifique, très propre.',date:'mai 2025'},{auteur:'Alpha B.',note:4,txt:'Bon travail, délais respectés.',date:'avr. 2025'}],portfolio:['🎨 Peinture villa 4 pièces','🎨 Décoration murale salon','🎨 Ravalement façade immeuble','🎨 Peinture bureau entreprise','🎨 Peinture extérieure'],pb:'pb-artisan'},
+  {id:15,nom:'Mohamed Soumah',metier:'Peintre en bâtiment',cat:'Artisans',ville:'Kipé',tel:'+224627600060',wa:'+224627600060',note:4.7,vues:63,missions:15,ini:'MS',bg:'#FFF3E8',color:'#8B4513',experience:6,dispo:'Disponible cette semaine',tarif:'Sur devis',badge_express:false,badge_verifie:true,badge_top:false,recommande:false,desc:"Peintre professionnel bâtiment. Peinture intérieure, extérieure, décoration murale, ravalement façade. Devis gratuit, matériaux qualité.",skills:['Peinture intérieure','Peinture extérieure','Décoration murale','Ravalement'],avis:[{auteur:'Sékou D.',note:5,txt:'Peinture salon magnifique, très propre.',date:'mai 2025'},{auteur:'Alpha B.',note:4,txt:'Bon travail, délais respectés.',date:'avr. 2025'}],portfolio:[' Peinture villa 4 pièces',' Décoration murale salon',' Ravalement façade immeuble',' Peinture bureau entreprise',' Peinture extérieure'],pb:'pb-artisan'},
   {id:16,nom:'Fatoumata Bah',metier:'Couturière — Mode africaine',cat:'Artisans',ville:'Ratoma',tel:'+224628700070',wa:'+224628700070',note:4.9,vues:112,missions:78,ini:'FB',bg:'#FCE4EC',color:'#880E4F',experience:8,dispo:"Disponible aujourd'hui",tarif:'25 000 – 150 000 GNF',badge_express:false,badge_verifie:true,badge_top:true,recommande:true,desc:"Couturière professionnelle spécialisée en mode africaine, tenues de cérémonie, uniformes sur mesure. Délais respectés.",skills:['Mode africaine','Cérémonies','Uniformes','Sur mesure'],avis:[{auteur:'Mariama K.',note:5,txt:'Tenue de mariage sublime, merci !',date:'juin 2025'},{auteur:'Kadiatou D.',note:5,txt:'Uniforme entreprise parfait.',date:'mai 2025'}],portfolio:['👗 Boubou cérémonie grand format','👗 Tenue de mariée africaine','👗 Uniformes entreprise','👗 Robe soirée gala','👗 Collection bazin riche'],pb:'pb-sante'},
-  {id:17,nom:'Oumar Diallo',metier:'Climaticien — Froid & Climatisation',cat:'Artisans',ville:'Kaloum',tel:'+224629800080',wa:'+224629800080',note:4.6,vues:77,missions:41,ini:'OD',bg:'#E0E0F8',color:'#2D2D6B',experience:7,dispo:"Disponible aujourd'hui",tarif:'100 000 – 500 000 GNF',badge_express:true,badge_verifie:true,badge_top:false,recommande:false,desc:"Technicien climatisation certifié. Installation, entretien, réparation de climatiseurs toutes marques. Intervention rapide à Conakry.",skills:['Installation clim','Entretien','Réparation','Froid industriel'],avis:[{auteur:'Ibrahima B.',note:5,txt:'Clim installée parfaitement, très propre.',date:'mai 2025'},{auteur:'Fatoumata S.',note:4,txt:'Réparation rapide et efficace.',date:'mars 2025'}],portfolio:['❄️ Installation clim split Conakry','❄️ Entretien bureau entreprise','❄️ Réparation Samsung urgence','❄️ Installation froid commercial','❄️ Maintenance préventive clim'],pb:'pb-artisan'},
+  {id:17,nom:'Oumar Diallo',metier:'Climaticien — Froid & Climatisation',cat:'Artisans',ville:'Kaloum',tel:'+224629800080',wa:'+224629800080',note:4.6,vues:77,missions:41,ini:'OD',bg:'#E0E0F8',color:'#2D2D6B',experience:7,dispo:"Disponible aujourd'hui",tarif:'100 000 – 500 000 GNF',badge_express:true,badge_verifie:true,badge_top:false,recommande:false,desc:"Technicien climatisation certifié. Installation, entretien, réparation de climatiseurs toutes marques. Intervention rapide à Conakry.",skills:['Installation clim','Entretien','Réparation','Froid industriel'],avis:[{auteur:'Ibrahima B.',note:5,txt:'Clim installée parfaitement, très propre.',date:'mai 2025'},{auteur:'Fatoumata S.',note:4,txt:'Réparation rapide et efficace.',date:'mars 2025'}],portfolio:[' Installation clim split Conakry',' Entretien bureau entreprise',' Réparation Samsung urgence',' Installation froid commercial',' Maintenance préventive clim'],pb:'pb-artisan'},
 ];
 
 </script>
@@ -2299,7 +2323,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavScroll();
   // Notifications de bienvenue
   setTimeout(() => showNotif('🇬🇳 Bienvenue', 'sur YOUMMA JOBS — La plateforme N°1 des artisans en Guinée !', '#E6FBF3'), 1500);
-  setTimeout(() => showNotif('⚡ Nouveau artisan Express', 'Amadou Diallo, Électricien vient de rejoindre YOUMMA JOBS', '#FDE8D8'), 5500);
+  setTimeout(() => showNotif(' Nouveau artisan Express', 'Amadou Diallo, Électricien vient de rejoindre YOUMMA JOBS', '#FDE8D8'), 5500);
 });
 
 // ── NAV SCROLL ──
@@ -2337,13 +2361,13 @@ function renderArtisans() {
   document.getElementById('artisansGrid').innerHTML = artisans.map((p,i) => {
     const stars5 = Array.from({length:5},(_,j)=>`<span style="color:${j<Math.floor(p.note)?'#D4A017':'#D1D5DB'};font-size:12px;">★</span>`).join('');
     const badgeRow = [
-      p.badge_express ? `<span class="badge-express">⚡ Express</span>` : '',
-      p.badge_top     ? `<span class="badge-top">🏆 Top Artisan</span>` : '',
-      p.badge_verifie ? `<span class="badge-verifie">✓ Vérifié</span>` : '',
+      p.badge_express ? `<span class="badge-express"> Express</span>` : '',
+      p.badge_top     ? `<span class="badge-top"><i class="fa-solid fa-trophy" style="color:#F5C842;"></i> Top Artisan</span>` : '',
+      p.badge_verifie ? `<span class="badge-verifie"><i class="fa-solid fa-check"></i> Vérifié</span>` : '',
       p.recommande    ? `<span class="badge-recommande">👍 Recommandé</span>` : '',
     ].filter(Boolean).join('');
     const dispoClass = p.dispo && (p.dispo.includes('maintenant')||p.dispo.includes("aujourd'hui")) ? 'led-green' : 'led-yellow';
-    const missionsBadge = p.missions ? `<span class="badge-missions">🎯 ${p.missions} missions</span>` : '';
+    const missionsBadge = p.missions ? `<span class="badge-missions"><i class="fa-solid fa-bullseye"></i> ${p.missions} missions</span>` : '';
 
     // Portfolio preview: icônes représentatives
     const portIcons = (p.portfolio||[]).slice(0,3).map(item => `
@@ -2360,7 +2384,7 @@ function renderArtisans() {
         </div>
         <div class="ac2-name">${p.nom}</div>
         <div class="ac2-metier">${p.metier}</div>
-        <div class="ac2-loc">📍 ${p.ville}, Conakry</div>
+        <div class="ac2-loc"><i class="fa-solid fa-location-dot"></i> ${p.ville}, Conakry</div>
       </div>
       <div class="ac2-body">
         <div class="ac2-rating-row">
@@ -2375,12 +2399,12 @@ function renderArtisans() {
         ${p.tarif ? `<div class="ac2-tarif">💰 ${p.tarif}</div>` : ''}
         <div class="ac2-portfolio-preview">${portIcons}</div>
         <div class="ac2-stats">
-          <div class="ac2-stat"><span class="ac2-sv">${p.vues}</span><span class="ac2-sl">👁️ Vues</span></div>
-          <div class="ac2-stat"><span class="ac2-sv">${p.missions}</span><span class="ac2-sl">🎯 Missions</span></div>
-          <div class="ac2-stat"><span class="ac2-sv">${p.note}</span><span class="ac2-sl">⭐ Note</span></div>
+          <div class="ac2-stat"><span class="ac2-sv">${p.vues}</span><span class="ac2-sl"><i class="fa-solid fa-eye"></i> Vues</span></div>
+          <div class="ac2-stat"><span class="ac2-sv">${p.missions}</span><span class="ac2-sl"><i class="fa-solid fa-bullseye"></i> Missions</span></div>
+          <div class="ac2-stat"><span class="ac2-sv">${p.note}</span><span class="ac2-sl"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Note</span></div>
         </div>
         <div class="ac2-actions">
-          <button class="btn-ac-wa" onclick="event.stopPropagation();openWA('${p.wa}','${p.nom}')">💬 WhatsApp</button>
+          <button class="btn-ac-wa" onclick="event.stopPropagation();openWA('${p.wa}','${p.nom}')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
           <button class="btn-ac-profil" onclick="event.stopPropagation();openModal(${p.id})">👤 Voir profil</button>
         </div>
       </div>
@@ -2396,7 +2420,7 @@ function renderProviders() {
 
   if (toShow.length === 0) {
     grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:72px 0;color:var(--gris);">
-      <div style="font-size:52px;margin-bottom:14px;">🔍</div>
+      <div style="font-size:52px;margin-bottom:14px;"><i class="fa-solid fa-magnifying-glass"></i></div>
       <div style="font-family:'Libre Baskerville',serif;font-size:19px;font-weight:700;margin-bottom:9px;color:var(--texte);">Aucun artisan trouvé</div>
       <div style="font-size:14px;margin-bottom:18px;">Essayez une autre recherche ou catégorie</div>
       <button onclick="resetFilters()" style="padding:11px 26px;background:var(--orange);border:none;border-radius:50px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;">Réinitialiser les filtres</button>
@@ -2408,9 +2432,9 @@ function renderProviders() {
     const isFav = favorites.includes(p.id);
     const stars5 = Array.from({length:5},(_,j)=>`<span style="color:${j<Math.floor(p.note)?'#D4A017':'#D1D5DB'};font-size:11px;">★</span>`).join('');
     const badgesInline = [
-      p.badge_express ? `<span class="badge-express" style="font-size:9.5px;padding:2px 7px;">⚡ Express</span>` : '',
-      p.badge_top ? `<span class="badge-top" style="font-size:9.5px;padding:2px 7px;">🏆 Top</span>` : '',
-      p.badge_verifie ? `<span class="badge-verifie" style="font-size:9.5px;padding:2px 7px;">✓ Vérifié</span>` : '',
+      p.badge_express ? `<span class="badge-express" style="font-size:9.5px;padding:2px 7px;"> Express</span>` : '',
+      p.badge_top ? `<span class="badge-top" style="font-size:9.5px;padding:2px 7px;"><i class="fa-solid fa-trophy" style="color:#F5C842;"></i> Top</span>` : '',
+      p.badge_verifie ? `<span class="badge-verifie" style="font-size:9.5px;padding:2px 7px;"><i class="fa-solid fa-check"></i> Vérifié</span>` : '',
     ].filter(Boolean).join('');
     const dispoClass = p.dispo && (p.dispo.includes('maintenant')||p.dispo.includes("aujourd'hui")) ? 'led-green' : 'led-yellow';
 
@@ -2429,12 +2453,12 @@ function renderProviders() {
             <span class="pc2-note">${p.note}</span>
             <span class="pc2-avis">(${p.missions} avis)</span>
           </div>
-          <div class="pc2-loc">📍 ${p.ville}${p.experience ? ` · <strong>${p.experience} ans exp.</strong>` : ''}</div>
+          <div class="pc2-loc"><i class="fa-solid fa-location-dot"></i> ${p.ville}${p.experience ? ` · <strong>${p.experience} ans exp.</strong>` : ''}</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0;">
-          ${p.badge_verifie?`<span class="badge-verifie" style="font-size:9px;padding:2px 7px;">✓ Vérifié</span>`:''}
-          ${p.badge_express?`<span class="badge-express" style="font-size:9px;padding:2px 7px;">⚡ Express</span>`:''}
-          ${p.badge_top?`<span class="badge-top" style="font-size:9px;padding:2px 7px;">🏆</span>`:''}
+          ${p.badge_verifie?`<span class="badge-verifie" style="font-size:9px;padding:2px 7px;"><i class="fa-solid fa-check"></i> Vérifié</span>`:''}
+          ${p.badge_express?`<span class="badge-express" style="font-size:9px;padding:2px 7px;"> Express</span>`:''}
+          ${p.badge_top?`<span class="badge-top" style="font-size:9px;padding:2px 7px;"><i class="fa-solid fa-trophy" style="color:#F5C842;"></i></span>`:''}
         </div>
       </div>
       ${p.dispo ? `<div class="pc2-dispo"><span class="dispo-led ${dispoClass}"></span><span>${p.dispo}</span></div>` : ''}
@@ -2442,14 +2466,14 @@ function renderProviders() {
       ${p.tarif ? `<div class="pc2-tarif">💰 ${p.tarif}</div>` : ''}
       <div class="pc2-portfolio">${(p.portfolio||[]).slice(0,2).map(item=>`<div class="pc2-port-item">${item}</div>`).join('')}</div>
       <div class="pc2-stats">
-        <div class="pc2-s"><span class="pc2-sv">${p.vues}</span><span class="pc2-sl">👁️ Vues</span></div>
-        <div class="pc2-s"><span class="pc2-sv">${p.missions}</span><span class="pc2-sl">🎯 Missions</span></div>
-        <div class="pc2-s"><span class="pc2-sv">${p.note}</span><span class="pc2-sl">⭐ Note</span></div>
+        <div class="pc2-s"><span class="pc2-sv">${p.vues}</span><span class="pc2-sl"><i class="fa-solid fa-eye"></i> Vues</span></div>
+        <div class="pc2-s"><span class="pc2-sv">${p.missions}</span><span class="pc2-sl"><i class="fa-solid fa-bullseye"></i> Missions</span></div>
+        <div class="pc2-s"><span class="pc2-sv">${p.note}</span><span class="pc2-sl"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Note</span></div>
       </div>
       <div class="pc2-actions">
-        <button class="btn-pwa" onclick="event.stopPropagation();openWA('${p.wa}','${p.nom}')">💬 WhatsApp</button>
+        <button class="btn-pwa" onclick="event.stopPropagation();openWA('${p.wa}','${p.nom}')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
         <button class="btn-pprofil" onclick="event.stopPropagation();openModal(${p.id})">👤 Voir profil</button>
-        <button class="btn-pfav" onclick="event.stopPropagation();toggleFav(${p.id})">${isFav?'❤️':'🤍'}</button>
+        <button class="btn-pfav" onclick="event.stopPropagation();toggleFav(${p.id})">${isFav?'<i class="fa-solid fa-heart" style="color:#E85D04;"></i>':'🤍'}</button>
       </div>
     </div>`;
   }).join('');
@@ -2555,14 +2579,14 @@ function openModal(id) {
 
   const stars5Full = Array.from({length:5},(_,j)=>`<span style="color:${j<Math.floor(p.note)?'#D4A017':'#CBD5E1'};font-size:16px;">★</span>`).join('');
   const badgesHtml = [
-    p.badge_verifie ? '<span class="badge-verifie">✓ Vérifié YOUMMA</span>' : '',
-    p.badge_top     ? '<span class="badge-top">🏆 Top Artisan</span>' : '',
-    p.badge_express ? '<span class="badge-express">⚡ Express</span>' : '',
+    p.badge_verifie ? '<span class="badge-verifie"><i class="fa-solid fa-check"></i> Vérifié YOUMMA</span>' : '',
+    p.badge_top     ? '<span class="badge-top"><i class="fa-solid fa-trophy" style="color:#F5C842;"></i> Top Artisan</span>' : '',
+    p.badge_express ? '<span class="badge-express"> Express</span>' : '',
     p.recommande    ? '<span class="badge-recommande">👍 Recommandé</span>' : '',
   ].filter(Boolean).join(' ');
 
   // Portfolio — galerie 5 réalisations (icônes représentatives)
-  const portEmojis = ['🔧','⚡','🏗️','🔨','🛠️','🪚','🎨','🔩'];
+  const portEmojis = ['','','','🔨','🛠️','','',''];
   const portfolioHtml = (p.portfolio||[]).map((item, idx) => `
     <div class="mp-port-item">
       <div class="mp-port-img" style="background:linear-gradient(135deg,${p.bg},${p.color}22);">
@@ -2604,8 +2628,8 @@ function openModal(id) {
       <!-- STATS BAR -->
       <div class="mp-stats-bar">
         <div class="mp-stat"><span class="mp-sv">${p.note} ★</span><span class="mp-sl">Note moyenne</span></div>
-        <div class="mp-stat"><span class="mp-sv">${p.missions}</span><span class="mp-sl">🎯 Missions</span></div>
-        <div class="mp-stat"><span class="mp-sv">${p.vues}</span><span class="mp-sl">👁️ Vues profil</span></div>
+        <div class="mp-stat"><span class="mp-sv">${p.missions}</span><span class="mp-sl"><i class="fa-solid fa-bullseye"></i> Missions</span></div>
+        <div class="mp-stat"><span class="mp-sv">${p.vues}</span><span class="mp-sl"><i class="fa-solid fa-eye"></i> Vues profil</span></div>
       </div>
     </div>
 
@@ -2614,7 +2638,7 @@ function openModal(id) {
       ${p.dispo ? `<div class="mp-info-item"><div class="mp-info-label">Disponibilité</div><div class="mp-info-val" style="display:flex;align-items:center;gap:6px;"><span class="dispo-led ${dispoClass}"></span>${p.dispo}</div></div>` : ''}
       ${p.tarif ? `<div class="mp-info-item"><div class="mp-info-label">Tarifs indicatifs</div><div class="mp-info-val">💰 ${p.tarif}</div></div>` : ''}
       ${p.experience ? `<div class="mp-info-item"><div class="mp-info-label">Expérience</div><div class="mp-info-val">${p.experience} ans d'expérience</div></div>` : ''}
-      <div class="mp-info-item"><div class="mp-info-label">Localisation</div><div class="mp-info-val">📍 ${p.ville}, Conakry</div></div>
+      <div class="mp-info-item"><div class="mp-info-label">Localisation</div><div class="mp-info-val"><i class="fa-solid fa-location-dot"></i> ${p.ville}, Conakry</div></div>
     </div>
 
     <!-- DESCRIPTION -->
@@ -2631,21 +2655,21 @@ function openModal(id) {
 
     <!-- PORTFOLIO / RÉALISATIONS -->
     ${(p.portfolio||[]).length ? `
-    <div class="mp-section-title">📸 Réalisations (${p.portfolio.length} projets)</div>
+    <div class="mp-section-title"><i class="fa-solid fa-images"></i> Réalisations (${p.portfolio.length} projets)</div>
     <div class="mp-portfolio-grid">${portfolioHtml}</div>
     ` : ''}
 
     <!-- AVIS CLIENTS -->
     ${(p.avis||[]).length ? `
-    <div class="mp-section-title">⭐ Avis clients (${p.avis.length} avis · ${p.note}/5)</div>
+    <div class="mp-section-title"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Avis clients (${p.avis.length} avis · ${p.note}/5)</div>
     ${avisHtml}
     ` : ''}
 
     <!-- ACTIONS -->
     <div class="mp-actions-row">
-      <button class="btn-mp-wa" onclick="openWA('${p.wa}','${p.nom}')">💬 WhatsApp</button>
-      <button class="btn-mp-call" onclick="callProvider('${p.tel}')">📞 Appeler</button>
-      <button class="btn-mp-maps" onclick="openMaps('${p.nom}','${p.ville}')">📍 Localiser</button>
+      <button class="btn-mp-wa" onclick="openWA('${p.wa}','${p.nom}')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+      <button class="btn-mp-call" onclick="callProvider('${p.tel}')"><i class="fa-solid fa-phone"></i> Appeler</button>
+      <button class="btn-mp-maps" onclick="openMaps('${p.nom}','${p.ville}')"><i class="fa-solid fa-location-dot"></i> Localiser</button>
     </div>
     <div style="text-align:center;margin-top:10px;padding:10px;background:var(--fond2);border-radius:12px;">
       <div style="font-size:11.5px;color:var(--gris);">Vous êtes artisan ? <span onclick="closeModal();ouvrirInscription()" style="color:var(--orange);font-weight:700;cursor:pointer;">Créez votre profil gratuit →</span></div>
@@ -2667,7 +2691,7 @@ function openWA(wa, nom) {
   const clean = wa.replace(/[\+\s]/g, '');
   const msg = encodeURIComponent(`Bonjour ${nom} 👋, je vous contacte via YOUMMA JOBS. Je suis intéressé(e) par vos services.`);
   window.open(`https://wa.me/${clean}?text=${msg}`, '_blank');
-  showToast('💬 Ouverture de WhatsApp...');
+  showToast('<i class="fa-brands fa-whatsapp"></i> Ouverture de WhatsApp...');
 }
 
 function callProvider(tel) {
@@ -2680,11 +2704,11 @@ function toggleFav(id) {
     showToast('Retiré des favoris');
   } else {
     favorites.push(id);
-    showToast('❤️ Ajouté aux favoris !');
+    showToast('<i class="fa-solid fa-heart" style="color:#E85D04;"></i> Ajouté aux favoris !');
   }
   try { localStorage.setItem('yj_fav', JSON.stringify(favorites)); } catch(e) {}
   const btn = document.getElementById(`fav-${id}`);
-  if (btn) btn.textContent = favorites.includes(id) ? '❤️' : '🤍';
+  if (btn) btn.textContent = favorites.includes(id) ? '<i class="fa-solid fa-heart" style="color:#E85D04;"></i>' : '🤍';
 }
 
 // ── INSCRIPTION ──
@@ -2717,15 +2741,15 @@ function envoyerInscription() {
   const msg = encodeURIComponent(
     `🚀 *Demande d'inscription YOUMMA JOBS*\n\n` +
     `👤 *Nom :* ${prenom} ${nom}\n` +
-    `📞 *Téléphone :* ${tel}\n` +
-    `💬 *WhatsApp :* ${wa}\n` +
-    `📧 *Email :* ${email || 'Non renseigné'}\n` +
-    `🎯 *Spécialité :* ${cat}\n` +
+    `<i class="fa-solid fa-phone"></i> *Téléphone :* ${tel}\n` +
+    `<i class="fa-brands fa-whatsapp"></i> *WhatsApp :* ${wa}\n` +
+    `<i class="fa-solid fa-envelope"></i> *Email :* ${email || 'Non renseigné'}\n` +
+    `<i class="fa-solid fa-bullseye"></i> *Spécialité :* ${cat}\n` +
     `📅 *Expérience :* ${exp ? exp + ' ans' : 'Non renseigné'}\n` +
     `💰 *Tarifs :* ${tarif || 'Non renseigné'}\n` +
     `🟢 *Disponibilité :* ${dispo}\n` +
-    `📍 *Localisation :* ${quartier}, ${ville}\n` +
-    `🏠 *Adresse :* ${adresse || 'Non renseigné'}\n\n` +
+    `<i class="fa-solid fa-location-dot"></i> *Localisation :* ${quartier}, ${ville}\n` +
+    `<i class="fa-solid fa-house"></i> *Adresse :* ${adresse || 'Non renseigné'}\n\n` +
     `📝 *Description :*\n${desc}\n\n` +
     `— Envoyé depuis yoummajobs.com`
   );
@@ -2856,7 +2880,7 @@ document.addEventListener('keydown', e => {
   <div class="form-group">
     <label>Numéro de téléphone</label>
     <div class="input-wrap">
-      <span class="input-prefix">📞</span>
+      <span class="input-prefix"><i class="fa-solid fa-phone"></i></span>
       <input type="tel" id="telephone" class="has-prefix" placeholder="+224 6XX XX XX XX" autocomplete="tel"/>
     </div>
   </div>
@@ -2882,7 +2906,7 @@ document.addEventListener('keydown', e => {
   <div class="divider">ou</div>
 
   <button class="btn-whatsapp" onclick="window.open('https://wa.me/22461252510?text=Bonjour%20YOUMMA%20JOBS%2C%20j\'ai%20besoin%20d\'aide%20pour%20me%20connecter','_blank')">
-    💬 Aide via WhatsApp
+    <i class="fa-brands fa-whatsapp"></i> Aide via WhatsApp
   </button>
 
   <div class="link-row" style="margin-top:16px;">
@@ -2934,7 +2958,7 @@ async function connexion() {
   <h2 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;text-align:center;margin-bottom:6px;">Créer mon profil prestataire</h2>
   <p style="font-size:13px;color:#6B7280;text-align:center;margin-bottom:16px;">Rejoignez YOUMMA JOBS et trouvez de nouveaux clients à Conakry</p>
   <div style="background:linear-gradient(135deg,#E85D04,#C74B00);border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:center;margin-bottom:20px;">
-    <span style="font-size:22px;">🎯</span>
+    <span style="font-size:22px;"><i class="fa-solid fa-bullseye"></i></span>
     <div>
       <div style="font-size:12.5px;font-weight:700;color:#fff;">14 jours d'essai gratuit après validation</div>
       <div style="font-size:11px;color:rgba(255,255,255,.8);">Abonnement 50 000 GNF/mois — Orange Money, MTN MoMo, Wave</div>
@@ -3005,7 +3029,7 @@ async function connexion() {
     </div>
   </div>
   <div id="i-success" style="display:none;text-align:center;padding:20px 0;">
-    <div style="font-size:56px;margin-bottom:16px;">🎉</div>
+    <div style="font-size:56px;margin-bottom:16px;"><i class="fa-solid fa-party-horn" style="font-size:48px;color:#E85D04;"></i></div>
     <h3 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;margin-bottom:10px;">Inscription envoyée !</h3>
     <p style="font-size:13.5px;color:#6B7280;line-height:1.7;margin-bottom:20px;">Votre demande est en cours d'examen.<br>Vous serez contacté(e) sous <strong>24h</strong> sur WhatsApp.</p>
     <a href="https://wa.me/22461252510" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:13px 24px;border-radius:50px;text-decoration:none;font-weight:700;font-size:13.5px;">Confirmer sur WhatsApp</a>
@@ -3028,8 +3052,8 @@ async function connexion() {
     var l1=document.getElementById('i-line-1'),l2=document.getElementById('i-line-2');
     var A='background:#E85D04;border-color:#E85D04;color:#fff;',D='background:#16A34A;border-color:#16A34A;color:#fff;',I='background:#fff;border-color:#E5E7EB;color:#6B7280;';
     var base='width:30px;height:30px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;';
-    if(d1){d1.style.cssText=(step>1?D:A)+base;if(step>1)d1.textContent='✓';else d1.textContent='1';}
-    if(d2){d2.style.cssText=(step>2?D:step===2?A:I)+base;if(step>2)d2.textContent='✓';else d2.textContent='2';}
+    if(d1){d1.style.cssText=(step>1?D:A)+base;if(step>1)d1.textContent='<i class="fa-solid fa-check"></i>';else d1.textContent='1';}
+    if(d2){d2.style.cssText=(step>2?D:step===2?A:I)+base;if(step>2)d2.textContent='<i class="fa-solid fa-check"></i>';else d2.textContent='2';}
     if(d3){d3.style.cssText=(step===3?A:I)+base;d3.textContent='3';}
     if(l1)l1.style.background=step>1?'#16A34A':'#E5E7EB';
     if(l2)l2.style.background=step>2?'#16A34A':'#E5E7EB';
@@ -3079,7 +3103,7 @@ async function connexion() {
   </div>
   <nav class="sidebar-nav">
     <a class="nav-item active" onclick="showSection('dashboard')">
-      <span class="icon">📊</span> Tableau de bord
+      <span class="icon"><i class="fa-solid fa-chart-bar"></i></span> Tableau de bord
     </a>
     <a class="nav-item" onclick="showSection('profil')">
       <span class="icon">👤</span> Mon profil
@@ -3088,24 +3112,24 @@ async function connexion() {
       <span class="icon">📸</span> Photos & Galerie
     </a>
     <a class="nav-item" onclick="showSection('abonnement')">
-      <span class="icon">💳</span> Abonnement
+      <span class="icon"><i class="fa-solid fa-credit-card"></i></span> Abonnement
     </a>
     <a class="nav-item" onclick="showSection('avis')">
-      <span class="icon">⭐</span> Mes avis
+      <span class="icon"><i class="fa-solid fa-star" style="color:#F5C842;"></i></span> Mes avis
     </a>
     <a class="nav-item" onclick="navigate('home')">
       <span class="icon">🌐</span> Voir le site
     </a>
   </nav>
   <div class="sidebar-footer">
-    <button class="btn-deconnexion" onclick="deconnexion()">🚪 Se déconnecter</button>
+    <button class="btn-deconnexion" onclick="deconnexion()"><i class="fa-solid fa-right-from-bracket"></i> Se déconnecter</button>
   </div>
 </div>
 
 <!-- MAIN -->
 <div class="main">
   <div class="topbar">
-    <div class="topbar-title" id="topbarTitle">Tableau de bord</div>
+    <div class="topbar-title" id="topbarTitle"><i class="fa-solid fa-chart-line" style="width:16px;"></i> Tableau de bord</div>
     <div class="topbar-right">
       <div class="provider-chip">
         <div class="provider-chip-avatar" id="chipAvatar">?</div>
@@ -3128,7 +3152,7 @@ async function connexion() {
       <div class="profile-banner">
         <div class="pb-avatar-wrap">
           <div id="pbAvatar" class="pb-avatar-placeholder">?</div>
-          <div class="pb-edit-photo" onclick="showSection('photos')" title="Changer la photo">📷</div>
+          <div class="pb-edit-photo" onclick="showSection('photos')" title="Changer la photo"><i class="fa-solid fa-camera"></i></div>
         </div>
         <div class="pb-info">
           <div class="pb-name" id="pbName">Chargement...</div>
@@ -3136,38 +3160,38 @@ async function connexion() {
           <div class="pb-badges" id="pbBadges"></div>
         </div>
         <div style="position:relative;z-index:1;text-align:right;">
-          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px;">📍 Localisation</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px;"><i class="fa-solid fa-location-dot"></i> Localisation</div>
           <div style="font-size:14px;color:#fff;font-weight:600;" id="pbVille">—</div>
           <div style="font-size:12px;color:rgba(255,255,255,0.5);" id="pbCommune">—</div>
-          <a id="pbMapsBtn" style="display:none;" class="maps-btn" target="_blank">🗺️ Google Maps</a>
+          <a id="pbMapsBtn" style="display:none;" class="maps-btn" target="_blank"> Google Maps</a>
         </div>
       </div>
 
       <!-- Stats -->
       <div class="stats-grid">
-        <div class="stat-card"><div class="stat-icon">👁️</div><div class="stat-val" id="statVues">0</div><div class="stat-label">Vues du profil</div></div>
-        <div class="stat-card"><div class="stat-icon">❤️</div><div class="stat-val" id="statFavoris">0</div><div class="stat-label">Favoris</div></div>
-        <div class="stat-card"><div class="stat-icon">📞</div><div class="stat-val" id="statAppels">0</div><div class="stat-label">Appels</div></div>
-        <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-val" id="statWA">0</div><div class="stat-label">WhatsApp</div></div>
-        <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-val" id="statAvis">0</div><div class="stat-label">Avis clients</div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fa-solid fa-eye"></i></div><div class="stat-val" id="statVues">0</div><div class="stat-label">Vues du profil</div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fa-solid fa-heart" style="color:#E85D04;"></i></div><div class="stat-val" id="statFavoris">0</div><div class="stat-label">Favoris</div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fa-solid fa-phone"></i></div><div class="stat-val" id="statAppels">0</div><div class="stat-label">Appels</div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fa-brands fa-whatsapp"></i></div><div class="stat-val" id="statWA">0</div><div class="stat-label">WhatsApp</div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fa-solid fa-star" style="color:#F5C842;"></i></div><div class="stat-val" id="statAvis">0</div><div class="stat-label">Avis clients</div></div>
       </div>
 
       <!-- Quick actions -->
       <div class="actions-grid">
         <a class="action-btn" onclick="showSection('profil')">
-          <div class="action-icon">✏️</div>
+          <div class="action-icon"><i class="fa-solid fa-pen"></i></div>
           <div class="action-label">Modifier mon profil</div>
         </a>
         <a class="action-btn" onclick="showSection('photos')">
-          <div class="action-icon">📷</div>
+          <div class="action-icon"><i class="fa-solid fa-camera"></i></div>
           <div class="action-label">Ajouter une photo</div>
         </a>
         <a class="action-btn" onclick="showSection('abonnement')">
-          <div class="action-icon">💳</div>
+          <div class="action-icon"><i class="fa-solid fa-credit-card"></i></div>
           <div class="action-label">Renouveler abonnement</div>
         </a>
         <a class="action-btn" href="https://wa.me/22461252510?text=Bonjour%20YOUMMA%20JOBS%2C%20besoin%20d'aide" target="_blank">
-          <div class="action-icon">💬</div>
+          <div class="action-icon"><i class="fa-brands fa-whatsapp"></i></div>
           <div class="action-label">Support WhatsApp</div>
         </a>
       </div>
@@ -3175,7 +3199,7 @@ async function connexion() {
       <!-- Subscription preview -->
       <div class="abo-card">
         <div class="abo-header">
-          <div class="abo-title">💳 Abonnement</div>
+          <div class="abo-title"><i class="fa-solid fa-credit-card"></i> Abonnement</div>
           <div id="aboStatusBadge" class="abo-status-expired">Vérifie...</div>
         </div>
         <div class="abo-info">
@@ -3193,7 +3217,7 @@ async function connexion() {
     <!-- ── PROFIL EDIT ── -->
     <div class="section" id="section-profil">
       <div class="edit-section">
-        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:20px;">✏️ Modifier mon profil</div>
+        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:20px;"><i class="fa-solid fa-pen"></i> Modifier mon profil</div>
 
         <div class="row-2">
           <div class="form-group"><label>Prénom</label><input type="text" id="editPrenom"/></div>
@@ -3235,7 +3259,7 @@ async function connexion() {
 
         <div style="display:flex;gap:12px;margin-top:8px;">
           <button class="btn-save" onclick="sauvegarderProfil()">💾 Sauvegarder les modifications</button>
-          <button onclick="geocoderLocalisation()" style="padding:13px 18px;background:#4285F4;border:none;border-radius:12px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">📍 Géolocaliser</button>
+          <button onclick="geocoderLocalisation()" style="padding:13px 18px;background:#4285F4;border:none;border-radius:12px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;"><i class="fa-solid fa-location-dot"></i> Géolocaliser</button>
         </div>
       </div>
     </div>
@@ -3244,9 +3268,9 @@ async function connexion() {
     <div class="section" id="section-photos">
       <div class="photos-section">
         <div class="photos-header">
-          <div class="photos-title">📷 Photo de profil</div>
+          <div class="photos-title"><i class="fa-solid fa-camera"></i> Photo de profil</div>
           <label style="cursor:pointer;background:#E85D04;color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;">
-            📷 Changer la photo
+            <i class="fa-solid fa-camera"></i> Changer la photo
             <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="uploadPhoto(this,'profil')"/>
           </label>
         </div>
@@ -3267,7 +3291,7 @@ async function connexion() {
         </div>
         <div class="photos-grid" id="realisationsGrid">
           <div class="photo-slot" onclick="document.querySelector('[onchange*=realisation]').click()">
-            <div style="font-size:28px;">📷</div>
+            <div style="font-size:28px;"><i class="fa-solid fa-camera"></i></div>
             <div class="add-text">Ajouter</div>
           </div>
         </div>
@@ -3280,7 +3304,7 @@ async function connexion() {
     <div class="section" id="section-abonnement">
       <div class="abo-card">
         <div class="abo-header">
-          <div class="abo-title">💳 État de mon abonnement</div>
+          <div class="abo-title"><i class="fa-solid fa-credit-card"></i> État de mon abonnement</div>
           <div id="aboStatusBadge2" class="abo-status-expired">—</div>
         </div>
         <div class="abo-info">
@@ -3306,7 +3330,7 @@ async function connexion() {
         </div>
 
         <div style="margin-top:24px;">
-          <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;">💳 Payer l'abonnement</div>
+          <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;"><i class="fa-solid fa-credit-card"></i> Payer l'abonnement</div>
           <div style="display:flex;gap:12px;flex-wrap:wrap;">
             <a href="https://wa.me/22461252510?text=Bonjour%2C%20je%20veux%20payer%20mon%20abonnement%20YOUMMA%20JOBS%20via%20Orange%20Money" target="_blank"
                style="display:flex;align-items:center;gap:8px;padding:12px 18px;background:#FF6600;border-radius:12px;color:#fff;text-decoration:none;font-weight:700;font-size:13px;">
@@ -3329,7 +3353,7 @@ async function connexion() {
     <!-- ── AVIS ── -->
     <div class="section" id="section-avis">
       <div class="edit-section">
-        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:20px;">⭐ Avis de mes clients</div>
+        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:20px;"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Avis de mes clients</div>
         <div id="avisList"><div style="text-align:center;padding:40px;color:#7A7F9A;">Chargement des avis...</div></div>
       </div>
     </div>
@@ -3416,8 +3440,8 @@ function updateUI() {
   const badges = [];
   if (p.statut === 'valide') badges.push('<span class="pb-badge verified">✅ Vérifié</span>');
   if (p.statut === 'en_attente') badges.push('<span class="pb-badge pending">⏳ En attente</span>');
-  if (p.essai_actif && new Date(p.essai_fin) > new Date()) badges.push('<span class="pb-badge trial">🎁 Essai gratuit</span>');
-  if (p.abonnement_actif && new Date(p.abonnement_fin) > new Date()) badges.push('<span class="pb-badge active">💳 Abonné</span>');
+  if (p.essai_actif && new Date(p.essai_fin) > new Date()) badges.push('<span class="pb-badge trial">Essai gratuit</span>');
+  if (p.abonnement_actif && new Date(p.abonnement_fin) > new Date()) badges.push('<span class="pb-badge active">Abonné</span>');
   document.getElementById('pbBadges').innerHTML = badges.join('');
 
   // Stats
@@ -3441,7 +3465,7 @@ function updateAbonnementUI(p) {
     if (!el) return;
     if (actif) {
       el.className = isEssai ? 'abo-status-trial' : 'abo-status-active';
-      el.textContent = isEssai ? '🎁 Essai actif' : '✅ Actif';
+      el.textContent = isEssai ? 'Essai actif' : '✅ Actif';
     } else {
       el.className = 'abo-status-expired';
       el.textContent = '❌ Expiré';
@@ -3503,7 +3527,7 @@ function renderPhotos() {
   if (reals.length < 5) {
     slots.push(`
       <label class="photo-slot" style="cursor:pointer;">
-        <div style="font-size:28px;">📷</div>
+        <div style="font-size:28px;"><i class="fa-solid fa-camera"></i></div>
         <div class="add-text">Ajouter</div>
         <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="uploadPhoto(this,'realisation')"/>
       </label>
@@ -3608,7 +3632,7 @@ async function geocoderLocalisation() {
   const commune = document.getElementById('editCommune').value;
   const quartier = document.getElementById('editQuartier').value;
   if (!commune && !quartier) { showToast('Renseignez commune ou quartier', 'error'); return; }
-  showToast('📍 Géolocalisation en cours...');
+  showToast('<i class="fa-solid fa-location-dot"></i> Géolocalisation en cours...');
   const coords = await geocoderAdresse(commune, quartier);
   if (coords) {
     await updateProviderProfile(providerId, { latitude: coords.lat, longitude: coords.lon });
@@ -3650,7 +3674,7 @@ async function chargerAvis() {
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
         <div>
           <div style="font-weight:700;font-size:14px;color:#1A1A4E;">${a.client_nom}</div>
-          <div style="font-size:11px;color:#7A7F9A;">📍 ${a.client_ville || 'Conakry'} · ${new Date(a.created_at).toLocaleDateString('fr-FR')}</div>
+          <div style="font-size:11px;color:#7A7F9A;"><i class="fa-solid fa-location-dot"></i> ${a.client_ville || 'Conakry'} · ${new Date(a.created_at).toLocaleDateString('fr-FR')}</div>
         </div>
         <div style="color:#F5C842;font-size:16px;">${stars(a.note)}</div>
       </div>
@@ -3702,15 +3726,15 @@ async function chargerAvis() {
   </div>
   <div style="padding:8px;">
     <div onclick="showAdmin('dashboard')" id="amenu-dashboard" style="padding:10px 12px;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:2px;background:rgba(232,93,4,.25);">Tableau de bord</div>
-    <div onclick="showAdmin('en_attente')" id="amenu-en_attente" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">En attente</div>
-    <div onclick="showAdmin('valide')" id="amenu-valide" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">Validés</div>
-    <div onclick="showAdmin('rejete')" id="amenu-rejete" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">Rejetés</div>
-    <div onclick="showAdmin('suspendu')" id="amenu-suspendu" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">Suspendus</div>
-    <div onclick="showAdmin('codes')" id="amenu-codes" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">Codes d'activation</div>
-    <div onclick="showAdmin('realisations')" id="amenu-realisations" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">Réalisations</div>
+    <div onclick="showAdmin('en_attente')" id="amenu-en_attente" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-clock" style="width:16px;"></i> En attente</div>
+    <div onclick="showAdmin('valide')" id="amenu-valide" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-circle-check" style="width:16px;"></i> Validés</div>
+    <div onclick="showAdmin('rejete')" id="amenu-rejete" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-circle-xmark" style="width:16px;"></i> Rejetés</div>
+    <div onclick="showAdmin('suspendu')" id="amenu-suspendu" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-ban" style="width:16px;"></i> Suspendus</div>
+    <div onclick="showAdmin('codes')" id="amenu-codes" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-key" style="width:16px;"></i> Codes d'activation</div>
+    <div onclick="showAdmin('realisations')" id="amenu-realisations" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-images" style="width:16px;"></i> Réalisations</div>
   </div>
   <div style="padding:8px;border-top:1px solid rgba(255,255,255,.08);margin-top:10px;">
-    <div onclick="logoutAdmin()" style="padding:10px 12px;border-radius:8px;color:#FCA5A5;font-size:13px;font-weight:600;cursor:pointer;background:rgba(239,68,68,.1);">Déconnexion</div>
+    <div onclick="logoutAdmin()" style="padding:10px 12px;border-radius:8px;color:#FCA5A5;font-size:13px;font-weight:600;cursor:pointer;background:rgba(239,68,68,.1);"><i class="fa-solid fa-right-from-bracket" style="width:16px;"></i> Déconnexion</div>
   </div>
 </div>
 
@@ -3718,7 +3742,7 @@ async function chargerAvis() {
 
     <!-- DASHBOARD -->
     <div class="admin-section active" id="admin-dashboard">
-      <div class="section-title">📊 Vue d'ensemble</div>
+      <div class="section-title"><i class="fa-solid fa-chart-pie"></i> Vue d'ensemble</div>
       <div class="stats-row">
         <div class="stat-box"><div class="val" id="statTotal">—</div><div class="lbl">Total prestataires</div></div>
         <div class="stat-box"><div class="val" id="statAttente">—</div><div class="lbl">En attente</div></div>
@@ -3739,7 +3763,7 @@ async function chargerAvis() {
     <div class="admin-section" id="admin-valide">
       <div class="section-title">✅ Prestataires validés</div>
       <div class="filter-bar">
-        <input class="search-admin" id="searchValide" placeholder="🔍 Rechercher..." oninput="filterTable('valide',this.value)"/>
+        <input class="search-admin" id="searchValide" placeholder="<i class="fa-solid fa-magnifying-glass"></i> Rechercher..." oninput="filterTable('valide',this.value)"/>
       </div>
       <div id="tableValide"></div>
     </div>
@@ -3758,7 +3782,7 @@ async function chargerAvis() {
 
     <!-- CODES D'ACTIVATION -->
     <div class="admin-section" id="admin-codes">
-      <div class="section-title">🔑 Codes d'activation</div>
+      <div class="section-title"><i class="fa-solid fa-key"></i> Codes d'activation</div>
 
       <div class="gen-code-wrap">
         <div class="gen-code-title">Générer un nouveau code</div>
@@ -3900,7 +3924,7 @@ function renderTableHTML(statut, data) {
           ${p.statut!=='valide'?`<button onclick="_adminAction('valider','${p.id}')" style="padding:6px 12px;background:#DCFCE7;color:#16A34A;border:none;border-radius:7px;font-size:11.5px;font-weight:700;cursor:pointer;">Valider</button>`:''}
           ${p.statut!=='rejete'?`<button onclick="_adminAction('rejeter','${p.id}')" style="padding:6px 12px;background:#FEE2E2;color:#DC2626;border:none;border-radius:7px;font-size:11.5px;font-weight:700;cursor:pointer;">Rejeter</button>`:''}
           ${p.statut!=='suspendu'?`<button onclick="_adminAction('suspendre','${p.id}')" style="padding:6px 12px;background:#FEF3C7;color:#B45309;border:none;border-radius:7px;font-size:11.5px;font-weight:700;cursor:pointer;">Suspendre</button>`:''}
-          <button onclick="_adminAction('supprimer','${p.id}')" style="padding:6px 10px;background:#F3F4F6;color:#9CA3AF;border:none;border-radius:7px;font-size:11.5px;font-weight:700;cursor:pointer;">✕</button>
+          <button onclick="_adminAction('supprimer','${p.id}')" style="padding:6px 10px;background:#F3F4F6;color:#9CA3AF;border:none;border-radius:7px;font-size:11.5px;font-weight:700;cursor:pointer;"><i class="fa-solid fa-trash-can"></i></button>
         </div>
       </td>
     </tr>`;
@@ -4184,7 +4208,7 @@ const CATEGORIES = [
   {
     id: 'artisans',
     nom: 'Artisans',
-    emoji: '🔧',
+    emoji: '',
     couleur: '#8B4513',
     bg: '#FFF3E8',
     badgeClass: 'pb-artisan',
@@ -4195,7 +4219,7 @@ const CATEGORIES = [
   {
     id: 'construction-btp',
     nom: 'Construction & BTP',
-    emoji: '🏗️',
+    emoji: '',
     couleur: '#B45309',
     bg: '#FEF3C7',
     badgeClass: 'pb-artisan',
@@ -4206,7 +4230,7 @@ const CATEGORIES = [
   {
     id: 'it',
     nom: 'IT',
-    emoji: '💻',
+    emoji: '',
     couleur: '#2D2D6B',
     bg: '#E0E0F8',
     badgeClass: 'pb-it',
@@ -4228,7 +4252,7 @@ const CATEGORIES = [
   {
     id: 'aide-domicile',
     nom: 'Aide à domicile',
-    emoji: '🏠',
+    emoji: '<i class="fa-solid fa-house"></i>',
     couleur: '#2E7D32',
     bg: '#E8F5E9',
     badgeClass: 'pb-immobilier',
@@ -4239,7 +4263,7 @@ const CATEGORIES = [
   {
     id: 'transport',
     nom: 'Transport',
-    emoji: '🚗',
+    emoji: '',
     couleur: '#B45309',
     bg: '#FEF3C7',
     badgeClass: 'pb-transport',
@@ -4272,7 +4296,7 @@ const CATEGORIES = [
   {
     id: 'services-express',
     nom: 'Services Express',
-    emoji: '⚡',
+    emoji: '',
     couleur: '#7C3AED',
     bg: '#EDE9FE',
     badgeClass: 'pb-express',
@@ -4510,7 +4534,7 @@ window.openModal = async function(id) {
           btn.target = '_blank';
           btn.className = 'modal-btn maps-btn-modal';
           btn.style.cssText = 'background:#4285F4;color:#fff;text-decoration:none;';
-          btn.textContent = '🗺️ Voir sur Google Maps';
+          btn.textContent = ' Voir sur Google Maps';
           actions.appendChild(btn);
         }
       }, 100);
@@ -4541,7 +4565,7 @@ function addExpressBtn() {
   if (!sb2 || document.getElementById('expressBtn')) return;
   const btn = document.createElement('button');
   btn.id = 'expressBtn';
-  btn.innerHTML = '⚡ Express';
+  btn.innerHTML = ' Express';
   btn.style.cssText = 'padding:11px 18px;background:#7C3AED;border:none;border-radius:50px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;';
   btn.onclick = () => { document.getElementById('catFilter').value='Services Express'; filterProviders(); };
   sb2.appendChild(btn);
@@ -4616,8 +4640,8 @@ function _dashUpdateUI() {
   const badges = [];
   if (p.statut==='valide') badges.push('<span class="pb-badge verified">✅ Vérifié</span>');
   if (p.statut==='en_attente') badges.push('<span class="pb-badge pending">⏳ En attente</span>');
-  if (p.essai_actif && new Date(p.essai_fin)>new Date()) badges.push('<span class="pb-badge trial">🎁 Essai gratuit</span>');
-  if (p.abonnement_actif && p.abonnement_fin && new Date(p.abonnement_fin)>new Date()) badges.push('<span class="pb-badge active">💳 Abonné</span>');
+  if (p.essai_actif && new Date(p.essai_fin)>new Date()) badges.push('<span class="pb-badge trial">Essai gratuit</span>');
+  if (p.abonnement_actif && p.abonnement_fin && new Date(p.abonnement_fin)>new Date()) badges.push('<span class="pb-badge active">Abonné</span>');
   const pbBadges = document.getElementById('pbBadges');
   if (pbBadges) pbBadges.innerHTML = badges.join('');
 
@@ -4637,7 +4661,7 @@ function _dashUpdateAbonnement(p) {
   const isEssai = p.essai_actif && new Date(p.essai_fin)>new Date();
   ['aboStatusBadge','aboStatusBadge2'].forEach(id => {
     const el=document.getElementById(id); if(!el) return;
-    if(actif) { el.className=isEssai?'abo-status-trial':'abo-status-active'; el.textContent=isEssai?'🎁 Essai actif':'✅ Actif'; }
+    if(actif) { el.className=isEssai?'abo-status-trial':'abo-status-active'; el.textContent=isEssai?'Essai actif':'✅ Actif'; }
     else { el.className='abo-status-expired'; el.textContent='❌ Expiré'; }
   });
   const typeText = isEssai?'Essai gratuit (14j)':actif?'Abonnement Pro':'Aucun';
@@ -4668,7 +4692,7 @@ function _dashRenderPhotos() {
       <img src="${photo.url}" alt="Réalisation" loading="lazy"/>
       <button class="photo-delete" onclick="_dashSupprimerPhoto('${photo.id}')">×</button>
     </div>`);
-  if (reals.length<5) slots.push(`<label class="photo-slot" style="cursor:pointer;"><div style="font-size:28px;">📷</div><div class="add-text">Ajouter</div><input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="_dashUploadPhoto(this,'realisation')"/></label>`);
+  if (reals.length<5) slots.push(`<label class="photo-slot" style="cursor:pointer;"><div style="font-size:28px;"><i class="fa-solid fa-camera"></i></div><div class="add-text">Ajouter</div><input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="_dashUploadPhoto(this,'realisation')"/></label>`);
   grid.innerHTML = slots.join('');
 }
 
@@ -4725,7 +4749,7 @@ async function _dashGeolocal() {
   const commune=document.getElementById('editCommune')?.value;
   const quartier=document.getElementById('editQuartier')?.value;
   if(!commune&&!quartier){_dashToast('Renseignez commune ou quartier','error');return;}
-  _dashToast('📍 Géolocalisation...');
+  _dashToast('<i class="fa-solid fa-location-dot"></i> Géolocalisation...');
   const coords = await geocoderAdresse(commune,quartier);
   if(coords) { await updateProviderProfile(_dashProviderId,{latitude:coords.lat,longitude:coords.lon}); _dashData.latitude=coords.lat; _dashData.longitude=coords.lon; _dashUpdateUI(); _dashToast('✅ Géolocalisation enregistrée !','success'); }
   else _dashToast('Impossible de géolocaliser','error');
@@ -4744,7 +4768,7 @@ async function _dashChargerAvis() {
   const container=document.getElementById('avisList'); if(!container) return;
   if(!avis.length){container.innerHTML='<div style="text-align:center;padding:40px;color:#7A7F9A;">Aucun avis pour l\'instant.</div>';return;}
   const stars=n=>'★'.repeat(n)+'☆'.repeat(5-n);
-  container.innerHTML=avis.map(a=>`<div style="border:1px solid #E4E8F5;border-radius:14px;padding:18px;margin-bottom:14px;"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;"><div><div style="font-weight:700;font-size:14px;">${a.client_nom}</div><div style="font-size:11px;color:#7A7F9A;">📍 ${a.client_ville||'Conakry'} · ${new Date(a.created_at).toLocaleDateString('fr-FR')}</div></div><div style="color:#F5C842;font-size:16px;">${stars(a.note)}</div></div><div style="font-size:13.5px;color:#7A7F9A;font-style:italic;">"${a.commentaire||''}"</div></div>`).join('');
+  container.innerHTML=avis.map(a=>`<div style="border:1px solid #E4E8F5;border-radius:14px;padding:18px;margin-bottom:14px;"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;"><div><div style="font-weight:700;font-size:14px;">${a.client_nom}</div><div style="font-size:11px;color:#7A7F9A;"><i class="fa-solid fa-location-dot"></i> ${a.client_ville||'Conakry'} · ${new Date(a.created_at).toLocaleDateString('fr-FR')}</div></div><div style="color:#F5C842;font-size:16px;">${stars(a.note)}</div></div><div style="font-size:13.5px;color:#7A7F9A;font-style:italic;">"${a.commentaire||''}"</div></div>`).join('');
 }
 
 function _dashShowSection(name) {
@@ -4820,8 +4844,8 @@ function _adminTableHTML(statut,data) {
   const fd=d=>d?new Date(d).toLocaleDateString('fr-FR'):'—';
   const now=new Date();
   const aboBadge=p=>{
-    if(p.essai_actif&&p.essai_fin&&new Date(p.essai_fin)>now)return'<span class="badge essai">🎁 Essai</span>';
-    if(p.abonnement_actif&&p.abonnement_fin&&new Date(p.abonnement_fin)>now)return'<span class="badge abonne">💳 Abonné</span>';
+    if(p.essai_actif&&p.essai_fin&&new Date(p.essai_fin)>now)return'<span class="badge essai">Essai</span>';
+    if(p.abonnement_actif&&p.abonnement_fin&&new Date(p.abonnement_fin)>now)return'<span class="badge abonne">Abonné</span>';
     return'<span style="color:#7A7F9A;font-size:11px;">Inactif</span>';
   };
   return `<table class="admin-table"><thead><tr><th>Prestataire</th><th>Catégorie</th><th>Localisation</th><th>Téléphone</th><th>Inscrit</th><th>Abo.</th><th>Actions</th></tr></thead><tbody>${data.map(p=>`<tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="provider-row-avatar" style="background:#FDE8D8;color:#C74B00;">${p.photo_url?`<img src="${p.photo_url}"/>`:(p.prenom?.[0]||'')+(p.nom?.[0]||'')}</div><div><div style="font-weight:700;color:#fff;">${p.prenom||''} ${p.nom||''}</div><div style="font-size:11px;color:#7A7F9A;">${p.metier||'—'}</div></div></div></td><td><span class="badge ${p.statut}">${(p.statut||'').replace('_',' ')}</span><br><span style="font-size:11px;color:#7A7F9A;">${p.categorie||'—'}</span></td><td style="font-size:12px;color:#94A3B8;">${p.ville||'—'}${p.commune?' · '+p.commune:''}</td><td><a href="tel:${p.telephone}" style="color:#60A5FA;">${p.telephone||'—'}</a></td><td style="font-size:12px;color:#7A7F9A;">${fd(p.created_at)}</td><td>${aboBadge(p)}</td><td><div class="action-row">${p.statut==='en_attente'?`<button class="abtn valider" onclick="_adminAction('valider','${p.id}')">✅ Valider</button>`:''}<button class="abtn rejeter" onclick="_adminAction('rejeter','${p.id}')">❌ Rejeter</button><button class="abtn suspendre" onclick="_adminAction('suspendre','${p.id}')">🚫</button><button class="abtn supprimer" onclick="_adminAction('supprimer','${p.id}')">🗑️</button></div></td></tr>`).join('')}</tbody></table>`;
@@ -4888,7 +4912,7 @@ function _inscrClearError(){const el=document.getElementById('errorBox');if(el)e
 function _inscrUpdateStepUI(){
   [1,2,3].forEach(s=>{
     const sec=document.getElementById('step'+s);if(sec)sec.classList.toggle('active',s===_inscrStep);
-    const dot=document.getElementById('step-dot-'+s);if(dot){dot.className='step '+(s<_inscrStep?'done':s===_inscrStep?'active':'pending');dot.textContent=s<_inscrStep?'✓':s;}
+    const dot=document.getElementById('step-dot-'+s);if(dot){dot.className='step '+(s<_inscrStep?'done':s===_inscrStep?'active':'pending');dot.textContent=s<_inscrStep?'<i class="fa-solid fa-check"></i>':s;}
     const line=document.getElementById('step-line-'+s);if(line)line.className='step-line'+(s<_inscrStep?' done':'');
   });
 }
@@ -5187,4 +5211,5 @@ async function _adminAction(type, id) {
 }
 </script>
 </body>
-</html>
+</html<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+>
