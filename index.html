@@ -382,7 +382,7 @@ nav.scrolled{background:rgba(15,16,32,.96);backdrop-filter:blur(20px) saturate(1
 .tarif-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:26px;}
 .tarif-features li{font-size:13px;color:var(--texte);display:flex;align-items:center;gap:8px;}
 .tarif-features li.light{color:rgba(255,255,255,.75);}
-.tarif-features li::before{content:'<i class="fa-solid fa-check"></i>';color:var(--vert);font-weight:700;flex-shrink:0;}
+.tarif-features li::before{content:"\f00c";font-family:"Font Awesome 6 Free";font-weight:900;color:var(--vert);margin-right:8px;font-size:12px;}
 .tarif-features li.off{color:var(--gris);text-decoration:line-through;}
 .tarif-features li.off::before{content:'✕';color:var(--gris);}
 .btn-tarif{display:block;padding:13px;border:1.5px solid var(--bordure);border-radius:var(--radius-md);text-align:center;font-size:13.5px;font-weight:700;color:var(--texte);cursor:pointer;background:var(--fond);transition:all var(--transition);font-family:'DM Sans',sans-serif;}
@@ -3357,8 +3357,8 @@ async function connexion() {
     var l1=document.getElementById('i-line-1'),l2=document.getElementById('i-line-2');
     var A='background:#E85D04;border-color:#E85D04;color:#fff;',D='background:#16A34A;border-color:#16A34A;color:#fff;',I='background:#fff;border-color:#E5E7EB;color:#6B7280;';
     var base='width:30px;height:30px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;';
-    if(d1){d1.style.cssText=(step>1?D:A)+base;if(step>1)d1.textContent='<i class="fa-solid fa-check"></i>';else d1.textContent='1';}
-    if(d2){d2.style.cssText=(step>2?D:step===2?A:I)+base;if(step>2)d2.textContent='<i class="fa-solid fa-check"></i>';else d2.textContent='2';}
+    if(d1){d1.style.cssText=(step>1?D:A)+base;if(step>1){d1.innerHTML='<i class="fa-solid fa-check"></i>';}else{d1.textContent='1';}}
+    if(d2){d2.style.cssText=(step>2?D:step===2?A:I)+base;if(step>2){d2.innerHTML='<i class="fa-solid fa-check"></i>';}else{d2.textContent='2';}}
     if(d3){d3.style.cssText=(step===3?A:I)+base;d3.textContent='3';}
     if(l1)l1.style.background=step>1?'#16A34A':'#E5E7EB';
     if(l2)l2.style.background=step>2?'#16A34A':'#E5E7EB';
@@ -5283,7 +5283,7 @@ function _inscrClearError(){const el=document.getElementById('errorBox');if(el)e
 function _inscrUpdateStepUI(){
   [1,2,3].forEach(s=>{
     const sec=document.getElementById('step'+s);if(sec)sec.classList.toggle('active',s===_inscrStep);
-    const dot=document.getElementById('step-dot-'+s);if(dot){dot.className='step '+(s<_inscrStep?'done':s===_inscrStep?'active':'pending');dot.textContent=s<_inscrStep?'<i class="fa-solid fa-check"></i>':s;}
+    const dot=document.getElementById('step-dot-'+s);if(dot){dot.className='step '+(s<_inscrStep?'done':s===_inscrStep?'active':'pending');dot.innerHTML=s<_inscrStep?'<i class="fa-solid fa-check"></i>':String(s);}
     const line=document.getElementById('step-line-'+s);if(line)line.className='step-line'+(s<_inscrStep?' done':'');
   });
 }
@@ -5583,4 +5583,3 @@ async function _adminAction(type, id) {
 </script>
 </body>
 </html<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
->
