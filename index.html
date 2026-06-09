@@ -58,7 +58,7 @@ button{font-family:'DM Sans',sans-serif;}
 a{text-decoration:none;color:inherit;}
 
 /* ── NAVIGATION ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;transition:all .3s;display:none;}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;transition:all .3s;}
 nav.scrolled{background:rgba(15,16,32,.96);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.07);box-shadow:0 4px 24px rgba(0,0,0,.2);}
 .nav-inner{max-width:1320px;margin:0 auto;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:76px;}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
@@ -104,8 +104,8 @@ nav.scrolled{background:rgba(15,16,32,.96);backdrop-filter:blur(20px) saturate(1
 .btn-express{padding:8px 18px;background:var(--violet);border-radius:50px;color:#fff;font-size:12.5px;font-weight:700;border:none;cursor:pointer;transition:all var(--transition);white-space:nowrap;flex-shrink:0;}
 .btn-express:hover{background:#6D28D9;transform:translateY(-1px);}
 /* HERO STATS */
-.hero-kpis{display:flex;flex-direction:row;flex-wrap:wrap;gap:0;padding-top:32px;border-top:1px solid rgba(255,255,255,.1);}
-.kpi{text-align:center;padding:0 20px;border-right:1px solid rgba(255,255,255,.15);}
+.hero-kpis{display:flex;gap:0;padding-top:32px;border-top:1px solid rgba(255,255,255,.1);}
+.kpi{text-align:left;padding-right:28px;margin-right:28px;border-right:1px solid rgba(255,255,255,.1);}
 .kpi:last-child{border-right:none;}
 .kpi-num{font-family:'Libre Baskerville',serif;font-size:30px;font-weight:700;color:var(--or);letter-spacing:-.02em;}
 .kpi-label{font-size:11px;color:rgba(255,255,255,.38);margin-top:3px;letter-spacing:.03em;}
@@ -565,8 +565,8 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
   .nav-links,.nav-ctas{display:none;}
   .hamburger{display:flex;}
   .hero{padding:80px 5% 40px;}
-  .hero-kpis{flex-direction:row;flex-wrap:wrap;gap:12px;}
-  .kpi{border-right:none;padding-right:12px;margin-right:0;}
+  .hero-kpis{flex-direction:column;gap:16px;}
+  .kpi{border-right:none;padding-right:0;margin-right:0;}
   .hero-express{flex-direction:column;text-align:center;}
   .search-box{flex-direction:column;padding:16px;}
   .search-field{width:100%;}
@@ -994,7 +994,7 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 
 /* ── DASHBOARD ── */
 .dash-layout{display:flex;min-height:100vh;background:var(--fond);}
-.sidebar{width:240px;background:var(--bleu);display:none;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;}
+.sidebar{width:240px;background:var(--bleu);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;}
 .sidebar-logo{display:flex;align-items:center;gap:10px;padding:24px 20px 20px;}
 .sidebar .logo-icon{width:40px;height:40px;background:var(--orange);border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Libre Baskerville',serif;font-weight:700;font-size:14px;flex-shrink:0;}
 .sidebar .logo-text{font-family:'Libre Baskerville',serif;font-weight:700;font-size:15px;color:#fff;}
@@ -1008,7 +1008,7 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .btn-deconnexion{width:100%;padding:11px;background:rgba(239,68,68,.15);color:#FCA5A5;border:1px solid rgba(239,68,68,.2);border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
 .btn-deconnexion:hover{background:rgba(239,68,68,.25);}
 .main{flex:1;margin-left:240px;display:flex;flex-direction:column;min-height:100vh;}
-.topbar{background:#fff;border-bottom:1px solid var(--bordure);padding:14px 28px;display:none;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.topbar{background:#fff;border-bottom:1px solid var(--bordure);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
 .topbar-title{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:var(--bleu);}
 .provider-chip{display:flex;align-items:center;gap:10px;}
 .provider-chip-avatar{width:36px;height:36px;border-radius:10px;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-weight:700;font-size:13px;}
@@ -1188,6 +1188,9 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .admin-wrap .admin-logo h2{font-family:'Libre Baskerville',serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:3px;}
 .admin-wrap .admin-logo p{font-size:11px;color:rgba(255,255,255,.35);}
 .admin-wrap .admin-nav{flex:1;padding:10px;}
+.admin-wrap .anav{padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.5);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;margin-bottom:3px;}
+.admin-wrap .anav:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
+.admin-wrap .anav.active{background:rgba(232,93,4,.2);color:#fff;}
 .admin-wrap .admin-main{margin-left:220px;flex:1;padding:28px;}
 .admin-section{display:none;}
 .admin-section.active{display:block;}
@@ -1225,8 +1228,10 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .code-display .btn-copy2{padding:8px 16px;background:var(--orange);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;}
 .error-msg{color:#DC2626;font-size:13px;margin-top:10px;text-align:center;font-weight:600;}
 /* Admin responsive */
-@media(max-width:600px){
+@media(max-width:900px){
   .admin-wrap .admin-sidebar{width:60px;}
+  .admin-wrap .admin-logo h2,.admin-wrap .admin-logo p,.anav span{display:none;}
+  .admin-wrap .anav{text-align:center;padding:12px 6px;}
   .admin-wrap .admin-main{margin-left:60px;}
   .stats-row{grid-template-columns:repeat(3,1fr);}
 }
@@ -1236,272 +1241,17 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
   .stats-row{grid-template-columns:1fr 1fr;}
 }
 
-/* Pages SPA cachées par défaut */
-.page { display: none !important; }
-.page.active { display: block !important; }
-/* Menu mobile caché */
-#mobileMenu { display: none !important; }
-#mobileMenu.open { display: block !important; }
-/* Modales cachées */
-#modalOverlay { display: none !important; }
-#modalOverlay.open { display: flex !important; }
-#inscrOverlay { display: none !important; }
-#inscrOverlay.open { display: flex !important; }
+/* Admin page — login vs panel */
+#loginWrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+#adminWrap  { display: none; }
 
-/* ── ÉTAPES INSCRIPTION ── */
-.step-section { display: none !important; }
-.step-section.active { display: block !important; }
-.step.active { background: var(--orange) !important; border-color: var(--orange) !important; color: #fff !important; }
-.step.done { background: var(--vert) !important; border-color: var(--vert) !important; color: #fff !important; }
-.step-line.done { background: var(--vert) !important; }
+#adminWrap.visible { display: flex; }
 
-/* Stats row admin */
-.stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; }
-.stat-box { background: #fff; border-radius: 12px; padding: 16px; text-align: center; border: 1.5px solid #E5E7EB; }
-.stat-box .val { font-family: 'Libre Baskerville', serif; font-size: 28px; font-weight: 700; color: #1A1A4E; }
-.stat-box .lbl { font-size: 11px; color: #6B7280; margin-top: 4px; }
+.step-section{display:none!important;}
+.step-section.active{display:block!important;}
 
-@media(max-width:900px) {
-  .admin-wrap .admin-sidebar { width: 56px; }
-  .admin-wrap .admin-main { margin-left: 56px; padding: 14px; }
-  .stats-row { grid-template-columns: repeat(3, 1fr); }
-}
-@media(max-width:600px) {
-  .admin-wrap .admin-sidebar { display: none; }
-  .admin-wrap .admin-main { margin-left: 0; }
-  .stats-row { grid-template-columns: 1fr 1fr; }
-}
-
-/* Empêcher chevauchement des items nav admin */
-
-@media(max-width:900px) {
-  .admin-wrap .admin-sidebar { width: 56px !important; }
-  .admin-wrap .admin-main { margin-left: 56px !important; }
-}
-@media(max-width:640px) {
-  .admin-wrap .admin-sidebar { display: none !important; }
-  .admin-wrap .admin-main { margin-left: 0 !important; }
-}
-
-/* Cacher sidebar prestataire quand pas actif */
-#page-dashboard:not(.active) .sidebar { display: none !important; }
-#page-dashboard:not(.active) .topbar { display: none !important; }
-#page-dashboard:not(.active) .main { display: none !important; }
-
-/* Cacher admin quand pas actif */
-#page-admin:not(.active) .admin-sidebar { display: none !important; }
-#page-admin:not(.active) .admin-main { display: none !important; }
-#page-admin:not(.active) .admin-wrap { display: none !important; }
-
-/* S'assurer que la sidebar prestataire ne déborde pas */
-#page-dashboard .sidebar {
-  position: fixed !important;
-  z-index: 100 !important;
-}
-#page-admin .admin-sidebar {
-  position: fixed !important;
-  z-index: 100 !important;
-}
-
-/* Sidebars cachées par défaut - affichées par JS */
-#page-dashboard .sidebar { display: none !important; }
-#page-dashboard.active .sidebar { display: flex !important; }
-#page-admin .admin-sidebar { display: none !important; }
-#page-admin.active .admin-sidebar { display: flex !important; }
-
-/* ══ ISOLATION STRICTE DES SIDEBARS ══ */
-
-/* Sidebar prestataire: cachée par défaut */
-.sidebar {
-  display: none !important;
-}
-/* Visible seulement si page-dashboard est active */
-#page-dashboard.active .sidebar {
-  display: flex !important;
-  position: fixed !important;
-  top: 0; left: 0;
-  height: 100vh;
-  z-index: 100;
-}
-
-/* Topbar prestataire: cachée par défaut */
-.topbar {
-  display: none !important;
-}
-#page-dashboard.active .topbar {
-  display: flex !important;
-}
-
-/* Main dashboard: caché par défaut */
-.dash-main {
-  display: none !important;
-}
-#page-dashboard.active .dash-main {
-  display: block !important;
-}
-
-/* Admin sidebar: cachée par défaut */
-.admin-sidebar {
-  display: none !important;
-}
-#page-admin.active .admin-sidebar {
-  display: flex !important;
-  position: fixed !important;
-  top: 0; left: 0;
-  height: 100vh;
-  width: 210px;
-  z-index: 100;
-  flex-direction: column;
-}
-
-/* Admin main: caché par défaut */
-.admin-main {
-  display: none !important;
-}
-#page-admin.active .admin-main {
-  display: block !important;
-  margin-left: 210px;
-  padding: 20px;
-  background: #F4F6FB;
-  min-height: 100vh;
-}
-
-/* Login admin: caché par défaut */
-#loginWrap {
-  display: none !important;
-}
-#page-admin.active #loginWrap {
-  display: flex !important;
-}
-
-/* Cacher admin-sidebar sur la page de login admin */
-#page-admin.active #loginWrap ~ .admin-wrap .admin-sidebar,
-#loginWrap:not([style*="none"]) ~ * .admin-sidebar { display: none !important; }
-
-/* Admin wrap: flex seulement quand visible */
-.admin-wrap { display: none !important; }
-.admin-wrap.visible { display: flex !important; }
-
-/* Admin sidebar visible seulement dans admin-wrap.visible */
-.admin-wrap.visible .admin-sidebar { display: flex !important; }
-.admin-wrap.visible .admin-main { display: block !important; }
-
-/* adminWrap = flex row: sidebar + main */
-#adminWrap { display: none !important; }
-#adminWrap.visible {
-  display: flex !important;
-  min-height: 100vh !important;
-  width: 100% !important;
-}
-
-/* Sidebar toujours visible dans adminWrap.visible */
-#adminWrap.visible .admin-sidebar {
-  display: flex !important;
-  flex-direction: column !important;
-  width: 210px !important;
-  min-width: 210px !important;
-  background: #0D0D2E !important;
-  position: fixed !important;
-  top: 0 !important; left: 0 !important;
-  height: 100vh !important;
-  z-index: 200 !important;
-  overflow: hidden !important;
-}
-
-/* Main admin avec marge gauche */
-#adminWrap.visible .admin-main {
-  display: block !important;
-  margin-left: 210px !important;
-  flex: 1 !important;
-  padding: 24px !important;
-  background: #F4F6FB !important;
-  min-height: 100vh !important;
-}
-
-/* loginWrap caché après connexion */
-#page-admin.active.logged #loginWrap,
-#page-admin.active #loginWrap[style*="none"] {
-  display: none !important;
-}
-
-@media(max-width:768px) {
-  #adminWrap.visible .admin-sidebar { width: 56px !important; min-width: 56px !important; }
-  #adminWrap.visible .admin-sidebar span { display: none !important; }
-  #adminWrap.visible .admin-main { margin-left: 56px !important; }
-}
-
-/* Sidebar fixe à gauche */
-#adminWrap.visible .admin-sidebar {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 210px !important;
-  height: 100vh !important;
-  background: #0D0D2E !important;
-  z-index: 999 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important;
-}
-
-/* Contenu à droite de la sidebar */
-#adminWrap.visible .admin-main {
-  margin-left: 210px !important;
-  padding: 24px !important;
-  background: #F4F6FB !important;
-  min-height: 100vh !important;
-  display: block !important;
-}
-
-@media(max-width:768px) {
-  #adminWrap.visible .admin-sidebar { width: 56px !important; }
-  #adminWrap.visible .admin-sidebar span { display: none !important; }
-  #adminWrap.visible .admin-main { margin-left: 56px !important; }
-}
-
-/* ══ ADMIN LAYOUT FINAL ══ */
-.admin-sidebar { display: none !important; }
-.admin-main { display: none !important; }
-
-#adminWrap { display: none !important; }
-#adminWrap.visible { display: flex !important; min-height: 100vh; }
-#adminWrap.visible .admin-sidebar {
-  display: flex !important;
-  flex-direction: column !important;
-  position: fixed !important;
-  top: 0 !important; left: 0 !important;
-  width: 210px !important;
-  height: 100vh !important;
-  background: #0D0D2E !important;
-  z-index: 9999 !important;
-  overflow: hidden !important;
-}
-#adminWrap.visible .admin-main {
-  display: block !important;
-  margin-left: 210px !important;
-  padding: 24px !important;
-  background: #F4F6FB !important;
-  min-height: 100vh !important;
-  flex: 1 !important;
-}
-#page-admin.active.logged #loginWrap { display: none !important; }
-#loginWrap { display: flex; align-items:center; justify-content:center; min-height:100vh; }
-@media(max-width:768px) {
-  #adminWrap.visible .admin-sidebar { width: 56px !important; }
-  #adminWrap.visible .admin-sidebar span { display: none !important; }
-  #adminWrap.visible .admin-main { margin-left: 56px !important; }
-}
-@media(max-width:600px) {
-  #adminWrap.visible .admin-sidebar { display: none !important; }
-  #adminWrap.visible .admin-main { margin-left: 0 !important; }
-}
-
-/* Cacher navbar principale sur admin/dashboard */
-#page-admin.active ~ nav,
-#page-dashboard.active ~ nav { display: none !important; }
-
-/* Nav visible seulement sur home */
-body.on-home nav { display: flex !important; }
+nav{display:none;}
+body.on-home nav{display:flex!important;}
 </style>
 
 <body>
@@ -1584,51 +1334,26 @@ body.on-home nav { display: flex !important; }
         <em>artisan</em> en Guinée
       </h1>
       <p class="hero-subtitle">Trouvez rapidement le bon artisan pour tous vos projets — électriciens, plombiers, maçons, soudeurs, menuisiers, mécaniciens et bien plus.</p>
-      
-      <!-- SLIDESHOW PROFESSIONNEL -->
-      <div style="position:relative;border-radius:22px;overflow:hidden;margin-bottom:32px;height:230px;" id="heroSlide">
-
-        <!-- Container slides -->
-        <div id="hSlides" style="display:flex;height:100%;transition:transform .7s cubic-bezier(.4,0,.2,1);"></div>
-
-        <!-- Overlay gradient gauche pour texte -->
-        <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(5,5,20,.92) 0%,rgba(5,5,20,.6) 45%,rgba(5,5,20,.1) 100%);z-index:2;pointer-events:none;"></div>
-
-        <!-- Texte gauche fixe -->
-        <div style="position:absolute;top:0;left:0;bottom:0;z-index:3;padding:24px 26px;display:flex;flex-direction:column;justify-content:center;max-width:320px;">
-          <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px;">
-            <span style="width:8px;height:8px;border-radius:50%;background:#22C55E;box-shadow:0 0 8px #22C55E;flex-shrink:0;animation:pulse 2s infinite;"></span>
-            <span style="font-size:10px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.08em;text-transform:uppercase;">Disponible maintenant</span>
-          </div>
-          <div style="font-family:'Libre Baskerville',serif;font-size:19px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:8px;">
-            Besoin d'une<br>intervention rapide ?
-          </div>
-          <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:16px;">
-            Artisans Express disponibles<br>aujourd'hui à Conakry 🇬🇳
-          </div>
-          <button onclick="filterByExpress()" style="display:inline-flex;align-items:center;gap:6px;background:var(--orange);border:none;border-radius:50px;color:#fff;font-size:12px;font-weight:700;padding:9px 18px;cursor:pointer;font-family:'DM Sans',sans-serif;width:fit-content;box-shadow:0 4px 14px rgba(232,93,4,.4);">
-            ⚡ Voir les artisans Express →
-          </button>
-        </div>
-
-        <!-- Info artisan droite -->
-        <div style="position:absolute;bottom:16px;right:16px;z-index:3;text-align:right;">
-          <div id="hSlideNom" style="font-family:'Libre Baskerville',serif;font-size:13.5px;font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6);"></div>
-          <div id="hSlideMetier" style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px;"></div>
-          <div id="hSlideNote" style="font-size:11px;color:var(--or);font-weight:700;margin-top:3px;"></div>
-          <div id="hSlideBadge" style="display:inline-block;border-radius:20px;padding:2px 9px;font-size:9.5px;font-weight:700;margin-top:5px;color:#fff;"></div>
-        </div>
-
-        <!-- Flèches navigation -->
-        <button onclick="hSlideGo(_hSlideIdx-1)" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);z-index:4;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);">←</button>
-        <button onclick="hSlideGo(_hSlideIdx+1)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);z-index:4;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);">→</button>
-
-        <!-- Dots -->
-        <div id="hSlideDots" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:5px;"></div>
+      <div class="hero-metiers-strip">
+        <span class="hm-tag">⚡ Électricien</span>
+        <span class="hm-tag">🔧 Plombier</span>
+        <span class="hm-tag">🏗️ Maçon</span>
+        <span class="hm-tag">🔩 Soudeur</span>
+        <span class="hm-tag">🪚 Menuisier</span>
+        <span class="hm-tag">🔩 Mécanicien</span>
+        <span class="hm-tag">🔲 Carreleur</span>
+        <span class="hm-tag">🎨 Peintre</span>
+        <span class="hm-tag">🧵 Couturier</span>
+        <span class="hm-tag">❄️ Climaticien</span>
       </div>
-      <style>@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
-
-
+      <div class="hero-express">
+        <span class="express-icon">⚡</span>
+        <div class="express-text">
+          <strong>Besoin d'une intervention rapide ?</strong>
+          Découvrez nos artisans Express disponibles aujourd'hui.
+        </div>
+        <button class="btn-express" onclick="filterByExpress()">Voir les artisans Express →</button>
+      </div>
       <div class="hero-actions">
         <button class="btn-hero-main" onclick="document.getElementById('artisans').scrollIntoView({behavior:'smooth'})">🔍 Trouver un artisan</button>
         <button class="btn-hero-outline" onclick="ouvrirInscription()">🚀 Devenir artisan</button>
@@ -1762,6 +1487,35 @@ body.on-home nav { display: flex !important; }
 </div>
 
 
+<!-- ── COMPTEURS ── -->
+<div class="counters-bg">
+  <div class="counters-inner">
+    <div class="counter-card fade-in">
+      <div class="cc-icon" style="background:linear-gradient(135deg,#FDE8D8,#FFE4CC);">🔧</div>
+      <div class="cc-num"><span id="cnt1" data-target="500">0</span><span class="cc-suffix">+</span></div>
+      <div class="cc-label">Prestataires vérifiés</div>
+      <div class="cc-sub">Professionnels qualifiés</div>
+    </div>
+    <div class="counter-card fade-in fade-in-delay-1">
+      <div class="cc-icon" style="background:linear-gradient(135deg,#E0E0F8,#EDE9FE);">📂</div>
+      <div class="cc-num"><span id="cnt2" data-target="20">0</span><span class="cc-suffix">+</span></div>
+      <div class="cc-label">Catégories</div>
+      <div class="cc-sub">Tous secteurs couverts</div>
+    </div>
+    <div class="counter-card fade-in fade-in-delay-2">
+      <div class="cc-icon" style="background:linear-gradient(135deg,#E6FBF3,#DCFCE7);">👥</div>
+      <div class="cc-num"><span id="cnt3" data-target="10000">0</span><span class="cc-suffix">+</span></div>
+      <div class="cc-label">Clients satisfaits</div>
+      <div class="cc-sub">Partout en Guinée</div>
+    </div>
+    <div class="counter-card fade-in fade-in-delay-3">
+      <div class="cc-icon" style="background:linear-gradient(135deg,#FEF9C3,#FFF7ED);">✅</div>
+      <div class="cc-num">100<span class="cc-suffix">%</span></div>
+      <div class="cc-label">Profils vérifiés</div>
+      <div class="cc-sub">Validation manuelle</div>
+    </div>
+  </div>
+</div>
 
 
 <!-- ── ARTISANS SPOTLIGHT ── -->
@@ -2486,7 +2240,6 @@ document.addEventListener('DOMContentLoaded', () => {
   filteredData = [...PRESTATAIRES];
   renderArtisans();
   renderProviders();
-  renderHeroSlideshow();
   initCounters();
   observeFadeIn();
   initNavScroll();
@@ -3023,91 +2776,6 @@ function showNotif(title, desc, bg) {
   setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 400); }, 5000);
 }
 
-
-// ── SLIDESHOW HERO ──
-let _hSlideIdx = 0;
-let _hSlideTimer = null;
-
-// 10 slides avec images Picsum (toujours disponibles) + overlay couleur métier
-const H_SLIDES = [
-  { id:1080, overlay:'rgba(232,93,4,.45)',  nom:'Amadou Diallo',    metier:'Électricien certifié',         note:'⭐ 5.0', ville:'Ratoma',  badge:'⚡ Express',    badgeBg:'#7C3AED' },
-  { id:1040, overlay:'rgba(22,163,74,.4)',  nom:'Mamadou Kouyaté',  metier:'Maçon — BTP & Rénovation',     note:'⭐ 4.8', ville:'Matam',   badge:'🏆 Top Artisan', badgeBg:'#B45309' },
-  { id:1062, overlay:'rgba(26,26,78,.5)',   nom:'Ibrahima Bah',     metier:'Plombier — Urgences 7j/7',     note:'⭐ 4.6', ville:'Kaloum',  badge:'⚡ Express',    badgeBg:'#7C3AED' },
-  { id:1035, overlay:'rgba(180,83,9,.45)',  nom:'Sékou Camara',     metier:'Soudeur — Structures métalliques', note:'⭐ 4.7', ville:'Matam', badge:'✓ Vérifié',  badgeBg:'#16A34A' },
-  { id:1025, overlay:'rgba(139,69,19,.4)', nom:'Souleymane Barry',  metier:'Menuisier — Bois & Aluminium', note:'⭐ 4.9', ville:'Dixinn',  badge:'🏆 Top Artisan', badgeBg:'#B45309' },
-  { id:1074, overlay:'rgba(124,58,237,.35)',nom:'Mohamed Soumah',   metier:'Peintre en bâtiment',          note:'⭐ 4.7', ville:'Kipé',   badge:'✓ Vérifié',    badgeBg:'#16A34A' },
-  { id:1011, overlay:'rgba(15,110,86,.4)', nom:'Oumar Diallo',      metier:'Climaticien — Froid & Clim',   note:'⭐ 4.6', ville:'Kaloum',  badge:'⚡ Express',    badgeBg:'#7C3AED' },
-  { id:1059, overlay:'rgba(26,26,78,.45)', nom:'Alpha Sow',         metier:'Développeur web & Mobile',     note:'⭐ 4.7', ville:'Matam',   badge:'✓ Vérifié',    badgeBg:'#16A34A' },
-  { id:1047, overlay:'rgba(139,69,19,.45)',nom:'Ibrahima Kouyaté',  metier:'Carreleur — Sols & Façades',   note:'⭐ 4.8', ville:'Ratoma',  badge:'✓ Vérifié',    badgeBg:'#16A34A' },
-  { id:1066, overlay:'rgba(220,38,38,.35)',nom:'Moussa Konaté',     metier:'Mécanicien — Toutes marques',  note:'⭐ 4.6', ville:'Lambanyi',badge:'⚡ Express',    badgeBg:'#7C3AED' },
-];
-
-function renderHeroSlideshow() {
-  const el = document.getElementById('hSlides');
-  const dots = document.getElementById('hSlideDots');
-  if (!el) return;
-
-  const total = H_SLIDES.length;
-  el.style.width = (total * 100) + '%';
-
-  el.innerHTML = H_SLIDES.map((s,i) => `
-    <div style="width:${100/total}%;height:100%;flex-shrink:0;position:relative;overflow:hidden;">
-      <img
-        src="https://picsum.photos/id/${s.id}/800/400"
-        style="width:100%;height:100%;object-fit:cover;object-position:center;"
-        alt="${s.metier}"
-        loading="${i===0?'eager':'lazy'}"
-        onerror="this.parentNode.style.background='linear-gradient(135deg,#1A1A4E,#E85D04)';this.style.display='none';"
-      />
-      <!-- Overlay couleur métier -->
-      <div style="position:absolute;inset:0;background:${s.overlay};mix-blend-mode:multiply;"></div>
-    </div>
-  `).join('');
-
-  if (dots) {
-    dots.innerHTML = H_SLIDES.map((_,i) => `
-      <div id="hd${i}" onclick="hSlideGo(${i})" style="
-        width:${i===0?'18px':'7px'};height:7px;border-radius:4px;
-        background:${i===0?'var(--orange)':'rgba(255,255,255,.35)'};
-        cursor:pointer;transition:all .3s;"></div>
-    `).join('');
-  }
-
-  hSlideInfo(H_SLIDES[0]);
-  clearInterval(_hSlideTimer);
-  _hSlideTimer = setInterval(() => hSlideGo(_hSlideIdx + 1), 4000);
-}
-
-function hSlideGo(n) {
-  const total = H_SLIDES.length;
-  _hSlideIdx = ((n % total) + total) % total;
-  const el = document.getElementById('hSlides');
-  if (el) el.style.transform = `translateX(-${(100/total)*_hSlideIdx}%)`;
-  hSlideInfo(H_SLIDES[_hSlideIdx]);
-  H_SLIDES.forEach((_,i) => {
-    const d = document.getElementById('hd'+i);
-    if (!d) return;
-    d.style.width = i===_hSlideIdx ? '18px' : '7px';
-    d.style.background = i===_hSlideIdx ? 'var(--orange)' : 'rgba(255,255,255,.35)';
-  });
-}
-
-function hSlideInfo(s) {
-  const n = document.getElementById('hSlideNom');
-  const m = document.getElementById('hSlideMetier');
-  const r = document.getElementById('hSlideNote');
-  const b = document.getElementById('hSlideBadge');
-  if (n) n.textContent = s.nom;
-  if (m) m.textContent = s.metier + ' · 📍 ' + s.ville;
-  if (r) r.textContent = s.note;
-  if (b) { b.textContent = s.badge; b.style.background = s.badgeBg + '99'; b.style.border = '1px solid ' + s.badgeBg; }
-}
-
-// Appeler renderHeroCarousel = renderHeroSlideshow (compatibilité)
-function renderHeroCarousel() { renderHeroSlideshow(); }
-
-function scrollCarousel(dir) { hSlideGo(_hSlideIdx + dir); }
-
 // ── KEYBOARD ──
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeModal(); fermerInscription(); }
@@ -3140,12 +2808,10 @@ document.addEventListener('keydown', e => {
   </div>
 
   <div class="form-group">
-    <label>Code PIN (4 chiffres)</label>
-    <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;">
-      <input id="lpin1" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:52px;height:52px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('lpin2').focus()"/>
-      <input id="lpin2" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:52px;height:52px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('lpin3').focus()"/>
-      <input id="lpin3" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:52px;height:52px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('lpin4').focus()"/>
-      <input id="lpin4" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:52px;height:52px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value.length===1)document.getElementById('btnConnexion').click()"/>
+    <label>Mot de passe</label>
+    <div class="input-wrap">
+      <span class="input-prefix">🔒</span>
+      <input type="password" id="password" class="has-prefix" placeholder="Votre mot de passe" autocomplete="current-password"/>
     </div>
   </div>
 
@@ -3176,33 +2842,25 @@ document.getElementById('password').addEventListener('keydown', e => {
 
 async function connexion() {
   const tel = document.getElementById('telephone').value.trim();
-  const pin = (document.getElementById('lpin1')?.value||'') +
-              (document.getElementById('lpin2')?.value||'') +
-              (document.getElementById('lpin3')?.value||'') +
-              (document.getElementById('lpin4')?.value||'');
+  const pwd = document.getElementById('password').value;
   const btn = document.getElementById('btnConnexion');
   const err = document.getElementById('errorBox');
 
   err.classList.remove('show');
-  if (!tel) { showError('Entrez votre numéro de téléphone'); return; }
-  if (pin.length < 4) { showError('Entrez votre code PIN 4 chiffres'); return; }
+  if (!tel || !pwd) { showError('Remplissez tous les champs'); return; }
 
+  btn.classList.add('loading');
   btn.disabled = true;
-  btn.querySelector('.spinner').style.display = 'inline-block';
 
-  const res = await connexionPrestataire(tel, pin);
+  const res = await connexionPrestataire(tel, pwd);
 
+  btn.classList.remove('loading');
   btn.disabled = false;
-  btn.querySelector('.spinner').style.display = 'none';
 
   if (res.success) {
     navigate('dashboard');
-    if (typeof chargerDashboard === 'function') {
-      const pid = res.provider?.id || await verifierSession();
-      if (pid) await chargerDashboard(pid);
-    }
   } else {
-    showError(res.message || 'Téléphone ou PIN incorrect');
+    showError(res.message || 'Erreur de connexion');
   }
 }
 
@@ -3219,269 +2877,307 @@ async function connexion() {
 
 <!-- PAGE : INSCRIPTION -->
 <div class="page" id="page-inscription">
-<div style="background:linear-gradient(135deg,#1A1A4E 0%,#0D0D2E 100%);min-height:100vh;padding:40px 20px;display:flex;align-items:flex-start;justify-content:center;">
-<div style="background:#fff;border-radius:24px;padding:32px;width:100%;max-width:500px;box-shadow:0 32px 80px rgba(0,0,0,.3);">
-
-  <!-- Logo -->
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;justify-content:center;">
-    <div style="width:42px;height:42px;background:#E85D04;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Libre Baskerville',serif;font-weight:700;font-size:14px;">YJ</div>
-    <div style="font-family:'Libre Baskerville',serif;font-weight:700;font-size:17px;color:#1A1A4E;">YOUMMA <span style="color:#E85D04;">JOBS</span></div>
+  <div style="background:linear-gradient(135deg,#1A1A4E 0%,#0D0D2E 100%);min-height:100vh;padding:40px 20px;">
+    <div class="card">
+  <div class="logo">
+    <div class="logo-icon">YJ</div>
+    <div class="logo-text">YOUMMA <span>JOBS</span></div>
   </div>
+  <h1>Créer mon profil prestataire</h1>
+  <p class="subtitle">Rejoignez YOUMMA JOBS et trouvez de nouveaux clients à Conakry</p>
 
-  <h2 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;text-align:center;margin-bottom:6px;">Créer mon profil prestataire</h2>
-  <p style="font-size:13px;color:#6B7280;text-align:center;margin-bottom:18px;">Rejoignez YOUMMA JOBS et trouvez de nouveaux clients à Conakry</p>
-
-  <!-- Badge -->
-  <div style="background:linear-gradient(135deg,#E85D04,#C74B00);border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:center;margin-bottom:20px;">
-    <span style="font-size:22px;">🎯</span>
+  <div class="badge-info">
+    <div class="badge-info-icon">🎯</div>
     <div>
-      <div style="font-size:12.5px;font-weight:700;color:#fff;">14 jours d'essai gratuit après validation</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.8);">Abonnement 50 000 GNF/mois — Orange Money, MTN MoMo, Wave</div>
+      <div class="badge-info-title">14 jours d'essai gratuit après validation</div>
+      <div class="badge-info-text">Abonnement 50 000 GNF/mois — Orange Money, MTN MoMo, Wave</div>
     </div>
   </div>
 
-  <!-- Étapes indicateur -->
-  <div style="display:flex;align-items:center;margin-bottom:24px;" id="i-steps">
-    <div id="i-dot-1" style="width:30px;height:30px;border-radius:50%;background:#E85D04;border:2px solid #E85D04;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">1</div>
-    <div id="i-line-1" style="flex:1;height:2px;background:#E5E7EB;"></div>
-    <div id="i-dot-2" style="width:30px;height:30px;border-radius:50%;background:#fff;border:2px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#6B7280;flex-shrink:0;">2</div>
-    <div id="i-line-2" style="flex:1;height:2px;background:#E5E7EB;"></div>
-    <div id="i-dot-3" style="width:30px;height:30px;border-radius:50%;background:#fff;border:2px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#6B7280;flex-shrink:0;">3</div>
+  <div class="step-indicator" id="stepIndicator">
+    <div class="step active" id="step-dot-1">1</div>
+    <div class="step-line" id="step-line-1"></div>
+    <div class="step pending" id="step-dot-2">2</div>
+    <div class="step-line" id="step-line-2"></div>
+    <div class="step pending" id="step-dot-3">3</div>
   </div>
 
-  <!-- Message erreur -->
-  <div id="i-err" style="display:none;background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:13px;color:#DC2626;margin-bottom:14px;"></div>
+  <div class="error-box" id="errorBox"></div>
 
-  <!-- ÉTAPE 1 -->
-  <div id="i-step1">
-    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:16px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">👤 Informations personnelles</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
-      <div>
-        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Prénom *</label>
-        <input id="i-prenom" type="text" placeholder="Mamadou" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
+  <!-- ÉTAPE 1 : Identité & Connexion -->
+  <div class="step-section active" id="step1">
+    <div class="section-title">👤 Informations personnelles</div>
+    <div class="row-2">
+      <div class="form-group">
+        <label>Prénom <span class="req">*</span></label>
+        <input type="text" id="prenom" placeholder="Mamadou" autocomplete="given-name"/>
       </div>
-      <div>
-        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Nom *</label>
-        <input id="i-nom" type="text" placeholder="Diallo" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
+      <div class="form-group">
+        <label>Nom <span class="req">*</span></label>
+        <input type="text" id="nom" placeholder="Diallo" autocomplete="family-name"/>
       </div>
     </div>
-    <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Numéro de téléphone (WhatsApp) *</label>
-      <input id="i-tel" type="tel" placeholder="+224 6XX XX XX XX" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
+    <div class="form-group">
+      <label>Numéro de téléphone (WhatsApp) <span class="req">*</span></label>
+      <input type="tel" id="telephone" placeholder="+224 6XX XX XX XX" autocomplete="tel"/>
     </div>
-    <div style="margin-bottom:20px;">
-      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Code PIN (4 chiffres) *</label>
-      <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;">
-        <input id="i-pin1" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:56px;height:56px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('i-pin2').focus()"/>
-        <input id="i-pin2" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:56px;height:56px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('i-pin3').focus()"/>
-        <input id="i-pin3" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:56px;height:56px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1);if(this.value)document.getElementById('i-pin4').focus()"/>
-        <input id="i-pin4" type="number" min="0" max="9" maxlength="1" placeholder="•" style="width:56px;height:56px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;font-family:'DM Sans',sans-serif;-moz-appearance:textfield;" oninput="this.value=this.value.slice(0,1)"/>
-      </div>
-      <div style="text-align:center;font-size:11px;color:#9CA3AF;margin-top:6px;">Ce code vous servira à vous connecter</div>
+    <div class="form-group">
+      <label>Mot de passe <span class="req">*</span></label>
+      <input type="password" id="password" placeholder="Minimum 8 caractères" oninput="checkPwd(this.value)" autocomplete="new-password"/>
+      <div class="pwd-strength"><div class="pwd-strength-bar" id="pwdBar"></div></div>
     </div>
-    <button id="i-btn1" style="width:100%;padding:14px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Suivant →</button>
+    <div class="form-group">
+      <label>Confirmer le mot de passe <span class="req">*</span></label>
+      <input type="password" id="password2" placeholder="Répétez le mot de passe" autocomplete="new-password"/>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-next" style="flex:1;" onclick="nextStep(1)">Suivant →</button>
+    </div>
   </div>
 
-  <!-- ÉTAPE 2 -->
-  <div id="i-step2" style="display:none;">
-    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:16px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">💼 Profil professionnel</div>
-    <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Catégorie *</label>
-      <select id="i-cat" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;">
+  <!-- ÉTAPE 2 : Profil professionnel -->
+  <div class="step-section" id="step2">
+    <div class="section-title">💼 Profil professionnel</div>
+    <div class="form-group">
+      <label>Catégorie <span class="req">*</span></label>
+      <select id="categorie" onchange="renderSousCatsSelect(this.value,'sousCat')">
         <option value="">Choisir votre catégorie</option>
-        <option>Artisans</option>
-        <option>Santé &amp; Beauté</option>
-        <option>Construction &amp; BTP</option>
-        <option>IT &amp; Digital</option>
-        <option>Éducation</option>
-        <option>Transport</option>
-        <option>Juridique</option>
-        <option>Services Express</option>
-        <option>Aide à domicile</option>
-        <option>Autre</option>
       </select>
     </div>
-    <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Intitulé du métier *</label>
-      <input id="i-metier" type="text" placeholder="Ex: Électricien certifié, Médecin généraliste..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
+    <div class="form-group">
+      <label>Spécialité / Sous-catégorie</label>
+      <select id="sousCat">
+        <option value="">Choisir d'abord une catégorie</option>
+      </select>
     </div>
-    <div style="margin-bottom:20px;">
-      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Description de vos services *</label>
-      <textarea id="i-desc" placeholder="Décrivez vos services, votre expérience, vos spécialités..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;min-height:90px;resize:vertical;box-sizing:border-box;"></textarea>
+    <div class="form-group">
+      <label>Intitulé du métier <span class="req">*</span></label>
+      <input type="text" id="metier" placeholder="Ex: Électricien certifié, Médecin généraliste..."/>
     </div>
-    <div style="display:flex;gap:10px;">
-      <button id="i-back2" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">← Retour</button>
-      <button id="i-btn2" style="flex:2;padding:13px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Suivant →</button>
+    <div class="form-group">
+      <label>Description de vos services <span class="req">*</span></label>
+      <textarea id="description" placeholder="Décrivez vos services, votre expérience, vos spécialités..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Compétences clés</label>
+      <div class="skill-input-row">
+        <input type="text" id="skillInput" placeholder="Ex: Installation électrique" onkeydown="if(event.key==='Enter'){addSkill();event.preventDefault();}"/>
+        <button class="btn-add" onclick="addSkill()">+ Ajouter</button>
+      </div>
+      <div class="skills-wrap" id="skillsList"></div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-back" onclick="prevStep(2)">← Retour</button>
+      <button class="btn-next" onclick="nextStep(2)">Suivant →</button>
     </div>
   </div>
 
-  <!-- ÉTAPE 3 -->
-  <div id="i-step3" style="display:none;">
-    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:16px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">📍 Localisation</div>
-    <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Ville *</label>
-      <select id="i-ville" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;">
+  <!-- ÉTAPE 3 : Localisation -->
+  <div class="step-section" id="step3">
+    <div class="section-title">📍 Localisation</div>
+    <div class="form-group">
+      <label>Ville <span class="req">*</span></label>
+      <select id="ville">
         <option value="Conakry">Conakry</option>
-        <option>Kindia</option><option>Labé</option><option>Kankan</option>
-        <option>Nzérékoré</option><option>Boké</option><option>Faranah</option>
+        <option value="Kindia">Kindia</option>
+        <option value="Labé">Labé</option>
+        <option value="Kankan">Kankan</option>
+        <option value="Nzérékoré">Nzérékoré</option>
+        <option value="Boké">Boké</option>
+        <option value="Faranah">Faranah</option>
       </select>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
-      <div>
-        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Commune</label>
-        <select id="i-commune" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;">
+    <div class="row-2">
+      <div class="form-group">
+        <label>Commune</label>
+        <select id="commune">
           <option value="">Choisir une commune</option>
-          <option>Kaloum</option><option>Dixinn</option><option>Matam</option>
-          <option>Ratoma</option><option>Matoto</option><option>Lambanyi</option>
-          <option>Kipé</option><option>Wanindara</option><option>Bambéto</option><option>Cosa</option>
+          <option>Kaloum</option>
+          <option>Dixinn</option>
+          <option>Matam</option>
+          <option>Ratoma</option>
+          <option>Matoto</option>
+          <option>Lambanyi</option>
+          <option>Kipé</option>
+          <option>Wanindara</option>
+          <option>Bambéto</option>
+          <option>Cosa</option>
         </select>
       </div>
-      <div>
-        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Quartier</label>
-        <input id="i-quartier" type="text" placeholder="Ex: Hamdallaye, Coleah..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;"/>
+      <div class="form-group">
+        <label>Quartier</label>
+        <input type="text" id="quartier" placeholder="Ex: Hamdallaye, Coleah..."/>
       </div>
     </div>
-    <div style="display:flex;gap:10px;margin-bottom:16px;">
-      <button id="i-back3" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">← Retour</button>
-      <button id="i-submit" style="flex:2;padding:13px;background:#1A1A4E;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'Libre Baskerville',serif;">🚀 Créer mon compte</button>
+    <div class="nav-btns">
+      <button class="btn-back" onclick="prevStep(3)">← Retour</button>
+      <button class="btn-next" id="btnInscrire" onclick="inscrire()">🚀 Créer mon compte</button>
     </div>
   </div>
 
   <!-- SUCCÈS -->
-  <div id="i-success" style="display:none;text-align:center;padding:20px 0;">
-    <div style="font-size:56px;margin-bottom:16px;">🎉</div>
-    <h3 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;margin-bottom:10px;">Inscription envoyée !</h3>
-    <p style="font-size:13.5px;color:#6B7280;line-height:1.7;margin-bottom:20px;">Votre demande est en cours d'examen.<br>Vous serez contacté(e) sous <strong>24h</strong> sur WhatsApp.</p>
-    <a href="https://wa.me/22461252510?text=Bonjour%20YOUMMA%20JOBS%2C%20je%20viens%20de%20m%27inscrire" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:13px 24px;border-radius:50px;text-decoration:none;font-weight:700;font-size:13.5px;margin-bottom:14px;">💬 Confirmer sur WhatsApp</a>
-    <br>
-    <a href="#login" style="color:#E85D04;font-weight:600;font-size:13.5px;text-decoration:none;">Se connecter →</a>
+  <div class="step-section" id="stepSuccess">
+    <div class="success-box">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Inscription envoyée !</div>
+      <div class="success-text">
+        Votre demande est en cours d'examen par notre équipe.<br>
+        Vous serez contacté(e) sous <strong>24h</strong> sur WhatsApp.<br><br>
+        Après validation, vous bénéficierez de <strong>14 jours d'essai gratuit</strong>.
+      </div>
+      <a href="https://wa.me/22461252510?text=Bonjour%20YOUMMA%20JOBS%2C%20je%20viens%20de%20m\'inscrire%20comme%20prestataire"
+         target="_blank"
+         style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:14px 24px;border-radius:50px;text-decoration:none;font-weight:700;font-size:14px;margin-bottom:16px;">
+        💬 Confirmer sur WhatsApp
+      </a>
+      <br>
+      <a href="#" onclick="navigate('login');return false;" style="color:#E85D04;text-decoration:none;font-weight:600;font-size:14px;">
+        Se connecter →
+      </a>
+    </div>
   </div>
 
-  <div style="text-align:center;margin-top:16px;font-size:13px;">
-    <a href="#login" style="color:#E85D04;text-decoration:none;font-weight:600;">Déjà inscrit ? Se connecter</a>
+  <div class="link-row">
+    <a href="#" onclick="navigate('login');return false;">Déjà inscrit ? Se connecter</a>
     &nbsp;·&nbsp;
-    <a href="#" onclick="navigate('home');return false;" style="color:#6B7280;text-decoration:none;">← Retour au site</a>
+    <a href="/">← Retour au site</a>
   </div>
-
-</div>
 </div>
 
 <script>
-// ── INSCRIPTION AUTONOME ──
-(function() {
-  function showErr(msg) {
-    var e = document.getElementById('i-err');
-    if (e) { e.textContent = msg; e.style.display = 'block'; }
-  }
-  function hideErr() {
-    var e = document.getElementById('i-err');
-    if (e) e.style.display = 'none';
-  }
-  function setDot(n, state) {
-    var d = document.getElementById('i-dot-' + n);
-    if (!d) return;
-    if (state === 'active') { d.style.background='#E85D04'; d.style.borderColor='#E85D04'; d.style.color='#fff'; }
-    else if (state === 'done') { d.style.background='#16A34A'; d.style.borderColor='#16A34A'; d.style.color='#fff'; d.textContent='✓'; }
-    else { d.style.background='#fff'; d.style.borderColor='#E5E7EB'; d.style.color='#6B7280'; }
-  }
-  function setLine(n, done) {
-    var l = document.getElementById('i-line-' + n);
-    if (l) l.style.background = done ? '#16A34A' : '#E5E7EB';
-  }
-  function goTo(step) {
-    [1,2,3].forEach(function(s) {
-      var el = document.getElementById('i-step' + s);
-      if (el) el.style.display = s === step ? 'block' : 'none';
-    });
-    setDot(1, step > 1 ? 'done' : 'active');
-    setDot(2, step > 2 ? 'done' : step === 2 ? 'active' : '');
-    setDot(3, step === 3 ? 'active' : '');
-    setLine(1, step > 1);
-    setLine(2, step > 2);
-    hideErr();
-    window.scrollTo(0, 0);
-  }
+let currentStep = 1;
+let skills = [];
 
-  function init() {
-    var b1 = document.getElementById('i-btn1');
-    var b2 = document.getElementById('i-btn2');
-    var ba2 = document.getElementById('i-back2');
-    var b3 = document.getElementById('i-submit');
-    var ba3 = document.getElementById('i-back3');
+// Init catégories
+document.addEventListener('DOMContentLoaded', () => {
+  if(typeof renderCategoriesSelect==='function') renderCategoriesSelect('categorie');
+  else window._pendingCatSelect = 'categorie';
+});
 
-    if (b1) b1.onclick = function() {
-      var p = (document.getElementById('i-prenom')||{}).value||'';
-      var n = (document.getElementById('i-nom')||{}).value||'';
-      var t = (document.getElementById('i-tel')||{}).value||'';
-      var p1 = (document.getElementById('i-pin1')||{}).value||'';
-      var p2 = (document.getElementById('i-pin2')||{}).value||'';
-      var p3 = (document.getElementById('i-pin3')||{}).value||'';
-      var p4 = (document.getElementById('i-pin4')||{}).value||'';
-      var pin = p1+p2+p3+p4;
-      if (!p.trim()||!n.trim()||!t.trim()) { showErr('Remplissez tous les champs obligatoires'); return; }
-      if (pin.length < 4) { showErr('Entrez votre code PIN 4 chiffres'); return; }
-      goTo(2);
-    };
+function showError(msg) {
+  const el = document.getElementById('errorBox');
+  el.textContent = '⚠️ ' + msg;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
 
-    if (b2) b2.onclick = function() {
-      var cat = (document.getElementById('i-cat')||{}).value||'';
-      var met = ((document.getElementById('i-metier')||{}).value||'').trim();
-      var desc = ((document.getElementById('i-desc')||{}).value||'').trim();
-      if (!cat||!met||!desc) { showErr('Remplissez tous les champs obligatoires'); return; }
-      goTo(3);
-    };
+function clearError() {
+  document.getElementById('errorBox').classList.remove('show');
+}
 
-    if (ba2) ba2.onclick = function() { goTo(1); };
-    if (ba3) ba3.onclick = function() { goTo(2); };
+function checkPwd(val) {
+  const bar = document.getElementById('pwdBar');
+  const len = val.length;
+  let strength = 0;
+  if (len >= 8) strength++;
+  if (/[A-Z]/.test(val)) strength++;
+  if (/[0-9]/.test(val)) strength++;
+  if (/[^a-zA-Z0-9]/.test(val)) strength++;
+  const colors = ['#EF4444','#F97316','#EAB308','#22C55E'];
+  const widths = ['25%','50%','75%','100%'];
+  bar.style.width = widths[strength - 1] || '0';
+  bar.style.background = colors[strength - 1] || '#E4E8F5';
+}
 
-    if (b3) b3.onclick = async function() {
-      var ville = (document.getElementById('i-ville')||{}).value||'Conakry';
-      b3.disabled = true;
-      b3.textContent = '⏳ Inscription en cours...';
-      try {
-        var pin = (document.getElementById('i-pin1').value||'') +
-                   (document.getElementById('i-pin2').value||'') +
-                   (document.getElementById('i-pin3').value||'') +
-                   (document.getElementById('i-pin4').value||'');
-        var formData = {
-          prenom: document.getElementById('i-prenom').value.trim(),
-          nom: document.getElementById('i-nom').value.trim(),
-          telephone: document.getElementById('i-tel').value.trim(),
-          password: pin,
-          categorie: document.getElementById('i-cat').value,
-          metier: document.getElementById('i-metier').value.trim(),
-          description: document.getElementById('i-desc').value.trim(),
-          ville: ville,
-          commune: (document.getElementById('i-commune')||{}).value||null,
-          quartier: ((document.getElementById('i-quartier')||{}).value||'').trim()||null,
-          skills: []
-        };
-        var res = await inscrirePrestataire(formData);
-        if (res.success) {
-          [1,2,3].forEach(function(s){var el=document.getElementById('i-step'+s);if(el)el.style.display='none';});
-          var succ = document.getElementById('i-success');
-          if (succ) succ.style.display = 'block';
-          var steps = document.getElementById('i-steps');
-          if (steps) steps.style.display = 'none';
-        } else {
-          showErr(res.message || "Erreur lors de l'inscription");
-          b3.disabled = false;
-          b3.textContent = '🚀 Créer mon compte';
-        }
-      } catch(e) {
-        showErr('Erreur: ' + e.message);
-        b3.disabled = false;
-        b3.textContent = '🚀 Créer mon compte';
-      }
-    };
+function updateStepUI() {
+  [1,2,3].forEach(s => {
+    document.getElementById(`step${s}`).classList.toggle('active', s === currentStep);
+    const dot = document.getElementById(`step-dot-${s}`);
+    dot.className = 'step ' + (s < currentStep ? 'done' : s === currentStep ? 'active' : 'pending');
+    dot.textContent = s < currentStep ? '✓' : s;
+  });
+  [1,2].forEach(s => {
+    document.getElementById(`step-line-${s}`).className = 'step-line' + (s < currentStep ? ' done' : '');
+  });
+}
+
+function nextStep(from) {
+  clearError();
+  if (from === 1) {
+    const prenom = document.getElementById('prenom').value.trim();
+    const nom = document.getElementById('nom').value.trim();
+    const tel = document.getElementById('telephone').value.trim();
+    const pwd = document.getElementById('password').value;
+    const pwd2 = document.getElementById('password2').value;
+    if (!prenom || !nom || !tel || !pwd) { showError('Remplissez tous les champs obligatoires'); return; }
+    if (pwd.length < 8) { showError('Le mot de passe doit contenir au moins 8 caractères'); return; }
+    if (pwd !== pwd2) { showError('Les mots de passe ne correspondent pas'); return; }
   }
+  if (from === 2) {
+    const cat = document.getElementById('categorie').value;
+    const metier = document.getElementById('metier').value.trim();
+    const desc = document.getElementById('description').value.trim();
+    if (!cat || !metier || !desc) { showError('Remplissez tous les champs obligatoires'); return; }
+  }
+  currentStep = from + 1;
+  updateStepUI();
+}
 
-  // Attacher immédiatement et après load
-  init();
-  document.addEventListener('DOMContentLoaded', init);
-  window.addEventListener('load', init);
-})();
+function prevStep(from) {
+  currentStep = from - 1;
+  updateStepUI();
+  clearError();
+}
+
+function addSkill() {
+  const input = document.getElementById('skillInput');
+  const val = input.value.trim();
+  if (!val || skills.includes(val)) { input.value = ''; return; }
+  skills.push(val);
+  input.value = '';
+  renderSkills();
+}
+
+function removeSkill(s) {
+  skills = skills.filter(x => x !== s);
+  renderSkills();
+}
+
+function renderSkills() {
+  document.getElementById('skillsList').innerHTML = skills.map(s =>
+    `<span class="skill-tag selected">${s} <span onclick="removeSkill('${s}')" style="cursor:pointer;font-size:14px;">×</span></span>`
+  ).join('');
+}
+
+async function inscrire() {
+  clearError();
+  const ville = document.getElementById('ville').value;
+  if (!ville) { showError('Choisissez une ville'); return; }
+
+  const btn = document.getElementById('btnInscrire');
+  btn.disabled = true;
+  btn.textContent = '⏳ Inscription en cours...';
+
+  const formData = {
+    prenom: document.getElementById('prenom').value.trim(),
+    nom: document.getElementById('nom').value.trim(),
+    telephone: document.getElementById('telephone').value.trim(),
+    password: document.getElementById('password').value,
+    categorie: document.getElementById('categorie').value,
+    sous_categorie: document.getElementById('sousCat').value || null,
+    metier: document.getElementById('metier').value.trim(),
+    description: document.getElementById('description').value.trim(),
+    skills: skills,
+    ville: ville,
+    commune: document.getElementById('commune').value || null,
+    quartier: document.getElementById('quartier').value.trim() || null
+  };
+
+  const res = await inscrirePrestataire(formData);
+
+  btn.disabled = false;
+  btn.textContent = '🚀 Créer mon compte';
+
+  if (res.success) {
+    [1,2,3].forEach(s => document.getElementById(`step${s}`).classList.remove('active'));
+    document.getElementById('stepSuccess').classList.add('active');
+    document.getElementById('stepIndicator').style.display = 'none';
+  } else {
+    showError(res.message || 'Erreur lors de l\'inscription');
+  }
+}
 </script>
+  </div>
 </div>
 
 <!-- PAGE : DASHBOARD -->
@@ -3658,49 +3354,41 @@ async function connexion() {
 
     <!-- ── PHOTOS ── -->
     <div class="section" id="section-photos">
-
-      <!-- Photo de profil -->
-      <div class="edit-section" style="margin-bottom:16px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-          <div style="font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;color:#1A1A4E;">📷 Photo de profil</div>
-          <label style="cursor:pointer;background:#E85D04;color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;">
-            📷 Changer
+      <div class="photos-section">
+        <div class="photos-header">
+          <div class="photos-title">📷 Photo de profil</div>
+          <label style="cursor:pointer;background:#E85D04;color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;">
+            📷 Changer la photo
             <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="uploadPhoto(this,'profil')"/>
           </label>
         </div>
         <div style="display:flex;align-items:center;gap:20px;padding:16px;background:#F4F6FB;border-radius:14px;">
-          <div id="profilPhotoPreview" style="width:80px;height:80px;border-radius:16px;background:#E4E8F5;display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;font-family:'Libre Baskerville',serif;font-weight:700;color:#7A7F9A;flex-shrink:0;">?</div>
-          <div>
-            <div style="font-size:13.5px;font-weight:700;color:#1A1A4E;margin-bottom:4px;">Photo de profil</div>
-            <div style="font-size:12px;color:#6B7280;line-height:1.6;">Visible par tous les clients.<br>Format : JPG, PNG, WebP — Max 5 Mo</div>
+          <div id="profilPhotoPreview" style="width:80px;height:80px;border-radius:16px;background:#E4E8F5;display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;font-family:'Libre Baskerville',serif;font-weight:700;color:#7A7F9A;">?</div>
+          <div style="font-size:13px;color:#7A7F9A;line-height:1.7;">Photo de profil visible par tous les clients.<br>Format : JPG, PNG, WebP — Max 5 Mo</div>
+        </div>
+        <div class="upload-progress" id="progressProfil"><div class="upload-progress-bar"></div></div>
+      </div>
+
+      <div class="photos-section">
+        <div class="photos-header">
+          <div class="photos-title">🖼️ Réalisations <span style="font-size:12px;color:#7A7F9A;font-weight:400;">(max 5 photos)</span></div>
+          <label id="addRealLabel" style="cursor:pointer;background:#1A1A4E;color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;">
+            + Ajouter une réalisation
+            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="uploadPhoto(this,'realisation')"/>
+          </label>
+        </div>
+        <div class="photos-grid" id="realisationsGrid">
+          <div class="photo-slot" onclick="document.querySelector('[onchange*=realisation]').click()">
+            <div style="font-size:28px;">📷</div>
+            <div class="add-text">Ajouter</div>
           </div>
         </div>
+        <div class="upload-progress" id="progressReal"><div class="upload-progress-bar"></div></div>
+        <div style="font-size:12px;color:#7A7F9A;margin-top:10px;">Montrez vos meilleures réalisations pour attirer plus de clients.</div>
       </div>
-
-      <!-- Photos réalisations -->
-      <div class="edit-section">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-          <div style="font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;color:#1A1A4E;">🖼️ Réalisations <span style="font-size:12px;color:#6B7280;font-weight:400;">(max 5)</span></div>
-          <label id="addRealLabel" style="cursor:pointer;background:#1A1A4E;color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;">
-            + Ajouter
-            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="uploadPhoto(this,'realisation')"/>
-          </label>
-        </div>
-        <div id="realisationsGrid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
-          <label style="aspect-ratio:1;border-radius:12px;border:2px dashed #E5E7EB;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='#E85D04'" onmouseout="this.style.borderColor='#E5E7EB'">
-            <span style="font-size:24px;">📷</span>
-            <span style="font-size:10px;color:#9CA3AF;margin-top:4px;">Ajouter</span>
-            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="uploadPhoto(this,'realisation')"/>
-          </label>
-        </div>
-        <div style="font-size:11.5px;color:#9CA3AF;margin-top:10px;line-height:1.6;">
-          📸 Montrez vos meilleures réalisations — avant/après, chantiers, travaux terminés.
-        </div>
-      </div>
-
     </div>
 
-<!-- ── ABONNEMENT ── -->
+    <!-- ── ABONNEMENT ── -->
     <div class="section" id="section-abonnement">
       <div class="abo-card">
         <div class="abo-header">
@@ -3900,80 +3588,66 @@ function showSection(name) {
 
 // ── PHOTOS ──
 function renderPhotos() {
-  const photos = providerPhotos || _dashPhotos || [];
-  const profil = photos.find(p => p.type === 'profil');
-  const reals = photos.filter(p => p.type === 'realisation');
-  const p = providerData || _dashData;
+  const profil = providerPhotos.find(p => p.type === 'profil');
+  const reals = providerPhotos.filter(p => p.type === 'realisation');
 
   // Photo profil preview
   const preview = document.getElementById('profilPhotoPreview');
-  if (preview) {
-    if (profil) {
-      preview.innerHTML = `<img src="${profil.url}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;"/>`;
-    } else {
-      preview.textContent = ((p?.prenom||'?')[0] + (p?.nom||'?')[0]).toUpperCase();
-    }
+  if (profil) {
+    preview.innerHTML = `<img src="${profil.url}" style="width:100%;height:100%;object-fit:cover;"/>`;
+  } else {
+    const p = providerData;
+    preview.textContent = (p?.prenom?.[0] || '') + (p?.nom?.[0] || '');
   }
 
   // Réalisations grid
   const grid = document.getElementById('realisationsGrid');
-  if (!grid) return;
-
-  const slots = reals.map(photo => `
-    <div style="aspect-ratio:1;border-radius:12px;overflow:hidden;position:relative;border:1.5px solid #E5E7EB;">
-      <img src="${photo.url}" alt="Réalisation" loading="lazy" style="width:100%;height:100%;object-fit:cover;"/>
-      <button onclick="supprimerPhoto('${photo.id}')" style="position:absolute;top:4px;right:4px;width:22px;height:22px;background:rgba(239,68,68,.9);border:none;border-radius:50%;color:#fff;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;line-height:1;">×</button>
-    </div>
-  `);
+  const slots = [];
+  reals.forEach(photo => {
+    slots.push(`
+      <div class="photo-slot filled">
+        <img src="${photo.url}" alt="Réalisation" loading="lazy"/>
+        <button class="photo-delete" onclick="supprimerPhoto('${photo.id}')">×</button>
+      </div>
+    `);
+  });
 
   if (reals.length < 5) {
     slots.push(`
-      <label style="aspect-ratio:1;border-radius:12px;border:2px dashed #E5E7EB;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;" onmouseover="this.style.borderColor='#E85D04'" onmouseout="this.style.borderColor='#E5E7EB'">
-        <span style="font-size:24px;">📷</span>
-        <span style="font-size:10px;color:#9CA3AF;margin-top:4px;">Ajouter</span>
+      <label class="photo-slot" style="cursor:pointer;">
+        <div style="font-size:28px;">📷</div>
+        <div class="add-text">Ajouter</div>
         <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="uploadPhoto(this,'realisation')"/>
       </label>
     `);
   }
 
   grid.innerHTML = slots.join('');
+
   const lbl = document.getElementById('addRealLabel');
-  if (lbl) lbl.style.display = reals.length >= 5 ? 'none' : 'flex';
+  if (lbl) lbl.style.display = reals.length >= 5 ? 'none' : 'block';
 }
 
 async function uploadPhoto(input, type) {
   const file = input.files[0];
   if (!file) return;
 
-  if (file.size > 5 * 1024 * 1024) { showToast('Fichier trop volumineux (max 5 Mo)', 'error'); input.value=''; return; }
+  if (file.size > 5 * 1024 * 1024) { showToast('Fichier trop volumineux (max 5 Mo)', 'error'); return; }
 
-  const pid = providerId || _dashProviderId;
-  if (!pid) { showToast('Session expirée, reconnectez-vous', 'error'); return; }
+  const progressId = type === 'profil' ? 'progressProfil' : 'progressReal';
+  document.getElementById(progressId).classList.add('show');
 
-  showToast('⏳ Upload en cours...');
+  const res = await uploadProviderPhoto(providerId, file, type);
+  document.getElementById(progressId).classList.remove('show');
 
-  try {
-    const res = await uploadProviderPhoto(pid, file, type);
-    if (res.success) {
-      showToast('✅ Photo ajoutée !', 'success');
-      // Recharger les photos
-      const photos = await getProviderPhotos(pid);
-      providerPhotos = photos;
-      _dashPhotos = photos;
-      renderPhotos();
-      _dashRenderPhotos();
-      // Mettre à jour avatar si photo profil
-      if (type === 'profil' && res.url) {
-        const preview = document.getElementById('profilPhotoPreview');
-        if (preview) preview.innerHTML = `<img src="${res.url}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;"/>`;
-        const pbAv = document.getElementById('pbAvatar');
-        if (pbAv) pbAv.outerHTML = `<img id="pbAvatar" class="pb-avatar" src="${res.url}" style="width:72px;height:72px;border-radius:18px;object-fit:cover;" alt="Photo"/>`;
-      }
-    } else {
-      showToast(res.message || 'Erreur upload', 'error');
-    }
-  } catch(e) {
-    showToast('Erreur: ' + e.message, 'error');
+  if (res.success) {
+    showToast('✅ Photo ajoutée avec succès !', 'success');
+    providerPhotos = await getProviderPhotos(providerId);
+    providerData = await getDashboardData(providerId);
+    renderPhotos();
+    updateUI();
+  } else {
+    showToast(res.message || 'Erreur upload', 'error');
   }
   input.value = '';
 }
@@ -4114,8 +3788,8 @@ async function chargerAvis() {
       <p>YOUMMA JOBS — Accès restreint</p>
     </div>
     <div class="form-group">
-      <label>Email / Identifiant</label>
-      <input type="text" id="adminTel" placeholder="admin@yoummajobs.com" autocomplete="username"/>
+      <label>Téléphone</label>
+      <input type="tel" id="adminTel" placeholder="+224 612 52 52 10"/>
     </div>
     <div class="form-group">
       <label>Mot de passe</label>
@@ -4128,31 +3802,28 @@ async function chargerAvis() {
 
 <!-- ADMIN PANEL -->
 <div class="admin-wrap" id="adminWrap">
-  <div class="admin-sidebar" id="adminSidebarEl" style="display:none;position:fixed;top:0;left:0;width:210px;height:100vh;background:#0D0D2E;z-index:9999;flex-direction:column;overflow:hidden;">
-    <!-- Logo -->
-    <div style="padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;">
-      <div style="display:flex;align-items:center;gap:9px;">
-        <div style="width:36px;height:36px;background:#E85D04;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Libre Baskerville',serif;font-weight:700;font-size:13px;flex-shrink:0;">YJ</div>
-        <div>
-          <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#fff;line-height:1.2;">YOUMMA <span style="color:#E85D04;">JOBS</span></div>
-          <div style="font-size:9.5px;color:rgba(255,255,255,.35);margin-top:1px;letter-spacing:.03em;">Panel administrateur</div>
-        </div>
+  <div id="adminSidebarEl" style="display:none;position:fixed;top:0;left:0;width:220px;height:100vh;background:#0D0D2E;z-index:9999;overflow-y:auto;">
+  <div style="padding:16px 14px;border-bottom:1px solid rgba(255,255,255,.1);">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div style="width:34px;height:34px;background:#E85D04;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;">YJ</div>
+      <div>
+        <div style="font-weight:700;font-size:13px;color:#fff;">YOUMMA <span style="color:#E85D04;">JOBS</span></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4);">Panel administrateur</div>
       </div>
     </div>
-    <!-- Navigation -->
-    <nav style="flex:1;padding:10px 8px;overflow-y:auto;">
-      <div id="anav-dashboard" style="display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:3px;background:rgba(232,93,4,.2);white-space:nowrap;" onclick="showAdmin('dashboard')" onmouseover="this.style.background='rgba(232,93,4,.25)'" onmouseout="this.style.background='rgba(232,93,4,.2)'">📊 Tableau de bord</div>
-      <div id="anav-en_attente" style="display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:3px;transition:background .2s;white-space:nowrap;" onclick="showAdmin('en_attente')" onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">⏳ En attente</div>
-      <div id="anav-valide" style="display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:3px;transition:background .2s;white-space:nowrap;" onclick="showAdmin('valide')" onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">✅ Validés</div>
-      <div id="anav-rejete" style="display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:3px;transition:background .2s;white-space:nowrap;" onclick="showAdmin('rejete')" onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">❌ Rejetés</div>
-      <div id="anav-suspendu" style="display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:3px;transition:background .2s;white-space:nowrap;" onclick="showAdmin('suspendu')" onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">🚫 Suspendus</div>
-      <div id="anav-codes" style="display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:3px;transition:background .2s;white-space:nowrap;" onclick="showAdmin('codes')" onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">🔑 Codes d'activation</div>
-    </nav>
-    <!-- Déconnexion -->
-    <div style="padding:10px 8px;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;">
-      <div onclick="logoutAdmin()" style="padding:10px 12px;border-radius:10px;color:#FCA5A5;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;background:rgba(239,68,68,.12);transition:background .2s;" onmouseover="this.style.background='rgba(239,68,68,.2)'" onmouseout="this.style.background='rgba(239,68,68,.12)'">🚪 <span>Déconnexion</span></div>
-    </div>
   </div>
+  <div style="padding:8px;">
+    <div onclick="showAdmin('dashboard')" id="amenu-dashboard" style="padding:10px 12px;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:2px;background:rgba(232,93,4,.25);">📊 Tableau de bord</div>
+    <div onclick="showAdmin('en_attente')" id="amenu-en_attente" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">⏳ En attente</div>
+    <div onclick="showAdmin('valide')" id="amenu-valide" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">✅ Validés</div>
+    <div onclick="showAdmin('rejete')" id="amenu-rejete" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">❌ Rejetés</div>
+    <div onclick="showAdmin('suspendu')" id="amenu-suspendu" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">🚫 Suspendus</div>
+    <div onclick="showAdmin('codes')" id="amenu-codes" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;">🔑 Codes d'activation</div>
+  </div>
+  <div style="padding:8px;border-top:1px solid rgba(255,255,255,.08);margin-top:10px;">
+    <div onclick="logoutAdmin()" style="padding:10px 12px;border-radius:8px;color:#FCA5A5;font-size:13px;font-weight:600;cursor:pointer;background:rgba(239,68,68,.1);">🚪 Déconnexion</div>
+  </div>
+</div>
 
   <div class="admin-main">
 
@@ -4233,60 +3904,20 @@ let allProviders = {};
 async function loginAdmin() {
   const tel = document.getElementById('adminTel').value.trim();
   const pwd = document.getElementById('adminPwd').value;
-  const errEl = document.getElementById('loginError');
-  errEl.textContent = '';
-
-  if (!tel || !pwd) {
-    errEl.textContent = 'Remplissez tous les champs';
-    return;
-  }
-
-  const btn = document.querySelector('#loginWrap .btn-login');
-  if (btn) { btn.disabled = true; btn.textContent = 'Connexion...'; }
-
+  const err = document.getElementById('loginError');
+  if (!tel||!pwd) { err.textContent='Remplissez tous les champs'; return; }
+  err.textContent = 'Connexion...'; err.style.color='#7A7F9A';
   try {
-    const { data, error } = await sb
-      .from('admin_users')
-      .select('id, nom, role')
-      .eq('telephone', tel)
-      .eq('password_hash', pwd)
-      .single();
-
-    if (error || !data) {
-      errEl.textContent = 'Identifiants incorrects';
-      errEl.style.color = '#DC2626';
-      if (btn) { btn.disabled = false; btn.textContent = 'Se connecter →'; }
-      return;
-    }
-
+    const { data, error } = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).eq('password_hash',pwd).single();
+    if (error||!data) { err.textContent='Identifiants incorrects'; err.style.color='#DC2626'; return; }
     const token = generateToken();
-    try { await sb.from('admin_sessions').insert({ admin_id: data.id, token }); } catch(e) {}
-    localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({
-      admin_id: data.id, token, nom: data.nom, role: data.role
-    }));
+    try { await sb.from('admin_sessions').insert({admin_id:data.id,token}); } catch(e){}
+    localStorage.setItem('yj_admin_session', JSON.stringify({admin_id:data.id,token,nom:data.nom,role:data.role}));
     adminData = data;
-    const lw = document.getElementById('loginWrap');
-    const aw = document.getElementById('adminWrap');
-    const asb = document.getElementById('adminSidebarEl');
-    const amain = aw ? aw.querySelector('.admin-main') : null;
-    const mn = document.getElementById('mainNav');
-    const mc = document.getElementById('mainContent');
-    if (mn) mn.style.cssText = 'display:none!important';
-    if (mc) mc.style.cssText = 'display:none!important';
-    if (lw) lw.style.cssText = 'display:none!important';
-    if (asb) asb.style.cssText = 'display:flex!important;flex-direction:column;position:fixed;top:0;left:0;width:210px;height:100vh;background:#0D0D2E;z-index:9999;overflow:hidden;';
-    if (amain) amain.style.cssText = 'display:block!important;margin-left:210px;padding:24px;background:#F4F6FB;min-height:100vh;';
-    if (aw) { aw.classList.add('visible'); aw.style.cssText = 'display:block!important;min-height:100vh;'; }
-    document.getElementById('page-admin')?.classList.add('logged');
+    _showAdminPanel();
     await loadAll();
-
-  } catch(e) {
-    errEl.textContent = 'Erreur: ' + e.message;
-    errEl.style.color = '#DC2626';
-    if (btn) { btn.disabled = false; btn.textContent = 'Se connecter →'; }
-  }
+  } catch(e) { err.textContent='Erreur: '+e.message; err.style.color='#DC2626'; }
 }
-
 function logoutAdmin() {
   localStorage.removeItem('yj_admin_session');
   window.location.reload();
@@ -4294,23 +3925,18 @@ function logoutAdmin() {
 
 // ── SECTIONS ──
 function showAdmin(name) {
-  // Sections
   document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
-  const target = document.getElementById('admin-' + name);
-  if (target) target.classList.add('active');
-
-  // Nav items - mettre à jour style inline
-  const NORMAL = 'display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:3px;white-space:nowrap;background:transparent;';
-  const ACTIVE = 'display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:3px;white-space:nowrap;background:rgba(232,93,4,.2);';
+  const t = document.getElementById('admin-'+name);
+  if (t) t.classList.add('active');
   ['dashboard','en_attente','valide','rejete','suspendu','codes'].forEach(s => {
-    const el = document.getElementById('anav-' + s);
-    if (el) el.style.cssText = s === name ? ACTIVE : NORMAL;
+    const el = document.getElementById('amenu-'+s);
+    if (!el) return;
+    if (s===name) { el.style.background='rgba(232,93,4,.25)'; el.style.color='#fff'; el.style.fontWeight='700'; }
+    else { el.style.background='transparent'; el.style.color='rgba(255,255,255,.65)'; el.style.fontWeight='600'; }
   });
-
-  if (name === 'codes') loadCodes();
-  else if (name !== 'dashboard') _adminLoadAll();
+  if (name==='codes') loadCodes();
+  else if (name!=='dashboard') _adminLoadAll();
 }
-
 // ── LOAD DATA ──
 async function loadAll() {
   const stats = await getAdminStats();
@@ -4326,24 +3952,10 @@ async function loadAll() {
     renderTable(s, allProviders[s]);
   }));
 
-  // Dashboard: afficher toutes les sections
-  const dashDiv = document.getElementById('dashboardAll');
-  if (dashDiv) {
-    const sections = [
-      { key:'en_attente', label:'⏳ En attente', color:'#E85D04' },
-      { key:'valide',     label:'✅ Validés',    color:'#16A34A' },
-      { key:'rejete',     label:'❌ Rejetés',    color:'#DC2626' },
-      { key:'suspendu',   label:'🚫 Suspendus',  color:'#9CA3AF' },
-    ];
-    dashDiv.innerHTML = sections.map(s => {
-      const list = allProviders[s.key] || [];
-      if (!list.length) return '';
-      return `<div style="margin-bottom:28px;">
-        <div style="font-family:'Libre Baskerville',serif;font-size:15px;font-weight:700;color:${s.color};margin-bottom:12px;">${s.label} (${list.length})</div>
-        ${renderTableHTML(s.key, list)}
-      </div>`;
-    }).join('') || '<div style="text-align:center;padding:40px;color:#9CA3AF;">Aucun prestataire</div>';
-  }
+  // Dashboard : afficher en attente en priorité
+  document.getElementById('dashboardAll').innerHTML =
+    `<div style="font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:16px;">⏳ En attente de validation (${allProviders['en_attente']?.length || 0})</div>` +
+    renderTableHTML('en_attente', allProviders['en_attente'] || []);
 }
 
 function renderTable(statut, data) {
@@ -4354,65 +3966,69 @@ function renderTable(statut, data) {
 }
 
 function renderTableHTML(statut, data) {
-  if (!data || !data.length) return '<div style="text-align:center;padding:40px;color:#7A7F9A;">Aucun prestataire</div>';
-  const fd = d => d ? new Date(d).toLocaleDateString('fr-FR') : '—';
-  const now = new Date();
+  if (!data || data.length === 0) {
+    return `<div style="text-align:center;padding:40px;color:#7A7F9A;">Aucun prestataire dans cette catégorie</div>`;
+  }
+
+  const formatDate = d => d ? new Date(d).toLocaleDateString('fr-FR') : '—';
   const aboBadge = p => {
-    if (p.essai_actif && p.essai_fin && new Date(p.essai_fin) > now) return '<span style="background:rgba(22,163,74,.15);color:#16A34A;border-radius:6px;padding:2px 7px;font-size:10px;font-weight:700;">🎁 Essai</span>';
-    if (p.abonnement_actif && p.abonnement_fin && new Date(p.abonnement_fin) > now) return '<span style="background:rgba(59,130,246,.12);color:#1D4ED8;border-radius:6px;padding:2px 7px;font-size:10px;font-weight:700;">💳 Abonné</span>';
-    return '<span style="color:#9CA3AF;font-size:10px;">Inactif</span>';
+    const now = new Date();
+    if (p.essai_actif && p.essai_fin && new Date(p.essai_fin) > now) return '<span class="badge essai">🎁 Essai</span>';
+    if (p.abonnement_actif && p.abonnement_fin && new Date(p.abonnement_fin) > now) return '<span class="badge abonne">💳 Abonné</span>';
+    return '<span style="color:#7A7F9A;font-size:11px;">Inactif</span>';
   };
 
-  const rows = data.map(p => {
-    const ini = ((p.prenom||'?')[0] + (p.nom||'?')[0]).toUpperCase();
-    const nomComplet = `${p.prenom||''} ${p.nom||''}`.trim() || '—';
-    const actions = `
-      <div style="display:flex;flex-wrap:wrap;gap:5px;">
-        ${p.statut !== 'valide' ? `<button onclick="_adminAction('valider','${p.id}')" style="padding:5px 10px;background:rgba(22,163,74,.15);color:#16A34A;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">✅ Valider</button>` : ''}
-        ${p.statut !== 'rejete' ? `<button onclick="_adminAction('rejeter','${p.id}')" style="padding:5px 10px;background:rgba(239,68,68,.1);color:#DC2626;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">❌ Rejeter</button>` : ''}
-        ${p.statut !== 'suspendu' ? `<button onclick="_adminAction('suspendre','${p.id}')" style="padding:5px 10px;background:rgba(245,200,66,.12);color:#92400E;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">🚫 Suspendre</button>` : ''}
-        <button onclick="_adminAction('supprimer','${p.id}')" style="padding:5px 10px;background:rgba(239,68,68,.08);color:#DC2626;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">🗑️</button>
-      </div>`;
-    return `
-      <tr style="border-bottom:1px solid #F3F4F6;">
-        <td style="padding:12px 14px;">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div style="width:36px;height:36px;border-radius:10px;background:#FDE8D8;color:#C74B00;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;">${ini}</div>
-            <div>
-              <div style="font-weight:700;font-size:13px;color:#0F1020;">${nomComplet}</div>
-              <div style="font-size:11px;color:#6B7280;margin-top:1px;">${p.metier||'—'}</div>
-            </div>
-          </div>
-        </td>
-        <td style="padding:12px 14px;">
-          <span style="background:#F0F0FF;color:#2D2D6B;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;">${(p.statut||'').replace('_',' ')}</span>
-          <div style="font-size:11px;color:#9CA3AF;margin-top:3px;">${p.categorie||'—'}</div>
-        </td>
-        <td style="padding:12px 14px;font-size:12px;color:#6B7280;">${p.ville||'—'}${p.commune ? '<br><span style="font-size:11px;">'+p.commune+'</span>' : ''}</td>
-        <td style="padding:12px 14px;"><a href="tel:${p.telephone}" style="color:#2D2D6B;font-weight:600;font-size:12px;text-decoration:none;">${p.telephone||'—'}</a></td>
-        <td style="padding:12px 14px;font-size:11px;color:#9CA3AF;">${fd(p.created_at)}</td>
-        <td style="padding:12px 14px;">${aboBadge(p)}</td>
-        <td style="padding:12px 14px;">${actions}</td>
-      </tr>`;
-  }).join('');
+  const actionsHTML = p => {
+    const btns = [];
+    if (p.statut === 'en_attente') btns.push(`<button class="abtn valider" onclick="action('valider','${p.id}')">✅ Valider + Essai</button>`);
+    if (p.statut !== 'rejete') btns.push(`<button class="abtn rejeter" onclick="action('rejeter','${p.id}')">❌ Rejeter</button>`);
+    if (p.statut !== 'suspendu') btns.push(`<button class="abtn suspendre" onclick="action('suspendre','${p.id}')">🚫 Suspendre</button>`);
+    if (p.statut !== 'valide') btns.push(`<button class="abtn valider" onclick="action('valider','${p.id}')">✅ Valider</button>`);
+    btns.push(`<button class="abtn supprimer" onclick="action('supprimer','${p.id}')">🗑️ Supprimer</button>`);
+    return `<div class="action-row">${btns.join('')}</div>`;
+  };
 
   return `
-    <div style="background:#fff;border-radius:14px;border:1.5px solid #E5E7EB;overflow:hidden;margin-bottom:20px;">
-      <table style="width:100%;border-collapse:collapse;">
-        <thead>
-          <tr style="background:#F9FAFB;border-bottom:1.5px solid #E5E7EB;">
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Prestataire</th>
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Statut / Catégorie</th>
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Localisation</th>
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Téléphone</th>
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Inscrit</th>
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Abo.</th>
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Actions</th>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Prestataire</th>
+          <th>Catégorie</th>
+          <th>Localisation</th>
+          <th>Téléphone</th>
+          <th>Inscrit le</th>
+          <th>Abonnement</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${data.map(p => `
+          <tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div class="provider-row-avatar" style="background:#FDE8D8;color:#C74B00;">
+                  ${p.photo_url ? `<img src="${p.photo_url}" alt=""/>` : (p.prenom?.[0]||'') + (p.nom?.[0]||'')}
+                </div>
+                <div>
+                  <div style="font-weight:700;color:#fff;">${p.prenom} ${p.nom}</div>
+                  <div style="font-size:11px;color:#7A7F9A;">${p.metier || '—'}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="badge ${p.statut}">${p.statut?.replace('_',' ')}</span><br>
+              <span style="font-size:11px;color:#7A7F9A;">${p.categorie || '—'}</span>
+            </td>
+            <td style="font-size:12px;color:#94A3B8;">${p.ville || '—'}${p.commune ? ' · ' + p.commune : ''}${p.quartier ? '<br>' + p.quartier : ''}</td>
+            <td><a href="tel:${p.telephone}" style="color:#60A5FA;text-decoration:none;">${p.telephone}</a></td>
+            <td style="font-size:12px;color:#7A7F9A;">${formatDate(p.created_at)}</td>
+            <td>${aboBadge(p)}</td>
+            <td>${actionsHTML(p)}</td>
           </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
+        `).join('')}
+      </tbody>
+    </table>
+  `;
 }
 
 function filterTable(statut, query) {
@@ -4429,29 +4045,23 @@ function filterTable(statut, query) {
 
 // ── ACTIONS ──
 async function action(type, id) {
-  const labels = {
-    valider: 'Valider + 14j essai ?',
-    rejeter: 'Rejeter ?',
-    suspendre: 'Suspendre ?',
-    supprimer: 'SUPPRIMER ?'
+  const confirms = {
+    valider: 'Valider ce prestataire et activer 14 jours d\'essai ?',
+    rejeter: 'Rejeter ce prestataire ?',
+    suspendre: 'Suspendre ce prestataire ?',
+    supprimer: 'SUPPRIMER définitivement ce prestataire ?'
   };
-  if (!window.confirm(labels[type] || type)) return;
+  if (!confirm(confirms[type])) return;
 
-  try {
-    if (type === 'valider') await validerProvider(id);
-    else if (type === 'rejeter') await rejeterProvider(id);
-    else if (type === 'suspendre') await suspendreProvider(id);
-    else if (type === 'supprimer') await supprimerProvider(id);
-    
-    // Recharger sans toucher au hash
-    const lw = document.getElementById('loginWrap');
-    const aw = document.getElementById('adminWrap');
-    if (lw && lw.style.display !== 'none') return; // pas connecté
-    await loadAll();
-    showToast('✅ Action effectuée !');
-  } catch(e) {
-    showToast('Erreur: ' + e.message, 'error');
+  switch(type) {
+    case 'valider': await validerProvider(id); break;
+    case 'rejeter': await rejeterProvider(id); break;
+    case 'suspendre': await suspendreProvider(id); break;
+    case 'supprimer': await supprimerProvider(id); break;
   }
+
+  showToast('✅ Action effectuée');
+  await loadAll();
 }
 
 // ── CODES ──
@@ -4684,14 +4294,7 @@ async function getAdminStats() {
   ]);
   return {total:total.count||0,en_attente:att.count||0,valides:val.count||0,rejetes:rej.count||0,suspendu:sus.count||0};
 }
-async function validerProvider(id) {
-  const essai_fin = new Date(Date.now() + 14*24*60*60*1000).toISOString();
-  await sb.from('providers').update({
-    statut: 'valide',
-    essai_actif: true,
-    essai_fin: essai_fin
-  }).eq('id', id);
-}
+async function validerProvider(id) { await sb.rpc('activer_essai',{p_id:id}); }
 async function rejeterProvider(id) { await sb.from('providers').update({statut:'rejete'}).eq('id',id); }
 async function suspendreProvider(id) { await sb.from('providers').update({statut:'suspendu'}).eq('id',id); }
 async function supprimerProvider(id) { await sb.from('providers').delete().eq('id',id); }
@@ -4775,7 +4378,7 @@ const CATEGORIES = [
     badgeClass: 'pb-education',
     count: '10+',
     desc: 'Professeurs, formateurs, traducteurs',
-    sous: ['Professeur de maths','Professeur de français',"Professeur d'anglais",'Formateur professionnel','Traducteur','Tuteur scolaire']
+    sous: ['Professeur de maths','Professeur de français','Professeur d'anglais','Formateur professionnel','Traducteur','Tuteur scolaire']
   },
   {
     id: 'aide-domicile',
@@ -4785,8 +4388,8 @@ const CATEGORIES = [
     bg: '#E8F5E9',
     badgeClass: 'pb-immobilier',
     count: '8+',
-    desc: "Ménage, garde d'enfants, cuisiniers",
-    sous: ['Femme de ménage',"Garde d'enfants",'Cuisinier / Cuisinière','Baby-sitter','Aide aux personnes âgées']
+    desc: 'Ménage, garde d'enfants, cuisiniers',
+    sous: ['Femme de ménage','Garde d'enfants','Cuisinier / Cuisinière','Baby-sitter','Aide aux personnes âgées']
   },
   {
     id: 'transport',
@@ -4831,7 +4434,7 @@ const CATEGORIES = [
     count: '10+',
     desc: 'Livraison, dépannage, réparations rapides',
     badge_urgent: true,
-    sous: ['Livraison express','Coursier','Dépannage rapide','Assistance informatique rapide','Réparation téléphone','Réparation électroménager','Installation TV','Installation internet','Serrurerie',"Service d'urgence"]
+    sous: ['Livraison express','Coursier','Dépannage rapide','Assistance informatique rapide','Réparation téléphone','Réparation électroménager','Installation TV','Installation internet','Serrurerie','Service d'urgence']
   }
 ];
 
@@ -4926,9 +4529,41 @@ const PAGES = ['home','login','inscription','dashboard','admin'];
 
 
 
+// Gérer le bouton retour navigateur
+window.addEventListener('popstate', (e) => {
+  const hash = location.hash.replace('#','');
+  navigate(PAGES.includes(hash) ? hash : 'home');
+});
 
-
-// Routeur géré par le script final
+// Init au chargement
+(async function initRouter() {
+  const hash = location.hash.replace('#','');
+  
+  // Vérifier session prestataire
+  const pid = await verifierSession();
+  
+  if (hash === 'dashboard') {
+    if (!pid) { navigate('login'); return; }
+    navigate('dashboard');
+    await chargerDashboard(pid);
+  } else if (hash === 'admin') {
+    navigate('admin');
+    await initAdmin();
+  } else if (hash === 'inscription') {
+    if (pid) { navigate('dashboard'); await chargerDashboard(pid); return; }
+    navigate('inscription');
+    initInscription();
+  } else if (hash === 'login') {
+    if (pid) { navigate('dashboard'); await chargerDashboard(pid); return; }
+    navigate('login');
+  } else {
+    // Charger prestataires depuis Supabase
+    navigate('home');
+    await loadProvidersFromSupabase();
+    renderCategoriesGrid('catsGrid');
+    updateCatSelect();
+  }
+})();
 
 
 // ── PATCH INDEX PRINCIPAL ──
@@ -5294,65 +4929,17 @@ let _adminData = null;
 let _allProviders = {};
 
 async function initAdmin() {
-  const s = getAdminSession();
-  
-  function showAdminPanel() {
-    _adminData = s;
-    adminData = s;
-    const loginWrap = document.getElementById('loginWrap');
-    const adminWrap = document.getElementById('adminWrap');
-    const adminSidebar = document.getElementById('adminSidebarEl');
-    const adminMain = adminWrap ? adminWrap.querySelector('.admin-main') : null;
-    const pageAdmin = document.getElementById('page-admin');
-    const mainNav = document.getElementById('mainNav');
-    const mainContent = document.getElementById('mainContent');
-    // Cacher navbar et contenu principal
-    if (mainNav) mainNav.style.cssText = 'display:none!important';
-    if (mainContent) mainContent.style.cssText = 'display:none!important';
-    // Cacher login
-    if (loginWrap) loginWrap.style.cssText = 'display:none!important';
-    // Montrer sidebar directement
-    if (adminSidebar) adminSidebar.style.cssText = 'display:flex!important;flex-direction:column;position:fixed;top:0;left:0;width:210px;height:100vh;background:#0D0D2E;z-index:9999;overflow-y:auto;overflow-x:hidden;';
-    // Montrer main
-    if (adminMain) adminMain.style.cssText = 'display:block!important;margin-left:210px;padding:24px;background:#F4F6FB;min-height:100vh;';
-    if (adminWrap) { adminWrap.classList.add('visible'); adminWrap.style.cssText = 'display:block!important;min-height:100vh;'; }
-    if (pageAdmin) pageAdmin.classList.add('logged');
-    // Forcer affichage items nav
-    setTimeout(function() {
-      const STYLE = 'display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:4px;white-space:nowrap;';
-      const ACTIVE = 'display:flex!important;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:4px;background:rgba(232,93,4,.25);white-space:nowrap;';
-      var items = ['en_attente','valide','rejete','suspendu','codes'];
-      var d = document.getElementById('anav-dashboard');
-      if (d) d.style.cssText = ACTIVE;
-      items.forEach(function(s) {
-        var el = document.getElementById('anav-' + s);
-        if (el) el.style.cssText = STYLE;
-      });
-    }, 100);
-  }
-
-  if (s?.token) {
-    // Afficher le panel immédiatement (UX rapide)
-    showAdminPanel();
-    await loadAll();
-    
-    // Vérifier session en arrière-plan
-    try {
-      const { data } = await sb.from('admin_sessions')
-        .select('admin_id')
-        .eq('token', s.token)
-        .single();
-      if (!data) {
-        // Session invalide - déconnecter
-        localStorage.removeItem(ADMIN_SESSION_KEY);
-        location.reload();
-      }
-    } catch(e) {
-      // Ignorer erreur réseau - garder connecté
+  const raw = localStorage.getItem('yj_admin_session');
+  if (!raw) return;
+  try {
+    const s = JSON.parse(raw);
+    if (s?.token) {
+      adminData = s;
+      _showAdminPanel();
+      await loadAll();
     }
-  }
+  } catch(e) {}
 }
-
 async function _adminLogin() {
   const tel=document.querySelector('#page-admin #adminTel')?.value.trim();
   const pwd=document.querySelector('#page-admin #adminPwd')?.value;
@@ -5393,79 +4980,27 @@ function _adminRenderTable(statut,data) {
   const el=document.getElementById(ids[statut]);if(el) el.innerHTML=_adminTableHTML(statut,data);
 }
 
-function _adminTableHTML(statut, data) {
-  if (!data || !data.length) return '<div style="text-align:center;padding:40px;color:#7A7F9A;">Aucun prestataire</div>';
-  const fd = d => d ? new Date(d).toLocaleDateString('fr-FR') : '—';
-  const now = new Date();
-  const aboBadge = p => {
-    if (p.essai_actif && p.essai_fin && new Date(p.essai_fin) > now) return '<span style="background:rgba(22,163,74,.15);color:#16A34A;border-radius:6px;padding:2px 7px;font-size:10px;font-weight:700;">🎁 Essai</span>';
-    if (p.abonnement_actif && p.abonnement_fin && new Date(p.abonnement_fin) > now) return '<span style="background:rgba(59,130,246,.12);color:#1D4ED8;border-radius:6px;padding:2px 7px;font-size:10px;font-weight:700;">💳 Abonné</span>';
-    return '<span style="color:#9CA3AF;font-size:10px;">Inactif</span>';
+function _adminTableHTML(statut,data) {
+  if(!data||!data.length) return '<div style="text-align:center;padding:40px;color:#7A7F9A;">Aucun prestataire</div>';
+  const fd=d=>d?new Date(d).toLocaleDateString('fr-FR'):'—';
+  const now=new Date();
+  const aboBadge=p=>{
+    if(p.essai_actif&&p.essai_fin&&new Date(p.essai_fin)>now)return'<span class="badge essai">🎁 Essai</span>';
+    if(p.abonnement_actif&&p.abonnement_fin&&new Date(p.abonnement_fin)>now)return'<span class="badge abonne">💳 Abonné</span>';
+    return'<span style="color:#7A7F9A;font-size:11px;">Inactif</span>';
   };
-
-  const rows = data.map(p => {
-    const ini = ((p.prenom||'?')[0] + (p.nom||'?')[0]).toUpperCase();
-    const nomComplet = `${p.prenom||''} ${p.nom||''}`.trim() || '—';
-    const actions = `
-      <div style="display:flex;flex-wrap:wrap;gap:5px;">
-        ${p.statut !== 'valide' ? `<button onclick="_adminAction('valider','${p.id}')" style="padding:5px 10px;background:rgba(22,163,74,.15);color:#16A34A;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">✅ Valider</button>` : ''}
-        ${p.statut !== 'rejete' ? `<button onclick="_adminAction('rejeter','${p.id}')" style="padding:5px 10px;background:rgba(239,68,68,.1);color:#DC2626;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">❌ Rejeter</button>` : ''}
-        ${p.statut !== 'suspendu' ? `<button onclick="_adminAction('suspendre','${p.id}')" style="padding:5px 10px;background:rgba(245,200,66,.12);color:#92400E;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">🚫 Suspendre</button>` : ''}
-        <button onclick="_adminAction('supprimer','${p.id}')" style="padding:5px 10px;background:rgba(239,68,68,.08);color:#DC2626;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">🗑️</button>
-      </div>`;
-    return `
-      <tr style="border-bottom:1px solid #F3F4F6;">
-        <td style="padding:12px 14px;">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div style="width:36px;height:36px;border-radius:10px;background:#FDE8D8;color:#C74B00;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;">${ini}</div>
-            <div>
-              <div style="font-weight:700;font-size:13px;color:#0F1020;">${nomComplet}</div>
-              <div style="font-size:11px;color:#6B7280;margin-top:1px;">${p.metier||'—'}</div>
-            </div>
-          </div>
-        </td>
-        <td style="padding:12px 14px;">
-          <span style="background:#F0F0FF;color:#2D2D6B;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;">${(p.statut||'').replace('_',' ')}</span>
-          <div style="font-size:11px;color:#9CA3AF;margin-top:3px;">${p.categorie||'—'}</div>
-        </td>
-        <td style="padding:12px 14px;font-size:12px;color:#6B7280;">${p.ville||'—'}${p.commune ? '<br><span style="font-size:11px;">'+p.commune+'</span>' : ''}</td>
-        <td style="padding:12px 14px;"><a href="tel:${p.telephone}" style="color:#2D2D6B;font-weight:600;font-size:12px;text-decoration:none;">${p.telephone||'—'}</a></td>
-        <td style="padding:12px 14px;font-size:11px;color:#9CA3AF;">${fd(p.created_at)}</td>
-        <td style="padding:12px 14px;">${aboBadge(p)}</td>
-        <td style="padding:12px 14px;">${actions}</td>
-      </tr>`;
-  }).join('');
-
-  return `
-    <div style="background:#fff;border-radius:14px;border:1.5px solid #E5E7EB;overflow:hidden;margin-bottom:20px;">
-      <table style="width:100%;border-collapse:collapse;">
-        <thead>
-          <tr style="background:#F9FAFB;border-bottom:1.5px solid #E5E7EB;">
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Prestataire</th>
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Statut / Catégorie</th>
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Localisation</th>
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Téléphone</th>
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Inscrit</th>
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Abo.</th>
-            <th style="padding:12px 14px;text-align:left;font-size:11.5px;font-weight:700;color:#6B7280;white-space:nowrap;">Actions</th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
+  return `<table class="admin-table"><thead><tr><th>Prestataire</th><th>Catégorie</th><th>Localisation</th><th>Téléphone</th><th>Inscrit</th><th>Abo.</th><th>Actions</th></tr></thead><tbody>${data.map(p=>`<tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="provider-row-avatar" style="background:#FDE8D8;color:#C74B00;">${p.photo_url?`<img src="${p.photo_url}"/>`:(p.prenom?.[0]||'')+(p.nom?.[0]||'')}</div><div><div style="font-weight:700;color:#fff;">${p.prenom||''} ${p.nom||''}</div><div style="font-size:11px;color:#7A7F9A;">${p.metier||'—'}</div></div></div></td><td><span class="badge ${p.statut}">${(p.statut||'').replace('_',' ')}</span><br><span style="font-size:11px;color:#7A7F9A;">${p.categorie||'—'}</span></td><td style="font-size:12px;color:#94A3B8;">${p.ville||'—'}${p.commune?' · '+p.commune:''}</td><td><a href="tel:${p.telephone}" style="color:#60A5FA;">${p.telephone||'—'}</a></td><td style="font-size:12px;color:#7A7F9A;">${fd(p.created_at)}</td><td>${aboBadge(p)}</td><td><div class="action-row">${p.statut==='en_attente'?`<button class="abtn valider" onclick="_adminAction('valider','${p.id}')">✅ Valider</button>`:''}<button class="abtn rejeter" onclick="_adminAction('rejeter','${p.id}')">❌ Rejeter</button><button class="abtn suspendre" onclick="_adminAction('suspendre','${p.id}')">🚫</button><button class="abtn supprimer" onclick="_adminAction('supprimer','${p.id}')">🗑️</button></div></td></tr>`).join('')}</tbody></table>`;
 }
 
 async function _adminAction(type,id) {
-  const labels={valider:'Valider + 14j essai ?',rejeter:'Rejeter ?',suspendre:'Suspendre ?',supprimer:'SUPPRIMER définitivement ?'};
-  if(!window.confirm(labels[type]||type)) return;
-  try {
-    if(type==='valider') await validerProvider(id);
-    else if(type==='rejeter') await rejeterProvider(id);
-    else if(type==='suspendre') await suspendreProvider(id);
-    else if(type==='supprimer') await supprimerProvider(id);
-    showToast('✅ Action effectuée !');
-    await _adminLoadAll();
-  } catch(e) { showToast('Erreur: '+e.message,'error'); }
+  const confirms={valider:'Valider + 14j essai ?',rejeter:'Rejeter ?',suspendre:'Suspendre ?',supprimer:'SUPPRIMER définitivement ?'};
+  if(!confirm(confirms[type])) return;
+  if(type==='valider') await validerProvider(id);
+  else if(type==='rejeter') await rejeterProvider(id);
+  else if(type==='suspendre') await suspendreProvider(id);
+  else if(type==='supprimer') await supprimerProvider(id);
+  showToast('✅ Action effectuée');
+  await _adminLoadAll();
 }
 
 async function _adminLoadCodes() {
@@ -5613,41 +5148,26 @@ function generateToken() {
 
 async function connexionAdmin(telephone, password) {
   try {
-    // Comparer directement (mot de passe stocké en clair dans DB)
-    const { data, error } = await sb.from('admin_users')
-      .select('id,nom,role,telephone')
-      .eq('telephone', telephone)
-      .eq('password_hash', password)
-      .single();
-    if (error || !data) return { success:false, message:'Email ou mot de passe incorrect' };
+    const hash = await hashPassword(password);
+    const { data, error } = await sb.from('admin_users').select('id,nom,role,telephone').eq('telephone',telephone).eq('password_hash',hash).single();
+    if (error||!data) return { success:false, message:'Identifiants incorrects' };
     const token = generateToken();
-    await sb.from('admin_sessions').insert({ admin_id:data.id, token });
-    localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({
-      admin_id:data.id, token, nom:data.nom, role:data.role
-    }));
+    await sb.from('admin_sessions').insert({admin_id:data.id,token});
+    localStorage.setItem(ADMIN_SESSION_KEY,JSON.stringify({admin_id:data.id,token,nom:data.nom,role:data.role}));
     return { success:true, admin:data };
-  } catch(e) { return { success:false, message:'Erreur: ' + e.message }; }
+  } catch(e) { return { success:false, message:'Erreur' }; }
 }
 
 async function connexionPrestataire(telephone, password) {
   try {
     const hash = await hashPassword(password);
-    const { data, error } = await sb.from('providers')
-      .select('id,nom,prenom,metier,categorie,telephone,statut,photo_url')
-      .eq('telephone', telephone)
-      .eq('password_hash', hash)
-      .single();
+    const { data, error } = await sb.from('providers').select('id,nom,prenom,metier,categorie,telephone,statut').eq('telephone',telephone).eq('password_hash',hash).single();
     if (error || !data) return { success:false, message:'Téléphone ou mot de passe incorrect' };
-    if (data.statut === 'rejete') return { success:false, message:'Profil rejeté. Contactez le support.' };
-    if (data.statut === 'suspendu') return { success:false, message:'Compte suspendu. Contactez le support.' };
     const token = generateToken();
-    const expire = new Date(Date.now() + 30*24*60*60*1000).toISOString();
-    await sb.from('provider_sessions').insert({ 
-      provider_id: data.id, token, appareil: 'web', expire_le: expire 
-    });
-    setSession({ provider_id: data.id, token, nom: data.nom, prenom: data.prenom });
+    await sb.from('provider_sessions').insert({ provider_id:data.id, token });
+    setSession({ provider_id:data.id, token, nom:data.nom, prenom:data.prenom });
     return { success:true, provider:data };
-  } catch(e) { return { success:false, message:'Erreur: ' + e.message }; }
+  } catch(e) { return { success:false, message:'Erreur de connexion' }; }
 }
 
 </script>
@@ -5721,54 +5241,39 @@ function openMaps(nom, ville) {
 </body>
 </html>
 <script>
-// ═══════════════════════════════════════
-// ROUTEUR UNIQUE — YOUMMA JOBS
-// ═══════════════════════════════════════
-
 function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const mainContent = document.getElementById('mainContent');
-  const mainNav = document.getElementById('mainNav');
-
+  const mc = document.getElementById('mainContent');
+  const mn = document.getElementById('mainNav');
   if (!page || page === 'home' || page === 'accueil') {
     document.body.classList.add('on-home');
-    if (mainContent) mainContent.style.cssText = '';
-    if (mainNav) mainNav.style.cssText = '';
-    window.scrollTo(0, 0);
+    if (mc) mc.style.cssText = '';
+    if (mn) mn.style.cssText = '';
+    window.scrollTo(0,0);
   } else {
     document.body.classList.remove('on-home');
-    if (mainContent) mainContent.style.cssText = 'display:none!important';
-    if (mainNav) mainNav.style.cssText = 'display:none!important';
-    const el = document.getElementById('page-' + page);
-    if (el) { el.classList.add('active'); window.scrollTo(0, 0); }
+    if (mc) mc.style.cssText = 'display:none!important';
+    if (mn) mn.style.cssText = 'display:none!important';
+    const el = document.getElementById('page-'+page);
+    if (el) { el.classList.add('active'); window.scrollTo(0,0); }
   }
 }
 
-// Routeur principal — s'exécute au chargement
 window.addEventListener('load', async function() {
-  const hash = location.hash.replace('#', '').toLowerCase().trim();
-
+  const hash = location.hash.replace('#','').toLowerCase().trim();
   if (hash === 'admin') {
     navigate('admin');
     if (typeof initAdmin === 'function') await initAdmin();
-
   } else if (hash === 'dashboard') {
-    if (typeof verifierSession === 'function') {
-      const pid = await verifierSession();
-      if (!pid) { navigate('login'); return; }
-      navigate('dashboard');
-      if (typeof chargerDashboard === 'function') await chargerDashboard(pid);
-    } else {
-      navigate('login');
-    }
-
+    const pid = typeof verifierSession === 'function' ? await verifierSession() : null;
+    if (!pid) { navigate('login'); return; }
+    navigate('dashboard');
+    if (typeof chargerDashboard === 'function') await chargerDashboard(pid);
   } else if (hash === 'inscription') {
     navigate('inscription');
     if (typeof initInscription === 'function') initInscription();
-
   } else if (hash === 'login') {
     navigate('login');
-
   } else {
     navigate('home');
     if (typeof renderHeroSlideshow === 'function') renderHeroSlideshow();
@@ -5777,108 +5282,40 @@ window.addEventListener('load', async function() {
   }
 });
 
-// Changement de hash (navigation)
 window.addEventListener('hashchange', async function() {
-  const hash = location.hash.replace('#', '').toLowerCase().trim();
-  
-  // Ne pas interrompre si déjà sur la bonne page
-  const adminWrap = document.getElementById('adminWrap');
-  const isAdminOpen = adminWrap && adminWrap.classList.contains('visible');
-  if (isAdminOpen && (hash === 'admin' || hash === '')) return;
-  
-  const dashLayout = document.querySelector('.dash-layout');
-  const isDashOpen = dashLayout && document.getElementById('page-dashboard')?.classList.contains('active');
-  if (isDashOpen && (hash === 'dashboard' || hash === '')) return;
-
-  if (hash === 'admin') {
-    navigate('admin');
-    if (typeof initAdmin === 'function') await initAdmin();
-  } else if (hash === 'dashboard') {
-    if (typeof verifierSession === 'function') {
-      const pid = await verifierSession();
-      if (!pid) { navigate('login'); return; }
-      navigate('dashboard');
-      if (typeof chargerDashboard === 'function') await chargerDashboard(pid);
-    }
-  } else if (hash === 'inscription') {
-    navigate('inscription');
-    if (typeof initInscription === 'function') initInscription();
-  } else if (hash === 'login') {
-    navigate('login');
-  } else if (hash !== '') {
-    navigate('home');
-  }
+  const hash = location.hash.replace('#','').toLowerCase().trim();
+  const adminOpen = document.getElementById('adminWrap')?.classList.contains('visible');
+  const dashOpen = document.getElementById('page-dashboard')?.classList.contains('active');
+  if (adminOpen && (hash === 'admin' || hash === '')) return;
+  if (dashOpen && (hash === 'dashboard' || hash === '')) return;
+  if (hash === 'admin') { navigate('admin'); if (typeof initAdmin==='function') await initAdmin(); }
+  else if (hash === 'dashboard') {
+    const pid = typeof verifierSession==='function' ? await verifierSession() : null;
+    if (!pid) { navigate('login'); return; }
+    navigate('dashboard');
+    if (typeof chargerDashboard==='function') await chargerDashboard(pid);
+  } else if (hash === 'inscription') { navigate('inscription'); if (typeof initInscription==='function') initInscription(); }
+  else if (hash === 'login') { navigate('login'); }
+  else if (hash !== '') { navigate('home'); }
 });
 </script>
 
 <script>
-// ── INSCRIPTION BOUTONS ──
-// Attacher après chargement DOM complet
-(function attachInscr() {
-  function doStep1() {
-    var p = (document.getElementById('prenom')||{}).value||'';
-    var n = (document.getElementById('nom')||{}).value||'';
-    var t = (document.getElementById('telephone')||{}).value||'';
-    var pw = (document.getElementById('password')||{}).value||'';
-    var pw2 = (document.getElementById('password2')||{}).value||'';
-    var err = document.getElementById('errorBox');
-    p=p.trim();n=n.trim();t=t.trim();
-    if(!p||!n||!t||!pw){if(err){err.textContent='Remplissez tous les champs';err.style.display='block';}return;}
-    if(pw.length<6){if(err){err.textContent='Mot de passe trop court';err.style.display='block';}return;}
-    if(pw!==pw2){if(err){err.textContent='Mots de passe différents';err.style.display='block';}return;}
-    if(err)err.style.display='none';
-    var s1=document.getElementById('step1');
-    var s2=document.getElementById('step2');
-    if(s1)s1.classList.remove('active');
-    if(s2)s2.classList.add('active');
-    var d1=document.getElementById('step-dot-1');
-    var d2=document.getElementById('step-dot-2');
-    var l1=document.getElementById('step-line-1');
-    if(d1)d1.className='step done';
-    if(d2)d2.className='step active';
-    if(l1)l1.className='step-line done';
-    window.scrollTo(0,0);
-  }
-
-  function doStep2() {
-    var cat=(document.getElementById('categorie')||{}).value||'';
-    var met=(document.getElementById('metier')||{}).value||'';
-    var desc=(document.getElementById('description')||{}).value||'';
-    var err=document.getElementById('errorBox');
-    met=met.trim();desc=desc.trim();
-    if(!cat||!met||!desc){if(err){err.textContent='Remplissez tous les champs';err.style.display='block';}return;}
-    if(err)err.style.display='none';
-    var s2=document.getElementById('step2');
-    var s3=document.getElementById('step3');
-    if(s2)s2.classList.remove('active');
-    if(s3)s3.classList.add('active');
-    var d2=document.getElementById('step-dot-2');
-    var d3=document.getElementById('step-dot-3');
-    var l2=document.getElementById('step-line-2');
-    if(d2)d2.className='step done';
-    if(d3)d3.className='step active';
-    if(l2)l2.className='step-line done';
-    window.scrollTo(0,0);
-  }
-
-  function attach() {
-    var b1=document.getElementById('btnS1');
-    var b2=document.getElementById('btnS2');
-    if(b1){b1.onclick=doStep1;console.log('btnS1 OK');}
-    if(b2){b2.onclick=doStep2;console.log('btnS2 OK');}
-  }
-
-  // Essayer immédiatement
-  attach();
-  // Et aussi après load complet
-  window.addEventListener('load', attach);
-  // Et aussi quand navigate() est appelé
-  var origNav = window.navigate;
-  window.navigate = function(page) {
-    if(origNav) origNav(page);
-    if(page==='inscription') setTimeout(attach, 100);
-  };
-})();
+function _showAdminPanel() {
+  const loginWrap = document.getElementById('loginWrap');
+  const adminWrap = document.getElementById('adminWrap');
+  const sidebar = document.getElementById('adminSidebarEl');
+  const adminMain = adminWrap ? adminWrap.querySelector('.admin-main') : null;
+  const mn = document.getElementById('mainNav');
+  const mc = document.getElementById('mainContent');
+  if (mn) mn.style.cssText = 'display:none!important';
+  if (mc) mc.style.cssText = 'display:none!important';
+  if (loginWrap) loginWrap.style.cssText = 'display:none!important';
+  if (sidebar) sidebar.style.cssText = 'display:block!important;position:fixed;top:0;left:0;width:220px;height:100vh;background:#0D0D2E;z-index:9999;overflow-y:auto;';
+  if (adminMain) adminMain.style.cssText = 'display:block!important;margin-left:220px;padding:24px;background:#F4F6FB;min-height:100vh;';
+  if (adminWrap) { adminWrap.classList.add('visible'); adminWrap.style.cssText = 'display:block!important'; }
+  document.getElementById('page-admin')?.classList.add('logged');
+}
 </script>
 </body>
 </html>
