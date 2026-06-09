@@ -4363,40 +4363,139 @@ async function chargerAvis() {
       </div>
 
       <!-- Grille des 5 réalisations -->
-      <div id="adminRealCards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;"></div>
+      <div id="adminRealCards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;">
+
+        <div style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;overflow:hidden;">
+          <div id="areal-preview-wrap-0" style="aspect-ratio:4/3;background:linear-gradient(135deg,#1A1A4E,#C74B00);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:rgba(255,255,255,.8);">Construction</div>
+          <div style="padding:16px;">
+            <div style="font-size:12px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Réalisation 1 — Construction</div>
+            <div style="margin-bottom:8px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Titre</label>
+              <input id="areal-titre-0" placeholder="Titre..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/>
+            </div>
+            <div style="margin-bottom:8px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Description</label>
+              <textarea id="areal-desc-0" placeholder="Description..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12px;box-sizing:border-box;min-height:60px;resize:none;outline:none;"></textarea>
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Artisan</label>
+              <input id="areal-artisan-0" placeholder="Nom artisan..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/>
+            </div>
+            <label id="areal-label-0" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px;background:#F4F6FB;border:2px dashed #E5E7EB;border-radius:10px;font-size:13px;font-weight:700;color:#1A1A4E;cursor:pointer;margin-bottom:8px;box-sizing:border-box;">
+              <i class="fa-solid fa-camera"></i> Choisir une image
+              <input type="file" accept="image/*" style="display:none;" onchange="previewRealImage(this,0)"/>
+            </label>
+            <button onclick="validerReal(0)" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+              <i class="fa-solid fa-check"></i> Valider et publier
+            </button>
+          </div>
+        </div>
+
+        <div style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;overflow:hidden;">
+          <div id="areal-preview-wrap-1" style="aspect-ratio:4/3;background:linear-gradient(135deg,#1A0A4E,#7C3AED);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:rgba(255,255,255,.8);">Électricité</div>
+          <div style="padding:16px;">
+            <div style="font-size:12px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Réalisation 2 — Électricité</div>
+            <div style="margin-bottom:8px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Titre</label>
+              <input id="areal-titre-1" placeholder="Titre..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/>
+            </div>
+            <div style="margin-bottom:8px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Description</label>
+              <textarea id="areal-desc-1" placeholder="Description..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12px;box-sizing:border-box;min-height:60px;resize:none;outline:none;"></textarea>
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Artisan</label>
+              <input id="areal-artisan-1" placeholder="Nom artisan..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/>
+            </div>
+            <label id="areal-label-1" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px;background:#F4F6FB;border:2px dashed #E5E7EB;border-radius:10px;font-size:13px;font-weight:700;color:#1A1A4E;cursor:pointer;margin-bottom:8px;box-sizing:border-box;">
+              <i class="fa-solid fa-camera"></i> Choisir une image
+              <input type="file" accept="image/*" style="display:none;" onchange="previewRealImage(this,1)"/>
+            </label>
+            <button onclick="validerReal(1)" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+              <i class="fa-solid fa-check"></i> Valider et publier
+            </button>
+          </div>
+        </div>
+
+        <div style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;overflow:hidden;">
+          <div id="areal-preview-wrap-2" style="aspect-ratio:4/3;background:linear-gradient(135deg,#0A2E1A,#0F6E56);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:rgba(255,255,255,.8);">Plomberie</div>
+          <div style="padding:16px;">
+            <div style="font-size:12px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Réalisation 3 — Plomberie</div>
+            <div style="margin-bottom:8px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Titre</label>
+              <input id="areal-titre-2" placeholder="Titre..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/>
+            </div>
+            <div style="margin-bottom:8px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Description</label>
+              <textarea id="areal-desc-2" placeholder="Description..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12px;box-sizing:border-box;min-height:60px;resize:none;outline:none;"></textarea>
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Artisan</label>
+              <input id="areal-artisan-2" placeholder="Nom artisan..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/>
+            </div>
+            <label id="areal-label-2" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px;background:#F4F6FB;border:2px dashed #E5E7EB;border-radius:10px;font-size:13px;font-weight:700;color:#1A1A4E;cursor:pointer;margin-bottom:8px;box-sizing:border-box;">
+              <i class="fa-solid fa-camera"></i> Choisir une image
+              <input type="file" accept="image/*" style="display:none;" onchange="previewRealImage(this,2)"/>
+            </label>
+            <button onclick="validerReal(2)" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+              <i class="fa-solid fa-check"></i> Valider et publier
+            </button>
+          </div>
+        </div>
+
+        <div style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;overflow:hidden;">
+          <div id="areal-preview-wrap-3" style="aspect-ratio:4/3;background:linear-gradient(135deg,#2E1A0A,#B45309);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:rgba(255,255,255,.8);">Soudure</div>
+          <div style="padding:16px;">
+            <div style="font-size:12px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Réalisation 4 — Soudure</div>
+            <div style="margin-bottom:8px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Titre</label>
+              <input id="areal-titre-3" placeholder="Titre..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/>
+            </div>
+            <div style="margin-bottom:8px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Description</label>
+              <textarea id="areal-desc-3" placeholder="Description..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12px;box-sizing:border-box;min-height:60px;resize:none;outline:none;"></textarea>
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Artisan</label>
+              <input id="areal-artisan-3" placeholder="Nom artisan..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/>
+            </div>
+            <label id="areal-label-3" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px;background:#F4F6FB;border:2px dashed #E5E7EB;border-radius:10px;font-size:13px;font-weight:700;color:#1A1A4E;cursor:pointer;margin-bottom:8px;box-sizing:border-box;">
+              <i class="fa-solid fa-camera"></i> Choisir une image
+              <input type="file" accept="image/*" style="display:none;" onchange="previewRealImage(this,3)"/>
+            </label>
+            <button onclick="validerReal(3)" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+              <i class="fa-solid fa-check"></i> Valider et publier
+            </button>
+          </div>
+        </div>
+
+        <div style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;overflow:hidden;">
+          <div id="areal-preview-wrap-4" style="aspect-ratio:4/3;background:linear-gradient(135deg,#2E0A0A,#92400E);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:rgba(255,255,255,.8);">Menuiserie</div>
+          <div style="padding:16px;">
+            <div style="font-size:12px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Réalisation 5 — Menuiserie</div>
+            <div style="margin-bottom:8px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Titre</label>
+              <input id="areal-titre-4" placeholder="Titre..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/>
+            </div>
+            <div style="margin-bottom:8px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Description</label>
+              <textarea id="areal-desc-4" placeholder="Description..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12px;box-sizing:border-box;min-height:60px;resize:none;outline:none;"></textarea>
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Artisan</label>
+              <input id="areal-artisan-4" placeholder="Nom artisan..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/>
+            </div>
+            <label id="areal-label-4" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px;background:#F4F6FB;border:2px dashed #E5E7EB;border-radius:10px;font-size:13px;font-weight:700;color:#1A1A4E;cursor:pointer;margin-bottom:8px;box-sizing:border-box;">
+              <i class="fa-solid fa-camera"></i> Choisir une image
+              <input type="file" accept="image/*" style="display:none;" onchange="previewRealImage(this,4)"/>
+            </label>
+            <button onclick="validerReal(4)" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+              <i class="fa-solid fa-check"></i> Valider et publier
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <script>
-    // Remplir les cartes immédiatement
-    (function fillCards() {
-      var container = document.getElementById('adminRealCards');
-      if (!container) return;
-      var slides = [
-        {idx:0, label:'Réalisation 1', metier:'Construction', gradient:'linear-gradient(135deg,#1A1A4E,#C74B00)'},
-        {idx:1, label:'Réalisation 2', metier:'Électricité',  gradient:'linear-gradient(135deg,#1A0A4E,#7C3AED)'},
-        {idx:2, label:'Réalisation 3', metier:'Plomberie',    gradient:'linear-gradient(135deg,#0A2E1A,#0F6E56)'},
-        {idx:3, label:'Réalisation 4', metier:'Soudure',      gradient:'linear-gradient(135deg,#2E1A0A,#B45309)'},
-        {idx:4, label:'Réalisation 5', metier:'Menuiserie',   gradient:'linear-gradient(135deg,#2E0A0A,#92400E)'},
-      ];
-      container.innerHTML = slides.map(function(s) {
-        return '<div style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;overflow:hidden;">'
-          + '<div style="aspect-ratio:4/3;background:'+s.gradient+';display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:rgba(255,255,255,.8);" id="areal-preview-wrap-'+s.idx+'">'+s.metier+'</div>'
-          + '<div style="padding:16px;">'
-          + '<div style="font-size:12px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">'+s.label+' — '+s.metier+'</div>'
-          + '<div style="margin-bottom:8px;"><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Titre</label>'
-          + '<input id="areal-titre-'+s.idx+'" placeholder="Titre de la réalisation" style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/></div>'
-          + '<div style="margin-bottom:8px;"><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Description</label>'
-          + '<textarea id="areal-desc-'+s.idx+'" placeholder="Description..." style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12px;box-sizing:border-box;min-height:60px;resize:none;outline:none;"></textarea></div>'
-          + '<div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:3px;">Artisan</label>'
-          + '<input id="areal-artisan-'+s.idx+'" placeholder="Nom de l'artisan" style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;box-sizing:border-box;outline:none;"/></div>'
-          + '<label style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px;background:#F4F6FB;border:2px dashed #E5E7EB;border-radius:10px;font-size:13px;font-weight:700;color:#1A1A4E;cursor:pointer;margin-bottom:8px;box-sizing:border-box;">'
-          + '<i class="fa-solid fa-camera"></i> Choisir une image'
-          + '<input type="file" accept="image/*" style="display:none;" onchange="previewRealImage(this,'+s.idx+')"/></label>'
-          + '<button onclick="validerReal('+s.idx+')" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">'
-          + '<i class="fa-solid fa-check"></i> Valider et publier</button>'
-          + '</div></div>';
-      }).join('');
-    })();
-    </script>
 
 
 
