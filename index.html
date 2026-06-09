@@ -3862,9 +3862,7 @@ function renderTableHTML(statut, data) {
     return '<span style="color:#7A7F9A;font-size:11px;">Inactif</span>';
   };
 
-  const actionsHTML = p => {
-    return actionsHTML(p);
-  };
+  // actionsHTML définie globalement
 
   return `
     <table class="admin-table">
