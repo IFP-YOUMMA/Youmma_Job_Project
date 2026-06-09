@@ -1532,6 +1532,19 @@ img { max-width:100%; }
   .sidebar { display: none !important; }
   .main { margin-left: 0 !important; }
 }
+
+/* Grille prestataires */
+#providersGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+@media(max-width:900px) {
+  #providersGrid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media(max-width:520px) {
+  #providersGrid { grid-template-columns: 1fr !important; }
+}
 </style>
 
 <body>
@@ -1629,7 +1642,7 @@ async function verifierSession() {
     </a>
     <ul class="nav-links">
       <li><a href="#accueil">Accueil</a></li>
-      <li><a href="#artisans">Artisans</a></li>
+      <li><a href="#prestataires">Artisans</a></li>
       <li><a href="#categories">Catégories</a></li>
       <li><a href="#prestataires">Annuaire</a></li>
       <li><a href="#temoignages">Avis</a></li>
@@ -1664,7 +1677,7 @@ async function verifierSession() {
 <div class="mobile-menu" id="mobileMenu" onclick="toggleMenu()">
   <div class="mobile-menu-inner" onclick="event.stopPropagation()">
     <a href="#accueil" onclick="toggleMenu()"><i class="fa-solid fa-house"></i> Accueil</a>
-    <a href="#artisans" onclick="toggleMenu()"> Artisans</a>
+    <a href="#prestataires" onclick="toggleMenu()"> Artisans</a>
     <a href="#prestataires" onclick="toggleMenu()">👥 Annuaire</a>
     <a href="#categories" onclick="toggleMenu()">📂 Catégories</a>
     <a href="#partenaires" onclick="toggleMenu()">🤝 Partenaires</a>
@@ -1888,6 +1901,60 @@ async function verifierSession() {
   </div>
 </div>
 
+
+
+
+<!-- ── PRESTATAIRES ── -->
+<section id="prestataires" style="padding:60px 20px;background:#F9FAFB;">
+  <div style="max-width:1200px;margin:0 auto;">
+
+    <!-- En-tête -->
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <span style="width:28px;height:2px;background:#E85D04;display:inline-block;border-radius:2px;"></span>
+          <span style="font-size:11px;font-weight:700;color:#E85D04;letter-spacing:.1em;text-transform:uppercase;">Artisans &amp; Prestataires</span>
+        </div>
+        <h2 style="font-family:'Libre Baskerville',serif;font-size:28px;font-weight:700;color:#1A1A4E;margin-bottom:8px;">Nos professionnels <span style="color:#E85D04;">vérifiés</span></h2>
+        <p style="font-size:14px;color:#6B7280;">Des artisans qualifiés disponibles partout en Guinée.</p>
+      </div>
+      <!-- Filtre catégorie -->
+      <select id="filterCat" onchange="filterProviders()" style="padding:10px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;color:#1A1A4E;background:#fff;cursor:pointer;outline:none;">
+        <option value="">Toutes les catégories</option>
+        <option>Artisans</option>
+        <option>Santé &amp; Beauté</option>
+        <option>Construction &amp; BTP</option>
+        <option>IT &amp; Digital</option>
+        <option>Éducation</option>
+        <option>Transport</option>
+        <option>Services Express</option>
+        <option>Aide à domicile</option>
+      </select>
+    </div>
+
+    <!-- Barre de recherche -->
+    <div style="position:relative;margin-bottom:28px;max-width:480px;">
+      <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#9CA3AF;font-size:14px;"></i>
+      <input id="searchProviders" type="text" placeholder="Rechercher un artisan, un métier..." oninput="filterProviders()" style="width:100%;padding:12px 14px 12px 40px;border:1.5px solid #E5E7EB;border-radius:12px;font-size:14px;outline:none;box-sizing:border-box;background:#fff;"/>
+    </div>
+
+    <!-- Grille prestataires -->
+    <div id="providersGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;"></div>
+
+    <!-- Loader -->
+    <div id="providersLoader" style="text-align:center;padding:40px;color:#9CA3AF;font-size:14px;">
+      <i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i>Chargement des artisans...
+    </div>
+
+    <!-- Voir plus -->
+    <div style="text-align:center;margin-top:32px;" id="loadMoreWrap" style="display:none;">
+      <button onclick="loadMoreProviders()" style="padding:12px 28px;background:#fff;border:1.5px solid #E5E7EB;border-radius:50px;font-size:14px;font-weight:700;color:#1A1A4E;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#E85D04';this.style.color='#E85D04'" onmouseout="this.style.borderColor='#E5E7EB';this.style.color='#1A1A4E'">
+        Voir plus d'artisans
+      </button>
+    </div>
+
+  </div>
+</section>
 
 
 
@@ -3060,6 +3127,112 @@ function showNotif(title, desc, bg) {
   center.appendChild(el);
   setTimeout(() => el.classList.add('show'), 50);
   setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 400); }, 5000);
+}
+
+
+// ── CHARGEMENT PRESTATAIRES PUBLICS ──
+let _allProviders = [];
+let _filteredProviders = [];
+let _provPage = 0;
+const _provPerPage = 9;
+
+async function loadProvidersFromSupabase() {
+  try {
+    const { data, error } = await sb.from('providers')
+      .select('id,prenom,nom,metier,categorie,ville,commune,note_moyenne,nb_avis,photo_url,statut,essai_actif,badge_express,badge_top,badge_verifie')
+      .eq('statut', 'valide')
+      .order('created_at', { ascending: false })
+      .limit(100);
+
+    const loader = document.getElementById('providersLoader');
+    if (error) {
+      if (loader) loader.textContent = 'Erreur de chargement';
+      return;
+    }
+
+    _allProviders = data || [];
+    _filteredProviders = [..._allProviders];
+    _provPage = 0;
+    renderProviderCards();
+    if (loader) loader.style.display = 'none';
+
+  } catch(e) {
+    console.error('loadProviders:', e);
+  }
+}
+
+function renderProviderCards() {
+  const grid = document.getElementById('providersGrid');
+  const loadMoreWrap = document.getElementById('loadMoreWrap');
+  if (!grid) return;
+
+  const start = 0;
+  const end = (_provPage + 1) * _provPerPage;
+  const visible = _filteredProviders.slice(start, end);
+
+  if (visible.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#9CA3AF;font-size:14px;">Aucun artisan trouvé</div>';
+    if (loadMoreWrap) loadMoreWrap.style.display = 'none';
+    return;
+  }
+
+  grid.innerHTML = visible.map(p => {
+    const ini = ((p.prenom||'?')[0] + (p.nom||'?')[0]).toUpperCase();
+    const nom = (p.prenom||'') + ' ' + (p.nom||'');
+    const note = p.note_moyenne ? p.note_moyenne.toFixed(1) : '—';
+    const avis = p.nb_avis || 0;
+    const colors = ['#FDE8D8','#E8F5E9','#E8F0FE','#FFF3E0','#F3E8FF','#E0F2F1'];
+    const textColors = ['#C74B00','#2E7D32','#1A73E8','#E65100','#7B1FA2','#00695C'];
+    const ci = (p.prenom||'A').charCodeAt(0) % 6;
+
+    return `
+    <div onclick="openModal(${JSON.stringify(p.id)})" style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;padding:20px;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.04);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,.1)';this.style.borderColor='#E85D04'" onmouseout="this.style.transform='none';this.style.boxShadow='0 2px 8px rgba(0,0,0,.04)';this.style.borderColor='#E5E7EB'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div style="width:52px;height:52px;border-radius:14px;background:${colors[ci]};color:${textColors[ci]};display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;flex-shrink:0;overflow:hidden;">
+          ${p.photo_url ? `<img src="${p.photo_url}" style="width:100%;height:100%;object-fit:cover;" alt="${nom}"/>` : ini}
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${nom}</div>
+          <div style="font-size:12.5px;color:#E85D04;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.metier||'—'}</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+        ${p.badge_verifie ? '<span style="background:#DCFCE7;color:#16A34A;border-radius:20px;padding:2px 8px;font-size:10.5px;font-weight:700;"><i class='fa-solid fa-circle-check'></i> Vérifié</span>' : ''}
+        ${p.badge_express ? '<span style="background:#EDE9FE;color:#7C3AED;border-radius:20px;padding:2px 8px;font-size:10.5px;font-weight:700;">Express</span>' : ''}
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:12px;color:#6B7280;"><i class="fa-solid fa-location-dot" style="color:#9CA3AF;margin-right:3px;"></i>${p.ville||'—'}${p.commune?' · '+p.commune:''}</div>
+        <div style="font-size:12px;color:#F5C842;font-weight:700;">★ ${note} <span style="color:#9CA3AF;font-weight:400;">(${avis})</span></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  if (loadMoreWrap) {
+    loadMoreWrap.style.display = _filteredProviders.length > end ? 'block' : 'none';
+  }
+}
+
+function filterProviders() {
+  const search = (document.getElementById('searchProviders')?.value || '').toLowerCase().trim();
+  const cat = document.getElementById('filterCat')?.value || '';
+
+  _filteredProviders = _allProviders.filter(p => {
+    const matchSearch = !search ||
+      (p.prenom||'').toLowerCase().includes(search) ||
+      (p.nom||'').toLowerCase().includes(search) ||
+      (p.metier||'').toLowerCase().includes(search) ||
+      (p.ville||'').toLowerCase().includes(search);
+    const matchCat = !cat || p.categorie === cat;
+    return matchSearch && matchCat;
+  });
+
+  _provPage = 0;
+  renderProviderCards();
+}
+
+function loadMoreProviders() {
+  _provPage++;
+  renderProviderCards();
 }
 
 // ── KEYBOARD ──
@@ -5411,7 +5584,7 @@ window.addEventListener('hashchange', async function() {
     if (typeof chargerDashboard==='function') await chargerDashboard(pid);
   } else if (hash==='inscription') { navigate('inscription'); }
   else if (hash==='login') { navigate('login'); }
-  else if (hash!=='') { navigate('home'); }
+  else if (hash!=='') { navigate('home'); if(typeof loadProvidersFromSupabase==='function') loadProvidersFromSupabase(); }
 });
 </script>
 
