@@ -1494,6 +1494,16 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 /* Admin sidebar visible seulement dans admin-wrap.visible */
 .admin-wrap.visible .admin-sidebar { display: flex !important; }
 .admin-wrap.visible .admin-main { display: block !important; }
+
+/* ── LOGIN vs PANEL admin ── */
+#loginWrap { display: flex !important; align-items:center; justify-content:center; min-height:100vh; background:linear-gradient(135deg,#0D0D2E,#1A1A4E); }
+#page-admin.active #loginWrap { display: flex !important; }
+#page-admin.active.logged #loginWrap { display: none !important; }
+
+#adminWrap { display: none !important; }
+#adminWrap.visible { display: flex !important; width:100%; }
+#adminWrap.visible .admin-sidebar { display: flex !important; }
+#adminWrap.visible .admin-main { display: block !important; }
 </style>
 
 <body>
@@ -4257,8 +4267,10 @@ async function loginAdmin() {
       admin_id: data.id, token, nom: data.nom, role: data.role
     }));
     adminData = data;
-    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('loginWrap').style.display = 'none !important';
+    document.getElementById('loginWrap').style.cssText = 'display:none!important';
     document.getElementById('adminWrap').classList.add('visible');
+    document.getElementById('page-admin').classList.add('logged');
     await loadAll();
 
   } catch(e) {
@@ -5261,8 +5273,9 @@ async function initAdmin() {
       adminData = s;
       const loginWrap = document.querySelector('#page-admin .login-wrap') || document.getElementById('loginWrap');
       const adminWrap = document.querySelector('#page-admin .admin-wrap') || document.getElementById('adminWrap');
-      if(loginWrap) loginWrap.style.display = 'none';
+      if(loginWrap) loginWrap.style.cssText = 'display:none!important';
       if(adminWrap) adminWrap.classList.add('visible');
+      document.getElementById('page-admin')?.classList.add('logged');
       await loadAll();
       return;
     }
