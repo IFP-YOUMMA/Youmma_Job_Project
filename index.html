@@ -1323,13 +1323,33 @@ function generateToken() {
 async function connexionPrestataire(telephone, password) {
   try {
     const hash = await hashPassword(password);
-    const { data, error } = await sb.from('providers').select('id,nom,prenom,metier,categorie,telephone,statut').eq('telephone',telephone).eq('password_hash',hash).single();
-    if (error || !data) return { success:false, message:'Téléphone ou mot de passe incorrect' };
+    
+    // D'abord chercher le prestataire par téléphone
+    const { data: byTel, error: e1 } = await sb.from('providers')
+      .select('id,nom,prenom,metier,categorie,telephone,statut,password_hash')
+      .eq('telephone', telephone)
+      .single();
+    
+    if (e1 || !byTel) return { success:false, message:'Numéro de téléphone non trouvé' };
+    
+    // Vérifier le hash
+    if (byTel.password_hash !== hash) {
+      return { success:false, message:'Code PIN incorrect' };
+    }
+    
+    // Seul le compte suspendu ne peut pas se connecter
+    if (byTel.statut === 'suspendu') return { success:false, message:'Compte suspendu. Contactez le support.' };
+    
     const token = generateToken();
-    await sb.from('provider_sessions').insert({ provider_id:data.id, token });
-    setSession({ provider_id:data.id, token, nom:data.nom, prenom:data.prenom });
-    return { success:true, provider:data };
-  } catch(e) { return { success:false, message:'Erreur de connexion' }; }
+    try {
+      await sb.from('provider_sessions').insert({ provider_id: byTel.id, token });
+    } catch(e) { console.warn('Session insert:', e.message); }
+    
+    setSession({ provider_id: byTel.id, token, nom: byTel.nom, prenom: byTel.prenom });
+    return { success:true, provider: byTel };
+  } catch(e) { 
+    return { success:false, message:'Erreur: ' + e.message }; 
+  }
 }
 
 
