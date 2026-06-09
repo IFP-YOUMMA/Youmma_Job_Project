@@ -1,12 +1,4 @@
-function actionsHTML(p) {
-  const btnStyle = (bg, color) => `style="padding:6px 12px;background:${bg};color:${color};border:none;border-radius:8px;font-size:11.5px;font-weight:700;cursor:pointer;margin:2px;"`;
-  let btns = '';
-  if (p.statut !== 'valide')   btns += `<button ${btnStyle('rgba(22,163,74,.12)','#16A34A')} onclick="_adminAction('valider','${p.id}')">Valider</button>`;
-  if (p.statut !== 'rejete')   btns += `<button ${btnStyle('rgba(239,68,68,.1)','#DC2626')} onclick="_adminAction('rejeter','${p.id}')">Rejeter</button>`;
-  if (p.statut !== 'suspendu') btns += `<button ${btnStyle('rgba(245,158,11,.1)','#B45309')} onclick="_adminAction('suspendre','${p.id}')">Suspendre</button>`;
-  btns += `<button ${btnStyle('rgba(239,68,68,.08)','#DC2626')} onclick="_adminAction('supprimer','${p.id}')">Supprimer</button>`;
-  return `<div style="display:flex;flex-wrap:wrap;gap:3px;">${btns}</div>`;
-}<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
@@ -37,26 +29,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const SESSION_KEY = 'yj_provider_session';
 const ADMIN_SESSION_KEY = 'yj_admin_session';
 </script>
-<style>
-/* ════════════════════════════════════
-   YOUMMA JOBS 2026 — DESIGN SYSTEM
-   ════════════════════════════════════ */
-:root{
-  --orange:#E85D04;--orange-light:#FDE8D8;--orange-dark:#C74B00;--orange-50:#FFF7F0;
-  --bleu:#1A1A4E;--bleu-mid:#2D2D6B;--bleu-light:#E0E0F8;--bleu-50:#F0F0FF;
-  --or:#F5C842;--or-light:#FEF9C3;--or-dark:#D4A017;
-  --blanc:#FFFFFF;--fond:#F7F8FC;--fond2:#FAFBFF;--texte:#0F1020;
-  --gris:#6B7280;--gris-light:#9CA3AF;--bordure:#E5E7EB;--vert:#16A34A;
-  --rouge:#DC2626;--violet:#7C3AED;
-  --artisan:#8B4513;--artisan-light:#FFF3E8;
-  --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
-  --shadow-md:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
-  --shadow-lg:0 10px 40px rgba(0,0,0,.1),0 4px 12px rgba(0,0,0,.05);
-  --shadow-xl:0 20px 60px rgba(0,0,0,.12),0 8px 20px rgba(0,0,0,.06);
-  --transition:.2s cubic-bezier(.4,0,.2,1);
-}
-*{margin:0;padding:0;box-sizing:border-box;}
+<style>*{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--blanc);color:var(--texte);overflow-x:hidden;line-height:1.6;}
 h1,h2,h3,.baskerville{font-family:'Libre Baskerville',Georgia,serif;}
@@ -1428,6 +1401,258 @@ button[style*="background:var(--orange)"] {
 .hero-subtitle { animation: fadeUp .8s .15s cubic-bezier(.4,0,.2,1) both; }
 .hero-search { animation: fadeUp .8s .3s cubic-bezier(.4,0,.2,1) both; }
 .hero-kpis { animation: fadeUp .8s .45s cubic-bezier(.4,0,.2,1) both; }
+
+/* ══════════════════════════════════════
+   RESPONSIVE MOBILE — YOUMMA JOBS
+   Breakpoints: 768px (tablette), 480px (mobile)
+══════════════════════════════════════ */
+
+/* ── NAV MOBILE ── */
+@media(max-width:768px) {
+  .nav-inner { padding: 0 16px !important; }
+  .nav-links { display: none !important; }
+  .nav-actions .btn-secondary { display: none !important; }
+  .nav-actions .btn-primary { padding: 9px 16px !important; font-size: 13px !important; }
+  #mobileMenu { display: none; }
+  #mobileMenu.open { display: flex !important; flex-direction: column; position: fixed; top: 60px; left: 0; right: 0; background: #0D0D2E; padding: 16px; z-index: 999; gap: 4px; border-bottom: 1px solid rgba(255,255,255,.1); }
+  #mobileMenu a { color: rgba(255,255,255,.8); padding: 12px 16px; border-radius: 10px; font-size: 14px; font-weight: 600; display: block; text-decoration: none; }
+  #mobileMenu a:hover { background: rgba(255,255,255,.07); }
+  .hamburger { display: flex !important; }
+}
+
+/* ── HERO MOBILE ── */
+@media(max-width:768px) {
+  .hero-section, #hero { padding: 80px 16px 40px !important; }
+  .hero-content { max-width: 100% !important; }
+  .hero-title { font-size: 36px !important; line-height: 1.15 !important; }
+  .hero-subtitle { font-size: 14px !important; }
+  .hero-search { flex-direction: column !important; gap: 10px !important; }
+  .hero-search input { width: 100% !important; }
+  .hero-search button { width: 100% !important; }
+  .hero-kpis { flex-wrap: wrap !important; gap: 12px !important; }
+  .kpi { width: calc(50% - 8px) !important; border-right: none !important; padding: 0 !important; }
+  .hero-visual, .hero-img-wrap { display: none !important; }
+}
+
+@media(max-width:480px) {
+  .hero-title { font-size: 28px !important; }
+  #heroSlide { height: 260px !important; }
+  #heroSlide > div:first-child { font-size: 15px !important; }
+}
+
+/* ── SLIDESHOW HERO MOBILE ── */
+@media(max-width:768px) {
+  #heroSlide { height: 200px !important; border-radius: 14px !important; }
+  #heroSlide [style*="max-width:320px"] { max-width: 200px !important; padding: 16px !important; }
+  #heroSlide [style*="font-size:18px"] { font-size: 14px !important; }
+  #heroSlide button[onclick*="hSlideGo"] { display: none !important; }
+}
+
+/* ── SECTIONS MOBILE ── */
+@media(max-width:768px) {
+  section { padding: 48px 16px !important; }
+  .section-title { font-size: 24px !important; }
+  h2 { font-size: 22px !important; }
+}
+
+/* ── GRILLE ARTISANS MOBILE ── */
+@media(max-width:768px) {
+  .providers-grid, .artisans-grid, #providersGrid, #artisansGrid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+}
+@media(max-width:480px) {
+  .providers-grid, .artisans-grid, #providersGrid, #artisansGrid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── CATÉGORIES MOBILE ── */
+@media(max-width:768px) {
+  .cats-grid, #catsGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+  }
+}
+@media(max-width:480px) {
+  .cats-grid, #catsGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ── PORTFOLIO CARROUSEL MOBILE ── */
+@media(max-width:768px) {
+  #portfolio .real-slide { grid-template-columns: 1fr !important; }
+  #portfolio .real-slide > div:first-child { min-height: 200px !important; }
+  #portfolio .real-slide > div:last-child { padding: 20px 16px !important; }
+  #portfolio .real-slide > div:last-child h3 { font-size: 16px !important; }
+  #portfolio button[onclick*="realNav"] { 
+    width: 34px !important; height: 34px !important; font-size: 14px !important;
+  }
+  #portfolio button[onclick*="realNav(−1)"] { left: 6px !important; }
+  #portfolio button[onclick*="realNav(1)"] { right: 6px !important; }
+}
+
+/* ── INSCRIPTION MOBILE ── */
+@media(max-width:480px) {
+  #page-inscription > div > div { padding: 24px 16px !important; }
+  #page-inscription [style*="grid-template-columns:1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  #i-pin1, #i-pin2, #i-pin3, #i-pin4 {
+    width: 52px !important; height: 52px !important; font-size: 20px !important;
+  }
+}
+
+/* ── LOGIN MOBILE ── */
+@media(max-width:480px) {
+  .login-card { padding: 28px 20px !important; margin: 16px !important; }
+  #lpin1, #lpin2, #lpin3, #lpin4 {
+    width: 50px !important; height: 50px !important; font-size: 20px !important;
+  }
+}
+
+/* ── DASHBOARD PRESTATAIRE MOBILE ── */
+@media(max-width:768px) {
+  .sidebar { width: 0 !important; overflow: hidden !important; }
+  .sidebar.open { width: 220px !important; }
+  .dash-main, .main { margin-left: 0 !important; }
+  .topbar { padding: 12px 16px !important; }
+  .stats-grid { grid-template-columns: repeat(3, 1fr) !important; }
+  .actions-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media(max-width:480px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .actions-grid { grid-template-columns: 1fr 1fr !important; }
+}
+
+/* ── ADMIN PANEL MOBILE ── */
+@media(max-width:768px) {
+  #adminWrap.visible .admin-sidebar { width: 0 !important; overflow: hidden !important; }
+  #adminWrap.visible .admin-sidebar.open { width: 220px !important; }
+  #adminWrap.visible .admin-main { margin-left: 0 !important; padding: 16px !important; }
+  .stats-row { grid-template-columns: repeat(3, 1fr) !important; }
+  #adminRealCards { grid-template-columns: 1fr !important; }
+}
+@media(max-width:480px) {
+  .stats-row { grid-template-columns: 1fr 1fr !important; }
+  #admin-dashboard table { font-size: 11px !important; }
+  #admin-dashboard td, #admin-dashboard th { padding: 8px 6px !important; }
+}
+
+/* ── MODAL MOBILE ── */
+@media(max-width:768px) {
+  .modal-content, .modal-card {
+    width: 95vw !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    margin: 16px !important;
+    border-radius: 16px !important;
+  }
+}
+
+/* ── FOOTER MOBILE ── */
+@media(max-width:768px) {
+  .footer-grid, .footer-inner {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px !important;
+  }
+  .footer-copy { flex-direction: column !important; gap: 8px !important; text-align: center !important; }
+}
+@media(max-width:480px) {
+  .footer-grid, .footer-inner {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── BOUTON HAMBURGER (si pas existant) ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 8px;
+  background: none;
+  border: none;
+}
+.hamburger span {
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: all .3s;
+  display: block;
+}
+
+/* ── TEXTES TRONQUÉS SUR MOBILE ── */
+@media(max-width:480px) {
+  .provider-card .card-name,
+  .card-artisan .artisan-name {
+    font-size: 13px !important;
+  }
+  .provider-card .card-metier,
+  .card-artisan .artisan-metier {
+    font-size: 11.5px !important;
+  }
+}
+
+/* ── SCROLL HORIZONTAL CACHÉ ── */
+body { overflow-x: hidden !important; }
+* { box-sizing: border-box; }
+
+/* ── HAMBURGER ANIMÉ ── */
+.hamburger { display: none !important; cursor: pointer; padding: 8px; background: none; border: none; }
+.hamburger span { display: block; width: 22px; height: 2px; background: rgba(255,255,255,.85); border-radius: 2px; transition: all .3s cubic-bezier(.4,0,.2,1); margin: 4px 0; }
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+.hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+
+@media(max-width:768px) {
+  .hamburger { display: flex !important; flex-direction: column; align-items: center; }
+  .nav-links { display: none !important; }
+  .nav-btn-group { display: none !important; }
+  .btn-nav-secondary { display: none !important; }
+  .btn-nav-primary { display: none !important; }
+}
+
+/* ── MENU MOBILE OVERLAY ── */
+#mobileMenu {
+  display: none !important;
+  position: fixed;
+  top: 60px; left: 0; right: 0; bottom: 0;
+  background: rgba(10,10,30,.97);
+  z-index: 998;
+  flex-direction: column;
+  padding: 20px 16px;
+  gap: 4px;
+  overflow-y: auto;
+  backdrop-filter: blur(12px);
+}
+#mobileMenu.open { display: flex !important; animation: fadeIn .25s ease; }
+#mobileMenu .mobile-menu-inner { display: flex !important; flex-direction: column; gap: 4px; width: 100%; }
+#mobileMenu a {
+  color: rgba(255,255,255,.75) !important;
+  padding: 14px 16px !important;
+  border-radius: 12px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  display: block !important;
+  transition: background .2s !important;
+  border: none !important;
+}
+#mobileMenu a:hover, #mobileMenu a:active { background: rgba(255,255,255,.08) !important; color: #fff !important; }
+#mobileMenu .mobile-cta {
+  background: var(--orange) !important;
+  color: #fff !important;
+  margin-top: 12px !important;
+  text-align: center !important;
+  border-radius: 14px !important;
+  padding: 14px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+}
 </style>
 
 <body>
@@ -2516,6 +2741,54 @@ const PRESTATAIRES = [
 </script>
 
 <script>
+// ── MENU MOBILE ──
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  if (!menu) return;
+  const isOpen = menu.classList.toggle('open');
+  // Animer le hamburger
+  const btn = document.querySelector('.hamburger');
+  if (btn) btn.classList.toggle('active', isOpen);
+  // Bloquer scroll body
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+function closeMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  if (menu) menu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+// Fermer si clic sur lien
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('#mobileMenu a').forEach(function(a) {
+    a.addEventListener('click', closeMobileMenu);
+  });
+});
+
+
+// ── MENU MOBILE ──
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('hamburgerBtn');
+  if (!menu) return;
+  menu.classList.toggle('open');
+  if (btn) btn.classList.toggle('active');
+}
+function closeMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  if (menu) menu.classList.remove('open');
+}
+// Afficher hamburger sur mobile
+(function() {
+  function checkMobile() {
+    const btn = document.getElementById('hamburgerBtn');
+    if (btn) btn.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+  }
+  window.addEventListener('resize', checkMobile);
+  document.addEventListener('DOMContentLoaded', checkMobile);
+  window.addEventListener('load', checkMobile);
+})();
+
+
 // ── SCROLL REVEAL ──
 (function() {
   const observer = new IntersectionObserver(function(entries) {
@@ -4778,6 +5051,16 @@ function _adminShowSection(name) {
 function _adminRenderTable(statut,data) {
   const ids={en_attente:'tableEnAttente',valide:'tableValide',rejete:'tableRejete',suspendu:'tableSuspendu'};
   const el=document.getElementById(ids[statut]);if(el) el.innerHTML=_adminTableHTML(statut,data);
+}
+
+function actionsHTML(p) {
+  const b = (bg, c, t, type) => `<button style="padding:6px 12px;background:${bg};color:${c};border:none;border-radius:8px;font-size:11.5px;font-weight:700;cursor:pointer;margin:2px;" onclick="_adminAction('${type}','${p.id}')">${t}</button>`;
+  let btns = '';
+  if (p.statut !== 'valide')   btns += b('rgba(22,163,74,.12)','#16A34A','Valider','valider');
+  if (p.statut !== 'rejete')   btns += b('rgba(239,68,68,.1)','#DC2626','Rejeter','rejeter');
+  if (p.statut !== 'suspendu') btns += b('rgba(245,158,11,.1)','#B45309','Suspendre','suspendre');
+  btns += b('rgba(239,68,68,.08)','#DC2626','Supprimer','supprimer');
+  return `<div style="display:flex;flex-wrap:wrap;gap:3px;">${btns}</div>`;
 }
 
 function _adminTableHTML(statut,data) {
