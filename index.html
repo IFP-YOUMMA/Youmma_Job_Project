@@ -1341,11 +1341,12 @@ async function connexionPrestataire(telephone, password) {
     if (byTel.statut === 'suspendu') return { success:false, message:'Compte suspendu. Contactez le support.' };
     
     const token = generateToken();
-    try {
-      await sb.from('provider_sessions').insert({ provider_id: byTel.id, token });
-    } catch(e) { console.warn('Session insert:', e.message); }
-    
-    setSession({ provider_id: byTel.id, token, nom: byTel.nom, prenom: byTel.prenom });
+    // Sauvegarder session en localStorage directement (sans dépendre de provider_sessions)
+    const sessionData = { provider_id: byTel.id, token, nom: byTel.nom, prenom: byTel.prenom };
+    setSession(sessionData);
+    // Essayer d'insérer en DB en arrière-plan
+    sb.from('provider_sessions').insert({ provider_id: byTel.id, token })
+      .then(() => {}).catch(e => console.warn('Session DB:', e.message));
     return { success:true, provider: byTel };
   } catch(e) { 
     return { success:false, message:'Erreur: ' + e.message }; 
@@ -2953,18 +2954,39 @@ async function connexion() {
   const tel = document.getElementById('telephone').value.trim();
   const pin = (document.getElementById('lpin1')?.value||'')+(document.getElementById('lpin2')?.value||'')+(document.getElementById('lpin3')?.value||'')+(document.getElementById('lpin4')?.value||'');
   const btn = document.getElementById('btnConnexion');
-  const err = document.getElementById('errorBox');
-  err.classList.remove('show');
-  if (!tel) { showError('Entrez votre numéro de téléphone'); return; }
-  if (pin.length < 4) { showError('Entrez votre code PIN 4 chiffres'); return; }
-  btn.disabled = true; btn.classList.add('loading');
-  const res = await connexionPrestataire(tel, pin);
-  btn.disabled = false; btn.classList.remove('loading');
-  if (res.success) {
-    navigate('dashboard');
-    const pid = res.provider?.id || await verifierSession();
-    if (pid && typeof chargerDashboard==='function') await chargerDashboard(pid);
-  } else { showError(res.message || 'Téléphone ou PIN incorrect'); }
+  const errBox = document.getElementById('errorBox');
+  
+  if (errBox) errBox.classList.remove('show');
+  
+  if (!tel) { 
+    if (errBox) { errBox.textContent = 'Entrez votre numéro de téléphone'; errBox.classList.add('show'); }
+    return; 
+  }
+  if (pin.length < 4) { 
+    if (errBox) { errBox.textContent = 'Entrez votre code PIN 4 chiffres'; errBox.classList.add('show'); }
+    return; 
+  }
+  
+  if (btn) btn.disabled = true;
+  
+  try {
+    const res = await connexionPrestataire(tel, pin);
+    if (res.success) {
+      navigate('dashboard');
+      const pid = res.provider?.id || await verifierSession();
+      if (pid && typeof chargerDashboard==='function') await chargerDashboard(pid);
+    } else { 
+      const msg = res.message || 'Téléphone ou PIN incorrect';
+      if (errBox) { errBox.textContent = msg; errBox.classList.add('show'); }
+      else alert(msg);
+    }
+  } catch(e) {
+    const msg = 'Erreur: ' + e.message;
+    if (errBox) { errBox.textContent = msg; errBox.classList.add('show'); }
+    else alert(msg);
+  }
+  
+  if (btn) btn.disabled = false;
 }
 
 
