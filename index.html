@@ -1613,34 +1613,118 @@ body.on-home nav{display:flex!important;}
 
 
 <!-- ── SECTION PORTFOLIO ── -->
-<section id="portfolio" style="padding:80px 20px;background:#fff;overflow:hidden;">
-  <div style="max-width:1200px;margin:0 auto;">
-
-    <!-- Titre -->
-    <div style="text-align:center;margin-bottom:48px;">
-      <div style="display:inline-flex;align-items:center;gap:8px;background:#FDE8D8;border-radius:50px;padding:6px 16px;font-size:12px;font-weight:700;color:#C74B00;margin-bottom:14px;">📸 Galerie des réalisations</div>
-      <h2 style="font-family:'Libre Baskerville',serif;font-size:32px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Le travail <span style="color:#E85D04;">parle</span> de lui-même</h2>
-      <p style="font-size:15px;color:#6B7280;max-width:500px;margin:0 auto;">Des projets réels réalisés par nos artisans vérifiés à Conakry et en Guinée.</p>
+<section id="portfolio" style="padding:70px 20px;background:#F9FAFB;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:44px;">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:#FDE8D8;border-radius:50px;padding:6px 16px;font-size:12px;font-weight:700;color:#C74B00;margin-bottom:12px;">📸 Réalisations</div>
+      <h2 style="font-family:'Libre Baskerville',serif;font-size:30px;font-weight:700;color:#1A1A4E;margin-bottom:10px;">Le travail <span style="color:#E85D04;">parle</span> de lui-même</h2>
+      <p style="font-size:14px;color:#6B7280;max-width:480px;margin:0 auto;">Des projets réels réalisés par nos artisans vérifiés à Conakry.</p>
     </div>
 
-    <!-- Carrousel -->
-    <div style="position:relative;">
-      <!-- Track -->
-      <div style="overflow:hidden;border-radius:20px;">
-        <div id="realTrack" style="display:flex;transition:transform .6s cubic-bezier(.4,0,.2,1);"></div>
-      </div>
+    <!-- Carrousel simple -->
+    <div style="position:relative;border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.1);">
+      <!-- Slides container -->
+      <div id="realSlider" style="display:flex;transition:transform .6s ease;">
+
+        <!-- Slide 1 -->
+        <div class="real-slide" style="min-width:100%;display:grid;grid-template-columns:1.2fr 1fr;">
+          <div style="position:relative;min-height:360px;overflow:hidden;">
+            <img id="real-img-0" src="https://picsum.photos/seed/construction/800/600" style="width:100%;height:100%;object-fit:cover;" alt="Construction"/>
+            <div style="position:absolute;top:14px;left:14px;background:#E85D04;color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;">🏗️ Construction</div>
+          </div>
+          <div style="background:#fff;padding:40px 32px;display:flex;flex-direction:column;justify-content:center;">
+            <div style="font-size:11px;color:#9CA3AF;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">Réalisation 1 / 5</div>
+            <h3 id="real-titre-0" style="font-family:'Libre Baskerville',serif;font-size:21px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Villa moderne à Ratoma</h3>
+            <p id="real-desc-0" style="font-size:13.5px;color:#6B7280;line-height:1.7;margin-bottom:24px;">Construction complète d'une villa R+1 en 6 mois. Maçonnerie, carrelage, peinture inclus.</p>
+            <div style="display:flex;align-items:center;gap:10px;padding-top:18px;border-top:1.5px solid #F3F4F6;">
+              <div style="width:38px;height:38px;border-radius:50%;background:#FDE8D8;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#C74B00;">MK</div>
+              <div><div id="real-artisan-0" style="font-size:13px;font-weight:700;color:#1A1A4E;">Mamadou Kouyaté</div><div style="font-size:11.5px;color:#F5C842;font-weight:700;">★★★★★ 4.9</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="real-slide" style="min-width:100%;display:grid;grid-template-columns:1.2fr 1fr;">
+          <div style="position:relative;min-height:360px;overflow:hidden;">
+            <img id="real-img-1" src="https://picsum.photos/seed/electric/800/600" style="width:100%;height:100%;object-fit:cover;" alt="Électricité"/>
+            <div style="position:absolute;top:14px;left:14px;background:#7C3AED;color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;">⚡ Électricité</div>
+          </div>
+          <div style="background:#fff;padding:40px 32px;display:flex;flex-direction:column;justify-content:center;">
+            <div style="font-size:11px;color:#9CA3AF;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">Réalisation 2 / 5</div>
+            <h3 id="real-titre-1" style="font-family:'Libre Baskerville',serif;font-size:21px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Installation électrique bureau</h3>
+            <p id="real-desc-1" style="font-size:13.5px;color:#6B7280;line-height:1.7;margin-bottom:24px;">Câblage complet d'un immeuble 3 étages. Tableau électrique, prises et climatisation.</p>
+            <div style="display:flex;align-items:center;gap:10px;padding-top:18px;border-top:1.5px solid #F3F4F6;">
+              <div style="width:38px;height:38px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#7C3AED;">AD</div>
+              <div><div id="real-artisan-1" style="font-size:13px;font-weight:700;color:#1A1A4E;">Amadou Diallo</div><div style="font-size:11.5px;color:#F5C842;font-weight:700;">★★★★★ 5.0</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="real-slide" style="min-width:100%;display:grid;grid-template-columns:1.2fr 1fr;">
+          <div style="position:relative;min-height:360px;overflow:hidden;">
+            <img id="real-img-2" src="https://picsum.photos/seed/plumber/800/600" style="width:100%;height:100%;object-fit:cover;" alt="Plomberie"/>
+            <div style="position:absolute;top:14px;left:14px;background:#0F6E56;color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;">🔧 Plomberie</div>
+          </div>
+          <div style="background:#fff;padding:40px 32px;display:flex;flex-direction:column;justify-content:center;">
+            <div style="font-size:11px;color:#9CA3AF;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">Réalisation 3 / 5</div>
+            <h3 id="real-titre-2" style="font-family:'Libre Baskerville',serif;font-size:21px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Réseau plomberie résidentiel</h3>
+            <p id="real-desc-2" style="font-size:13.5px;color:#6B7280;line-height:1.7;margin-bottom:24px;">Installation eau froide/chaude pour une résidence de 8 appartements à Kaloum.</p>
+            <div style="display:flex;align-items:center;gap:10px;padding-top:18px;border-top:1.5px solid #F3F4F6;">
+              <div style="width:38px;height:38px;border-radius:50%;background:#DCFCE7;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#16A34A;">IB</div>
+              <div><div id="real-artisan-2" style="font-size:13px;font-weight:700;color:#1A1A4E;">Ibrahima Bah</div><div style="font-size:11.5px;color:#F5C842;font-weight:700;">★★★★★ 4.8</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="real-slide" style="min-width:100%;display:grid;grid-template-columns:1.2fr 1fr;">
+          <div style="position:relative;min-height:360px;overflow:hidden;">
+            <img id="real-img-3" src="https://picsum.photos/seed/welder/800/600" style="width:100%;height:100%;object-fit:cover;" alt="Soudure"/>
+            <div style="position:absolute;top:14px;left:14px;background:#B45309;color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;">🔩 Soudure</div>
+          </div>
+          <div style="background:#fff;padding:40px 32px;display:flex;flex-direction:column;justify-content:center;">
+            <div style="font-size:11px;color:#9CA3AF;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">Réalisation 4 / 5</div>
+            <h3 id="real-titre-3" style="font-family:'Libre Baskerville',serif;font-size:21px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Portail & clôture métallique</h3>
+            <p id="real-desc-3" style="font-size:13.5px;color:#6B7280;line-height:1.7;margin-bottom:24px;">Fabrication et pose d'un portail coulissant et clôture sur 80m à Dixinn.</p>
+            <div style="display:flex;align-items:center;gap:10px;padding-top:18px;border-top:1.5px solid #F3F4F6;">
+              <div style="width:38px;height:38px;border-radius:50%;background:#FEF3C7;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#B45309;">SC</div>
+              <div><div id="real-artisan-3" style="font-size:13px;font-weight:700;color:#1A1A4E;">Sékou Camara</div><div style="font-size:11.5px;color:#F5C842;font-weight:700;">★★★★★ 4.7</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="real-slide" style="min-width:100%;display:grid;grid-template-columns:1.2fr 1fr;">
+          <div style="position:relative;min-height:360px;overflow:hidden;">
+            <img id="real-img-4" src="https://picsum.photos/seed/carpenter/800/600" style="width:100%;height:100%;object-fit:cover;" alt="Menuiserie"/>
+            <div style="position:absolute;top:14px;left:14px;background:#92400E;color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;">🪚 Menuiserie</div>
+          </div>
+          <div style="background:#fff;padding:40px 32px;display:flex;flex-direction:column;justify-content:center;">
+            <div style="font-size:11px;color:#9CA3AF;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">Réalisation 5 / 5</div>
+            <h3 id="real-titre-4" style="font-family:'Libre Baskerville',serif;font-size:21px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Cuisine équipée sur mesure</h3>
+            <p id="real-desc-4" style="font-size:13.5px;color:#6B7280;line-height:1.7;margin-bottom:24px;">Fabrication cuisine complète en bois massif avec plan de travail en marbre à Kipé.</p>
+            <div style="display:flex;align-items:center;gap:10px;padding-top:18px;border-top:1.5px solid #F3F4F6;">
+              <div style="width:38px;height:38px;border-radius:50%;background:#FFF3E8;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#92400E;">SB</div>
+              <div><div id="real-artisan-4" style="font-size:13px;font-weight:700;color:#1A1A4E;">Souleymane Barry</div><div style="font-size:11.5px;color:#F5C842;font-weight:700;">★★★★★ 4.9</div></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- fin realSlider -->
 
       <!-- Flèches -->
-      <button onclick="realGo(_realIdx-1)" style="position:absolute;left:-20px;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:#fff;border:none;box-shadow:0 4px 16px rgba(0,0,0,.12);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:2;transition:box-shadow .2s;" onmouseover="this.style.boxShadow='0 6px 20px rgba(0,0,0,.18)'" onmouseout="this.style.boxShadow='0 4px 16px rgba(0,0,0,.12)'">←</button>
-      <button onclick="realGo(_realIdx+1)" style="position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:#fff;border:none;box-shadow:0 4px 16px rgba(0,0,0,.12);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:2;transition:box-shadow .2s;" onmouseover="this.style.boxShadow='0 6px 20px rgba(0,0,0,.18)'" onmouseout="this.style.boxShadow='0 4px 16px rgba(0,0,0,.12)'">→</button>
-
-      <!-- Dots -->
-      <div id="realDots" style="display:flex;justify-content:center;gap:8px;margin-top:24px;"></div>
+      <button onclick="realNav(-1)" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.9);border:none;box-shadow:0 2px 12px rgba(0,0,0,.15);cursor:pointer;font-size:18px;z-index:5;">←</button>
+      <button onclick="realNav(1)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.9);border:none;box-shadow:0 2px 12px rgba(0,0,0,.15);cursor:pointer;font-size:18px;z-index:5;">→</button>
     </div>
 
-    <!-- CTA -->
-    <div style="text-align:center;margin-top:36px;">
-      <a href="#annuaire" onclick="document.getElementById('annuaire')?.scrollIntoView({behavior:'smooth'})" style="display:inline-flex;align-items:center;gap:8px;background:#1A1A4E;color:#fff;padding:14px 28px;border-radius:50px;text-decoration:none;font-weight:700;font-size:14px;">Voir tous nos artisans →</a>
+    <!-- Dots -->
+    <div style="display:flex;justify-content:center;gap:7px;margin-top:20px;">
+      <div id="rdot0" onclick="realGoto(0)" style="width:22px;height:8px;border-radius:4px;background:#E85D04;cursor:pointer;transition:all .3s;"></div>
+      <div id="rdot1" onclick="realGoto(1)" style="width:8px;height:8px;border-radius:4px;background:#E5E7EB;cursor:pointer;transition:all .3s;"></div>
+      <div id="rdot2" onclick="realGoto(2)" style="width:8px;height:8px;border-radius:4px;background:#E5E7EB;cursor:pointer;transition:all .3s;"></div>
+      <div id="rdot3" onclick="realGoto(3)" style="width:8px;height:8px;border-radius:4px;background:#E5E7EB;cursor:pointer;transition:all .3s;"></div>
+      <div id="rdot4" onclick="realGoto(4)" style="width:8px;height:8px;border-radius:4px;background:#E5E7EB;cursor:pointer;transition:all .3s;"></div>
     </div>
 
   </div>
@@ -2192,728 +2276,109 @@ const PRESTATAIRES = [
 
 </script>
 
-<script>// ── GESTION RÉALISATIONS ──
-const REAL_KEY = 'yj_realisations';
-let _realIdx = 0;
-let _realTimer = null;
+<script>// ── CARROUSEL RÉALISATIONS ──
+let _rIdx = 0, _rTimer = null;
+const _rTotal = 5;
 
-const REAL_DEFAUT = [
-  {id:1, img:'https://picsum.photos/id/1040/600/450', badge:'🏗️ Construction', badgeColor:'#E85D04', titre:'Villa moderne à Ratoma', desc:'Construction complète d'une villa R+1 en 6 mois. Maçonnerie, carrelage et peinture inclus.', artisan:'Mamadou Kouyaté', ini:'MK', note:'4.9'},
-  {id:2, img:'https://picsum.photos/id/1080/600/450', badge:'⚡ Électricité', badgeColor:'#7C3AED', titre:'Installation électrique bureau', desc:'Câblage complet d'un immeuble de bureaux 3 étages. Tableau électrique et climatisation.', artisan:'Amadou Diallo', ini:'AD', note:'5.0'},
-  {id:3, img:'https://picsum.photos/id/1062/600/450', badge:'🔧 Plomberie', badgeColor:'#0F6E56', titre:'Réseau plomberie résidentiel', desc:'Installation eau froide/chaude pour une résidence de 8 appartements à Kaloum.', artisan:'Ibrahima Bah', ini:'IB', note:'4.8'},
-  {id:4, img:'https://picsum.photos/id/1035/600/450', badge:'🔩 Soudure', badgeColor:'#B45309', titre:'Portail & clôture métallique', desc:'Fabrication et pose d'un portail coulissant et d'une clôture sur 80m linéaires à Dixinn.', artisan:'Sékou Camara', ini:'SC', note:'4.7'},
-  {id:5, img:'https://picsum.photos/id/1025/600/450', badge:'🪚 Menuiserie', badgeColor:'#92400E', titre:'Cuisine équipée sur mesure', desc:'Fabrication et pose d'une cuisine complète en bois massif avec plan de travail en marbre.', artisan:'Souleymane Barry', ini:'SB', note:'4.9'},
-];
-
-function getRealisations() {
-  try { return JSON.parse(localStorage.getItem(REAL_KEY)) || REAL_DEFAUT; } catch(e) { return REAL_DEFAUT; }
+function realNav(dir) {
+  realGoto(((_rIdx + dir) % _rTotal + _rTotal) % _rTotal);
 }
-function saveRealisations(data) { localStorage.setItem(REAL_KEY, JSON.stringify(data)); }
 
-function loadRealisations() {
-  const data = getRealisations();
-  const track = document.getElementById('realTrack');
-  const dots = document.getElementById('realDots');
-  if (!track) return;
-
-  track.innerHTML = data.map((r,i) => `
-    <div style="min-width:100%;padding:0 4px;box-sizing:border-box;">
-      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:0;border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.1);min-height:380px;">
-        <!-- Image -->
-        <div style="position:relative;overflow:hidden;">
-          <img src="${r.img}" id="real-img-${i+1}" alt="${r.titre}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='#E5E7EB';this.style.display='none'"/>
-          <div style="position:absolute;top:16px;left:16px;background:${r.badgeColor||'#E85D04'};color:#fff;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;" id="real-badge-${i+1}">${r.badge}</div>
-        </div>
-        <!-- Contenu -->
-        <div style="background:#fff;padding:36px 32px;display:flex;flex-direction:column;justify-content:center;">
-          <div style="font-size:12px;color:#9CA3AF;font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;">Réalisation ${i+1} / ${data.length}</div>
-          <h3 id="real-titre-${i+1}" style="font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;color:#1A1A4E;margin-bottom:12px;line-height:1.3;">${r.titre}</h3>
-          <p id="real-desc-${i+1}" style="font-size:14px;color:#6B7280;line-height:1.7;margin-bottom:24px;">${r.desc}</p>
-          <div style="display:flex;align-items:center;gap:12px;padding-top:20px;border-top:1.5px solid #F3F4F6;">
-            <div style="width:40px;height:40px;border-radius:50%;background:#FDE8D8;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#C74B00;">${r.ini}</div>
-            <div>
-              <div id="real-artisan-${i+1}" style="font-size:13.5px;font-weight:700;color:#1A1A4E;">${r.artisan}</div>
-              <div style="font-size:12px;color:#F5C842;font-weight:700;">★★★★★ ${r.note}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `).join('');
-
-  if (dots) {
-    dots.innerHTML = data.map((_,i) => `
-      <div onclick="realGo(${i})" id="rdot-${i}" style="width:${i===0?'24px':'8px'};height:8px;border-radius:4px;background:${i===0?'#E85D04':'#E5E7EB'};cursor:pointer;transition:all .3s;"></div>
-    `).join('');
+function realGoto(n) {
+  _rIdx = n;
+  const slider = document.getElementById('realSlider');
+  if (slider) slider.style.transform = 'translateX(-' + (n * 100) + '%)';
+  for (let i = 0; i < _rTotal; i++) {
+    const dot = document.getElementById('rdot' + i);
+    if (dot) { dot.style.width = i === n ? '22px' : '8px'; dot.style.background = i === n ? '#E85D04' : '#E5E7EB'; }
   }
-
-  clearInterval(_realTimer);
-  _realTimer = setInterval(() => realGo(_realIdx + 1), 5000);
 }
 
-function realGo(n) {
-  const data = getRealisations();
-  const total = data.length;
-  _realIdx = ((n % total) + total) % total;
-  const track = document.getElementById('realTrack');
-  if (track) track.style.transform = `translateX(-${_realIdx * 100}%)`;
-  data.forEach((_, i) => {
-    const dot = document.getElementById('rdot-' + i);
-    if (dot) { dot.style.width = i === _realIdx ? '24px' : '8px'; dot.style.background = i === _realIdx ? '#E85D04' : '#E5E7EB'; }
-  });
+function startRealCarousel() {
+  clearInterval(_rTimer);
+  _rTimer = setInterval(function() { realNav(1); }, 5000);
 }
 
-// Admin réalisations
+// Démarrer quand DOM prêt
+document.addEventListener('DOMContentLoaded', function() { startRealCarousel(); });
+
+// ── ADMIN RÉALISATIONS ──
 function renderAdminRealisations() {
   const container = document.getElementById('adminRealCards');
   if (!container) return;
-  const data = getRealisations();
-  container.innerHTML = data.map((r,i) => `
+
+  const slides = [
+    {idx:0, label:'Réalisation 1 — Construction'},
+    {idx:1, label:'Réalisation 2 — Électricité'},
+    {idx:2, label:'Réalisation 3 — Plomberie'},
+    {idx:3, label:'Réalisation 4 — Soudure'},
+    {idx:4, label:'Réalisation 5 — Menuiserie'},
+  ];
+
+  container.innerHTML = slides.map(s => `
     <div style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;overflow:hidden;">
-      <div style="position:relative;aspect-ratio:4/3;overflow:hidden;">
-        <img id="areal-img-${i}" src="${r.img}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='#E5E7EB'"/>
-        <label style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.65);color:#fff;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;">
-          📷 Changer
-          <input type="file" accept="image/*" style="display:none;" onchange="changerImageReal(this,${i})"/>
-        </label>
+      <!-- Preview image actuelle -->
+      <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#F4F6FB;">
+        <img id="areal-preview-${s.idx}" src="${document.getElementById('real-img-'+s.idx)?.src || ''}" style="width:100%;height:100%;object-fit:cover;"/>
       </div>
-      <div style="padding:14px;">
-        <div style="margin-bottom:8px;"><label style="font-size:11px;font-weight:700;color:#6B7280;">Badge</label><input id="areal-badge-${i}" value="${r.badge}" style="width:100%;padding:7px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;margin-top:3px;box-sizing:border-box;"/></div>
-        <div style="margin-bottom:8px;"><label style="font-size:11px;font-weight:700;color:#6B7280;">Titre</label><input id="areal-titre-${i}" value="${r.titre}" style="width:100%;padding:7px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;margin-top:3px;box-sizing:border-box;"/></div>
-        <div style="margin-bottom:8px;"><label style="font-size:11px;font-weight:700;color:#6B7280;">Description</label><textarea id="areal-desc-${i}" style="width:100%;padding:7px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12px;margin-top:3px;box-sizing:border-box;min-height:60px;resize:none;">${r.desc}</textarea></div>
-        <div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:700;color:#6B7280;">Artisan</label><input id="areal-artisan-${i}" value="${r.artisan}" style="width:100%;padding:7px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;margin-top:3px;box-sizing:border-box;"/></div>
-        <button onclick="sauvegarderReal(${i})" style="width:100%;padding:10px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">✅ Sauvegarder</button>
+      <div style="padding:16px;">
+        <div style="font-size:12px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">${s.label}</div>
+        <div style="margin-bottom:10px;">
+          <label style="font-size:11px;font-weight:700;color:#6B7280;">Titre</label>
+          <input id="areal-titre-${s.idx}" value="${document.getElementById('real-titre-'+s.idx)?.textContent||''}" style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;margin-top:3px;box-sizing:border-box;"/>
+        </div>
+        <div style="margin-bottom:10px;">
+          <label style="font-size:11px;font-weight:700;color:#6B7280;">Description</label>
+          <textarea id="areal-desc-${s.idx}" style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12px;margin-top:3px;box-sizing:border-box;min-height:65px;resize:none;">${document.getElementById('real-desc-'+s.idx)?.textContent||''}</textarea>
+        </div>
+        <div style="margin-bottom:12px;">
+          <label style="font-size:11px;font-weight:700;color:#6B7280;">Nom de l'artisan</label>
+          <input id="areal-artisan-${s.idx}" value="${document.getElementById('real-artisan-'+s.idx)?.textContent||''}" style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12.5px;margin-top:3px;box-sizing:border-box;"/>
+        </div>
+        <!-- Bouton changer image -->
+        <label style="display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:10px;background:#F4F6FB;border:2px dashed #E5E7EB;border-radius:10px;font-size:13px;font-weight:700;color:#1A1A4E;cursor:pointer;margin-bottom:10px;box-sizing:border-box;" onmouseover="this.style.borderColor='#E85D04';this.style.color='#E85D04'" onmouseout="this.style.borderColor='#E5E7EB';this.style.color='#1A1A4E'">
+          📷 Choisir une image
+          <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="previewRealImage(this,${s.idx})"/>
+        </label>
+        <button onclick="validerReal(${s.idx})" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">✅ Valider et publier</button>
       </div>
     </div>
   `).join('');
 }
 
-function changerImageReal(input, idx) {
+function previewRealImage(input, idx) {
   const file = input.files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = function(e) {
-    const img = document.getElementById('areal-img-'+idx);
-    if (img) img.src = e.target.result;
-    const data = getRealisations();
-    data[idx].img = e.target.result;
-    saveRealisations(data);
-    loadRealisations();
-    showToast('✅ Image mise à jour !');
+    // Mettre à jour la preview dans le dashboard
+    const preview = document.getElementById('areal-preview-' + idx);
+    if (preview) preview.src = e.target.result;
+    // Stocker temporairement
+    input._b64 = e.target.result;
   };
   reader.readAsDataURL(file);
 }
 
-function sauvegarderReal(idx) {
-  const data = getRealisations();
-  data[idx].badge = document.getElementById('areal-badge-'+idx)?.value || data[idx].badge;
-  data[idx].titre = document.getElementById('areal-titre-'+idx)?.value || data[idx].titre;
-  data[idx].desc = document.getElementById('areal-desc-'+idx)?.value || data[idx].desc;
-  data[idx].artisan = document.getElementById('areal-artisan-'+idx)?.value || data[idx].artisan;
-  saveRealisations(data);
-  loadRealisations();
-  showToast('✅ Réalisation mise à jour !');
+function validerReal(idx) {
+  // Mettre à jour le slide sur la page d'accueil
+  const img = document.getElementById('real-img-' + idx);
+  const titre = document.getElementById('real-titre-' + idx);
+  const desc = document.getElementById('real-desc-' + idx);
+  const artisan = document.getElementById('real-artisan-' + idx);
+
+  const newTitre = document.getElementById('areal-titre-' + idx)?.value;
+  const newDesc = document.getElementById('areal-desc-' + idx)?.value;
+  const newArtisan = document.getElementById('areal-artisan-' + idx)?.value;
+  const preview = document.getElementById('areal-preview-' + idx);
+
+  if (newTitre && titre) titre.textContent = newTitre;
+  if (newDesc && desc) desc.textContent = newDesc;
+  if (newArtisan && artisan) artisan.textContent = newArtisan;
+  if (preview?.src && img) img.src = preview.src;
+
+  showToast('✅ Réalisation ' + (idx+1) + ' mise à jour !');
 }
-
-
-
-// ════════════════════════════════════════════════════
-// YOUMMA JOBS 2026 — JS PRINCIPAL (site public)
-// ════════════════════════════════════════════════════
-
-let displayedCount = 9;
-let filteredData = [];
-let favorites = [];
-let activeFilter = 'all';
-
-try { favorites = JSON.parse(localStorage.getItem('yj_fav') || '[]'); } catch(e) {}
-
-// ── INIT ──
-document.addEventListener('DOMContentLoaded', () => {
-
-  filteredData = [...PRESTATAIRES];
-  renderArtisans();
-  setTimeout(function() { if(typeof loadRealisations==='function') loadRealisations(); }, 300);
-  renderProviders();
-  initCounters();
-  observeFadeIn();
-  initNavScroll();
-  // Notifications de bienvenue
-  setTimeout(() => showNotif('🇬🇳 Bienvenue', 'sur YOUMMA JOBS — La plateforme N°1 des artisans en Guinée !', '#E6FBF3'), 1500);
-  setTimeout(() => showNotif('⚡ Nouveau artisan Express', 'Amadou Diallo, Électricien vient de rejoindre YOUMMA JOBS', '#FDE8D8'), 5500);
-});
-
-// ── NAV SCROLL ──
-function initNavScroll() {
-  const nav = document.getElementById('mainNav');
-  const update = () => {
-    if (window.scrollY > 60) nav.classList.add('scrolled');
-    else nav.classList.remove('scrolled');
-    // Active nav link
-    const sections = ['accueil','artisans','prestataires','categories','partenaires','temoignages','tarifs','faq','contact'];
-    let current = 'accueil';
-    sections.forEach(id => {
-      const el = document.getElementById(id);
-      if (el && window.scrollY >= el.offsetTop - 100) current = id;
-    });
-    document.querySelectorAll('.nav-links a').forEach(a => {
-      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
-    });
-  };
-  window.addEventListener('scroll', update, { passive: true });
-  update();
-}
-
-// ── RENDER ARTISANS SPOTLIGHT (top 6 artisans) ──
-function renderArtisans() {
-  const artisans = PRESTATAIRES
-    .filter(p => p.badge_verifie)
-    .sort((a,b) => {
-      const scoreB = (b.badge_top?3:0)+(b.badge_express?1:0)+(b.recommande?1:0);
-      const scoreA = (a.badge_top?3:0)+(a.badge_express?1:0)+(a.recommande?1:0);
-      return scoreB - scoreA || b.note - a.note;
-    })
-    .slice(0, 6);
-
-  document.getElementById('artisansGrid').innerHTML = artisans.map((p,i) => {
-    const stars5 = Array.from({length:5},(_,j)=>`<span style="color:${j<Math.floor(p.note)?'#D4A017':'#D1D5DB'};font-size:12px;">★</span>`).join('');
-    const badgeRow = [
-      p.badge_express ? `<span class="badge-express">⚡ Express</span>` : '',
-      p.badge_top     ? `<span class="badge-top">🏆 Top Artisan</span>` : '',
-      p.badge_verifie ? `<span class="badge-verifie">✓ Vérifié</span>` : '',
-      p.recommande    ? `<span class="badge-recommande">👍 Recommandé</span>` : '',
-    ].filter(Boolean).join('');
-    const dispoClass = p.dispo && (p.dispo.includes('maintenant')||p.dispo.includes("aujourd'hui")) ? 'led-green' : 'led-yellow';
-    const missionsBadge = p.missions ? `<span class="badge-missions">🎯 ${p.missions} missions</span>` : '';
-
-    // Portfolio preview: icônes représentatives
-    const portIcons = (p.portfolio||[]).slice(0,3).map(item => `
-      <div class="ac2-port-item" title="${item}">${item.split(' ').slice(0,4).join(' ')}</div>
-    `).join('');
-
-    return `
-    <div class="ac2-card fade-in" style="animation-delay:${i*0.09}s" onclick="openModal(${p.id})">
-      <div class="ac2-header">
-        <div class="ac2-badges-row">${badgeRow}</div>
-        <div class="ac2-avatar-wrap">
-          <div class="ac2-avatar" style="background:${p.bg};color:${p.color};">${p.ini}</div>
-          <div class="ac2-online-ring"></div>
-        </div>
-        <div class="ac2-name">${p.nom}</div>
-        <div class="ac2-metier">${p.metier}</div>
-        <div class="ac2-loc">📍 ${p.ville}, Conakry</div>
-      </div>
-      <div class="ac2-body">
-        <div class="ac2-rating-row">
-          <div class="ac2-stars">${stars5}</div>
-          <span class="ac2-note">${p.note}</span>
-          <span class="ac2-avis">(${p.missions} avis)</span>
-          ${p.experience ? `<span class="ac2-exp">${p.experience} ans</span>` : ''}
-          ${missionsBadge}
-        </div>
-        ${p.dispo ? `<div class="ac2-dispo"><span class="dispo-led ${dispoClass}"></span><span style="font-size:12px;">${p.dispo}</span></div>` : ''}
-        <div class="ac2-skills">${(p.skills||[]).slice(0,3).map(s=>`<span class="ac2-skill">${s}</span>`).join('')}</div>
-        ${p.tarif ? `<div class="ac2-tarif">💰 ${p.tarif}</div>` : ''}
-        <div class="ac2-portfolio-preview">${portIcons}</div>
-        <div class="ac2-stats">
-          <div class="ac2-stat"><span class="ac2-sv">${p.vues}</span><span class="ac2-sl">👁️ Vues</span></div>
-          <div class="ac2-stat"><span class="ac2-sv">${p.missions}</span><span class="ac2-sl">🎯 Missions</span></div>
-          <div class="ac2-stat"><span class="ac2-sv">${p.note}</span><span class="ac2-sl">⭐ Note</span></div>
-        </div>
-        <div class="ac2-actions">
-          <button class="btn-ac-wa" onclick="event.stopPropagation();openWA('${p.wa}','${p.nom}')">💬 WhatsApp</button>
-          <button class="btn-ac-profil" onclick="event.stopPropagation();openModal(${p.id})">👤 Voir profil</button>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-  observeFadeIn();
-}
-
-// ── RENDER PROVIDERS GRID ──
-function renderProviders() {
-  const grid = document.getElementById('providersGrid');
-  const toShow = filteredData.slice(0, displayedCount);
-
-  if (toShow.length === 0) {
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:72px 0;color:var(--gris);">
-      <div style="font-size:52px;margin-bottom:14px;">🔍</div>
-      <div style="font-family:'Libre Baskerville',serif;font-size:19px;font-weight:700;margin-bottom:9px;color:var(--texte);">Aucun artisan trouvé</div>
-      <div style="font-size:14px;margin-bottom:18px;">Essayez une autre recherche ou catégorie</div>
-      <button onclick="resetFilters()" style="padding:11px 26px;background:var(--orange);border:none;border-radius:50px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;">Réinitialiser les filtres</button>
-    </div>`;
-    return;
-  }
-
-  grid.innerHTML = toShow.map((p, i) => {
-    const isFav = favorites.includes(p.id);
-    const stars5 = Array.from({length:5},(_,j)=>`<span style="color:${j<Math.floor(p.note)?'#D4A017':'#D1D5DB'};font-size:11px;">★</span>`).join('');
-    const badgesInline = [
-      p.badge_express ? `<span class="badge-express" style="font-size:9.5px;padding:2px 7px;">⚡ Express</span>` : '',
-      p.badge_top ? `<span class="badge-top" style="font-size:9.5px;padding:2px 7px;">🏆 Top</span>` : '',
-      p.badge_verifie ? `<span class="badge-verifie" style="font-size:9.5px;padding:2px 7px;">✓ Vérifié</span>` : '',
-    ].filter(Boolean).join('');
-    const dispoClass = p.dispo && (p.dispo.includes('maintenant')||p.dispo.includes("aujourd'hui")) ? 'led-green' : 'led-yellow';
-
-    return `
-    <div class="pc2-card fade-in" onclick="openModal(${p.id})">
-      <div class="pc2-top">
-        <div class="pc2-avatar-col">
-          <div class="pc2-avatar" style="background:${p.bg};color:${p.color};">${p.ini}</div>
-          <div class="pc2-online-badge"></div>
-        </div>
-        <div class="pc2-info">
-          <div class="pc2-name">${p.nom}</div>
-          <div class="pc2-metier">${p.metier}</div>
-          <div class="pc2-meta-row">
-            <div class="pc2-stars">${stars5}</div>
-            <span class="pc2-note">${p.note}</span>
-            <span class="pc2-avis">(${p.missions} avis)</span>
-          </div>
-          <div class="pc2-loc">📍 ${p.ville}${p.experience ? ` · <strong>${p.experience} ans exp.</strong>` : ''}</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0;">
-          ${p.badge_verifie?`<span class="badge-verifie" style="font-size:9px;padding:2px 7px;">✓ Vérifié</span>`:''}
-          ${p.badge_express?`<span class="badge-express" style="font-size:9px;padding:2px 7px;">⚡ Express</span>`:''}
-          ${p.badge_top?`<span class="badge-top" style="font-size:9px;padding:2px 7px;">🏆</span>`:''}
-        </div>
-      </div>
-      ${p.dispo ? `<div class="pc2-dispo"><span class="dispo-led ${dispoClass}"></span><span>${p.dispo}</span></div>` : ''}
-      <div class="pc2-skills">${(p.skills||[]).slice(0,3).map(s=>`<span class="pc2-skill">${s}</span>`).join('')}</div>
-      ${p.tarif ? `<div class="pc2-tarif">💰 ${p.tarif}</div>` : ''}
-      <div class="pc2-portfolio">${(p.portfolio||[]).slice(0,2).map(item=>`<div class="pc2-port-item">${item}</div>`).join('')}</div>
-      <div class="pc2-stats">
-        <div class="pc2-s"><span class="pc2-sv">${p.vues}</span><span class="pc2-sl">👁️ Vues</span></div>
-        <div class="pc2-s"><span class="pc2-sv">${p.missions}</span><span class="pc2-sl">🎯 Missions</span></div>
-        <div class="pc2-s"><span class="pc2-sv">${p.note}</span><span class="pc2-sl">⭐ Note</span></div>
-      </div>
-      <div class="pc2-actions">
-        <button class="btn-pwa" onclick="event.stopPropagation();openWA('${p.wa}','${p.nom}')">💬 WhatsApp</button>
-        <button class="btn-pprofil" onclick="event.stopPropagation();openModal(${p.id})">👤 Voir profil</button>
-        <button class="btn-pfav" onclick="event.stopPropagation();toggleFav(${p.id})">${isFav?'❤️':'🤍'}</button>
-      </div>
-    </div>`;
-  }).join('');
-  observeFadeIn();
-}
-
-// ── FILTERS ──
-function filterProviders() {
-  const q = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
-  const cat = document.getElementById('catFilter')?.value || '';
-  const ville = document.getElementById('villeFilter')?.value || '';
-  const noteMin = parseFloat(document.getElementById('noteFilter')?.value || '0');
-  const dispoFilter = document.getElementById('dispoFilter')?.value || '';
-
-  filteredData = PRESTATAIRES.filter(p => {
-    const mq = !q || p.nom.toLowerCase().includes(q) || p.metier.toLowerCase().includes(q)
-      || p.ville.toLowerCase().includes(q) || (p.skills||[]).some(s=>s.toLowerCase().includes(q))
-      || (p.desc||'').toLowerCase().includes(q);
-    const mc = !cat || p.cat === cat || p.cat.includes(cat);
-    const mv = !ville || p.ville.toLowerCase().includes(ville.toLowerCase());
-    const mn = !noteMin || p.note >= noteMin;
-    const md = !dispoFilter
-      || (dispoFilter === 'maintenant' && p.dispo && (p.dispo.includes('maintenant')||p.dispo.includes("aujourd'hui")))
-      || (dispoFilter === 'semaine' && p.dispo)
-      || dispoFilter === 'all';
-
-    // Chip filters
-    const mchip = activeFilter === 'all' ? true
-      : activeFilter === 'express' ? p.badge_express
-      : activeFilter === 'verifie' ? p.badge_verifie
-      : activeFilter === 'top' ? p.badge_top
-      : activeFilter === 'recommande' ? p.recommande
-      : activeFilter === 'artisans' ? p.cat === 'Artisans'
-      : true;
-
-    return mq && mc && mv && mn && md && mchip;
-  });
-
-  displayedCount = 9;
-  renderProviders();
-
-  // Update count badge
-  const countEl = document.getElementById('resultsCount');
-  if (countEl) countEl.textContent = filteredData.length + ' artisan' + (filteredData.length > 1 ? 's' : '');
-  // Show/hide reset button
-  const rb = document.getElementById('resetBtn');
-  if (rb) {
-    const hasFilter = ['searchInput','catFilter','villeFilter','dispoFilter','noteFilter'].some(id=>{
-      const el = document.getElementById(id); return el && el.value;
-    }) || activeFilter !== 'all';
-    rb.style.display = hasFilter ? 'block' : 'none';
-  }
-}
-
-function filterCat(cat) {
-  const sel = document.getElementById('catFilter');
-  if (sel) sel.value = cat;
-  const sel2 = document.getElementById('catFilter2');
-  if (sel2) sel2.value = cat;
-  filterProviders();
-  document.getElementById('prestataires').scrollIntoView({behavior:'smooth'});
-}
-
-
-
-function setActiveFilter(type) {
-  activeFilter = type;
-  document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
-  const chipEl = document.getElementById('chip-' + type);
-  if (chipEl) chipEl.classList.add('active');
-  filterProviders();
-}
-
-function resetFilters() {
-  activeFilter = 'all';
-  document.querySelectorAll('.filter-chip').forEach(ch => ch.classList.remove('active'));
-  const chipAll = document.getElementById('chip-all');
-  if (chipAll) chipAll.classList.add('active');
-  ['searchInput','catFilter','villeFilter','dispoFilter','noteFilter'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-  const rb = document.getElementById('resetBtn');
-  if (rb) rb.style.display = 'none';
-  filterProviders();
-}
-
-function loadMore() {
-  const prev = displayedCount;
-  displayedCount = Math.min(displayedCount + 6, filteredData.length);
-  if (displayedCount > prev) {
-    renderProviders();
-    showToast(displayedCount >= filteredData.length ? '✅ Tous les artisans affichés !' : `${displayedCount} / ${filteredData.length} artisans`);
-  } else {
-    showToast('✅ Tous les artisans sont affichés');
-  }
-}
-
-// ── MODAL PROFIL ──
-function openModal(id) {
-  const p = PRESTATAIRES.find(x => x.id === id);
-  if (!p) return;
-
-  const stars5Full = Array.from({length:5},(_,j)=>`<span style="color:${j<Math.floor(p.note)?'#D4A017':'#CBD5E1'};font-size:16px;">★</span>`).join('');
-  const badgesHtml = [
-    p.badge_verifie ? '<span class="badge-verifie">✓ Vérifié YOUMMA</span>' : '',
-    p.badge_top     ? '<span class="badge-top">🏆 Top Artisan</span>' : '',
-    p.badge_express ? '<span class="badge-express">⚡ Express</span>' : '',
-    p.recommande    ? '<span class="badge-recommande">👍 Recommandé</span>' : '',
-  ].filter(Boolean).join(' ');
-
-  // Portfolio — galerie 5 réalisations (icônes représentatives)
-  const portEmojis = ['🔧','⚡','🏗️','🔨','🛠️','🪚','🎨','🔩'];
-  const portfolioHtml = (p.portfolio||[]).map((item, idx) => `
-    <div class="mp-port-item">
-      <div class="mp-port-img" style="background:linear-gradient(135deg,${p.bg},${p.color}22);">
-        <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:24px;">${portEmojis[idx%portEmojis.length]}</div>
-      </div>
-      <div class="mp-port-label">${item.replace(/^[^\s]+ /,'')}</div>
-    </div>
-  `).join('');
-
-  // Avis clients avec étoiles
-  const avisHtml = (p.avis||[]).map(a => `
-    <div class="mp-avis-item">
-      <div class="mp-avis-head">
-        <div class="mp-avis-avatar">${a.auteur.charAt(0)}</div>
-        <div>
-          <div class="mp-avis-name">${a.auteur}</div>
-          <div class="mp-avis-stars">${'★'.repeat(a.note)}${'☆'.repeat(5-a.note)} <span class="mp-avis-date">${a.date}</span></div>
-        </div>
-      </div>
-      <div class="mp-avis-txt">"${a.txt}"</div>
-    </div>
-  `).join('');
-
-  const dispoClass = p.dispo && (p.dispo.includes('maintenant')||p.dispo.includes("aujourd'hui")) ? 'led-green' : 'led-yellow';
-
-  document.getElementById('modalContent').innerHTML = `
-    <!-- HERO PROFIL -->
-    <div style="background:linear-gradient(145deg,var(--bleu),var(--bleu-mid));border-radius:18px;padding:22px;margin-bottom:16px;position:relative;overflow:hidden;">
-      <div style="position:absolute;top:-24px;right:-24px;width:100px;height:100px;border-radius:50%;background:rgba(232,93,4,.2);"></div>
-      <div style="position:absolute;bottom:-16px;left:30%;width:80px;height:80px;border-radius:50%;background:rgba(245,200,66,.1);"></div>
-      <div style="display:flex;gap:14px;align-items:flex-start;position:relative;z-index:1;">
-        <div class="mp2-avatar" style="background:${p.bg};color:${p.color};">${p.ini}</div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:3px;">${p.nom}</div>
-          <div style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:8px;">${p.metier}</div>
-          <div style="display:flex;gap:5px;flex-wrap:wrap;">${badgesHtml}</div>
-        </div>
-      </div>
-      <!-- STATS BAR -->
-      <div class="mp-stats-bar">
-        <div class="mp-stat"><span class="mp-sv">${p.note} ★</span><span class="mp-sl">Note moyenne</span></div>
-        <div class="mp-stat"><span class="mp-sv">${p.missions}</span><span class="mp-sl">🎯 Missions</span></div>
-        <div class="mp-stat"><span class="mp-sv">${p.vues}</span><span class="mp-sl">👁️ Vues profil</span></div>
-      </div>
-    </div>
-
-    <!-- INFOS CLÉS -->
-    <div class="mp-info-grid">
-      ${p.dispo ? `<div class="mp-info-item"><div class="mp-info-label">Disponibilité</div><div class="mp-info-val" style="display:flex;align-items:center;gap:6px;"><span class="dispo-led ${dispoClass}"></span>${p.dispo}</div></div>` : ''}
-      ${p.tarif ? `<div class="mp-info-item"><div class="mp-info-label">Tarifs indicatifs</div><div class="mp-info-val">💰 ${p.tarif}</div></div>` : ''}
-      ${p.experience ? `<div class="mp-info-item"><div class="mp-info-label">Expérience</div><div class="mp-info-val">${p.experience} ans d'expérience</div></div>` : ''}
-      <div class="mp-info-item"><div class="mp-info-label">Localisation</div><div class="mp-info-val">📍 ${p.ville}, Conakry</div></div>
-    </div>
-
-    <!-- DESCRIPTION -->
-    ${p.desc ? `
-    <div class="mp-section-title">À propos</div>
-    <p style="font-size:13.5px;color:var(--gris);line-height:1.75;margin-bottom:4px;">${p.desc}</p>
-    ` : ''}
-
-    <!-- COMPÉTENCES -->
-    ${(p.skills||[]).length ? `
-    <div class="mp-section-title">Compétences</div>
-    <div class="mp-skills-wrap">${(p.skills||[]).map(s=>`<span class="modal-skill">${s}</span>`).join('')}</div>
-    ` : ''}
-
-    <!-- PORTFOLIO / RÉALISATIONS -->
-    ${(p.portfolio||[]).length ? `
-    <div class="mp-section-title">📸 Réalisations (${p.portfolio.length} projets)</div>
-    <div class="mp-portfolio-grid">${portfolioHtml}</div>
-    ` : ''}
-
-    <!-- AVIS CLIENTS -->
-    ${(p.avis||[]).length ? `
-    <div class="mp-section-title">⭐ Avis clients (${p.avis.length} avis · ${p.note}/5)</div>
-    ${avisHtml}
-    ` : ''}
-
-    <!-- ACTIONS -->
-    <div class="mp-actions-row">
-      <button class="btn-mp-wa" onclick="openWA('${p.wa}','${p.nom}')">💬 WhatsApp</button>
-      <button class="btn-mp-call" onclick="callProvider('${p.tel}')">📞 Appeler</button>
-      <button class="btn-mp-maps" onclick="openMaps('${p.nom}','${p.ville}')">📍 Localiser</button>
-    </div>
-    <div style="text-align:center;margin-top:10px;padding:10px;background:var(--fond2);border-radius:12px;">
-      <div style="font-size:11.5px;color:var(--gris);">Vous êtes artisan ? <span onclick="closeModal();ouvrirInscription()" style="color:var(--orange);font-weight:700;cursor:pointer;">Créez votre profil gratuit →</span></div>
-    </div>
-  `;
-
-  document.getElementById('modalOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// ── CONTACTS ──
-function openWA(wa, nom) {
-  const clean = wa.replace(/[\+\s]/g, '');
-  const msg = encodeURIComponent(`Bonjour ${nom} 👋, je vous contacte via YOUMMA JOBS. Je suis intéressé(e) par vos services.`);
-  window.open(`https://wa.me/${clean}?text=${msg}`, '_blank');
-  showToast('💬 Ouverture de WhatsApp...');
-}
-
-function callProvider(tel) {
-  window.location.href = `tel:${tel}`;
-}
-
-function toggleFav(id) {
-  if (favorites.includes(id)) {
-    favorites = favorites.filter(f=>f!==id);
-    showToast('Retiré des favoris');
-  } else {
-    favorites.push(id);
-    showToast('❤️ Ajouté aux favoris !');
-  }
-  try { localStorage.setItem('yj_fav', JSON.stringify(favorites)); } catch(e) {}
-  const btn = document.getElementById(`fav-${id}`);
-  if (btn) btn.textContent = favorites.includes(id) ? '❤️' : '🤍';
-}
-
-// ── INSCRIPTION ──
-function ouvrirInscription() {
-  document.getElementById('inscrOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function fermerInscription() {
-  document.getElementById('inscrOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function envoyerInscription() {
-  const prenom = document.getElementById('iPrenom').value.trim();
-  const nom = document.getElementById('iNom').value.trim();
-  const tel = document.getElementById('iTel').value.trim();
-  const cat = document.getElementById('iCat').value;
-  const quartier = document.getElementById('iQuartier').value.trim();
-  const desc = document.getElementById('iDesc').value.trim();
-  if (!prenom || !nom || !tel || !cat || !quartier || !desc) {
-    showToast('⚠️ Remplissez tous les champs obligatoires (*)','error'); return;
-  }
-  const wa = document.getElementById('iWA').value.trim() || tel;
-  const exp = document.getElementById('iExp').value;
-  const tarif = document.getElementById('iTarif').value.trim();
-  const dispo = document.getElementById('iDispo').value;
-  const ville = document.getElementById('iVille').value;
-  const adresse = document.getElementById('iAdresse').value.trim();
-  const email = document.getElementById('iEmail').value.trim();
-
-  const msg = encodeURIComponent(
-    `🚀 *Demande d'inscription YOUMMA JOBS*\n\n` +
-    `👤 *Nom :* ${prenom} ${nom}\n` +
-    `📞 *Téléphone :* ${tel}\n` +
-    `💬 *WhatsApp :* ${wa}\n` +
-    `📧 *Email :* ${email || 'Non renseigné'}\n` +
-    `🎯 *Spécialité :* ${cat}\n` +
-    `📅 *Expérience :* ${exp ? exp + ' ans' : 'Non renseigné'}\n` +
-    `💰 *Tarifs :* ${tarif || 'Non renseigné'}\n` +
-    `🟢 *Disponibilité :* ${dispo}\n` +
-    `📍 *Localisation :* ${quartier}, ${ville}\n` +
-    `🏠 *Adresse :* ${adresse || 'Non renseigné'}\n\n` +
-    `📝 *Description :*\n${desc}\n\n` +
-    `— Envoyé depuis yoummajobs.com`
-  );
-  window.open(`https://wa.me/22461252510?text=${msg}`, '_blank');
-  fermerInscription();
-  showToast('✅ Redirection WhatsApp — notre équipe vous contacte sous 24h !', 'success');
-  ['iPrenom','iNom','iTel','iWA','iEmail','iExp','iDesc','iTarif','iQuartier','iAdresse','iFb','iIg'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-}
-
-// ── CONTACT ──
-function envoyerContact() {
-  const prenom = document.getElementById('fPrenom').value.trim();
-  const msg = document.getElementById('fMessage').value.trim();
-  const nom = document.getElementById('fNom').value.trim();
-  const tel = document.getElementById('fTel').value.trim();
-  const sujet = document.getElementById('fSujet').value;
-  if (!prenom || !msg) { showToast('⚠️ Remplissez au moins le prénom et le message','error'); return; }
-  const text = encodeURIComponent(`Bonjour YOUMMA JOBS 👋\n\n*Nom :* ${prenom} ${nom}\n*Tél :* ${tel}\n*Sujet :* ${sujet}\n\n*Message :*\n${msg}`);
-  window.open(`https://wa.me/22461252510?text=${text}`, '_blank');
-  showToast('✅ Redirection vers WhatsApp...');
-  ['fPrenom','fNom','fTel','fMessage'].forEach(id => { document.getElementById(id).value = ''; });
-  document.getElementById('fSujet').value = '';
-}
-
-// ── FAQ ──
-function toggleFaq(item) {
-  const isOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-  if (!isOpen) item.classList.add('open');
-}
-
-// ── MENU MOBILE ──
-function toggleMenu() {
-  const menu = document.getElementById('mobileMenu');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
-
-// ── COMPTEURS ANIMÉS ──
-function animateCounter(el, target) {
-  const isLarge = target >= 1000;
-  const duration = 2000;
-  const step = Math.max(1, Math.ceil(target / (duration / 16)));
-  let current = 0;
-  const timer = setInterval(() => {
-    current = Math.min(current + step, target);
-    el.textContent = isLarge ? (current/1000).toFixed(0)+'K' : current;
-    if (current >= target) clearInterval(timer);
-  }, 16);
-}
-
-function initCounters() {
-  const counters = [
-    { id: 'cnt1', target: 500 },
-    { id: 'cnt2', target: 20 },
-    { id: 'cnt3', target: 10000 },
-  ];
-  const kpis = document.querySelectorAll('.kpi-num[data-target]');
-
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        counters.forEach(c => {
-          const el = document.getElementById(c.id);
-          if (el) animateCounter(el, c.target);
-        });
-        kpis.forEach(kpi => {
-          const t = parseInt(kpi.dataset.target);
-          if (t) animateCounter(kpi, t);
-        });
-        obs.disconnect();
-      }
-    });
-  }, { threshold: 0.3 });
-
-  const target = document.querySelector('.counters-bg') || document.querySelector('.hero-kpis');
-  if (target) obs.observe(target);
-}
-
-// ── FADE IN OBSERVER ──
-function observeFadeIn() {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.fade-in:not(.visible)').forEach(el => obs.observe(el));
-}
-
-// ── TOAST ──
-
-
-// ── NOTIF ──
-function showNotif(title, desc, bg) {
-  const center = document.getElementById('notifCenter');
-  const el = document.createElement('div');
-  el.className = 'notif';
-  const parts = title.split(' ');
-  el.innerHTML = `<div class="notif-icon" style="background:${bg||'#FDE8D8'};">${parts[0]}</div><div><div class="notif-title">${parts.slice(1).join(' ')}</div><div class="notif-desc">${desc}</div></div>`;
-  center.appendChild(el);
-  setTimeout(() => el.classList.add('show'), 50);
-  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 400); }, 5000);
-}
-
-
-// ── SLIDESHOW HERO ──
-let _hIdx = 0, _hTimer = null;
-const H_SLIDES = [
-  {id:1080,overlay:'rgba(232,93,4,.45)',nom:'Amadou Diallo',metier:'Électricien certifié',note:'⭐ 5.0',ville:'Ratoma'},
-  {id:1040,overlay:'rgba(22,163,74,.4)',nom:'Mamadou Kouyaté',metier:'Maçon — BTP & Rénovation',note:'⭐ 4.8',ville:'Matam'},
-  {id:1062,overlay:'rgba(26,26,78,.5)',nom:'Ibrahima Bah',metier:'Plombier — Urgences 7j/7',note:'⭐ 4.6',ville:'Kaloum'},
-  {id:1035,overlay:'rgba(180,83,9,.45)',nom:'Sékou Camara',metier:'Soudeur professionnel',note:'⭐ 4.7',ville:'Matam'},
-  {id:1025,overlay:'rgba(139,69,19,.4)',nom:'Souleymane Barry',metier:'Menuisier — Bois & Aluminium',note:'⭐ 4.9',ville:'Dixinn'},
-  {id:1074,overlay:'rgba(124,58,237,.35)',nom:'Mohamed Soumah',metier:'Peintre en bâtiment',note:'⭐ 4.7',ville:'Kipé'},
-  {id:1011,overlay:'rgba(15,110,86,.4)',nom:'Oumar Diallo',metier:'Climaticien',note:'⭐ 4.6',ville:'Kaloum'},
-  {id:1059,overlay:'rgba(26,26,78,.45)',nom:'Alpha Sow',metier:'Développeur web',note:'⭐ 4.7',ville:'Matam'},
-  {id:1047,overlay:'rgba(139,69,19,.45)',nom:'Ibrahima Kouyaté',metier:'Carreleur',note:'⭐ 4.8',ville:'Ratoma'},
-  {id:1066,overlay:'rgba(220,38,38,.35)',nom:'Moussa Konaté',metier:'Mécanicien',note:'⭐ 4.6',ville:'Lambanyi'},
-];
-function renderHeroSlideshow() {
-  const el = document.getElementById('hSlides');
-  const dots = document.getElementById('hSlideDots');
-  if (!el) return;
-  el.style.width = (H_SLIDES.length*100)+'%';
-  el.innerHTML = H_SLIDES.map((s,i) => `
-    <div style="width:${100/H_SLIDES.length}%;height:100%;flex-shrink:0;position:relative;overflow:hidden;">
-      <img src="https://picsum.photos/id/${s.id}/800/400" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentNode.style.background='linear-gradient(135deg,#1A1A4E,#E85D04)';this.style.display='none';"/>
-      <div style="position:absolute;inset:0;background:${s.overlay};"></div>
-    </div>`).join('');
-  if (dots) dots.innerHTML = H_SLIDES.map((_,i) => `<div id="hd${i}" onclick="hSlideGo(${i})" style="width:${i===0?'18px':'7px'};height:7px;border-radius:4px;background:${i===0?'var(--orange)':'rgba(255,255,255,.35)'};cursor:pointer;transition:all .3s;"></div>`).join('');
-  hSlideInfo(H_SLIDES[0]);
-  clearInterval(_hTimer);
-  _hTimer = setInterval(() => hSlideGo(_hIdx+1), 4000);
-}
-function hSlideGo(n) {
-  const total = H_SLIDES.length;
-  _hIdx = ((n%total)+total)%total;
-  const el = document.getElementById('hSlides');
-  if (el) el.style.transform = `translateX(-${(100/total)*_hIdx}%)`;
-  hSlideInfo(H_SLIDES[_hIdx]);
-  H_SLIDES.forEach((_,i) => { const d=document.getElementById('hd'+i); if(d){d.style.width=i===_hIdx?'18px':'7px';d.style.background=i===_hIdx?'var(--orange)':'rgba(255,255,255,.35)';} });
-}
-function hSlideInfo(s) {
-  const n=document.getElementById('hSlideNom'),m=document.getElementById('hSlideMetier'),r=document.getElementById('hSlideNote');
-  if(n)n.textContent=s.nom; if(m)m.textContent=s.metier+' · 📍'+s.ville; if(r)r.textContent=s.note;
-}
-
 
 // ── KEYBOARD ──
 document.addEventListener('keydown', e => {
