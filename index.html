@@ -994,7 +994,7 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 
 /* ── DASHBOARD ── */
 .dash-layout{display:flex;min-height:100vh;background:var(--fond);}
-.sidebar{width:240px;background:var(--bleu);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;}
+.sidebar{width:240px;background:var(--bleu);display:none;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;}
 .sidebar-logo{display:flex;align-items:center;gap:10px;padding:24px 20px 20px;}
 .sidebar .logo-icon{width:40px;height:40px;background:var(--orange);border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Libre Baskerville',serif;font-weight:700;font-size:14px;flex-shrink:0;}
 .sidebar .logo-text{font-family:'Libre Baskerville',serif;font-weight:700;font-size:15px;color:#fff;}
@@ -1008,7 +1008,7 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .btn-deconnexion{width:100%;padding:11px;background:rgba(239,68,68,.15);color:#FCA5A5;border:1px solid rgba(239,68,68,.2);border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
 .btn-deconnexion:hover{background:rgba(239,68,68,.25);}
 .main{flex:1;margin-left:240px;display:flex;flex-direction:column;min-height:100vh;}
-.topbar{background:#fff;border-bottom:1px solid var(--bordure);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.topbar{background:#fff;border-bottom:1px solid var(--bordure);padding:14px 28px;display:none;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
 .topbar-title{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:var(--bleu);}
 .provider-chip{display:flex;align-items:center;gap:10px;}
 .provider-chip-avatar{width:36px;height:36px;border-radius:10px;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-weight:700;font-size:13px;}
@@ -1410,6 +1410,77 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 #page-admin .admin-sidebar {
   position: fixed !important;
   z-index: 100 !important;
+}
+
+/* Sidebars cachées par défaut - affichées par JS */
+#page-dashboard .sidebar { display: none !important; }
+#page-dashboard.active .sidebar { display: flex !important; }
+#page-admin .admin-sidebar { display: none !important; }
+#page-admin.active .admin-sidebar { display: flex !important; }
+
+/* ══ ISOLATION STRICTE DES SIDEBARS ══ */
+
+/* Sidebar prestataire: cachée par défaut */
+.sidebar {
+  display: none !important;
+}
+/* Visible seulement si page-dashboard est active */
+#page-dashboard.active .sidebar {
+  display: flex !important;
+  position: fixed !important;
+  top: 0; left: 0;
+  height: 100vh;
+  z-index: 100;
+}
+
+/* Topbar prestataire: cachée par défaut */
+.topbar {
+  display: none !important;
+}
+#page-dashboard.active .topbar {
+  display: flex !important;
+}
+
+/* Main dashboard: caché par défaut */
+.dash-main {
+  display: none !important;
+}
+#page-dashboard.active .dash-main {
+  display: block !important;
+}
+
+/* Admin sidebar: cachée par défaut */
+.admin-sidebar {
+  display: none !important;
+}
+#page-admin.active .admin-sidebar {
+  display: flex !important;
+  position: fixed !important;
+  top: 0; left: 0;
+  height: 100vh;
+  width: 210px;
+  z-index: 100;
+  flex-direction: column;
+}
+
+/* Admin main: caché par défaut */
+.admin-main {
+  display: none !important;
+}
+#page-admin.active .admin-main {
+  display: block !important;
+  margin-left: 210px;
+  padding: 20px;
+  background: #F4F6FB;
+  min-height: 100vh;
+}
+
+/* Login admin: caché par défaut */
+#loginWrap {
+  display: none !important;
+}
+#page-admin.active #loginWrap {
+  display: flex !important;
 }
 </style>
 
@@ -5560,10 +5631,39 @@ function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const mainContent = document.getElementById('mainContent');
   const mainNav = document.getElementById('mainNav');
+
+  // Cacher toutes les sidebars et topbars fixes
+  const dashSidebar = document.querySelector('#page-dashboard .sidebar');
+  const dashTopbar = document.querySelector('#page-dashboard .topbar');
+  const dashMain = document.querySelector('#page-dashboard .main');
+  const adminSidebar = document.querySelector('#page-admin .admin-sidebar');
+  const adminMain = document.querySelector('#page-admin .admin-main');
+  const adminWrap = document.getElementById('adminWrap');
+
+  if (dashSidebar) dashSidebar.style.display = 'none';
+  if (adminSidebar) adminSidebar.style.display = 'none';
+
   if (!page || page === 'home' || page === 'accueil') {
     if (mainContent) mainContent.style.display = '';
     if (mainNav) mainNav.style.display = '';
     window.scrollTo(0, 0);
+
+  } else if (page === 'dashboard') {
+    if (mainContent) mainContent.style.display = 'none';
+    if (mainNav) mainNav.style.display = 'none';
+    const el = document.getElementById('page-dashboard');
+    if (el) el.classList.add('active');
+    if (dashSidebar) dashSidebar.style.display = '';
+    window.scrollTo(0, 0);
+
+  } else if (page === 'admin') {
+    if (mainContent) mainContent.style.display = 'none';
+    if (mainNav) mainNav.style.display = 'none';
+    const el = document.getElementById('page-admin');
+    if (el) el.classList.add('active');
+    if (adminSidebar) adminSidebar.style.display = '';
+    window.scrollTo(0, 0);
+
   } else {
     if (mainContent) mainContent.style.display = 'none';
     if (mainNav) mainNav.style.display = 'none';
