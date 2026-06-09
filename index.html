@@ -3251,25 +3251,16 @@ function renderAdminRealisations() {
   if (!container) return;
 
   container.innerHTML = _realData.map(s => {
-    const imgEl = document.getElementById('real-img-' + s.idx);
+    // Lire les données depuis le carrousel si disponible
     const titreEl = document.getElementById('real-titre-' + s.idx);
     const descEl = document.getElementById('real-desc-' + s.idx);
     const artisanEl = document.getElementById('real-artisan-' + s.idx);
+    const currentTitre = titreEl ? titreEl.textContent.trim() : '';
+    const currentDesc = descEl ? descEl.textContent.trim() : '';
+    const currentArtisan = artisanEl ? artisanEl.textContent.trim() : '';
 
-    const currentTitre = titreEl?.textContent || '';
-    const currentDesc = descEl?.textContent || '';
-    const currentArtisan = artisanEl?.textContent || '';
-
-    // Preview image actuelle
-    let previewHtml = '';
-    if (imgEl) {
-      const img = imgEl.querySelector('img');
-      if (img) {
-        previewHtml = `<img src="${img.src}" style="width:100%;height:100%;object-fit:cover;"/>`;
-      } else {
-        previewHtml = `<div style="width:100%;height:100%;background:${s.gradient};display:flex;align-items:center;justify-content:center;font-size:13px;color:rgba(255,255,255,.6);">${s.metier}</div>`;
-      }
-    }
+    // Preview toujours avec le dégradé par défaut
+    const previewHtml = `<div style="width:100%;height:100%;background:${s.gradient};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:.05em;">${s.metier}</div>`;
 
     return `
     <div style="background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;overflow:hidden;">
