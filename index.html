@@ -3863,13 +3863,7 @@ function renderTableHTML(statut, data) {
   };
 
   const actionsHTML = p => {
-    const btns = [];
-    if (p.statut === 'en_attente') btns.push(`<button class="abtn valider" onclick="action('valider','${p.id}')">✅ Valider + Essai</button>`);
-    if (p.statut !== 'rejete') btns.push(`<button class="abtn rejeter" onclick="action('rejeter','${p.id}')">❌ Rejeter</button>`);
-    if (p.statut !== 'suspendu') btns.push(`<button class="abtn suspendre" onclick="action('suspendre','${p.id}')">🚫 Suspendre</button>`);
-    if (p.statut !== 'valide') btns.push(`<button class="abtn valider" onclick="action('valider','${p.id}')">✅ Valider</button>`);
-    btns.push(`<button class="abtn supprimer" onclick="action('supprimer','${p.id}')">🗑️ Supprimer</button>`);
-    return `<div class="action-row">${btns.join('')}</div>`;
+    return actionsHTML(p);
   };
 
   return `
@@ -3929,25 +3923,8 @@ function filterTable(statut, query) {
 
 // ── ACTIONS ──
 async function action(type, id) {
-  const confirms = {
-    valider: 'Valider ce prestataire et activer 14 jours d\'essai ?',
-    rejeter: 'Rejeter ce prestataire ?',
-    suspendre: 'Suspendre ce prestataire ?',
-    supprimer: 'SUPPRIMER définitivement ce prestataire ?'
-  };
-  if (!confirm(confirms[type])) return;
-
-  switch(type) {
-    case 'valider': await validerProvider(id); break;
-    case 'rejeter': await rejeterProvider(id); break;
-    case 'suspendre': await suspendreProvider(id); break;
-    case 'supprimer': await supprimerProvider(id); break;
-  }
-
-  showToast('✅ Action effectuée');
-  await loadAll();
+  await _adminAction(type, id);
 }
-
 // ── CODES ──
 async function loadCodes() {
   const codes = await getCodesActivation();
