@@ -1022,7 +1022,7 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .btn-deconnexion{width:100%;padding:11px;background:rgba(239,68,68,.15);color:#FCA5A5;border:1px solid rgba(239,68,68,.2);border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
 .btn-deconnexion:hover{background:rgba(239,68,68,.25);}
 .main{flex:1;margin-left:220px;display:flex;flex-direction:column;min-height:100vh;overflow-x:clip;position:relative;z-index:1;min-width:0;}
-.topbar{background:#fff;border-bottom:1px solid var(--bordure);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;min-width:0;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.topbar{background:#fff;border-bottom:1px solid var(--bordure);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:9;min-width:0;box-shadow:0 1px 4px rgba(0,0,0,.06);}
 .topbar-title{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:var(--bleu);}
 .provider-chip{display:flex;align-items:center;gap:10px;overflow:hidden;min-width:0;}
 .provider-chip-avatar{width:34px;height:34px;min-width:34px;border-radius:9px;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-weight:700;font-size:12px;overflow:hidden;}
@@ -1413,15 +1413,7 @@ input[type="number"] { -moz-appearance: textfield !important; }
   #lpin1,#lpin2,#lpin3,#lpin4 { width:50px !important; height:50px !important; font-size:20px !important; }
 }
 
-/* Dashboard prestataire */
-@media(max-width:768px) {
-  #page-dashboard /* sidebar mobile handled by media query below */
-  #page-dashboard .sidebar.open { width:220px !important; }
-  #page-dashboard .main { margin-left:0 !important; }
-  #page-dashboard .topbar { padding:12px 16px !important; }
-  .stats-grid { grid-template-columns:repeat(3,1fr) !important; gap:10px !important; }
-  .actions-grid { grid-template-columns:1fr 1fr !important; gap:10px !important; }
-}
+/* Dashboard prestataire — responsive géré dans DASHBOARD LAYOUT FIX ci-dessous */
 @media(max-width:480px) {
   .stats-grid { grid-template-columns:repeat(2,1fr) !important; }
   .stat-card .stat-value { font-size:22px !important; }
@@ -1563,51 +1555,63 @@ img { max-width:100%; }
   #providersGrid { grid-template-columns: 1fr !important; }
 }
 
-/* ── DASHBOARD LAYOUT FIX ── */
-#page-dashboard { display: flex !important; min-height: 100vh; }
+/* ══════════════════════════════════════════
+   DASHBOARD LAYOUT — RÈGLE UNIQUE DÉFINITIVE
+   ══════════════════════════════════════════ */
+#page-dashboard { display:flex !important; min-height:100vh; }
+
+/* Sidebar fixe 220px */
 #page-dashboard .sidebar {
-  width: 220px !important;
-  flex-shrink: 0 !important;
-  position: fixed !important;
-  top: 0; left: 0;
-  height: 100vh !important;
-  z-index: 200 !important;
-  overflow-y: auto !important;
+  width:220px !important;
+  flex-shrink:0 !important;
+  position:fixed !important;
+  top:0; left:0;
+  height:100vh !important;
+  z-index:200 !important;
+  overflow-y:auto !important;
 }
+/* Main toujours décalé de 220px */
 #page-dashboard .main {
-  margin-left: 220px !important;
-  flex: 1 !important;
-  overflow-x: hidden !important;
-  min-height: 100vh !important;
+  margin-left:220px !important;
+  flex:1 !important;
+  overflow-x:clip !important;
+  min-height:100vh !important;
+  min-width:0 !important;
+  position:relative !important;
+  z-index:1 !important;
 }
-/* Tablette */
+/* Topbar reste dans le main */
+#page-dashboard .topbar {
+  position:sticky !important;
+  top:0 !important;
+  z-index:10 !important;
+  background:#fff !important;
+}
+
+/* Tablette 600–900px : sidebar 60px icônes seulement */
 @media(max-width:900px) {
-  #page-dashboard .sidebar { width: 60px !important; }
-  #page-dashboard .main { margin-left: 60px !important; }
-  #page-dashboard .sidebar .sidebar-logo,
+  #page-dashboard .sidebar { width:60px !important; }
+  #page-dashboard .main { margin-left:60px !important; }
+  #page-dashboard .sidebar .sidebar-logo div:last-child,
   #page-dashboard .sidebar .nav-item span:last-child,
   #page-dashboard .sidebar .btn-deconnexion span { display:none !important; }
-  #page-dashboard .sidebar .nav-item { justify-content:center; padding:14px 0 !important; }
-  #page-dashboard .sidebar .nav-item .icon { margin:0 !important; }
-  .stats-grid { grid-template-columns: repeat(3,1fr) !important; }
+  #page-dashboard .sidebar .nav-item { justify-content:center !important; padding:14px 0 !important; }
+  .stats-grid { grid-template-columns:repeat(3,1fr) !important; }
 }
-/* Mobile */
+
+/* Mobile <600px : sidebar cachée, menu hamburger */
 @media(max-width:600px) {
-  #page-dashboard .sidebar { display: none !important; }
-  #page-dashboard .main { margin-left: 0 !important; }
-  .content { padding: 14px !important; }
-  .stats-grid { grid-template-columns: repeat(2,1fr) !important; gap:8px !important; }
-  .actions-grid { grid-template-columns: repeat(2,1fr) !important; gap:8px !important; }
-  .profile-banner { flex-direction:column; text-align:center; }
-  .topbar { padding: 10px 14px !important; }
-  .topbar-right .provider-chip-name,
-  .topbar-right .provider-chip-job { max-width: 90px !important; }
+  #page-dashboard .sidebar { display:none !important; }
+  #page-dashboard .main { margin-left:0 !important; }
+  .content { padding:12px !important; }
+  .stats-grid { grid-template-columns:repeat(2,1fr) !important; gap:8px !important; }
+  .actions-grid { grid-template-columns:repeat(2,1fr) !important; gap:8px !important; }
 }
 
 /* ── DASHBOARD SIDEBAR CACHÉE HORS DASHBOARD ── */
-body:not(.on-dashboard) #page-dashboard .sidebar { display: none !important; }
-body.on-dashboard #page-dashboard { display: flex !important; }
-body:not(.on-dashboard) #page-dashboard { display: none !important; }
+body:not(.on-dashboard) #page-dashboard .sidebar { display:none !important; }
+body.on-dashboard #page-dashboard { display:flex !important; }
+body:not(.on-dashboard) #page-dashboard { display:none !important; }
 </style>
 
 </head>
@@ -5348,23 +5352,47 @@ async function deconnexion() {
   navigate('home');
 }
 async function getProviders({ categorie='',recherche='',limite=15,offset=0 }={}) {
-  let query = sb.from('providers').select('id,nom,prenom,metier,categorie,sous_categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_favoris,nb_avis,nb_appels,nb_whatsapp,nb_missions,telephone,skills,description,latitude,longitude,disponibilite,doc_cni_statut,doc_diplome_statut').eq('statut','valide').order('note_moyenne',{ ascending:false }).range(offset,offset+limite-1);
+  // Colonnes de base — toujours présentes
+  const baseSelect = 'id,nom,prenom,metier,categorie,sous_categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_favoris,nb_avis,nb_appels,nb_whatsapp,telephone,skills,description,latitude,longitude';
+  
+  let query = sb.from('providers').select(baseSelect).eq('statut','valide').order('note_moyenne',{ ascending:false }).range(offset,offset+limite-1);
   if (categorie) query = query.eq('categorie',categorie);
   if (recherche) query = query.or(`nom.ilike.%${recherche}%,metier.ilike.%${recherche}%,ville.ilike.%${recherche}%`);
   const { data, error } = await query;
-  if (error) console.warn('getProviders error:', error.message);
-  return error ? [] : (data||[]);
+  if (error) { console.warn('getProviders error:', error.message); return []; }
+  
+  // Enrichir avec les nouvelles colonnes optionnelles (ignorées si absentes)
+  if (data && data.length > 0) {
+    try {
+      const ids = data.map(p => p.id);
+      const { data:extra } = await sb.from('providers')
+        .select('id,nb_missions,disponibilite,doc_cni_statut,doc_diplome_statut')
+        .in('id', ids);
+      if (extra) {
+        const extraMap = {};
+        extra.forEach(e => { extraMap[e.id] = e; });
+        data.forEach(p => {
+          const e = extraMap[p.id] || {};
+          p.nb_missions = e.nb_missions || 0;
+          p.disponibilite = e.disponibilite || 'Disponible maintenant';
+          p.doc_cni_statut = e.doc_cni_statut || null;
+          p.doc_diplome_statut = e.doc_diplome_statut || null;
+        });
+      }
+    } catch(e) {
+      // Colonnes pas encore créées — on continue sans
+      data.forEach(p => { p.nb_missions=0; p.disponibilite='Disponible maintenant'; });
+    }
+  }
+  return data||[];
 }
 async function getDashboardData(providerId) {
   try {
     const { data, error } = await sb.from('providers').select('*').eq('id',providerId).single();
-    if (error) {
-      console.error('getDashboardData error:', error.message);
-      showToast('Erreur chargement profil: ' + error.message);
-    }
-    return data;
+    if (error) console.warn('getDashboardData:', error.message);
+    return data || null;
   } catch(e) {
-    console.error('getDashboardData exception:', e.message);
+    console.warn('getDashboardData exception:', e.message);
     return null;
   }
 }
