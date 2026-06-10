@@ -5326,16 +5326,22 @@ async function deconnexion() {
   navigate('home');
 }
 async function getProviders({ categorie='',recherche='',limite=15,offset=0 }={}) {
-  // Colonnes de base — toujours présentes
   const baseSelect = 'id,nom,prenom,metier,categorie,sous_categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_favoris,nb_avis,nb_appels,nb_whatsapp,telephone,skills,description,latitude,longitude';
   
-  let query = sb.from('providers').select(baseSelect).eq('statut','valide').order('note_moyenne',{ ascending:false }).range(offset,offset+limite-1);
-  if (categorie) query = query.eq('categorie',categorie);
-  if (recherche) query = query.or(`nom.ilike.%${recherche}%,metier.ilike.%${recherche}%,ville.ilike.%${recherche}%`);
+  let query = sb.from('providers')
+    .select(baseSelect)
+    .eq('statut','valide')
+    .order('created_at', { ascending: false })
+    .limit(limite);
+  
+  if (offset > 0) query = query.range(offset, offset + limite - 1);
+  if (categorie) query = query.eq('categorie', categorie);
+  if (recherche) query = query.or(`nom.ilike.%${recherche}%,prenom.ilike.%${recherche}%,metier.ilike.%${recherche}%`);
+  
   const { data, error } = await query;
   if (error) { console.warn('getProviders error:', error.message); return []; }
   
-  // Enrichir avec les nouvelles colonnes optionnelles (ignorées si absentes)
+  // Enrichir avec colonnes optionnelles
   if (data && data.length > 0) {
     try {
       const ids = data.map(p => p.id);
@@ -5354,11 +5360,10 @@ async function getProviders({ categorie='',recherche='',limite=15,offset=0 }={})
         });
       }
     } catch(e) {
-      // Colonnes pas encore créées — on continue sans
       data.forEach(p => { p.nb_missions=0; p.disponibilite='Disponible maintenant'; });
     }
   }
-  return data||[];
+  return data || [];
 }
 async function getDashboardData(providerId) {
   try {
@@ -5810,16 +5815,16 @@ async function loadProvidersFromSupabase() {
     };
     const mapped = data.map(p => ({
       id: p.id,
-      nom: (p.prenom||'') + ' ' + (p.nom||''),
+      nom: ((p.prenom||'') + ' ' + (p.nom||'')).trim() || 'Prestataire',
+      ini: ((p.prenom||p.nom||'?')[0] + (p.nom||p.prenom||'?')[0]).toUpperCase(),
       metier: p.metier,
       cat: p.categorie,
       ville: p.commune || p.ville,
       tel: p.telephone,
       wa: p.telephone,
-      note: parseFloat(p.note_moyenne)||4.5,
+      note: parseFloat(p.note_moyenne) > 0 ? parseFloat(p.note_moyenne) : 4.0,
       vues: p.nb_vues||0,
       missions: p.nb_missions||0,
-      ini: (p.prenom?.[0]||'')+(p.nom?.[0]||''),
       bg: (catColors[p.categorie]||{bg:'#F4F6FB'}).bg,
       color: (catColors[p.categorie]||{color:'#7A7F9A'}).color,
       desc: p.description||'',
