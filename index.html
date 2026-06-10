@@ -4372,34 +4372,45 @@ async function uploadPhoto(input, type) {
   const file = input.files[0];
   if (!file) return;
 
+  const pid = providerId || _dashProviderId;
+  if (!pid) { showToast('Session expirée, reconnectez-vous', 'error'); return; }
+
   if (file.size > 5 * 1024 * 1024) { showToast('Fichier trop volumineux (max 5 Mo)', 'error'); return; }
 
   const progressId = type === 'profil' ? 'progressProfil' : 'progressReal';
-  document.getElementById(progressId).classList.add('show');
+  const progEl = document.getElementById(progressId);
+  if (progEl) progEl.classList.add('show');
 
-  const res = await uploadProviderPhoto(providerId, file, type);
-  document.getElementById(progressId).classList.remove('show');
+  const res = await uploadProviderPhoto(pid, file, type);
+  if (progEl) progEl.classList.remove('show');
 
   if (res.success) {
     showToast('✅ Photo ajoutée avec succès !', 'success');
-    providerPhotos = await getProviderPhotos(providerId);
-    providerData = await getDashboardData(providerId);
+    providerPhotos = await getProviderPhotos(pid);
+    _dashPhotos = providerPhotos;
+    providerData = await getDashboardData(pid);
+    _dashData = providerData;
     renderPhotos();
+    _dashRenderPhotos();
     updateUI();
   } else {
-    showToast(res.message || 'Erreur upload', 'error');
+    showToast(res.message || 'Erreur upload : ' + JSON.stringify(res), 'error');
   }
   input.value = '';
 }
 
 async function supprimerPhoto(photoId) {
   if (!confirm('Supprimer cette photo ?')) return;
-  const res = await deleteProviderPhoto(photoId, providerId);
+  const pid = providerId || _dashProviderId;
+  const res = await deleteProviderPhoto(photoId, pid);
   if (res.success) {
     showToast('Photo supprimée', 'success');
-    providerPhotos = await getProviderPhotos(providerId);
-    providerData = await getDashboardData(providerId);
+    providerPhotos = await getProviderPhotos(pid);
+    _dashPhotos = providerPhotos;
+    providerData = await getDashboardData(pid);
+    _dashData = providerData;
     renderPhotos();
+    _dashRenderPhotos();
     updateUI();
   }
 }
@@ -5075,16 +5086,16 @@ async function uploadProviderPhoto(providerId, file, type='realisation') {
   if (type==='realisation' && reals.length>=5) return { success:false, message:'Maximum 5 photos atteint' };
   const ext = file.name.split('.').pop();
   const filename = `${providerId}/${type}_${Date.now()}.${ext}`;
-  const { error:uploadError } = await sb.storage.from('Photos').upload(filename, file, { cacheControl:'3600', upsert:false });
+  const { error:uploadError } = await sb.storage.from('photos').upload(filename, file, { cacheControl:'3600', upsert:false });
   if (uploadError) return { success:false, message:uploadError.message };
-  const { data:urlData } = sb.storage.from('Photos').getPublicUrl(filename);
+  const { data:urlData } = sb.storage.from('photos').getPublicUrl(filename);
   const publicUrl = urlData.publicUrl;
   if (type==='profil') {
     const oldProfil = photos.find(p => p.type==='profil');
     if (oldProfil) {
       await sb.from('provider_photos').delete().eq('id',oldProfil.id);
       const op = oldProfil.url.split('Photos/')[1];
-      if (op) await sb.storage.from('Photos').remove([op]);
+      if (op) await sb.storage.from('photos').remove([op]);
     }
     await sb.from('providers').update({ photo_url:publicUrl }).eq('id',providerId);
   }
@@ -5095,7 +5106,7 @@ async function deleteProviderPhoto(photoId, providerId) {
   const { data:photo } = await sb.from('provider_photos').select('*').eq('id',photoId).single();
   if (!photo) return { success:false };
   const path = photo.url.split('Photos/')[1];
-  if (path) await sb.storage.from('Photos').remove([path]);
+  if (path) await sb.storage.from('photos').remove([path]);
   await sb.from('provider_photos').delete().eq('id',photoId);
   if (photo.type==='profil') await sb.from('providers').update({ photo_url:null }).eq('id',providerId);
   return { success:true };
