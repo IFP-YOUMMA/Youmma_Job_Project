@@ -1073,7 +1073,8 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .edit-section .form-group input,.edit-section .form-group select,.edit-section .form-group textarea{width:100%;padding:11px 13px;border:1.5px solid var(--bordure);border-radius:10px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
 .edit-section .form-group input:focus,.edit-section .form-group select:focus,.edit-section .form-group textarea:focus{border-color:var(--orange);}
 .edit-section .form-group textarea{min-height:100px;resize:vertical;}
-.btn-save{padding:13px 28px;background:var(--orange);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-save{padding:13px 28px;background:var(--orange);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-save:hover{background:var(--orange-dark);transform:translateY(-1px);}
 .btn-geo{padding:13px 18px;background:var(--bleu-light);color:var(--bleu-mid);border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
 /* Photos section */
 .photos-section{background:#fff;border-radius:16px;padding:22px;border:1.5px solid var(--bordure);margin-bottom:16px;}
@@ -4082,9 +4083,13 @@ if (typeof inscrirePrestataire === 'undefined') {
         </div>
         <div class="form-group"><label>Quartier</label><input type="text" id="editQuartier"/></div>
 
-        <div style="display:flex;gap:12px;margin-top:8px;">
-          <button class="btn-save" onclick="sauvegarderProfil()">💾 Sauvegarder les modifications</button>
-          <button onclick="geocoderLocalisation()" style="padding:13px 18px;background:#4285F4;border:none;border-radius:12px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;"><i class="fa-solid fa-location-dot"></i> Géolocaliser</button>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;padding-top:20px;border-top:1px solid #E5E7EB;">
+          <button class="btn-save" onclick="sauvegarderProfil()" style="width:100%;padding:16px;font-size:15px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <i class="fa-solid fa-floppy-disk"></i> Sauvegarder les modifications
+          </button>
+          <button onclick="geocoderLocalisation()" style="width:100%;padding:13px;background:#4285F4;border:none;border-radius:14px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <i class="fa-solid fa-location-dot"></i> Géolocaliser mon adresse
+          </button>
         </div>
       </div>
     </div>
