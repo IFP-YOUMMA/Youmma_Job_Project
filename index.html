@@ -3558,7 +3558,7 @@ async function connexion() {
       </div>
       <div style="text-align:center;font-size:11px;color:#9CA3AF;margin-top:6px;">Ce code vous servira à vous connecter</div>
     </div>
-    <button id="i-btn1" style="width:100%;padding:14px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Suivant →</button>
+    <button id="i-btn1" onclick="(function(){var p=(document.getElementById('i-prenom')||{}).value||'';var n=(document.getElementById('i-nom')||{}).value||'';var t=(document.getElementById('i-tel')||{}).value||'';var pin=((document.getElementById('i-pin1')||{}).value||'')+((document.getElementById('i-pin2')||{}).value||'')+((document.getElementById('i-pin3')||{}).value||'')+((document.getElementById('i-pin4')||{}).value||'');var e=document.getElementById('i-err');if(!p.trim()||!n.trim()||!t.trim()){if(e){e.textContent='Remplissez tous les champs';e.style.display='block';}return;}if(pin.length<4){if(e){e.textContent='Entrez votre PIN 4 chiffres';e.style.display='block';}return;}if(e)e.style.display='none';document.getElementById('i-step1').style.display='none';document.getElementById('i-step2').style.display='block';})()" style="width:100%;padding:14px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Suivant →</button>
   </div>
   <div id="i-step2" style="display:none;">
     <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">Profil professionnel</div>
@@ -3573,8 +3573,8 @@ async function connexion() {
     <div style="margin-bottom:12px;"><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Métier *</label><input id="i-metier" type="text" placeholder="Ex: Électricien certifié..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
     <div style="margin-bottom:20px;"><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Description *</label><textarea id="i-desc" placeholder="Décrivez vos services..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;min-height:80px;resize:vertical;box-sizing:border-box;"></textarea></div>
     <div style="display:flex;gap:10px;">
-      <button id="i-back2" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;">← Retour</button>
-      <button id="i-btn2" style="flex:2;padding:13px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">Suivant →</button>
+      <button id="i-back2" onclick="document.getElementById('i-step2').style.display='none';document.getElementById('i-step1').style.display='block';" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;">← Retour</button>
+      <button id="i-btn2" onclick="(function(){var cat=(document.getElementById('i-cat')||{}).value||'';var met=((document.getElementById('i-metier')||{}).value||'').trim();var dsc=((document.getElementById('i-desc')||{}).value||'').trim();var e=document.getElementById('i-err');if(!cat||!met||!dsc){if(e){e.textContent='Remplissez tous les champs';e.style.display='block';}return;}if(e)e.style.display='none';document.getElementById('i-step2').style.display='none';document.getElementById('i-step3').style.display='block';})()" style="flex:2;padding:13px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">Suivant →</button>
     </div>
   </div>
   <div id="i-step3" style="display:none;">
@@ -3593,7 +3593,7 @@ async function connexion() {
       <div><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Quartier</label><input id="i-quartier" type="text" placeholder="Ex: Hamdallaye..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
     </div>
     <div style="display:flex;gap:10px;">
-      <button id="i-back3" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;">← Retour</button>
+      <button id="i-back3" onclick="document.getElementById('i-step3').style.display='none';document.getElementById('i-step2').style.display='block';" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;">← Retour</button>
       <button id="i-submit" style="flex:2;padding:13px;background:#1A1A4E;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">Créer mon compte</button>
     </div>
   </div>
