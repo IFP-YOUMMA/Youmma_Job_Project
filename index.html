@@ -299,8 +299,10 @@ nav.scrolled{background:rgba(15,16,32,.96);backdrop-filter:blur(20px) saturate(1
 .prov-actions{display:flex;gap:7px;}
 .btn-pwa{flex:1;padding:10px;background:#25D366;border-radius:10px;color:#fff;font-size:12px;font-weight:700;border:none;cursor:pointer;transition:all var(--transition);display:flex;align-items:center;justify-content:center;gap:5px;}
 .btn-pwa:hover{background:#1ea952;transform:translateY(-1px);}
-.btn-pprofil{flex:1;padding:10px;background:var(--fond);border:1.5px solid var(--bordure);border-radius:10px;color:var(--texte);font-size:12px;font-weight:700;cursor:pointer;transition:all var(--transition);display:flex;align-items:center;justify-content:center;gap:5px;}
-.btn-pprofil:hover{border-color:var(--orange);color:var(--orange);}
+.btn-pprofil{flex:1;padding:10px;background:var(--bleu-50);border:1.5px solid var(--bleu-light);border-radius:10px;color:var(--bleu-mid);font-size:12px;font-weight:700;cursor:pointer;transition:all var(--transition);display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-pprofil:hover{background:var(--bleu-light);color:var(--bleu);}
+.btn-mp-voir-profil{width:100%;margin-top:10px;padding:14px;background:linear-gradient(135deg,var(--bleu),var(--bleu-mid));color:#fff;border:none;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Libre Baskerville',serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;letter-spacing:.01em;box-shadow:0 4px 16px rgba(26,26,78,.18);}
+.btn-mp-voir-profil:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,26,78,.25);}
 .btn-pfav{width:38px;height:38px;border-radius:10px;background:var(--fond);border:1.5px solid var(--bordure);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all var(--transition);flex-shrink:0;}
 .btn-pfav:hover{background:#FEE2E2;}
 .load-more-btn{display:block;margin:44px auto 0;padding:14px 44px;background:#fff;border:1.5px solid var(--bordure);border-radius:50px;font-size:14px;font-weight:600;color:var(--gris);cursor:pointer;transition:all var(--transition);font-family:'DM Sans',sans-serif;}
@@ -679,6 +681,7 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .pc2-s+.pc2-s{border-left:1px solid var(--bordure);}
 .pc2-sv{font-family:'Libre Baskerville',serif;font-size:13px;font-weight:700;color:var(--bleu-mid);display:block;}
 .pc2-sl{font-size:9px;color:var(--gris);display:block;margin-top:1px;}
+.pc2-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
 
 /* ── SEARCH FILTERS ROW ── */
 .search-filters-row{display:flex;justify-content:space-between;align-items:center;padding:12px 22px 14px;flex-wrap:wrap;gap:10px;}
@@ -811,9 +814,9 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .mp-port-img{height:70px;border-radius:10px;position:relative;overflow:hidden;}
 .mp-port-label{font-size:10px;color:var(--gris);margin-top:5px;text-align:center;line-height:1.3;}
 .mp-actions-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:16px;}
-.btn-mp-wa{background:#25D366;color:#fff;border:none;border-radius:50px;padding:12px 8px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
-.btn-mp-call{background:var(--bleu);color:#fff;border:none;border-radius:50px;padding:12px 8px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
-.btn-mp-maps{background:var(--fond2);color:var(--texte);border:1.5px solid var(--bordure);border-radius:50px;padding:12px 8px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-mp-wa{background:#25D366;color:#fff;border:none;border-radius:50px;padding:12px 8px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-mp-call{background:var(--bleu);color:#fff;border:none;border-radius:50px;padding:12px 8px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-mp-maps{background:var(--fond2);color:var(--texte);border:1.5px solid var(--bordure);border-radius:50px;padding:12px 8px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;}
 .mp-avis-item{background:var(--fond2);border-radius:14px;padding:14px 16px;margin-bottom:10px;}
 .mp-avis-head{display:flex;gap:10px;align-items:center;margin-bottom:8px;}
 .mp-avis-avatar{width:36px;height:36px;border-radius:10px;background:var(--bleu-light);display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-weight:700;color:var(--bleu-mid);font-size:14px;flex-shrink:0;}
@@ -860,8 +863,8 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 
 /* ── RESPONSIVE ARTISANS ── */
 @media(max-width:1100px){.artisans-grid-3{grid-template-columns:repeat(2,1fr);}.portfolio-grid{grid-template-columns:repeat(3,1fr);}.mp-portfolio-grid{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:768px){.artisans-grid-3{grid-template-columns:1fr;}.portfolio-grid{grid-template-columns:repeat(2,1fr);}.mp-portfolio-grid{grid-template-columns:repeat(2,1fr);}.mp-actions-row{grid-template-columns:1fr;}.mp-info-grid{grid-template-columns:1fr;}.trust-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:480px){.portfolio-grid{grid-template-columns:1fr 1fr;}.mp-actions-row{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){.artisans-grid-3{grid-template-columns:1fr;}.portfolio-grid{grid-template-columns:repeat(2,1fr);}.mp-portfolio-grid{grid-template-columns:repeat(2,1fr);}.mp-actions-row{grid-template-columns:1fr 1fr 1fr;}.mp-info-grid{grid-template-columns:1fr;}.trust-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.portfolio-grid{grid-template-columns:1fr 1fr;}.mp-actions-row{grid-template-columns:1fr 1fr 1fr;}}
 
 /* ── LED dispo ── */
 .dispo-led{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0;}
@@ -912,7 +915,7 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 /* ── MODAL WIDTH MOBILE ── */
 @media(max-width:640px){
   .modal{border-radius:16px!important;max-width:100%!important;}
-  .mp-actions-row{grid-template-columns:1fr 1fr!important;}
+  .mp-actions-row{grid-template-columns:1fr 1fr 1fr!important;}
   .mp-portfolio-grid{grid-template-columns:repeat(3,1fr)!important;}
   .hero-metiers-strip{gap:5px;}
   .hm-tag{font-size:10.5px;padding:4px 9px;}
@@ -2867,6 +2870,7 @@ function renderProviders() {
           <div class="pc2-loc"><i class="fa-solid fa-location-dot"></i> ${p.ville}${p.experience ? ` · <strong>${p.experience} ans exp.</strong>` : ''}</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0;">
+          <button class="btn-pfav" onclick="event.stopPropagation();toggleFav(${p.id})" style="margin-bottom:2px;">${isFav?'<i class="fa-solid fa-heart" style="color:#E85D04;"></i>':'<i class="fa-regular fa-heart" style="color:#aaa;"></i>'}</button>
           ${p.badge_verifie?`<span class="badge-verifie" style="font-size:9px;padding:2px 7px;"><i class="fa-solid fa-check"></i> Vérifié</span>`:''}
           ${p.badge_express?`<span class="badge-express" style="font-size:9px;padding:2px 7px;"> Express</span>`:''}
           ${p.badge_top?`<span class="badge-top" style="font-size:9px;padding:2px 7px;"><i class="fa-solid fa-trophy" style="color:#F5C842;"></i></span>`:''}
@@ -2883,8 +2887,7 @@ function renderProviders() {
       </div>
       <div class="pc2-actions">
         <button class="btn-pwa" onclick="event.stopPropagation();openWA('${p.wa}','${p.nom}')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
-        <button class="btn-pprofil" onclick="event.stopPropagation();openModal('${p.id}')">👤 Voir profil</button>
-        <button class="btn-pfav" onclick="event.stopPropagation();toggleFav(${p.id})">${isFav?'<i class="fa-solid fa-heart" style="color:#E85D04;"></i>':'🤍'}</button>
+        <button class="btn-pprofil" onclick="event.stopPropagation();openModal('${p.id}')"><i class="fa-solid fa-user"></i> Voir profil</button>
       </div>
     </div>`;
   }).join('');
@@ -3040,6 +3043,7 @@ function openModal(id) {
       <button class="btn-mp-call" onclick="callProvider('${p.tel}')"><i class="fa-solid fa-phone"></i> Appeler</button>
       <button class="btn-mp-maps" onclick="openMaps('${p.nom}','${p.ville}')"><i class="fa-solid fa-location-dot"></i> Localiser</button>
     </div>
+    <button class="btn-mp-voir-profil" onclick="openModal('${p.id}')"><i class="fa-solid fa-address-card"></i> Voir le profil complet</button>
     <div style="text-align:center;margin-top:10px;padding:10px;background:var(--fond2);border-radius:12px;">
       <div style="font-size:11.5px;color:var(--gris);">Vous êtes artisan ? <span onclick="closeModal();ouvrirInscription()" style="color:var(--orange);font-weight:700;cursor:pointer;">Créez votre profil gratuit →</span></div>
     </div>
