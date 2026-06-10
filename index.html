@@ -4375,11 +4375,26 @@ async function uploadPhoto(input, type) {
   const pid = providerId || _dashProviderId;
   if (!pid) { showToast('Session expirée, reconnectez-vous', 'error'); return; }
 
-  if (file.size > 5 * 1024 * 1024) { showToast('Fichier trop volumineux (max 5 Mo)', 'error'); return; }
+  // Validation format
+  if (!['image/jpeg','image/png','image/webp','image/gif'].includes(file.type)) {
+    showToast('❌ Format non supporté. Utilisez JPG, PNG ou WebP', 'error'); return;
+  }
+  if (file.size > 20 * 1024 * 1024) { showToast('❌ Fichier trop volumineux (max 20 Mo)', 'error'); return; }
+
+  // Preview instantanée avant upload
+  const previewReader = new FileReader();
+  previewReader.onload = (e) => {
+    if (type === 'profil') {
+      const prev = document.getElementById('profilPhotoPreview');
+      if (prev) prev.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;opacity:0.5;filter:blur(2px);"/>`;
+    }
+  };
+  previewReader.readAsDataURL(file);
 
   const progressId = type === 'profil' ? 'progressProfil' : 'progressReal';
   const progEl = document.getElementById(progressId);
   if (progEl) progEl.classList.add('show');
+  showToast('⏳ Traitement de l\'image...');
 
   const res = await uploadProviderPhoto(pid, file, type);
   if (progEl) progEl.classList.remove('show');
@@ -4393,8 +4408,12 @@ async function uploadPhoto(input, type) {
     renderPhotos();
     _dashRenderPhotos();
     updateUI();
+    _dashUpdateUI();
   } else {
-    showToast(res.message || 'Erreur upload : ' + JSON.stringify(res), 'error');
+    showToast('❌ ' + (res.message || 'Erreur lors de l\'upload'), 'error');
+    // Reset preview en cas d'échec
+    const prev = document.getElementById('profilPhotoPreview');
+    if (prev && type === 'profil') prev.innerHTML = '?';
   }
   input.value = '';
 }
@@ -5080,13 +5099,63 @@ async function getProviderPhotos(providerId) {
   const { data } = await sb.from('provider_photos').select('*').eq('provider_id',providerId).order('ordre',{ ascending:true });
   return data||[];
 }
+
+// ── REDIMENSIONNEMENT AUTOMATIQUE ──
+// Photo de profil : 400×400 (carré centré)
+// Réalisation     : max 1200px côté long, qualité 85%
+async function resizeImage(file, type='realisation') {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const canvas = document.createElement('canvas');
+      let w = img.width, h = img.height;
+
+      if (type === 'profil') {
+        // Carré 400×400 centré
+        const size = 400;
+        canvas.width = size; canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        const ratio = Math.max(size / w, size / h);
+        const nw = w * ratio, nh = h * ratio;
+        const ox = (size - nw) / 2, oy = (size - nh) / 2;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, size, size);
+        ctx.drawImage(img, ox, oy, nw, nh);
+      } else {
+        // Réalisation : max 1200px
+        const maxSide = 1200;
+        if (w > maxSide || h > maxSide) {
+          if (w > h) { h = Math.round(h * maxSide / w); w = maxSide; }
+          else       { w = Math.round(w * maxSide / h); h = maxSide; }
+        }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      }
+
+      canvas.toBlob((blob) => {
+        // Renommer en .jpg
+        const resized = new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' });
+        resolve(resized);
+      }, 'image/jpeg', type === 'profil' ? 0.90 : 0.85);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file); }; // fallback
+    img.src = url;
+  });
+}
+
 async function uploadProviderPhoto(providerId, file, type='realisation') {
   const photos = await getProviderPhotos(providerId);
   const reals = photos.filter(p => p.type==='realisation');
   if (type==='realisation' && reals.length>=5) return { success:false, message:'Maximum 5 photos atteint' };
-  const ext = file.name.split('.').pop();
-  const filename = `${providerId}/${type}_${Date.now()}.${ext}`;
-  const { error:uploadError } = await sb.storage.from('photos').upload(filename, file, { cacheControl:'3600', upsert:false });
+
+  // Redimensionner avant upload
+  let fileToUpload = file;
+  try { fileToUpload = await resizeImage(file, type); } catch(e) { fileToUpload = file; }
+
+  const filename = `${providerId}/${type}_${Date.now()}.jpg`;
+  const { error:uploadError } = await sb.storage.from('photos').upload(filename, fileToUpload, { cacheControl:'3600', upsert:false, contentType:'image/jpeg' });
   if (uploadError) return { success:false, message:uploadError.message };
   const { data:urlData } = sb.storage.from('photos').getPublicUrl(filename);
   const publicUrl = urlData.publicUrl;
@@ -5094,7 +5163,7 @@ async function uploadProviderPhoto(providerId, file, type='realisation') {
     const oldProfil = photos.find(p => p.type==='profil');
     if (oldProfil) {
       await sb.from('provider_photos').delete().eq('id',oldProfil.id);
-      const op = oldProfil.url.split('Photos/')[1];
+      const op = oldProfil.url.split('photos/')[1];
       if (op) await sb.storage.from('photos').remove([op]);
     }
     await sb.from('providers').update({ photo_url:publicUrl }).eq('id',providerId);
