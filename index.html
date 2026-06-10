@@ -5803,6 +5803,7 @@ window.addEventListener('popstate', (e) => {
     navigate('dashboard');
     await chargerDashboard(pid);
   } else if (hash === 'admin') {
+    await new Promise(r => setTimeout(r, 50));
     navigate('admin');
     await initAdmin();
   } else if (hash === 'inscription') {
