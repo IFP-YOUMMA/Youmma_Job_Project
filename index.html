@@ -2819,8 +2819,13 @@ function renderProviders() {
             <div class="pc2-name" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.nom}</div>
             <button class="btn-pfav" onclick="event.stopPropagation();toggleFav('${p.id}')" style="flex-shrink:0;background:none;border:none;cursor:pointer;font-size:17px;padding:2px 4px;line-height:1;">${isFav?'<i class="fa-solid fa-heart" style="color:#E85D04;"></i>':'<i class="fa-regular fa-heart" style="color:#bbb;"></i>'}</button>
           </div>
-          <!-- Ligne 2 : Métier -->
-          <div class="pc2-metier">${p.metier}</div>
+          <!-- Ligne 2 : Métier + Missions -->
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;">
+            <div class="pc2-metier" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.metier}</div>
+            <div style="flex-shrink:0;font-size:11px;font-weight:700;color:var(--bleu);background:#EEF2FF;padding:2px 7px;border-radius:20px;white-space:nowrap;">
+              <i class="fa-solid fa-bullseye" style="font-size:9px;"></i> ${p.missions||0} mission${(p.missions||0)>1?'s':''}
+            </div>
+          </div>
           <!-- Ligne 3 : Lieu gauche | Étoiles + Note droite -->
           <div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px;">
             <div style="font-size:12px;color:var(--gris);display:flex;align-items:center;gap:4px;">
@@ -3919,6 +3924,10 @@ if (typeof inscrirePrestataire === 'undefined') {
       <span class="icon"><i class="fa-solid fa-shield-halved"></i></span>
       <span>Documents</span>
     </a>
+    <a class="nav-item" onclick="showSection('missions')">
+      <span class="icon"><i class="fa-solid fa-bullseye"></i></span>
+      <span>Mes missions</span>
+    </a>
     <a class="nav-item" onclick="showSection('abonnement')">
       <span class="icon"><i class="fa-solid fa-credit-card"></i></span>
       <span>Abonnement</span>
@@ -4197,6 +4206,46 @@ if (typeof inscrirePrestataire === 'undefined') {
       </div>
     </div>
 
+    <!-- ── MISSIONS ── -->
+    <div class="section" id="section-missions">
+      <div style="margin-bottom:16px;">
+        <button onclick="showSection('dashboard')" style="display:inline-flex;align-items:center;gap:7px;padding:8px 14px;background:#F4F6FB;border:none;border-radius:10px;color:#1A1A4E;font-size:13px;font-weight:600;cursor:pointer;">
+          <i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Tableau de bord
+        </button>
+      </div>
+      <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:6px;"><i class="fa-solid fa-bullseye" style="color:var(--orange);"></i> Mes missions</div>
+      <p style="font-size:13px;color:#6B7280;margin-bottom:20px;">Déclarez chaque mission effectuée. YOUMMA JOBS la vérifie et valide votre compteur visible sur votre profil public.</p>
+
+      <!-- FORMULAIRE DÉCLARATION -->
+      <div style="background:#fff;border-radius:16px;border:1.5px solid var(--bordure);padding:20px;margin-bottom:20px;">
+        <div style="font-weight:700;color:#1A1A4E;font-size:15px;margin-bottom:14px;"><i class="fa-solid fa-plus-circle" style="color:var(--orange);"></i> Déclarer une nouvelle mission</div>
+        <div class="form-group"><label>Description de la mission *</label><input type="text" id="missionDesc" placeholder="Ex: Installation électrique villa Ratoma" style="width:100%;padding:12px 14px;border:1.5px solid var(--bordure);border-radius:12px;font-size:13.5px;font-family:'DM Sans',sans-serif;"/></div>
+        <div class="row-2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">
+          <div class="form-group">
+            <label>Client (optionnel)</label>
+            <input type="text" id="missionClient" placeholder="Nom du client" style="width:100%;padding:12px 14px;border:1.5px solid var(--bordure);border-radius:12px;font-size:13.5px;font-family:'DM Sans',sans-serif;"/>
+          </div>
+          <div class="form-group">
+            <label>Montant (optionnel)</label>
+            <input type="text" id="missionMontant" placeholder="Ex: 200 000 GNF" style="width:100%;padding:12px 14px;border:1.5px solid var(--bordure);border-radius:12px;font-size:13.5px;font-family:'DM Sans',sans-serif;"/>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:10px;">
+          <label>Date de la mission</label>
+          <input type="date" id="missionDate" style="width:100%;padding:12px 14px;border:1.5px solid var(--bordure);border-radius:12px;font-size:13.5px;font-family:'DM Sans',sans-serif;"/>
+        </div>
+        <button onclick="declarerMission()" style="width:100%;margin-top:14px;padding:13px;background:var(--orange);color:#fff;border:none;border-radius:12px;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <i class="fa-solid fa-paper-plane"></i> Envoyer la déclaration
+        </button>
+      </div>
+
+      <!-- LISTE MISSIONS -->
+      <div style="font-weight:700;color:#1A1A4E;font-size:14px;margin-bottom:10px;">Historique de mes missions</div>
+      <div id="missionsList" style="display:flex;flex-direction:column;gap:10px;">
+        <div style="text-align:center;padding:20px;color:#9CA3AF;font-size:13px;"><i class="fa-solid fa-spinner fa-spin"></i> Chargement...</div>
+      </div>
+    </div>
+
     <!-- ── ABONNEMENT ── -->
     <div class="section" id="section-abonnement">
       <div style="margin-bottom:16px;">
@@ -4390,7 +4439,52 @@ function updateAbonnementUI(p) {
   });
 }
 
-// ── DOCUMENTS ──
+// ── MISSIONS ──
+async function declarerMission() {
+  const pid = providerId || _dashProviderId;
+  if (!pid) { showToast('Session expirée','error'); return; }
+  const desc = document.getElementById('missionDesc')?.value.trim();
+  if (!desc) { showToast('Décrivez la mission','error'); return; }
+  const client = document.getElementById('missionClient')?.value.trim()||null;
+  const montant = document.getElementById('missionMontant')?.value.trim()||null;
+  const date = document.getElementById('missionDate')?.value||new Date().toISOString().split('T')[0];
+
+  const { error } = await sb.from('missions').insert({
+    provider_id: pid, description: desc, client_nom: client,
+    montant, date_mission: date, statut: 'en_attente'
+  });
+  if (error) { showToast('❌ Erreur : '+error.message,'error'); return; }
+  showToast('✅ Mission déclarée ! En attente de validation YOUMMA JOBS.','success');
+  document.getElementById('missionDesc').value='';
+  document.getElementById('missionClient').value='';
+  document.getElementById('missionMontant').value='';
+  chargerMissions(pid);
+}
+
+async function chargerMissions(pid) {
+  const list = document.getElementById('missionsList');
+  if (!list) return;
+  const { data } = await sb.from('missions').select('*').eq('provider_id',pid).order('created_at',{ascending:false});
+  if (!data||data.length===0) {
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:#9CA3AF;font-size:13px;background:#F9FAFB;border-radius:12px;"><i class="fa-solid fa-inbox" style="font-size:24px;display:block;margin-bottom:8px;opacity:.4;"></i>Aucune mission déclarée</div>';
+    return;
+  }
+  const colors = {valide:'#F0FDF4',en_attente:'#FEF9C3',rejete:'#FEF2F2'};
+  const textColors = {valide:'#16A34A',en_attente:'#854D0E',rejete:'#DC2626'};
+  const labels = {valide:'✅ Validée',en_attente:'⏳ En attente',rejete:'❌ Rejetée'};
+  list.innerHTML = data.map(m=>`
+    <div style="background:#fff;border:1px solid var(--bordure);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:700;color:#1A1A4E;font-size:13.5px;margin-bottom:3px;">${m.description}</div>
+        <div style="font-size:11.5px;color:#6B7280;">
+          ${m.client_nom?`<span><i class="fa-solid fa-user" style="margin-right:3px;"></i>${m.client_nom}</span> · `:''} 
+          <span><i class="fa-regular fa-calendar" style="margin-right:3px;"></i>${m.date_mission||'—'}</span>
+          ${m.montant?` · <span><i class="fa-solid fa-coins" style="margin-right:3px;color:var(--orange);"></i>${m.montant}</span>`:''}
+        </div>
+      </div>
+      <span style="flex-shrink:0;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;background:${colors[m.statut]||'#F9FAFB'};color:${textColors[m.statut]||'#6B7280'};">${labels[m.statut]||m.statut}</span>
+    </div>`).join('');
+}
 async function uploadDocument(input, type) {
   const file = input.files[0]; if (!file) return;
   const pid = providerId || _dashProviderId;
@@ -4753,6 +4847,7 @@ async function chargerAvis() {
     <div onclick="showAdmin('suspendu')" id="amenu-suspendu" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-ban" style="width:16px;"></i> Suspendus</div>
     <div onclick="showAdmin('codes')" id="amenu-codes" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-key" style="width:16px;"></i> Codes d'activation</div>
     <div onclick="showAdmin('realisations')" id="amenu-realisations" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-images" style="width:16px;"></i> Réalisations</div>
+    <div onclick="showAdmin('missions')" id="amenu-missions" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-bullseye" style="width:16px;"></i> Missions</div>
   </div>
   <div style="padding:8px;border-top:1px solid rgba(255,255,255,.08);margin-top:10px;">
     <div onclick="logoutAdmin()" style="padding:10px 12px;border-radius:8px;color:#FCA5A5;font-size:13px;font-weight:600;cursor:pointer;background:rgba(239,68,68,.1);"><i class="fa-solid fa-right-from-bracket" style="width:16px;"></i> Déconnexion</div>
@@ -4830,6 +4925,14 @@ async function chargerAvis() {
       </div>
 
       <div id="codesTable"></div>
+    </div>
+
+    <!-- MISSIONS ADMIN -->
+    <div class="admin-section" id="admin-missions" style="display:none;">
+      <h2 style="font-family:'Libre Baskerville',serif;font-size:20px;color:#1A1A4E;margin-bottom:20px;"><i class="fa-solid fa-bullseye" style="color:var(--orange);"></i> Missions à valider</h2>
+      <div id="adminMissionsList" style="display:flex;flex-direction:column;gap:10px;">
+        <div style="text-align:center;color:#94A3B8;padding:20px;"><i class="fa-solid fa-spinner fa-spin"></i> Chargement...</div>
+      </div>
     </div>
 
     <!-- RÉALISATIONS -->
@@ -5003,13 +5106,11 @@ function showSection(name) {
   const target = document.getElementById('section-' + name);
   if (target) target.classList.add('active');
   document.querySelectorAll('#page-dashboard .nav-item').forEach(n => n.classList.remove('active'));
-  const titles = { dashboard:'Tableau de bord', profil:'Mon profil', photos:'Photos & Galerie', documents:'Documents & Vérification', abonnement:'Abonnement', avis:'Mes avis' };
+  const titles = { dashboard:'Tableau de bord', profil:'Mon profil', photos:'Photos & Galerie', documents:'Documents & Vérification', missions:'Mes missions', abonnement:'Abonnement', avis:'Mes avis' };
   const tt = document.getElementById('topbarTitle');
   if (tt) tt.textContent = titles[name] || name;
-  if (name === 'documents') {
-    const pid = providerId || _dashProviderId;
-    if (pid) chargerDocuments(pid);
-  }
+  if (name === 'documents') { const pid = providerId || _dashProviderId; if (pid) chargerDocuments(pid); }
+  if (name === 'missions') { const pid = providerId || _dashProviderId; if (pid) chargerMissions(pid); }
 }
 
 
@@ -5247,10 +5348,11 @@ async function deconnexion() {
   navigate('home');
 }
 async function getProviders({ categorie='',recherche='',limite=15,offset=0 }={}) {
-  let query = sb.from('providers').select('id,nom,prenom,metier,categorie,sous_categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_favoris,nb_avis,nb_appels,nb_whatsapp,telephone,skills,description,latitude,longitude').eq('statut','valide').order('note_moyenne',{ ascending:false }).range(offset,offset+limite-1);
+  let query = sb.from('providers').select('id,nom,prenom,metier,categorie,sous_categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_favoris,nb_avis,nb_appels,nb_whatsapp,nb_missions,telephone,skills,description,latitude,longitude,disponibilite,doc_cni_statut,doc_diplome_statut').eq('statut','valide').order('note_moyenne',{ ascending:false }).range(offset,offset+limite-1);
   if (categorie) query = query.eq('categorie',categorie);
   if (recherche) query = query.or(`nom.ilike.%${recherche}%,metier.ilike.%${recherche}%,ville.ilike.%${recherche}%`);
   const { data, error } = await query;
+  if (error) console.warn('getProviders error:', error.message);
   return error ? [] : (data||[]);
 }
 async function getDashboardData(providerId) {
@@ -5720,11 +5822,11 @@ async function loadProvidersFromSupabase() {
       latitude: p.latitude,
       longitude: p.longitude,
       // Champs requis par openModal
-      badge_verifie: p.statut === 'valide',
-      badge_top: (p.note_moyenne||0) >= 4.8,
+      badge_verifie: p.statut === 'valide' || p.doc_cni_statut === 'valide',
+      badge_top: p.doc_diplome_statut === 'valide' || (p.note_moyenne||0) >= 4.8,
       badge_express: p.categorie === 'Services Express',
       recommande: (p.nb_avis||0) >= 3,
-      dispo: p.disponibilite || 'Disponible',
+      dispo: p.disponibilite || 'Disponible maintenant',
       tarif: p.tarif || null,
       experience: p.experience || null,
       portfolio: (p.portfolio||[]),
@@ -6498,13 +6600,55 @@ function showAdmin(name) {
   if (t) t.classList.add('active');
   const NORMAL = 'padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;background:transparent;';
   const ACTIVE = 'padding:10px 12px;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:2px;background:rgba(232,93,4,.25);';
-  ['dashboard','en_attente','valide','rejete','suspendu','codes','realisations'].forEach(s => {
+  ['dashboard','en_attente','valide','rejete','suspendu','codes','realisations','missions'].forEach(s => {
     const el = document.getElementById('amenu-'+s);
     if (el) el.style.cssText = s===name ? ACTIVE : NORMAL;
   });
   if (name==='codes') { if(typeof loadCodes==='function') loadCodes(); }
   else if (name==='realisations') { if(typeof renderAdminRealisations==='function') renderAdminRealisations(); }
+  else if (name==='missions') { chargerMissionsAdmin(); }
   else if (name!=='dashboard') { if(typeof _adminLoadAll==='function') _adminLoadAll(); }
+}
+
+async function chargerMissionsAdmin() {
+  const list = document.getElementById('adminMissionsList');
+  if (!list) return;
+  const { data } = await sb.from('missions').select('*,providers(prenom,nom,metier)').eq('statut','en_attente').order('created_at',{ascending:false});
+  if (!data||data.length===0) {
+    list.innerHTML = '<div style="text-align:center;padding:30px;color:#9CA3AF;background:#F9FAFB;border-radius:12px;font-size:13px;"><i class="fa-solid fa-check-circle" style="font-size:28px;display:block;margin-bottom:10px;color:#22C55E;"></i>Aucune mission en attente 🎉</div>';
+    return;
+  }
+  list.innerHTML = data.map(m=>`
+    <div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;">
+        <div style="font-weight:700;color:#1A1A4E;font-size:13.5px;margin-bottom:4px;">${m.description}</div>
+        <div style="font-size:12px;color:#6B7280;">
+          <strong>${m.providers?.prenom||''} ${m.providers?.nom||''}</strong> · ${m.providers?.metier||'—'}
+          ${m.client_nom?` · Client: ${m.client_nom}`:''}
+          ${m.montant?` · ${m.montant}`:''}
+          ${m.date_mission?` · ${m.date_mission}`:''}
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0;">
+        <button onclick="_adminValidMission('${m.id}','valide','${m.provider_id}')" style="padding:7px 14px;background:rgba(34,197,94,.12);color:#16A34A;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;">✅ Valider</button>
+        <button onclick="_adminValidMission('${m.id}','rejete','${m.provider_id}')" style="padding:7px 14px;background:rgba(239,68,68,.08);color:#DC2626;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;">❌ Rejeter</button>
+      </div>
+    </div>`).join('');
+}
+
+async function _adminValidMission(missionId, statut, providerId) {
+  const { error } = await sb.from('missions').update({ statut }).eq('id', missionId);
+  if (error) { showToast('Erreur: '+error.message); return; }
+  // Si validée → incrémenter nb_missions du prestataire
+  if (statut === 'valide') {
+    await sb.rpc('increment_missions', { provider_id: providerId }).catch(async () => {
+      // Fallback si RPC pas dispo
+      const { data:p } = await sb.from('providers').select('nb_missions').eq('id', providerId).single();
+      await sb.from('providers').update({ nb_missions: (p?.nb_missions||0)+1 }).eq('id', providerId);
+    });
+  }
+  showToast(statut==='valide'?'✅ Mission validée !':'Mission rejetée');
+  chargerMissionsAdmin();
 }
 
 function actionsHTML(p) {
