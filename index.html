@@ -3613,7 +3613,10 @@ async function connexion() {
     skills:[]
   };
   try {
-    var hash = await hashPassword(fd.password);
+    // SHA-256 inline
+    var msgBuffer = new TextEncoder().encode(fd.password);
+    var hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    var hash = Array.from(new Uint8Array(hashBuffer)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
     var row = {prenom:fd.prenom,nom:fd.nom,telephone:fd.telephone,password_hash:hash,metier:fd.metier,categorie:fd.categorie,description:fd.description,ville:fd.ville,commune:fd.commune,quartier:fd.quartier,statut:'en_attente',skills:[]};
     var res = await sb.from('providers').insert([row]);
     if(res.error){
