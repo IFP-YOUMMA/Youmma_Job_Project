@@ -5321,45 +5321,32 @@ async function deconnexion() {
   clearSession();
   navigate('home');
 }
-async function getProviders({ categorie='',recherche='',limite=15,offset=0 }={}) {
-  const baseSelect = 'id,nom,prenom,metier,categorie,sous_categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_favoris,nb_avis,nb_appels,nb_whatsapp,telephone,skills,description,latitude,longitude';
-  
-  let query = sb.from('providers')
-    .select(baseSelect)
-    .eq('statut','valide')
-    .order('created_at', { ascending: false })
-    .limit(limite);
-  
-  if (offset > 0) query = query.range(offset, offset + limite - 1);
-  if (categorie) query = query.eq('categorie', categorie);
-  if (recherche) query = query.or(`nom.ilike.%${recherche}%,prenom.ilike.%${recherche}%,metier.ilike.%${recherche}%`);
-  
-  const { data, error } = await query;
-  if (error) { console.warn('getProviders error:', error.message); return []; }
-  
-  // Enrichir avec colonnes optionnelles
-  if (data && data.length > 0) {
-    try {
-      const ids = data.map(p => p.id);
-      const { data:extra } = await sb.from('providers')
-        .select('id,nb_missions,disponibilite,doc_cni_statut,doc_diplome_statut')
-        .in('id', ids);
-      if (extra) {
-        const extraMap = {};
-        extra.forEach(e => { extraMap[e.id] = e; });
-        data.forEach(p => {
-          const e = extraMap[p.id] || {};
-          p.nb_missions = e.nb_missions || 0;
-          p.disponibilite = e.disponibilite || 'Disponible maintenant';
-          p.doc_cni_statut = e.doc_cni_statut || null;
-          p.doc_diplome_statut = e.doc_diplome_statut || null;
-        });
-      }
-    } catch(e) {
-      data.forEach(p => { p.nb_missions=0; p.disponibilite='Disponible maintenant'; });
-    }
+async function getProviders({ categorie='', recherche='', limite=20, offset=0 }={}) {
+  try {
+    let query = sb.from('providers')
+      .select('id,nom,prenom,metier,categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_favoris,nb_avis,nb_appels,nb_whatsapp,telephone,skills,description,latitude,longitude,tarif,experience')
+      .eq('statut', 'valide')
+      .order('created_at', { ascending: false })
+      .limit(limite);
+
+    if (offset > 0) query = query.range(offset, offset + limite - 1);
+    if (categorie) query = query.eq('categorie', categorie);
+    if (recherche) query = query.or(`nom.ilike.%${recherche}%,prenom.ilike.%${recherche}%,metier.ilike.%${recherche}%`);
+
+    const { data, error } = await query;
+    if (error) { console.error('getProviders:', error.message); return []; }
+    // Valeurs par défaut pour colonnes optionnelles
+    return (data||[]).map(p => ({
+      ...p,
+      nb_missions: p.nb_missions || 0,
+      disponibilite: p.disponibilite || 'Disponible maintenant',
+      doc_cni_statut: p.doc_cni_statut || null,
+      doc_diplome_statut: p.doc_diplome_statut || null,
+    }));
+  } catch(e) {
+    console.error('getProviders exception:', e.message);
+    return [];
   }
-  return data || [];
 }
 async function getDashboardData(providerId) {
   try {
@@ -5802,13 +5789,15 @@ window.addEventListener('popstate', (e) => {
 // ══════════════════════════════════════════
 async function loadProvidersFromSupabase() {
   try {
-    // Afficher un loader
     const grid = document.getElementById('providersGrid');
-    if (grid && grid.innerHTML === '') {
-      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin" style="font-size:28px;display:block;margin-bottom:12px;"></i>Chargement des artisans...</div>';
+    if (grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin" style="font-size:28px;display:block;margin-bottom:12px;"></i>Chargement des artisans...</div>';
+
+    const data = await getProviders({ limite: 20 });
+
+    if (!data || data.length === 0) {
+      if (grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#9CA3AF;font-size:13px;">Aucun artisan disponible pour le moment.</div>';
+      return;
     }
-    const data = await getProviders({ limite: 15 });
-    if (!data || data.length === 0) return;
     const catColors = {
       'Artisans':{bg:'#FDE8D8',color:'#C74B00'},'Santé':{bg:'#E0F8E9',color:'#1B5E20'},
       'Juridique':{bg:'#FEF3C7',color:'#B45309'},'IT':{bg:'#E0E0F8',color:'#2D2D6B'},
