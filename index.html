@@ -3962,6 +3962,10 @@ if (typeof inscrirePrestataire === 'undefined') {
       <span class="icon"><i class="fa-solid fa-camera"></i></span>
       <span>Photos & Galerie</span>
     </a>
+    <a class="nav-item" onclick="showSection('documents')">
+      <span class="icon"><i class="fa-solid fa-shield-halved"></i></span>
+      <span>Documents</span>
+    </a>
     <a class="nav-item" onclick="showSection('abonnement')">
       <span class="icon"><i class="fa-solid fa-credit-card"></i></span>
       <span>Abonnement</span>
@@ -4177,6 +4181,69 @@ if (typeof inscrirePrestataire === 'undefined') {
       </div>
     </div>
 
+    <!-- ── DOCUMENTS ── -->
+    <div class="section" id="section-documents">
+      <div style="margin-bottom:16px;">
+        <button onclick="showSection('dashboard')" style="display:inline-flex;align-items:center;gap:7px;padding:8px 14px;background:#F4F6FB;border:none;border-radius:10px;color:#1A1A4E;font-size:13px;font-weight:600;cursor:pointer;">
+          <i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Tableau de bord
+        </button>
+      </div>
+      <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:6px;"><i class="fa-solid fa-shield-halved"></i> Documents & Vérification</div>
+      <p style="font-size:13px;color:#6B7280;margin-bottom:20px;">Ces documents permettent à YOUMMA JOBS de vérifier votre identité et vos qualifications. Une fois validés, votre profil affiche les badges ✅.</p>
+
+      <!-- DISPONIBILITÉ -->
+      <div style="background:#fff;border-radius:16px;border:1.5px solid var(--bordure);padding:20px;margin-bottom:16px;">
+        <div style="font-weight:700;color:#1A1A4E;font-size:15px;margin-bottom:12px;"><i class="fa-solid fa-clock" style="color:var(--orange);"></i> Ma disponibilité</div>
+        <select id="docDispo" style="width:100%;padding:12px 14px;border:1.5px solid var(--bordure);border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;background:#F9FAFB;color:#1A1A4E;margin-bottom:12px;">
+          <option value="Disponible maintenant">🟢 Disponible maintenant</option>
+          <option value="Disponible aujourd'hui">🟢 Disponible aujourd'hui</option>
+          <option value="Disponible cette semaine">🟡 Disponible cette semaine</option>
+          <option value="Lun – Sam">🟡 Lun – Sam</option>
+          <option value="Sur rendez-vous">🟠 Sur rendez-vous</option>
+          <option value="Indisponible">🔴 Indisponible</option>
+        </select>
+        <button onclick="sauvegarderDispo()" style="width:100%;padding:12px;background:var(--orange);color:#fff;border:none;border-radius:12px;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <i class="fa-solid fa-floppy-disk"></i> Enregistrer ma disponibilité
+        </button>
+      </div>
+
+      <!-- PIÈCE D'IDENTITÉ -->
+      <div style="background:#fff;border-radius:16px;border:1.5px solid var(--bordure);padding:20px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="font-weight:700;color:#1A1A4E;font-size:15px;"><i class="fa-solid fa-id-card" style="color:#4285F4;"></i> Pièce d'identité (CNI / Passeport)</div>
+          <span id="statutCNI" style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:#F9FAFB;color:#9CA3AF;border:1px solid #E5E7EB;">⏳ En attente</span>
+        </div>
+        <p style="font-size:12.5px;color:#6B7280;margin-bottom:12px;">Envoyez une photo claire de votre CNI ou passeport (recto verso). Format JPG, PNG — max 5 Mo.</p>
+        <div id="cniPreview" style="display:none;margin-bottom:12px;border-radius:10px;overflow:hidden;border:1px solid var(--bordure);max-height:160px;">
+          <img id="cniPreviewImg" style="width:100%;object-fit:cover;" alt="CNI"/>
+        </div>
+        <label style="display:block;width:100%;padding:12px;background:#F4F6FB;border:2px dashed var(--bordure);border-radius:12px;text-align:center;cursor:pointer;font-size:13px;color:#7A7F9A;font-weight:600;" onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='var(--bordure)'">
+          <i class="fa-solid fa-upload" style="margin-right:6px;color:var(--orange);"></i> Choisir une image CNI / Passeport
+          <input type="file" accept="image/*" style="display:none;" onchange="uploadDocument(this,'cni')"/>
+        </label>
+      </div>
+
+      <!-- DIPLÔME / FORMATION -->
+      <div style="background:#fff;border-radius:16px;border:1.5px solid var(--bordure);padding:20px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="font-weight:700;color:#1A1A4E;font-size:15px;"><i class="fa-solid fa-graduation-cap" style="color:#D97706;"></i> Diplôme / Attestation de formation</div>
+          <span id="statutDiplome" style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:#F9FAFB;color:#9CA3AF;border:1px solid #E5E7EB;">⏳ En attente</span>
+        </div>
+        <p style="font-size:12.5px;color:#6B7280;margin-bottom:12px;">Envoyez une photo de votre diplôme, certificat ou attestation de compétence. Format JPG, PNG, PDF — max 5 Mo.</p>
+        <div id="diplomePreview" style="display:none;margin-bottom:12px;border-radius:10px;overflow:hidden;border:1px solid var(--bordure);max-height:160px;">
+          <img id="diplomePreviewImg" style="width:100%;object-fit:cover;" alt="Diplôme"/>
+        </div>
+        <label style="display:block;width:100%;padding:12px;background:#F4F6FB;border:2px dashed var(--bordure);border-radius:12px;text-align:center;cursor:pointer;font-size:13px;color:#7A7F9A;font-weight:600;" onmouseover="this.style.borderColor='#D97706'" onmouseout="this.style.borderColor='var(--bordure)'">
+          <i class="fa-solid fa-upload" style="margin-right:6px;color:#D97706;"></i> Choisir un diplôme ou attestation
+          <input type="file" accept="image/*,application/pdf" style="display:none;" onchange="uploadDocument(this,'diplome')"/>
+        </label>
+      </div>
+
+      <div style="background:#EFF6FF;border-radius:12px;padding:14px;font-size:12.5px;color:#1D4ED8;line-height:1.6;">
+        <i class="fa-solid fa-circle-info"></i> Vos documents sont transmis à l'équipe YOUMMA JOBS pour vérification sous <strong>24–48h</strong>. Vous serez notifié par WhatsApp dès validation.
+      </div>
+    </div>
+
     <!-- ── ABONNEMENT ── -->
     <div class="section" id="section-abonnement">
       <div style="margin-bottom:16px;">
@@ -4370,8 +4437,83 @@ function updateAbonnementUI(p) {
   });
 }
 
-// ── SECTIONS ──
-function showSection(name) {
+// ── DOCUMENTS ──
+async function uploadDocument(input, type) {
+  const file = input.files[0]; if (!file) return;
+  const pid = providerId || _dashProviderId;
+  if (!pid) { try { const s=JSON.parse(localStorage.getItem('yj_provider_session')); if(s?.provider_id) { providerId=s.provider_id; _dashProviderId=s.provider_id; } } catch(e){} }
+  if (!providerId && !_dashProviderId) { showToast('Session expirée','error'); return; }
+  const activePid = providerId || _dashProviderId;
+  if (file.size > 5*1024*1024) { showToast('Fichier trop volumineux (max 5 Mo)','error'); return; }
+
+  // Preview
+  if (file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const prev = document.getElementById(type==='cni'?'cniPreview':'diplomePreview');
+      const prevImg = document.getElementById(type==='cni'?'cniPreviewImg':'diplomePreviewImg');
+      if (prev && prevImg) { prevImg.src = e.target.result; prev.style.display='block'; }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  showToast('⏳ Envoi en cours...');
+  const ext = file.name.split('.').pop();
+  const filename = `${activePid}/doc_${type}_${Date.now()}.${ext}`;
+  const { error } = await sb.storage.from('Photos').upload(filename, file, { cacheControl:'3600', upsert:true });
+  if (error) { showToast('❌ Erreur : '+error.message,'error'); return; }
+  const { data:urlData } = sb.storage.from('Photos').getPublicUrl(filename);
+  const url = urlData.publicUrl;
+
+  // Sauvegarder l'URL dans providers
+  const field = type === 'cni' ? 'doc_cni_url' : 'doc_diplome_url';
+  await sb.from('providers').update({ [field]: url, [`doc_${type}_statut`]: 'en_attente' }).eq('id', activePid);
+
+  // Mettre à jour le badge statut
+  const badge = document.getElementById(type==='cni'?'statutCNI':'statutDiplome');
+  if (badge) { badge.textContent='⏳ En cours de vérification'; badge.style.background='#FEF9C3'; badge.style.color='#854D0E'; badge.style.borderColor='#FDE68A'; }
+  showToast('✅ Document envoyé ! Vérification sous 24–48h.','success');
+}
+
+async function sauvegarderDispo() {
+  const pid = providerId || _dashProviderId;
+  if (!pid) { showToast('Session expirée','error'); return; }
+  const dispo = document.getElementById('docDispo')?.value;
+  if (!dispo) return;
+  const { error } = await sb.from('providers').update({ disponibilite: dispo }).eq('id', pid);
+  if (error) { showToast('❌ Erreur : '+error.message,'error'); return; }
+  showToast('✅ Disponibilité mise à jour !','success');
+  if (providerData) providerData.disponibilite = dispo;
+  if (_dashData) _dashData.disponibilite = dispo;
+}
+
+async function chargerDocuments(pid) {
+  const { data } = await sb.from('providers').select('doc_cni_url,doc_cni_statut,doc_diplome_url,doc_diplome_statut,disponibilite').eq('id', pid).single();
+  if (!data) return;
+  // Disponibilité
+  const sel = document.getElementById('docDispo');
+  if (sel && data.disponibilite) sel.value = data.disponibilite;
+  // CNI
+  const badgeCNI = document.getElementById('statutCNI');
+  if (badgeCNI && data.doc_cni_statut) {
+    if (data.doc_cni_statut === 'valide') { badgeCNI.textContent='✅ Vérifiée'; badgeCNI.style.background='#F0FDF4'; badgeCNI.style.color='#16A34A'; badgeCNI.style.borderColor='#86EFAC'; }
+    else if (data.doc_cni_statut === 'en_attente') { badgeCNI.textContent='⏳ En cours'; badgeCNI.style.background='#FEF9C3'; badgeCNI.style.color='#854D0E'; }
+  }
+  if (data.doc_cni_url) {
+    const prev = document.getElementById('cniPreview'); const img = document.getElementById('cniPreviewImg');
+    if (prev && img) { img.src = data.doc_cni_url; prev.style.display='block'; }
+  }
+  // Diplôme
+  const badgeDip = document.getElementById('statutDiplome');
+  if (badgeDip && data.doc_diplome_statut) {
+    if (data.doc_diplome_statut === 'valide') { badgeDip.textContent='✅ Vérifié'; badgeDip.style.background='#FFFBEB'; badgeDip.style.color='#D97706'; badgeDip.style.borderColor='#FDE68A'; }
+    else if (data.doc_diplome_statut === 'en_attente') { badgeDip.textContent='⏳ En cours'; badgeDip.style.background='#FEF9C3'; badgeDip.style.color='#854D0E'; }
+  }
+  if (data.doc_diplome_url && !data.doc_diplome_url.endsWith('.pdf')) {
+    const prev = document.getElementById('diplomePreview'); const img = document.getElementById('diplomePreviewImg');
+    if (prev && img) { img.src = data.doc_diplome_url; prev.style.display='block'; }
+  }
+}
   document.querySelectorAll('#page-dashboard .section').forEach(s => s.classList.remove('active'));
   const target = document.getElementById('section-' + name);
   if (target) target.classList.add('active');
@@ -4903,6 +5045,19 @@ function logoutAdmin() {
 }
 
 // ── SECTIONS ──
+function showSection(name) {
+  document.querySelectorAll('#page-dashboard .section').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('section-' + name);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('#page-dashboard .nav-item').forEach(n => n.classList.remove('active'));
+  const titles = { dashboard:'Tableau de bord', profil:'Mon profil', photos:'Photos & Galerie', documents:'Documents & Vérification', abonnement:'Abonnement', avis:'Mes avis' };
+  const tt = document.getElementById('topbarTitle');
+  if (tt) tt.textContent = titles[name] || name;
+  if (name === 'documents') {
+    const pid = providerId || _dashProviderId;
+    if (pid) chargerDocuments(pid);
+  }
+}
 
 
 // ── LOAD DATA ──
@@ -6025,7 +6180,7 @@ function _adminTableHTML(statut,data) {
     if(p.abonnement_actif&&p.abonnement_fin&&new Date(p.abonnement_fin)>now)return'<span class="badge abonne">Abonné</span>';
     return'<span style="color:#7A7F9A;font-size:11px;">Inactif</span>';
   };
-  return `<table class="admin-table"><thead><tr><th>Prestataire</th><th>Catégorie</th><th>Localisation</th><th>Téléphone</th><th>Inscrit</th><th>Abo.</th><th>Actions</th></tr></thead><tbody>${data.map(p=>`<tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="provider-row-avatar" style="background:#FDE8D8;color:#C74B00;">${p.photo_url?`<img src="${p.photo_url}"/>`:(p.prenom?.[0]||'')+(p.nom?.[0]||'')}</div><div><div style="font-weight:700;color:#fff;">${p.prenom||''} ${p.nom||''}</div><div style="font-size:11px;color:#7A7F9A;">${p.metier||'—'}</div></div></div></td><td><span class="badge ${p.statut}">${(p.statut||'').replace('_',' ')}</span><br><span style="font-size:11px;color:#7A7F9A;">${p.categorie||'—'}</span></td><td style="font-size:12px;color:#94A3B8;">${p.ville||'—'}${p.commune?' · '+p.commune:''}</td><td><a href="tel:${p.telephone}" style="color:#60A5FA;">${p.telephone||'—'}</a></td><td style="font-size:12px;color:#7A7F9A;">${fd(p.created_at)}</td><td>${aboBadge(p)}</td><td><div class="action-row">${p.statut==='en_attente'?`<button class="abtn valider" onclick="_adminAction('valider','${p.id}')">✅ Valider</button>`:''}<button class="abtn rejeter" onclick="_adminAction('rejeter','${p.id}')">❌ Rejeter</button><button class="abtn suspendre" onclick="_adminAction('suspendre','${p.id}')">🚫</button><button class="abtn supprimer" onclick="_adminAction('supprimer','${p.id}')">🗑️</button></div></td></tr>`).join('')}</tbody></table>`;
+  return `<table class="admin-table"><thead><tr><th>Prestataire</th><th>Catégorie</th><th>Localisation</th><th>Téléphone</th><th>Inscrit</th><th>Abo.</th><th>Documents</th><th>Actions</th></tr></thead><tbody>${data.map(p=>`<tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="provider-row-avatar" style="background:#FDE8D8;color:#C74B00;">${p.photo_url?`<img src="${p.photo_url}"/>`:(p.prenom?.[0]||'')+(p.nom?.[0]||'')}</div><div><div style="font-weight:700;color:#fff;">${p.prenom||''} ${p.nom||''}</div><div style="font-size:11px;color:#7A7F9A;">${p.metier||'—'}</div></div></div></td><td><span class="badge ${p.statut}">${(p.statut||'').replace('_',' ')}</span><br><span style="font-size:11px;color:#7A7F9A;">${p.categorie||'—'}</span></td><td style="font-size:12px;color:#94A3B8;">${p.ville||'—'}${p.commune?' · '+p.commune:''}</td><td><a href="tel:${p.telephone}" style="color:#60A5FA;">${p.telephone||'—'}</a></td><td style="font-size:12px;color:#7A7F9A;">${fd(p.created_at)}</td><td>${aboBadge(p)}</td><td style="min-width:130px;"><div style="display:flex;flex-direction:column;gap:4px;">${p.doc_cni_url?`<a href="${p.doc_cni_url}" target="_blank" style="font-size:10.5px;color:#60A5FA;">🪪 Voir CNI</a>`:'<span style="font-size:10px;color:#6B7280;">🪪 CNI manquante</span>'}${p.doc_cni_statut==='en_attente'&&p.doc_cni_url?`<button onclick="_adminValidDoc('${p.id}','cni','valide')" style="font-size:10px;padding:3px 7px;background:rgba(34,197,94,.15);color:#16A34A;border:none;border-radius:6px;cursor:pointer;font-weight:700;">✅ Valider CNI</button>`:p.doc_cni_statut==='valide'?'<span style="font-size:10px;color:#16A34A;font-weight:700;">✅ CNI OK</span>':\'\'}${p.doc_diplome_url?`<a href="${p.doc_diplome_url}" target="_blank" style="font-size:10.5px;color:#F59E0B;">🎓 Voir diplôme</a>`:'<span style="font-size:10px;color:#6B7280;">🎓 Diplôme manquant</span>'}${p.doc_diplome_statut==='en_attente'&&p.doc_diplome_url?`<button onclick="_adminValidDoc('${p.id}','diplome','valide')" style="font-size:10px;padding:3px 7px;background:rgba(245,158,11,.15);color:#D97706;border:none;border-radius:6px;cursor:pointer;font-weight:700;">✅ Valider Diplôme</button>`:p.doc_diplome_statut==='valide'?'<span style="font-size:10px;color:#D97706;font-weight:700;">✅ Diplôme OK</span>':''}</div></td><td><div class="action-row">${p.statut==='en_attente'?`<button class="abtn valider" onclick="_adminAction('valider','${p.id}')">✅ Valider</button>`:''}<button class="abtn rejeter" onclick="_adminAction('rejeter','${p.id}')">❌ Rejeter</button><button class="abtn suspendre" onclick="_adminAction('suspendre','${p.id}')">🚫</button><button class="abtn supprimer" onclick="_adminAction('supprimer','${p.id}')">🗑️</button></div></td></tr>`).join('')}</tbody></table>`;
 }
 
 
@@ -6425,6 +6580,21 @@ async function _adminAction(type, id) {
       await sb.from('providers').delete().eq('id',id);
     }
     showToast('Action effectuée avec succès');
+    await loadAll();
+  } catch(e) { showToast('Erreur: '+e.message); }
+}
+
+async function _adminValidDoc(id, docType, statut) {
+  const labels = { cni: 'CNI', diplome: 'Diplôme' };
+  if (!window.confirm(`Valider le ${labels[docType]||docType} de ce prestataire ?`)) return;
+  try {
+    const field = `doc_${docType}_statut`;
+    // Si CNI validée → badge_verifie = true
+    // Si Diplôme validé → badge_top = true
+    const extra = docType === 'cni' ? { badge_verifie: true } : { badge_top: true };
+    const { error } = await sb.from('providers').update({ [field]: statut, ...extra }).eq('id', id);
+    if (error) throw new Error(error.message);
+    showToast(`✅ ${labels[docType]} validé(e) avec succès !`);
     await loadAll();
   } catch(e) { showToast('Erreur: '+e.message); }
 }
