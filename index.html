@@ -5062,7 +5062,7 @@ function showSection(name) {
 
 // ── LOAD DATA ──
 async function getProvidersAdmin({ statut='',limite=100 }={}) {
-  let q = sb.from('providers').select('*').order('created_at',{ascending:false}).limit(limite);
+  let q = sb.from('providers').select('id,prenom,nom,metier,categorie,ville,commune,telephone,statut,note_moyenne,nb_vues,photo_url,created_at,essai_actif,essai_fin,abonnement_actif,abonnement_fin,disponibilite,doc_cni_url,doc_cni_statut,doc_diplome_url,doc_diplome_statut').order('created_at',{ascending:false}).limit(limite);
   if (statut) q = q.eq('statut',statut);
   const { data } = await q;
   return data||[];
