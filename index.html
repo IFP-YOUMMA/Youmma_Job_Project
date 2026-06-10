@@ -3887,6 +3887,8 @@ if (typeof inscrirePrestataire === 'undefined') {
 <!-- PAGE : DASHBOARD -->
 <div class="page" id="page-dashboard">
 <div class="dash-layout">
+  <!-- SIDEBAR SPACER - pousse le contenu à droite -->
+  <div style="width:220px;flex-shrink:0;min-height:100vh;"></div>
   <!-- SIDEBAR -->
 <div class="sidebar" style="width:220px !important;position:fixed !important;top:0;left:0;height:100vh;z-index:500;overflow-y:auto;overflow-x:hidden;">
   <!-- Logo -->
@@ -3940,7 +3942,7 @@ if (typeof inscrirePrestataire === 'undefined') {
 </div>
 
 <!-- MAIN -->
-<div class="main" style="margin-left:220px !important;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden;box-sizing:border-box;">
+<div class="main" style="flex:1;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden;box-sizing:border-box;min-width:0;">
   <div class="topbar">
     <div style="display:flex;align-items:center;gap:12px;min-width:0;overflow:hidden;">
       <button onclick="navigate('home')" style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--fond);border:1.5px solid var(--bordure);border-radius:10px;color:var(--bleu);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;flex-shrink:0;" onmouseover="this.style.background='var(--bleu-50)'" onmouseout="this.style.background='var(--fond)'">
@@ -4305,6 +4307,7 @@ if (typeof inscrirePrestataire === 'undefined') {
 
   </div><!-- /content -->
 </div><!-- /main -->
+</div><!-- /dash-layout -->
 
 <div class="toast" id="toast"></div>
 
@@ -4793,8 +4796,6 @@ async function chargerAvis() {
 // ── TOAST ──
 
 </script>
-</div>
-</div><!-- /dash-layout -->
 
 <!-- PAGE : ADMIN -->
 <div class="page" id="page-admin">
