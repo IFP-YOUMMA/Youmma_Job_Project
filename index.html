@@ -1007,9 +1007,9 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .inscr-note{font-size:11.5px;color:var(--gris);text-align:center;margin-top:12px;line-height:1.6;}
 
 /* ── DASHBOARD ── */
-.dash-layout{display:flex;min-height:100vh;background:var(--fond);}
+.dash-layout{display:flex;min-height:100vh;background:var(--fond);width:100%;position:relative;overflow-x:hidden;}
 .sidebar{width:220px;background:var(--bleu);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;z-index:200;overflow:hidden;overflow-y:auto;}
-.sidebar-logo{display:flex;align-items:center;gap:8px;padding:16px 14px;overflow:hidden;max-width:220px;}
+.sidebar-logo{display:flex;align-items:center;gap:8px;padding:14px 12px;overflow:hidden;max-width:220px;box-sizing:border-box;}
 .sidebar .logo-icon{width:40px;height:40px;background:var(--orange);border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Libre Baskerville',serif;font-weight:700;font-size:14px;flex-shrink:0;}
 .sidebar .logo-text{font-family:'Libre Baskerville',serif;font-weight:700;font-size:15px;color:#fff;}
 .sidebar .logo-text span{color:var(--orange);}
@@ -1476,10 +1476,13 @@ img { max-width:100%; }
 .sidebar-logo {
   display: flex !important;
   align-items: center !important;
-  gap: 10px !important;
-  padding: 20px 16px !important;
+  gap: 8px !important;
+  padding: 14px 12px !important;
   border-bottom: 1px solid rgba(255,255,255,.08) !important;
   flex-shrink: 0 !important;
+  overflow: hidden !important;
+  max-width: 220px !important;
+  box-sizing: border-box !important;
 }
 .sidebar-nav {
   flex: 1 !important;
@@ -1576,15 +1579,17 @@ img { max-width:100%; }
   overflow-y: auto;
   overflow-x: hidden;
 }
-/* Forcer le logo sidebar dans ses limites */
-#page-dashboard .sidebar .sidebar-logo {
-  overflow: hidden;
-  max-width: 220px;
-}
 #page-dashboard .sidebar .sidebar-logo img {
-  width: 40px !important;
-  height: 40px !important;
-  flex-shrink: 0;
+  width: 36px !important;
+  height: 36px !important;
+  flex-shrink: 0 !important;
+  min-width: 36px !important;
+}
+#page-dashboard .sidebar .logo-text {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 14px !important;
 }
 #page-dashboard .main {
   margin-left: 220px;
@@ -4552,13 +4557,16 @@ async function chargerDocuments(pid) {
     if (prev && img) { img.src = data.doc_diplome_url; prev.style.display='block'; }
   }
 }
+function showSection(name) {
   document.querySelectorAll('#page-dashboard .section').forEach(s => s.classList.remove('active'));
   const target = document.getElementById('section-' + name);
   if (target) target.classList.add('active');
   document.querySelectorAll('#page-dashboard .nav-item').forEach(n => n.classList.remove('active'));
-  const titles = { dashboard:'Tableau de bord', profil:'Mon profil', photos:'Photos & Galerie', abonnement:'Abonnement', avis:'Mes avis' };
+  const titles = { dashboard:'Tableau de bord', profil:'Mon profil', photos:'Photos & Galerie', documents:'Documents & Vérification', missions:'Mes missions', abonnement:'Abonnement', avis:'Mes avis' };
   const tt = document.getElementById('topbarTitle');
   if (tt) tt.textContent = titles[name] || name;
+  if (name === 'documents') { const pid = providerId || _dashProviderId; if (pid) chargerDocuments(pid); }
+  if (name === 'missions') { const pid = providerId || _dashProviderId; if (pid) chargerMissions(pid); }
 }
 
 // ── PHOTOS ──
