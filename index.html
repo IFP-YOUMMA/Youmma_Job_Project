@@ -3439,19 +3439,27 @@ document.addEventListener('keydown', e => {
 </div>
 
 <script>
-document.getElementById('password').addEventListener('keydown', e => {
-  if (e.key === 'Enter') connexion();
+// Auto-submit sur dernière case PIN
+document.addEventListener('DOMContentLoaded', function() {
+  var lpin4 = document.getElementById('lpin4');
+  if (lpin4) {
+    lpin4.addEventListener('input', function() {
+      if (this.value.length === 1) connexion();
+    });
+  }
 });
 
 async function connexion() {
-  const tel = document.getElementById('telephone').value.trim();
-  const pin = (document.getElementById('lpin1')?.value||'')+(document.getElementById('lpin2')?.value||'')+(document.getElementById('lpin3')?.value||'')+(document.getElementById('lpin4')?.value||'');
+  const tel = (document.getElementById('telephone') || {}).value || '';
+  const pin = ((document.getElementById('lpin1')||{}).value||'')
+            + ((document.getElementById('lpin2')||{}).value||'')
+            + ((document.getElementById('lpin3')||{}).value||'')
+            + ((document.getElementById('lpin4')||{}).value||'');
   const btn = document.getElementById('btnConnexion');
   const errBox = document.getElementById('errorBox');
-  
-  if (errBox) errBox.classList.remove('show');
-  
-  if (!tel) { 
+
+  if (errBox) { errBox.classList.remove('show'); errBox.textContent = ''; }
+  if (!tel.trim()) { 
     if (errBox) { errBox.textContent = 'Entrez votre numéro de téléphone'; errBox.classList.add('show'); }
     return; 
   }
@@ -3459,35 +3467,26 @@ async function connexion() {
     if (errBox) { errBox.textContent = 'Entrez votre code PIN 4 chiffres'; errBox.classList.add('show'); }
     return; 
   }
-  
+
   if (btn) btn.disabled = true;
-  
+
   try {
-    const res = await connexionPrestataire(tel, pin);
+    if (typeof connexionPrestataire === 'undefined') throw new Error('Service non disponible, rechargez la page');
+    const res = await connexionPrestataire(tel.trim(), pin);
     if (res.success) {
       navigate('dashboard');
-      const pid = res.provider?.id || await verifierSession();
-      if (pid && typeof chargerDashboard==='function') await chargerDashboard(pid);
-    } else { 
+      const pid = res.provider && res.provider.id;
+      if (pid && typeof chargerDashboard === 'function') await chargerDashboard(pid);
+    } else {
       const msg = res.message || 'Téléphone ou PIN incorrect';
       if (errBox) { errBox.textContent = msg; errBox.classList.add('show'); }
-      else alert(msg);
     }
   } catch(e) {
-    const msg = 'Erreur: ' + e.message;
-    if (errBox) { errBox.textContent = msg; errBox.classList.add('show'); }
-    else alert(msg);
+    if (errBox) { errBox.textContent = 'Erreur: ' + e.message; errBox.classList.add('show'); }
   }
-  
+
   if (btn) btn.disabled = false;
 }
-
-
-// Rediriger si déjà connecté
-(async () => {
-  const id = await verifierSession();
-  if (id) navigate('dashboard');
-})();
 </script>
   </div>
 </div>
