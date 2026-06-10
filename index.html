@@ -1547,9 +1547,25 @@ img { max-width:100%; }
 }
 </style>
 
+</head>
 <body>
 <script>
 // ── PRESTATAIRES PUBLICS ──
+async function inscrirePrestataire(formData) {
+  try {
+    const hash = await hashPassword(formData.password);
+    const { data, error } = await sb.from('providers').insert({
+      telephone:formData.telephone, password_hash:hash, nom:formData.nom, prenom:formData.prenom,
+      metier:formData.metier, categorie:formData.categorie, sous_categorie:formData.sous_categorie||null,
+      ville:formData.ville, commune:formData.commune||null, quartier:formData.quartier||null,
+      description:formData.description||null, skills:formData.skills||[], statut:'en_attente'
+    }).select().single();
+    if (error) { if (error.code==='23505') return { success:false, message:'Ce numéro est déjà inscrit' }; return { success:false, message:error.message }; }
+    return { success:true, provider:data };
+  } catch(e) { return { success:false, message:"Erreur lors de l\'inscription" }; }
+}
+
+
 async function loadProvidersFromSupabase() {
   try {
     const { data, error } = await sb.from('providers')
@@ -1700,19 +1716,6 @@ async function hashPassword(password) {
 }
 
 
-async function inscrirePrestataire(formData) {
-  try {
-    const hash = await hashPassword(formData.password);
-    const { data, error } = await sb.from('providers').insert({
-      telephone:formData.telephone, password_hash:hash, nom:formData.nom, prenom:formData.prenom,
-      metier:formData.metier, categorie:formData.categorie, sous_categorie:formData.sous_categorie||null,
-      ville:formData.ville, commune:formData.commune||null, quartier:formData.quartier||null,
-      description:formData.description||null, skills:formData.skills||[], statut:'en_attente'
-    }).select().single();
-    if (error) { if (error.code==='23505') return { success:false, message:'Ce numéro est déjà inscrit' }; return { success:false, message:error.message }; }
-    return { success:true, provider:data };
-  } catch(e) { return { success:false, message:"Erreur lors de l\'inscription" }; }
-}
 
 
 
@@ -3470,8 +3473,19 @@ async function connexion() {
 
   if (btn) btn.disabled = true;
 
+  // Attendre que connexionPrestataire soit disponible
+  let attempts = 0;
+  while (typeof connexionPrestataire === 'undefined' && attempts < 20) {
+    await new Promise(r => setTimeout(r, 100));
+    attempts++;
+  }
+  
   try {
-    if (typeof connexionPrestataire === 'undefined') throw new Error('Service non disponible, rechargez la page');
+    if (typeof connexionPrestataire === 'undefined') {
+      if (errBox) { errBox.textContent = 'Rechargez la page (Ctrl+Shift+R)'; errBox.classList.add('show'); }
+      if (btn) btn.disabled = false;
+      return;
+    }
     const res = await connexionPrestataire(tel.trim(), pin);
     if (res.success) {
       navigate('dashboard');
@@ -3624,6 +3638,10 @@ async function connexion() {
       var pin=(document.getElementById('i-pin1').value||'')+(document.getElementById('i-pin2').value||'')+(document.getElementById('i-pin3').value||'')+(document.getElementById('i-pin4').value||'');
       var fd={prenom:document.getElementById('i-prenom').value.trim(),nom:document.getElementById('i-nom').value.trim(),telephone:document.getElementById('i-tel').value.trim(),password:pin,categorie:document.getElementById('i-cat').value,metier:document.getElementById('i-metier').value.trim(),description:document.getElementById('i-desc').value.trim(),ville:(document.getElementById('i-ville')||{}).value||'Conakry',commune:(document.getElementById('i-commune')||{}).value||null,quartier:((document.getElementById('i-quartier')||{}).value||'').trim()||null,skills:[]};
       try{
+        // Attendre que inscrirePrestataire soit disponible
+        let _att=0;
+        while(typeof inscrirePrestataire==='undefined'&&_att<30){await new Promise(r=>setTimeout(r,100));_att++;}
+        if(typeof inscrirePrestataire==='undefined'){showErr('Rechargez la page (Ctrl+Shift+R)');b3.disabled=false;b3.textContent='Créer mon compte';return;}
         var res=await inscrirePrestataire(fd);
         if(res.success){[1,2,3].forEach(function(s){var el=document.getElementById('i-step'+s);if(el)el.style.display='none';});var su=document.getElementById('i-success');if(su)su.style.display='block';}
         else{showErr(res.message||'Erreur');b3.disabled=false;b3.textContent='Créer mon compte';}
