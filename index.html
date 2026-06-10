@@ -2655,16 +2655,24 @@ let activeFilter = 'all';
 try { favorites = JSON.parse(localStorage.getItem('yj_fav') || '[]'); } catch(e) {}
 
 // ── INIT ──
-document.addEventListener('DOMContentLoaded', () => {
-  // Initialiser avec les données démo immédiatement (Supabase chargera ensuite par-dessus)
+document.addEventListener('DOMContentLoaded', async () => {
+  // Afficher les données démo immédiatement
   filteredData = [...PRESTATAIRES];
   displayedCount = 9;
   renderProviders();
-  renderArtisans();
   initCounters();
   observeFadeIn();
   initNavScroll();
   setTimeout(() => showNotif('🇬🇳 Bienvenue', 'sur YOUMMA JOBS — La plateforme N°1 des artisans en Guinée !', '#E6FBF3'), 1500);
+
+  // Charger les vrais prestataires depuis Supabase par-dessus
+  // (seulement si on est sur la page principale)
+  const hash = location.hash.replace('#','');
+  if (!hash || hash === 'home' || hash === '') {
+    await loadProvidersFromSupabase();
+    renderCategoriesGrid('catsGrid');
+    updateCatSelect();
+  }
 });
 
 // ── NAV SCROLL ──
@@ -5303,7 +5311,8 @@ async function deconnexion() {
   navigate('home');
 }
 async function getProviders({ categorie='',recherche='',limite=50,offset=0 }={}) {
-  const baseSelect = 'id,nom,prenom,metier,categorie,sous_categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_favoris,nb_avis,nb_appels,nb_whatsapp,telephone,skills,description,latitude,longitude,statut,disponibilite,nb_missions,tarif,experience,portfolio,badge_verifie,badge_top,badge_express';
+  // Select minimal — uniquement les colonnes de base qui existent forcément
+  const baseSelect = 'id,nom,prenom,metier,categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_avis,nb_appels,nb_whatsapp,telephone,skills,description,latitude,longitude,statut';
   
   let query = sb.from('providers')
     .select(baseSelect)
@@ -5316,7 +5325,11 @@ async function getProviders({ categorie='',recherche='',limite=50,offset=0 }={})
   if (recherche) query = query.or(`nom.ilike.%${recherche}%,prenom.ilike.%${recherche}%,metier.ilike.%${recherche}%`);
   
   const { data, error } = await query;
-  if (error) { console.warn('getProviders error:', error.message); return []; }
+  if (error) { 
+    console.error('[YOUMMA] getProviders SELECT error:', error.message, error.code);
+    return []; 
+  }
+  console.log('[YOUMMA] getProviders raw result:', data ? data.length : 'null', 'rows');
   
   // Enrichir avec colonnes optionnelles
   if (data && data.length > 0) {
@@ -5770,71 +5783,115 @@ window.addEventListener('popstate', (e) => {
 // INTÉGRATION SUPABASE → INDEX PRINCIPAL
 // ══════════════════════════════════════════
 async function loadProvidersFromSupabase() {
+  const grid = document.getElementById('providersGrid');
   try {
-    // Afficher un loader
-    const grid = document.getElementById('providersGrid');
     if (grid) {
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin" style="font-size:28px;display:block;margin-bottom:12px;"></i>Chargement des artisans...</div>';
     }
+
+    console.log('[YOUMMA] Chargement prestataires Supabase...');
     const data = await getProviders({ limite: 50 });
+    console.log('[YOUMMA] Reçu:', data ? data.length + ' prestataires' : 'null');
+
     if (!data || data.length === 0) {
-      if (grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#9CA3AF;font-size:14px;">Aucun prestataire inscrit pour le moment.<br><small>Soyez le premier à rejoindre YOUMMA JOBS !</small></div>';
+      console.warn('[YOUMMA] Aucun prestataire - affichage démo');
+      filteredData = [...PRESTATAIRES];
+      displayedCount = 9;
+      renderProviders();
       return;
     }
+
     const catColors = {
-      'Artisans':{bg:'#FDE8D8',color:'#C74B00'},'Santé':{bg:'#E0F8E9',color:'#1B5E20'},
-      'Juridique':{bg:'#FEF3C7',color:'#B45309'},'IT':{bg:'#E0E0F8',color:'#2D2D6B'},
-      'Éducation':{bg:'#E8F0FE',color:'#1A73E8'},'Beauté':{bg:'#FCE4EC',color:'#880E4F'},
-      'Transport':{bg:'#FEF3C7',color:'#B45309'},'Immobilier':{bg:'#E8F5E9',color:'#2E7D32'},
-      'Services Express':{bg:'#EDE9FE',color:'#7C3AED'}
+      'Artisans':{bg:'#FDE8D8',color:'#C74B00'},
+      'Santé & Beauté':{bg:'#E0F8E9',color:'#1B5E20'},
+      'Construction & BTP':{bg:'#FEF3C7',color:'#B45309'},
+      'IT':{bg:'#E0E0F8',color:'#2D2D6B'},
+      'IT & Digital':{bg:'#E0E0F8',color:'#2D2D6B'},
+      'Éducation':{bg:'#E8F0FE',color:'#1A73E8'},
+      'Transport':{bg:'#FEF3C7',color:'#B45309'},
+      'Juridique':{bg:'#FEF3C7',color:'#B45309'},
+      'Services Express':{bg:'#EDE9FE',color:'#7C3AED'},
+      'Aide à domicile':{bg:'#E8F5E9',color:'#2E7D32'}
     };
-    const catClass = {
-      'Artisans':'artisan','Santé':'sante','Juridique':'juridique','IT':'it',
-      'Éducation':'education','Beauté':'beaute','Transport':'transport',
-      'Immobilier':'immobilier','Services Express':'express'
-    };
-    const mapped = data.map(p => ({
-      id: p.id,
-      nom: ((p.prenom||'') + ' ' + (p.nom||'')).trim() || 'Prestataire',
-      ini: ((p.prenom||p.nom||'?')[0] + (p.nom||p.prenom||'?')[0]).toUpperCase(),
-      metier: p.metier || '—',
-      cat: p.categorie || '',
-      ville: p.commune || p.quartier || p.ville || 'Conakry',
-      tel: p.telephone,
-      wa: p.telephone,
-      note: parseFloat(p.note_moyenne) > 0 ? parseFloat(p.note_moyenne).toFixed(1) : '4.5',
-      vues: p.nb_vues||0,
-      missions: p.nb_missions||0,
-      bg: (catColors[p.categorie]||{bg:'#F4F6FB'}).bg,
-      color: (catColors[p.categorie]||{color:'#7A7F9A'}).color,
-      desc: p.description||'',
-      skills: Array.isArray(p.skills) ? p.skills : [],
-      pb: 'pb-'+(catClass[p.categorie]||'artisan'),
-      photo_url: p.photo_url||null,
-      latitude: p.latitude,
-      longitude: p.longitude,
-      badge_verifie: p.statut === 'valide' || p.badge_verifie === true,
-      badge_top: p.badge_top === true || (parseFloat(p.note_moyenne)||0) >= 4.8,
-      badge_express: p.badge_express === true || p.categorie === 'Services Express',
-      recommande: (p.nb_avis||0) >= 3,
-      dispo: p.disponibilite || 'Disponible maintenant',
-      tarif: p.tarif || null,
-      experience: p.experience || null,
-      portfolio: Array.isArray(p.portfolio) ? p.portfolio : [],
-      avis: [],
-      statut: p.statut,
-      _supabase: true
-    }));
-    if (mapped.length > 0) {
-      PRESTATAIRES.splice(0, PRESTATAIRES.length, ...mapped);
-      filteredData = [...PRESTATAIRES];
-      renderArtisans();
-      renderProviders();
-      // Mise à jour du compteur de résultats
-      const countEl = document.getElementById('resultsCount');
-      if (countEl) countEl.textContent = filteredData.length + ' artisan' + (filteredData.length > 1 ? 's' : '');
+
+    const mapped = data.map(p => {
+      const colors = catColors[p.categorie] || {bg:'#F4F6FB', color:'#7A7F9A'};
+      const ini = ((p.prenom||'?')[0] + (p.nom||'?')[0]).toUpperCase();
+      return {
+        id: p.id,
+        nom: ((p.prenom||'') + ' ' + (p.nom||'')).trim() || 'Prestataire',
+        ini,
+        metier: p.metier || 'Prestataire',
+        cat: p.categorie || '',
+        ville: p.commune || p.quartier || p.ville || 'Conakry',
+        tel: p.telephone || '',
+        wa: p.telephone || '',
+        note: parseFloat(p.note_moyenne) > 0 ? parseFloat(p.note_moyenne).toFixed(1) : '4.5',
+        vues: p.nb_vues || 0,
+        missions: p.nb_missions || 0,
+        bg: colors.bg,
+        color: colors.color,
+        desc: p.description || '',
+        skills: Array.isArray(p.skills) ? p.skills : [],
+        pb: 'pb-artisan',
+        photo_url: p.photo_url || null,
+        latitude: p.latitude || null,
+        longitude: p.longitude || null,
+        badge_verifie: p.statut === 'valide',
+        badge_top: (parseFloat(p.note_moyenne)||0) >= 4.8,
+        badge_express: p.categorie === 'Services Express',
+        recommande: (p.nb_avis||0) >= 3,
+        dispo: p.disponibilite || 'Disponible maintenant',
+        tarif: p.tarif || null,
+        experience: p.experience || null,
+        portfolio: Array.isArray(p.portfolio) ? p.portfolio : [],
+        avis: [],
+        statut: p.statut,
+        _supabase: true
+      };
+    });
+
+    console.log('[YOUMMA] Mapped:', mapped.length, 'prestataires');
+
+    // Remplacer les données démo par les vraies données Supabase
+    PRESTATAIRES.splice(0, PRESTATAIRES.length, ...mapped);
+    filteredData = [...PRESTATAIRES];
+    displayedCount = 9;
+    renderProviders();
+
+    const countEl = document.getElementById('resultsCount');
+    if (countEl) countEl.textContent = filteredData.length + ' artisan' + (filteredData.length > 1 ? 's' : '');
+
+    // Enrichissement optionnel (colonnes qui peuvent ne pas exister)
+    try {
+      const ids = data.map(p => p.id);
+      const { data: extra } = await sb.from('providers')
+        .select('id,nb_missions,disponibilite,tarif,experience,portfolio')
+        .in('id', ids);
+      if (extra && extra.length > 0) {
+        const em = {};
+        extra.forEach(e => { em[e.id] = e; });
+        PRESTATAIRES.forEach(p => {
+          const e = em[p.id]; if (!e) return;
+          if (e.nb_missions != null) p.missions = e.nb_missions;
+          if (e.disponibilite) p.dispo = e.disponibilite;
+          if (e.tarif) p.tarif = e.tarif;
+          if (e.experience) p.experience = e.experience;
+          if (Array.isArray(e.portfolio)) p.portfolio = e.portfolio;
+        });
+        filteredData = [...PRESTATAIRES];
+        renderProviders();
+      }
+    } catch(enrichErr) {
+      console.warn('[YOUMMA] Enrichissement optionnel ignoré:', enrichErr.message);
     }
-  } catch(e) { console.warn('Supabase non configuré, données statiques utilisées'); }
+
+  } catch(e) {
+    console.error('[YOUMMA] Erreur Supabase:', e.message);
+    filteredData = [...PRESTATAIRES];
+    displayedCount = 9;
+    renderProviders();
+  }
 }
 
 function updateCatSelect() {
