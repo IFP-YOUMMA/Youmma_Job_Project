@@ -1018,8 +1018,8 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .sidebar-footer{padding:16px 12px;}
 .btn-deconnexion{width:100%;padding:11px;background:rgba(239,68,68,.15);color:#FCA5A5;border:1px solid rgba(239,68,68,.2);border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
 .btn-deconnexion:hover{background:rgba(239,68,68,.25);}
-.main{flex:1;margin-left:220px;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden;position:relative;z-index:1;min-width:0;}
-.topbar{background:#fff;border-bottom:1px solid var(--bordure);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;min-width:0;}
+.main{flex:1;margin-left:220px;display:flex;flex-direction:column;min-height:100vh;overflow-x:clip;position:relative;z-index:1;min-width:0;}
+.topbar{background:#fff;border-bottom:1px solid var(--bordure);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;min-width:0;box-shadow:0 1px 4px rgba(0,0,0,.06);}
 .topbar-title{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:var(--bleu);}
 .provider-chip{display:flex;align-items:center;gap:10px;overflow:hidden;min-width:0;}
 .provider-chip-avatar{width:34px;height:34px;min-width:34px;border-radius:9px;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-weight:700;font-size:12px;overflow:hidden;}
@@ -2849,7 +2849,11 @@ function renderProviders() {
     <div class="pc2-card fade-in" onclick="openModal('${p.id}')">
       <div class="pc2-top">
         <div class="pc2-avatar-col">
-          <div class="pc2-avatar" style="background:${p.bg};color:${p.color};">${p.ini}</div>
+          <div class="pc2-avatar" style="background:${p.bg};color:${p.color};overflow:hidden;padding:0;">
+            ${p.photo_url
+              ? `<img src="${p.photo_url}" style="width:100%;height:100%;object-fit:cover;display:block;" alt="${p.nom}"/>`
+              : p.ini}
+          </div>
           <div class="pc2-online-badge"></div>
         </div>
         <div class="pc2-info">
@@ -2979,7 +2983,11 @@ function openModal(id) {
       <div style="position:absolute;top:-24px;right:-24px;width:100px;height:100px;border-radius:50%;background:rgba(232,93,4,.2);"></div>
       <div style="position:absolute;bottom:-16px;left:30%;width:80px;height:80px;border-radius:50%;background:rgba(245,200,66,.1);"></div>
       <div style="display:flex;gap:14px;align-items:flex-start;position:relative;z-index:1;">
-        <div class="mp2-avatar" style="background:${p.bg};color:${p.color};">${p.ini}</div>
+        <div class="mp2-avatar" style="background:${p.bg};color:${p.color};overflow:hidden;padding:0;">
+            ${p.photo_url
+              ? `<img src="${p.photo_url}" style="width:100%;height:100%;object-fit:cover;display:block;" alt="${p.nom}"/>`
+              : p.ini}
+          </div>
         <div style="flex:1;min-width:0;">
           <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:3px;">${p.nom}</div>
           <div style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:8px;">${p.metier}</div>
@@ -3907,7 +3915,7 @@ if (typeof inscrirePrestataire === 'undefined') {
 <div class="main">
   <div class="topbar">
     <div style="display:flex;align-items:center;gap:12px;">
-      <button onclick="navigate('home')" style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(255,255,255,.08);border:none;border-radius:10px;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.14)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">
+      <button onclick="navigate('home')" style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--fond);border:1.5px solid var(--bordure);border-radius:10px;color:var(--bleu);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='var(--bleu-50)'" onmouseout="this.style.background='var(--fond)'">
         <i class="fa-solid fa-arrow-left" style="font-size:12px;"></i> Retour au site
       </button>
       <div class="topbar-title" id="topbarTitle"><i class="fa-solid fa-chart-line" style="width:16px;"></i> Tableau de bord</div>
