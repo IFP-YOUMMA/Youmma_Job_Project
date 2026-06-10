@@ -1558,60 +1558,56 @@ img { max-width:100%; }
 /* ══════════════════════════════════════════
    DASHBOARD LAYOUT — RÈGLE UNIQUE DÉFINITIVE
    ══════════════════════════════════════════ */
-#page-dashboard { display:flex !important; min-height:100vh; }
-
-/* Sidebar fixe 220px */
+#page-dashboard {
+  display: flex !important;
+  min-height: 100vh;
+  overflow: hidden;
+}
 #page-dashboard .sidebar {
-  width:220px !important;
-  flex-shrink:0 !important;
-  position:fixed !important;
-  top:0; left:0;
-  height:100vh !important;
-  z-index:200 !important;
-  overflow-y:auto !important;
+  width: 220px;
+  flex-shrink: 0;
+  position: fixed;
+  top: 0; left: 0;
+  height: 100vh;
+  z-index: 200;
+  overflow-y: auto;
 }
-/* Main toujours décalé de 220px */
 #page-dashboard .main {
-  margin-left:220px !important;
-  flex:1 !important;
-  overflow-x:clip !important;
-  min-height:100vh !important;
-  min-width:0 !important;
-  position:relative !important;
-  z-index:1 !important;
+  margin-left: 220px;
+  flex: 1;
+  min-width: 0;
+  max-width: calc(100vw - 220px);
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
-/* Topbar reste dans le main */
 #page-dashboard .topbar {
-  position:sticky !important;
-  top:0 !important;
-  z-index:10 !important;
-  background:#fff !important;
+  position: sticky;
+  top: 0;
+  z-index: 9;
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
 }
-
-/* Tablette 600–900px : sidebar 60px icônes seulement */
 @media(max-width:900px) {
-  #page-dashboard .sidebar { width:60px !important; }
-  #page-dashboard .main { margin-left:60px !important; }
-  #page-dashboard .sidebar .sidebar-logo div:last-child,
+  #page-dashboard .sidebar { width: 60px; }
+  #page-dashboard .main { margin-left: 60px; max-width: calc(100vw - 60px); }
+  #page-dashboard .sidebar .logo-text,
   #page-dashboard .sidebar .nav-item span:last-child,
-  #page-dashboard .sidebar .btn-deconnexion span { display:none !important; }
-  #page-dashboard .sidebar .nav-item { justify-content:center !important; padding:14px 0 !important; }
-  .stats-grid { grid-template-columns:repeat(3,1fr) !important; }
+  #page-dashboard .sidebar .btn-deconnexion span { display: none !important; }
+  #page-dashboard .sidebar .nav-item { justify-content: center !important; padding: 14px 0 !important; }
+  .stats-grid { grid-template-columns: repeat(3,1fr) !important; }
 }
-
-/* Mobile <600px : sidebar cachée, menu hamburger */
 @media(max-width:600px) {
-  #page-dashboard .sidebar { display:none !important; }
-  #page-dashboard .main { margin-left:0 !important; }
-  .content { padding:12px !important; }
-  .stats-grid { grid-template-columns:repeat(2,1fr) !important; gap:8px !important; }
-  .actions-grid { grid-template-columns:repeat(2,1fr) !important; gap:8px !important; }
+  #page-dashboard .sidebar { display: none !important; }
+  #page-dashboard .main { margin-left: 0; max-width: 100vw; }
+  .content { padding: 12px !important; }
+  .stats-grid { grid-template-columns: repeat(2,1fr) !important; }
+  .actions-grid { grid-template-columns: repeat(2,1fr) !important; }
 }
-
-/* ── DASHBOARD SIDEBAR CACHÉE HORS DASHBOARD ── */
-body:not(.on-dashboard) #page-dashboard .sidebar { display:none !important; }
-body.on-dashboard #page-dashboard { display:flex !important; }
-body:not(.on-dashboard) #page-dashboard { display:none !important; }
+body:not(.on-dashboard) #page-dashboard { display: none !important; }
+body.on-dashboard #page-dashboard { display: flex !important; }
 </style>
 
 </head>
@@ -2655,24 +2651,14 @@ let activeFilter = 'all';
 try { favorites = JSON.parse(localStorage.getItem('yj_fav') || '[]'); } catch(e) {}
 
 // ── INIT ──
-document.addEventListener('DOMContentLoaded', async () => {
-  // Afficher les données démo immédiatement
-  filteredData = [...PRESTATAIRES];
-  displayedCount = 9;
-  renderProviders();
+document.addEventListener('DOMContentLoaded', () => {
+  // Ne pas charger les prestataires statiques — le routeur charge depuis Supabase
+  // filteredData sera rempli par loadProvidersFromSupabase()
   initCounters();
   observeFadeIn();
   initNavScroll();
   setTimeout(() => showNotif('🇬🇳 Bienvenue', 'sur YOUMMA JOBS — La plateforme N°1 des artisans en Guinée !', '#E6FBF3'), 1500);
-
-  // Charger les vrais prestataires depuis Supabase par-dessus
-  // (seulement si on est sur la page principale)
-  const hash = location.hash.replace('#','');
-  if (!hash || hash === 'home' || hash === '') {
-    await loadProvidersFromSupabase();
-    renderCategoriesGrid('catsGrid');
-    updateCatSelect();
-  }
+  setTimeout(() => showNotif(' Nouveau artisan Express', 'Amadou Diallo, Électricien vient de rejoindre YOUMMA JOBS', '#FDE8D8'), 5500);
 });
 
 // ── NAV SCROLL ──
@@ -3251,7 +3237,24 @@ const _provPerPage = 9;
 
 
 
-// ── FILTERS (unified — uses PRESTATAIRES) ──
+function filterProviders() {
+  const search = (document.getElementById('searchProviders')?.value || '').toLowerCase().trim();
+  const cat = document.getElementById('filterCat')?.value || '';
+
+  _filteredProviders = _allProviders.filter(p => {
+    const matchSearch = !search ||
+      (p.prenom||'').toLowerCase().includes(search) ||
+      (p.nom||'').toLowerCase().includes(search) ||
+      (p.metier||'').toLowerCase().includes(search) ||
+      (p.ville||'').toLowerCase().includes(search);
+    const matchCat = !cat || p.categorie === cat;
+    return matchSearch && matchCat;
+  });
+
+  _provPage = 0;
+  renderProviderCards();
+}
+
 
 
 // ── ADMIN RÉALISATIONS ──
@@ -4532,6 +4535,14 @@ async function chargerDocuments(pid) {
     if (prev && img) { img.src = data.doc_diplome_url; prev.style.display='block'; }
   }
 }
+  document.querySelectorAll('#page-dashboard .section').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('section-' + name);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('#page-dashboard .nav-item').forEach(n => n.classList.remove('active'));
+  const titles = { dashboard:'Tableau de bord', profil:'Mon profil', photos:'Photos & Galerie', abonnement:'Abonnement', avis:'Mes avis' };
+  const tt = document.getElementById('topbarTitle');
+  if (tt) tt.textContent = titles[name] || name;
+}
 
 // ── PHOTOS ──
 function renderPhotos() {
@@ -5310,13 +5321,12 @@ async function deconnexion() {
   clearSession();
   navigate('home');
 }
-async function getProviders({ categorie='',recherche='',limite=50,offset=0 }={}) {
-  // Select minimal — uniquement les colonnes de base qui existent forcément
-  const baseSelect = 'id,nom,prenom,metier,categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_avis,nb_appels,nb_whatsapp,telephone,skills,description,latitude,longitude,statut';
+async function getProviders({ categorie='',recherche='',limite=15,offset=0 }={}) {
+  const baseSelect = 'id,nom,prenom,metier,categorie,sous_categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_favoris,nb_avis,nb_appels,nb_whatsapp,telephone,skills,description,latitude,longitude';
   
   let query = sb.from('providers')
     .select(baseSelect)
-    .in('statut',['valide','en_attente'])
+    .eq('statut','valide')
     .order('created_at', { ascending: false })
     .limit(limite);
   
@@ -5325,11 +5335,7 @@ async function getProviders({ categorie='',recherche='',limite=50,offset=0 }={})
   if (recherche) query = query.or(`nom.ilike.%${recherche}%,prenom.ilike.%${recherche}%,metier.ilike.%${recherche}%`);
   
   const { data, error } = await query;
-  if (error) { 
-    console.error('[YOUMMA] getProviders SELECT error:', error.message, error.code);
-    return []; 
-  }
-  console.log('[YOUMMA] getProviders raw result:', data ? data.length : 'null', 'rows');
+  if (error) { console.warn('getProviders error:', error.message); return []; }
   
   // Enrichir avec colonnes optionnelles
   if (data && data.length > 0) {
@@ -5357,9 +5363,21 @@ async function getProviders({ categorie='',recherche='',limite=50,offset=0 }={})
 }
 async function getDashboardData(providerId) {
   try {
-    const { data, error } = await sb.from('providers').select('*').eq('id',providerId).single();
+    // Colonnes de base toujours présentes
+    const { data, error } = await sb.from('providers')
+      .select('id,prenom,nom,metier,categorie,ville,commune,quartier,telephone,photo_url,description,skills,statut,note_moyenne,nb_vues,nb_favoris,nb_avis,nb_appels,nb_whatsapp,latitude,longitude,essai_actif,essai_fin,abonnement_actif,abonnement_fin,tarif,experience,created_at')
+      .eq('id', providerId)
+      .single();
     if (error) console.warn('getDashboardData:', error.message);
-    return data || null;
+    if (!data) return null;
+    // Ajouter colonnes optionnelles sans bloquer
+    try {
+      const { data:extra } = await sb.from('providers')
+        .select('id,disponibilite,doc_cni_url,doc_cni_statut,doc_diplome_url,doc_diplome_statut,nb_missions')
+        .eq('id', providerId).single();
+      if (extra) Object.assign(data, extra);
+    } catch(e) {}
+    return data;
   } catch(e) {
     console.warn('getDashboardData exception:', e.message);
     return null;
@@ -5783,115 +5801,65 @@ window.addEventListener('popstate', (e) => {
 // INTÉGRATION SUPABASE → INDEX PRINCIPAL
 // ══════════════════════════════════════════
 async function loadProvidersFromSupabase() {
-  const grid = document.getElementById('providersGrid');
   try {
-    if (grid) {
+    // Afficher un loader
+    const grid = document.getElementById('providersGrid');
+    if (grid && grid.innerHTML === '') {
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin" style="font-size:28px;display:block;margin-bottom:12px;"></i>Chargement des artisans...</div>';
     }
-
-    console.log('[YOUMMA] Chargement prestataires Supabase...');
-    const data = await getProviders({ limite: 50 });
-    console.log('[YOUMMA] Reçu:', data ? data.length + ' prestataires' : 'null');
-
-    if (!data || data.length === 0) {
-      console.warn('[YOUMMA] Aucun prestataire - affichage démo');
-      filteredData = [...PRESTATAIRES];
-      displayedCount = 9;
-      renderProviders();
-      return;
-    }
-
+    const data = await getProviders({ limite: 15 });
+    if (!data || data.length === 0) return;
     const catColors = {
-      'Artisans':{bg:'#FDE8D8',color:'#C74B00'},
-      'Santé & Beauté':{bg:'#E0F8E9',color:'#1B5E20'},
-      'Construction & BTP':{bg:'#FEF3C7',color:'#B45309'},
-      'IT':{bg:'#E0E0F8',color:'#2D2D6B'},
-      'IT & Digital':{bg:'#E0E0F8',color:'#2D2D6B'},
-      'Éducation':{bg:'#E8F0FE',color:'#1A73E8'},
-      'Transport':{bg:'#FEF3C7',color:'#B45309'},
-      'Juridique':{bg:'#FEF3C7',color:'#B45309'},
-      'Services Express':{bg:'#EDE9FE',color:'#7C3AED'},
-      'Aide à domicile':{bg:'#E8F5E9',color:'#2E7D32'}
+      'Artisans':{bg:'#FDE8D8',color:'#C74B00'},'Santé':{bg:'#E0F8E9',color:'#1B5E20'},
+      'Juridique':{bg:'#FEF3C7',color:'#B45309'},'IT':{bg:'#E0E0F8',color:'#2D2D6B'},
+      'Éducation':{bg:'#E8F0FE',color:'#1A73E8'},'Beauté':{bg:'#FCE4EC',color:'#880E4F'},
+      'Transport':{bg:'#FEF3C7',color:'#B45309'},'Immobilier':{bg:'#E8F5E9',color:'#2E7D32'},
+      'Services Express':{bg:'#EDE9FE',color:'#7C3AED'}
     };
-
-    const mapped = data.map(p => {
-      const colors = catColors[p.categorie] || {bg:'#F4F6FB', color:'#7A7F9A'};
-      const ini = ((p.prenom||'?')[0] + (p.nom||'?')[0]).toUpperCase();
-      return {
-        id: p.id,
-        nom: ((p.prenom||'') + ' ' + (p.nom||'')).trim() || 'Prestataire',
-        ini,
-        metier: p.metier || 'Prestataire',
-        cat: p.categorie || '',
-        ville: p.commune || p.quartier || p.ville || 'Conakry',
-        tel: p.telephone || '',
-        wa: p.telephone || '',
-        note: parseFloat(p.note_moyenne) > 0 ? parseFloat(p.note_moyenne).toFixed(1) : '4.5',
-        vues: p.nb_vues || 0,
-        missions: p.nb_missions || 0,
-        bg: colors.bg,
-        color: colors.color,
-        desc: p.description || '',
-        skills: Array.isArray(p.skills) ? p.skills : [],
-        pb: 'pb-artisan',
-        photo_url: p.photo_url || null,
-        latitude: p.latitude || null,
-        longitude: p.longitude || null,
-        badge_verifie: p.statut === 'valide',
-        badge_top: (parseFloat(p.note_moyenne)||0) >= 4.8,
-        badge_express: p.categorie === 'Services Express',
-        recommande: (p.nb_avis||0) >= 3,
-        dispo: p.disponibilite || 'Disponible maintenant',
-        tarif: p.tarif || null,
-        experience: p.experience || null,
-        portfolio: Array.isArray(p.portfolio) ? p.portfolio : [],
-        avis: [],
-        statut: p.statut,
-        _supabase: true
-      };
-    });
-
-    console.log('[YOUMMA] Mapped:', mapped.length, 'prestataires');
-
-    // Remplacer les données démo par les vraies données Supabase
-    PRESTATAIRES.splice(0, PRESTATAIRES.length, ...mapped);
-    filteredData = [...PRESTATAIRES];
-    displayedCount = 9;
-    renderProviders();
-
-    const countEl = document.getElementById('resultsCount');
-    if (countEl) countEl.textContent = filteredData.length + ' artisan' + (filteredData.length > 1 ? 's' : '');
-
-    // Enrichissement optionnel (colonnes qui peuvent ne pas exister)
-    try {
-      const ids = data.map(p => p.id);
-      const { data: extra } = await sb.from('providers')
-        .select('id,nb_missions,disponibilite,tarif,experience,portfolio')
-        .in('id', ids);
-      if (extra && extra.length > 0) {
-        const em = {};
-        extra.forEach(e => { em[e.id] = e; });
-        PRESTATAIRES.forEach(p => {
-          const e = em[p.id]; if (!e) return;
-          if (e.nb_missions != null) p.missions = e.nb_missions;
-          if (e.disponibilite) p.dispo = e.disponibilite;
-          if (e.tarif) p.tarif = e.tarif;
-          if (e.experience) p.experience = e.experience;
-          if (Array.isArray(e.portfolio)) p.portfolio = e.portfolio;
-        });
-        filteredData = [...PRESTATAIRES];
-        renderProviders();
-      }
-    } catch(enrichErr) {
-      console.warn('[YOUMMA] Enrichissement optionnel ignoré:', enrichErr.message);
+    const catClass = {
+      'Artisans':'artisan','Santé':'sante','Juridique':'juridique','IT':'it',
+      'Éducation':'education','Beauté':'beaute','Transport':'transport',
+      'Immobilier':'immobilier','Services Express':'express'
+    };
+    const mapped = data.map(p => ({
+      id: p.id,
+      nom: ((p.prenom||'') + ' ' + (p.nom||'')).trim() || 'Prestataire',
+      ini: ((p.prenom||p.nom||'?')[0] + (p.nom||p.prenom||'?')[0]).toUpperCase(),
+      metier: p.metier,
+      cat: p.categorie,
+      ville: p.commune || p.ville,
+      tel: p.telephone,
+      wa: p.telephone,
+      note: parseFloat(p.note_moyenne) > 0 ? parseFloat(p.note_moyenne) : 4.0,
+      vues: p.nb_vues||0,
+      missions: p.nb_missions||0,
+      bg: (catColors[p.categorie]||{bg:'#F4F6FB'}).bg,
+      color: (catColors[p.categorie]||{color:'#7A7F9A'}).color,
+      desc: p.description||'',
+      skills: p.skills||[],
+      pb: 'pb-'+(catClass[p.categorie]||'artisan'),
+      photo_url: p.photo_url||null,
+      latitude: p.latitude,
+      longitude: p.longitude,
+      // Champs requis par openModal
+      badge_verifie: p.statut === 'valide' || p.doc_cni_statut === 'valide',
+      badge_top: p.doc_diplome_statut === 'valide' || (p.note_moyenne||0) >= 4.8,
+      badge_express: p.categorie === 'Services Express',
+      recommande: (p.nb_avis||0) >= 3,
+      dispo: p.disponibilite || 'Disponible maintenant',
+      tarif: p.tarif || null,
+      experience: p.experience || null,
+      portfolio: (p.portfolio||[]),
+      avis: [],
+      _supabase: true
+    }));
+    if (mapped.length > 0) {
+      PRESTATAIRES.splice(0, PRESTATAIRES.length, ...mapped);
+      filteredData = [...PRESTATAIRES];
+      renderArtisans();
+      renderProviders();
     }
-
-  } catch(e) {
-    console.error('[YOUMMA] Erreur Supabase:', e.message);
-    filteredData = [...PRESTATAIRES];
-    displayedCount = 9;
-    renderProviders();
-  }
+  } catch(e) { console.warn('Supabase non configuré, données statiques utilisées'); }
 }
 
 function updateCatSelect() {
