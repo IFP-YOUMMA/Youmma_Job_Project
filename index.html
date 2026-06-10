@@ -1735,7 +1735,8 @@ async function connexionPrestataire(telephone, password) {
     const { data: byTel, error: e1 } = await sb.from('providers')
       .select('id,nom,prenom,metier,categorie,telephone,statut,password_hash')
       .eq('telephone', telephone)
-      .single();
+      .limit(1)
+      .maybeSingle();
     
     if (e1 || !byTel) return { success:false, message:'Numéro de téléphone non trouvé' };
     
