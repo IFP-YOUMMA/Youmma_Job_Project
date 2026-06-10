@@ -28,6 +28,16 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const SESSION_KEY = 'yj_provider_session';
 const ADMIN_SESSION_KEY = 'yj_admin_session';
+
+// ── VARIABLES GLOBALES (déclarées ici pour être accessibles partout) ──
+var _dashProviderId = null;
+var _dashData = null;
+var _dashPhotos = [];
+var providerId = null;
+var providerData = null;
+var providerPhotos = [];
+var adminData = null;
+var allProviders = {};
 </script>
 <style>
 /* ════════════════════════════════════
@@ -1660,7 +1670,7 @@ function renderProviderCards() {
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
-        ${p.badge_verifie ? '<span style="background:#DCFCE7;color:#16A34A;border-radius:20px;padding:2px 8px;font-size:10.5px;font-weight:700;"><i class='fa-solid fa-circle-check'></i> Vérifié</span>' : ''}
+        ${p.badge_verifie ? '<span style="background:#DCFCE7;color:#16A34A;border-radius:20px;padding:2px 8px;font-size:10.5px;font-weight:700;"><i class="fa-solid fa-circle-check"></i> Vérifié</span>' : ''}
         ${p.badge_express ? '<span style="background:#EDE9FE;color:#7C3AED;border-radius:20px;padding:2px 8px;font-size:10.5px;font-weight:700;">Express</span>' : ''}
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
@@ -3786,7 +3796,7 @@ async function connexion() {
           var su = document.getElementById('i-success');
           if (su) su.style.display = 'block';
         } else {
-          showErr(res.message || 'Erreur lors de l'inscription');
+          showErr(res.message || "Erreur lors de l'inscription");
           b3.disabled = false;
           b3.textContent = 'Créer mon compte';
         }
@@ -4194,9 +4204,7 @@ if (typeof inscrirePrestataire === 'undefined') {
 <div class="toast" id="toast"></div>
 
 <script>
-let providerId = null;
-let providerData = null;
-let providerPhotos = [];
+// (providerId, providerData, providerPhotos déclarés globalement en haut)
 
 // ── INIT — différé après chargement complet du fichier ──
 // L'initialisation est gérée par le routeur (chargerDashboard) défini plus bas.
@@ -4824,8 +4832,7 @@ async function chargerAvis() {
 <div class="toast" id="toast"></div>
 
 <script>
-let adminData = null;
-let allProviders = {};
+// (adminData, allProviders déclarés globalement en haut)
 
 // ── LOGIN ──
 
@@ -5315,7 +5322,7 @@ const CATEGORIES = [
     badgeClass: 'pb-education',
     count: '10+',
     desc: 'Professeurs, formateurs, traducteurs',
-    sous: ['Professeur de maths','Professeur de français','Professeur d'anglais','Formateur professionnel','Traducteur','Tuteur scolaire']
+    sous: ['Professeur de maths','Professeur de français',"Professeur d'anglais",'Formateur professionnel','Traducteur','Tuteur scolaire']
   },
   {
     id: 'aide-domicile',
@@ -5325,8 +5332,8 @@ const CATEGORIES = [
     bg: '#E8F5E9',
     badgeClass: 'pb-immobilier',
     count: '8+',
-    desc: 'Ménage, garde d'enfants, cuisiniers',
-    sous: ['Femme de ménage','Garde d'enfants','Cuisinier / Cuisinière','Baby-sitter','Aide aux personnes âgées']
+    desc: "Ménage, garde d'enfants, cuisiniers",
+    sous: ['Femme de ménage',"Garde d'enfants",'Cuisinier / Cuisinière','Baby-sitter','Aide aux personnes âgées']
   },
   {
     id: 'transport',
@@ -5371,7 +5378,7 @@ const CATEGORIES = [
     count: '10+',
     desc: 'Livraison, dépannage, réparations rapides',
     badge_urgent: true,
-    sous: ['Livraison express','Coursier','Dépannage rapide','Assistance informatique rapide','Réparation téléphone','Réparation électroménager','Installation TV','Installation internet','Serrurerie','Service d'urgence']
+    sous: ['Livraison express','Coursier','Dépannage rapide','Assistance informatique rapide','Réparation téléphone','Réparation électroménager','Installation TV','Installation internet','Serrurerie',"Service d'urgence"]
   }
 ];
 
@@ -5645,9 +5652,7 @@ function addExpressBtn() {
 // ══════════════════════════════════════════
 // CHARGER DASHBOARD (appelé par le routeur)
 // ══════════════════════════════════════════
-let _dashProviderId = null;
-let _dashData = null;
-let _dashPhotos = [];
+// ── DASHBOARD (variables déclarées globalement en haut du fichier) ──
 
 async function chargerDashboard(pid) {
   if (!pid) { navigate('login'); return; }
