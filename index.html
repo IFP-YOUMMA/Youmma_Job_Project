@@ -1004,7 +1004,7 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 
 /* ── DASHBOARD ── */
 .dash-layout{display:flex;min-height:100vh;background:var(--fond);}
-.sidebar{width:240px;background:var(--bleu);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;}
+.sidebar{width:220px;background:var(--bleu);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;}
 .sidebar-logo{display:flex;align-items:center;gap:10px;padding:24px 20px 20px;}
 .sidebar .logo-icon{width:40px;height:40px;background:var(--orange);border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Libre Baskerville',serif;font-weight:700;font-size:14px;flex-shrink:0;}
 .sidebar .logo-text{font-family:'Libre Baskerville',serif;font-weight:700;font-size:15px;color:#fff;}
@@ -1017,7 +1017,7 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .sidebar-footer{padding:16px 12px;}
 .btn-deconnexion{width:100%;padding:11px;background:rgba(239,68,68,.15);color:#FCA5A5;border:1px solid rgba(239,68,68,.2);border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
 .btn-deconnexion:hover{background:rgba(239,68,68,.25);}
-.main{flex:1;margin-left:240px;display:flex;flex-direction:column;min-height:100vh;}
+.main{flex:1;margin-left:220px;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden;}
 .topbar{background:#fff;border-bottom:1px solid var(--bordure);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
 .topbar-title{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:var(--bleu);}
 .provider-chip{display:flex;align-items:center;gap:10px;overflow:hidden;}
@@ -5215,7 +5215,7 @@ async function uploadProviderPhoto(providerId, file, type='realisation') {
     const oldProfil = photos.find(p => p.type==='profil');
     if (oldProfil) {
       await sb.from('provider_photos').delete().eq('id',oldProfil.id);
-      const op = oldProfil.url.split('photos/')[1];
+      const op = oldProfil.url.split('Photos/')[1];
       if (op) await sb.storage.from('Photos').remove([op]);
     }
     await sb.from('providers').update({ photo_url:publicUrl }).eq('id',providerId);
@@ -5586,7 +5586,7 @@ async function loadProvidersFromSupabase() {
       wa: p.telephone,
       note: parseFloat(p.note_moyenne)||4.5,
       vues: p.nb_vues||0,
-      missions: 0,
+      missions: p.nb_missions||0,
       ini: (p.prenom?.[0]||'')+(p.nom?.[0]||''),
       bg: (catColors[p.categorie]||{bg:'#F4F6FB'}).bg,
       color: (catColors[p.categorie]||{color:'#7A7F9A'}).color,
@@ -5596,6 +5596,16 @@ async function loadProvidersFromSupabase() {
       photo_url: p.photo_url||null,
       latitude: p.latitude,
       longitude: p.longitude,
+      // Champs requis par openModal
+      badge_verifie: p.statut === 'valide',
+      badge_top: (p.note_moyenne||0) >= 4.8,
+      badge_express: p.categorie === 'Services Express',
+      recommande: (p.nb_avis||0) >= 3,
+      dispo: p.disponibilite || 'Disponible',
+      tarif: p.tarif || null,
+      experience: p.experience || null,
+      portfolio: (p.portfolio||[]),
+      avis: [],
       _supabase: true
     }));
     if (mapped.length > 0) {
@@ -6330,7 +6340,16 @@ async function loginAdmin() {
   if (!tel||!pwd) { err.textContent='Remplissez tous les champs'; return; }
   err.textContent='Connexion...'; err.style.color='#7A7F9A';
   try {
-    const {data,error} = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).eq('password_hash',pwd).single();
+    // Hasher le mot de passe avant comparaison
+    const hashBuf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pwd));
+    const hash = Array.from(new Uint8Array(hashBuf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    // Essayer avec hash d'abord, puis mot de passe en clair (compatibilité)
+    let data, error;
+    ({data,error} = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).eq('password_hash',hash).single());
+    if (error||!data) {
+      // Fallback : mot de passe en clair (anciens comptes)
+      ({data,error} = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).eq('password_hash',pwd).single());
+    }
     if (error||!data) { err.textContent='Identifiants incorrects'; err.style.color='#DC2626'; return; }
     const token = generateToken();
     try { await sb.from('admin_sessions').insert({admin_id:data.id,token}); } catch(e){}
