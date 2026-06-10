@@ -1561,7 +1561,10 @@ img { max-width:100%; }
 #page-dashboard {
   display: flex !important;
   min-height: 100vh;
-  overflow: hidden;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  position: relative;
 }
 #page-dashboard .sidebar {
   width: 220px;
@@ -1576,11 +1579,13 @@ img { max-width:100%; }
   margin-left: 220px;
   flex: 1;
   min-width: 0;
+  width: calc(100% - 220px);
   max-width: calc(100vw - 220px);
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  box-sizing: border-box;
 }
 #page-dashboard .topbar {
   position: sticky;
@@ -1589,6 +1594,7 @@ img { max-width:100%; }
   background: #fff;
   width: 100%;
   box-sizing: border-box;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
 }
 @media(max-width:900px) {
   #page-dashboard .sidebar { width: 60px; }
@@ -3927,11 +3933,11 @@ if (typeof inscrirePrestataire === 'undefined') {
 <!-- MAIN -->
 <div class="main">
   <div class="topbar">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <button onclick="navigate('home')" style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--fond);border:1.5px solid var(--bordure);border-radius:10px;color:var(--bleu);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='var(--bleu-50)'" onmouseout="this.style.background='var(--fond)'">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0;overflow:hidden;">
+      <button onclick="navigate('home')" style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--fond);border:1.5px solid var(--bordure);border-radius:10px;color:var(--bleu);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;flex-shrink:0;" onmouseover="this.style.background='var(--bleu-50)'" onmouseout="this.style.background='var(--fond)'">
         <i class="fa-solid fa-arrow-left" style="font-size:12px;"></i> Retour au site
       </button>
-      <div class="topbar-title" id="topbarTitle"><i class="fa-solid fa-chart-line" style="width:16px;"></i> Tableau de bord</div>
+      <div class="topbar-title" id="topbarTitle" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><i class="fa-solid fa-chart-line" style="width:16px;"></i> Tableau de bord</div>
     </div>
     <div class="topbar-right">
       <div class="provider-chip">
