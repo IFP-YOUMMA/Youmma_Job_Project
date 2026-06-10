@@ -4380,11 +4380,23 @@ async function uploadPhoto(input, type) {
   const file = input.files[0];
   if (!file) return;
 
-  const pid = providerId || _dashProviderId;
-  if (!pid) { showToast('Session expirée, reconnectez-vous', 'error'); return; }
+  // Récupérer l'ID prestataire depuis toutes les sources possibles
+  let pid = providerId || _dashProviderId;
+  if (!pid) {
+    // Fallback direct localStorage
+    try {
+      const s = JSON.parse(localStorage.getItem('yj_provider_session'));
+      if (s && s.provider_id) pid = s.provider_id;
+    } catch(e) {}
+  }
+  if (!pid) { showToast('Session expirée, reconnectez-vous', 'error'); navigate('login'); return; }
+
+  // Synchroniser les variables globales
+  providerId = pid;
+  _dashProviderId = pid;
 
   // Validation format
-  if (!['image/jpeg','image/png','image/webp','image/gif'].includes(file.type)) {
+  if (!file.type.startsWith('image/')) {
     showToast('❌ Format non supporté. Utilisez JPG, PNG ou WebP', 'error'); return;
   }
   if (file.size > 20 * 1024 * 1024) { showToast('❌ Fichier trop volumineux (max 20 Mo)', 'error'); return; }
@@ -4402,7 +4414,7 @@ async function uploadPhoto(input, type) {
   const progressId = type === 'profil' ? 'progressProfil' : 'progressReal';
   const progEl = document.getElementById(progressId);
   if (progEl) progEl.classList.add('show');
-  showToast('⏳ Traitement de l\'image...');
+  showToast("⏳ Traitement de l'image...");
 
   const res = await uploadProviderPhoto(pid, file, type);
   if (progEl) progEl.classList.remove('show');
@@ -4415,20 +4427,21 @@ async function uploadPhoto(input, type) {
     _dashData = providerData;
     renderPhotos();
     _dashRenderPhotos();
-    updateUI();
-    _dashUpdateUI();
+    if (typeof updateUI === 'function') updateUI();
+    if (typeof _dashUpdateUI === 'function') _dashUpdateUI();
   } else {
-    showToast('❌ ' + (res.message || 'Erreur lors de l\'upload'), 'error');
-    // Reset preview en cas d'échec
+    showToast('❌ ' + (res.message || "Erreur lors de l'upload"), 'error');
     const prev = document.getElementById('profilPhotoPreview');
-    if (prev && type === 'profil') prev.innerHTML = '?';
+    if (prev && type === 'profil' && !providerData?.photo_url) prev.innerHTML = '?';
   }
   input.value = '';
 }
 
 async function supprimerPhoto(photoId) {
   if (!confirm('Supprimer cette photo ?')) return;
-  const pid = providerId || _dashProviderId;
+  let pid = providerId || _dashProviderId;
+  if (!pid) { try { const s=JSON.parse(localStorage.getItem('yj_provider_session')); if(s?.provider_id) pid=s.provider_id; } catch(e){} }
+  if (!pid) return;
   const res = await deleteProviderPhoto(photoId, pid);
   if (res.success) {
     showToast('Photo supprimée', 'success');
@@ -4438,7 +4451,7 @@ async function supprimerPhoto(photoId) {
     _dashData = providerData;
     renderPhotos();
     _dashRenderPhotos();
-    updateUI();
+    if (typeof updateUI === 'function') updateUI();
   }
 }
 
@@ -5794,24 +5807,35 @@ function _dashRenderPhotos() {
 
 async function _dashUploadPhoto(input, type) {
   const file = input.files[0]; if(!file) return;
-  if(file.size>5*1024*1024) { _dashToast('Fichier trop volumineux (max 5 Mo)','error'); return; }
+  let pid = _dashProviderId || providerId;
+  if (!pid) { try { const s=JSON.parse(localStorage.getItem('yj_provider_session')); if(s?.provider_id) pid=s.provider_id; } catch(e){} }
+  if (!pid) { _dashToast('Session expirée, reconnectez-vous','error'); return; }
+  _dashProviderId = pid; providerId = pid;
+  if(file.size>20*1024*1024) { _dashToast('Fichier trop volumineux (max 20 Mo)','error'); return; }
   const progId = type==='profil'?'progressProfil':'progressReal';
   const prog = document.getElementById(progId); if(prog) prog.classList.add('show');
-  const res = await uploadProviderPhoto(_dashProviderId, file, type);
+  _dashToast("⏳ Traitement de l'image...");
+  const res = await uploadProviderPhoto(pid, file, type);
   if(prog) prog.classList.remove('show');
   if(res.success) {
     _dashToast('✅ Photo ajoutée !','success');
-    _dashPhotos = await getProviderPhotos(_dashProviderId);
-    _dashData = await getDashboardData(_dashProviderId);
+    _dashPhotos = await getProviderPhotos(pid);
+    providerPhotos = _dashPhotos;
+    _dashData = await getDashboardData(pid);
+    providerData = _dashData;
     _dashRenderPhotos(); _dashUpdateUI();
-  } else _dashToast(res.message||'Erreur upload','error');
+    if(typeof renderPhotos==='function') renderPhotos();
+  } else _dashToast('❌ ' + (res.message||'Erreur upload'),'error');
   input.value='';
 }
 
 async function _dashSupprimerPhoto(photoId) {
   if(!confirm('Supprimer cette photo ?')) return;
-  const res = await deleteProviderPhoto(photoId, _dashProviderId);
-  if(res.success) { _dashToast('Photo supprimée','success'); _dashPhotos=await getProviderPhotos(_dashProviderId); _dashData=await getDashboardData(_dashProviderId); _dashRenderPhotos(); _dashUpdateUI(); }
+  let pid = _dashProviderId || providerId;
+  if (!pid) { try { const s=JSON.parse(localStorage.getItem('yj_provider_session')); if(s?.provider_id) pid=s.provider_id; } catch(e){} }
+  if (!pid) return;
+  const res = await deleteProviderPhoto(photoId, pid);
+  if(res.success) { _dashToast('Photo supprimée','success'); _dashPhotos=await getProviderPhotos(pid); providerPhotos=_dashPhotos; _dashData=await getDashboardData(pid); providerData=_dashData; _dashRenderPhotos(); _dashUpdateUI(); }
 }
 
 function _dashRemplirFormulaire() {
