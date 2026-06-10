@@ -6609,33 +6609,40 @@ function _showAdminPanel() {
 }
 
 async function loginAdmin() {
-  const tel = document.getElementById('adminTel').value.trim();
-  const pwd = document.getElementById('adminPwd').value;
-  const err = document.getElementById('loginError');
-  if (!tel||!pwd) { err.textContent='Remplissez tous les champs'; return; }
-  err.textContent='Connexion...'; err.style.color='#7A7F9A';
+  const tel = (document.getElementById('adminTel') || document.querySelector('#page-admin #adminTel'))?.value.trim();
+  const pwd = (document.getElementById('adminPwd') || document.querySelector('#page-admin #adminPwd'))?.value;
+  const err = document.getElementById('loginError') || document.querySelector('#page-admin #loginError');
+  if (!tel||!pwd) { if(err) err.textContent='Remplissez tous les champs'; return; }
+  if (err) { err.textContent='Connexion...'; err.style.color='#7A7F9A'; }
   try {
-    // Hasher le mot de passe
+    // Hash SHA-256
     const hashBuf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pwd));
     const hash = Array.from(new Uint8Array(hashBuf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-    
-    // Essayer avec hash SHA-256 d'abord
+
+    // Essai avec hash
     let { data, error } = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).eq('password_hash',hash).single();
-    
-    // Fallback : mot de passe en clair (anciens comptes)
-    if (error || !data) {
-      ({ data, error } = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).eq('password_hash',pwd).single());
+    // Fallback mot de passe en clair
+    if (error||!data) ({ data, error } = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).eq('password_hash',pwd).single());
+
+    if (error||!data) {
+      if(err) { err.textContent='Identifiants incorrects'; err.style.color='#DC2626'; }
+      return;
     }
-    
-    if (error || !data) { err.textContent='Identifiants incorrects'; err.style.color='#DC2626'; return; }
-    
     const token = generateToken();
     try { await sb.from('admin_sessions').insert({admin_id:data.id,token}); } catch(e){}
     localStorage.setItem('yj_admin_session', JSON.stringify({admin_id:data.id,token,nom:data.nom,role:data.role}));
     adminData = data;
-    _showAdminPanel();
-    await loadAll();
-  } catch(e) { err.textContent='Erreur: '+e.message; err.style.color='#DC2626'; }
+    // Afficher le panel admin
+    const loginWrap = document.getElementById('loginWrap') || document.querySelector('#page-admin .login-wrap');
+    const adminWrap = document.getElementById('adminWrap') || document.querySelector('#page-admin .admin-wrap');
+    if(loginWrap) loginWrap.style.display='none';
+    if(adminWrap) adminWrap.classList.add('visible');
+    // Charger les données
+    if(typeof loadAll==='function') await loadAll();
+    else if(typeof _adminLoadAll==='function') await _adminLoadAll();
+  } catch(e) {
+    if(err) { err.textContent='Erreur: '+e.message; err.style.color='#DC2626'; }
+  }
 }
 
 async function initAdmin() {
