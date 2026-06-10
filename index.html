@@ -6615,17 +6615,20 @@ async function loginAdmin() {
   if (!tel||!pwd) { err.textContent='Remplissez tous les champs'; return; }
   err.textContent='Connexion...'; err.style.color='#7A7F9A';
   try {
-    // Hasher le mot de passe avant comparaison
+    // Hasher le mot de passe
     const hashBuf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pwd));
     const hash = Array.from(new Uint8Array(hashBuf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-    // Essayer avec hash d'abord, puis mot de passe en clair (compatibilité)
-    let data, error;
-    ({data,error} = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).eq('password_hash',hash).single());
-    if (error||!data) {
-      // Fallback : mot de passe en clair (anciens comptes)
-      ({data,error} = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).eq('password_hash',pwd).single());
+    
+    // Essayer avec hash SHA-256 d'abord
+    let { data, error } = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).eq('password_hash',hash).single();
+    
+    // Fallback : mot de passe en clair (anciens comptes)
+    if (error || !data) {
+      ({ data, error } = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).eq('password_hash',pwd).single());
     }
-    if (error||!data) { err.textContent='Identifiants incorrects'; err.style.color='#DC2626'; return; }
+    
+    if (error || !data) { err.textContent='Identifiants incorrects'; err.style.color='#DC2626'; return; }
+    
     const token = generateToken();
     try { await sb.from('admin_sessions').insert({admin_id:data.id,token}); } catch(e){}
     localStorage.setItem('yj_admin_session', JSON.stringify({admin_id:data.id,token,nom:data.nom,role:data.role}));
