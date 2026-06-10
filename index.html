@@ -3833,6 +3833,7 @@ if (typeof inscrirePrestataire === 'undefined') {
     } catch(e) { return { success: false, message: e.message }; }
   };
 }
+</script>
 <script>
 (function() {
   function showErr(msg){var e=document.getElementById('i-err');if(e){e.textContent=msg;e.style.display='block';}}
@@ -4197,15 +4198,11 @@ let providerId = null;
 let providerData = null;
 let providerPhotos = [];
 
-// ── INIT ──
-(async () => {
-  const pid = await verifierSession();
-  if (!pid) { navigate('login'); return; }
-  providerId = pid;
-  await chargerDonnees();
-})();
-
+// ── INIT — différé après chargement complet du fichier ──
+// L'initialisation est gérée par le routeur (chargerDashboard) défini plus bas.
+// On expose chargerDonnees pour compatibilité avec les anciennes références.
 async function chargerDonnees() {
+  if (typeof getDashboardData !== 'function') { setTimeout(chargerDonnees, 150); return; }
   providerData = await getDashboardData(providerId);
   if (!providerData) { navigate('login'); return; }
 
@@ -4320,11 +4317,13 @@ function updateAbonnementUI(p) {
 
 // ── SECTIONS ──
 function showSection(name) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById('section-' + name).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('#page-dashboard .section').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('section-' + name);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('#page-dashboard .nav-item').forEach(n => n.classList.remove('active'));
   const titles = { dashboard:'Tableau de bord', profil:'Mon profil', photos:'Photos & Galerie', abonnement:'Abonnement', avis:'Mes avis' };
-  document.getElementById('topbarTitle').textContent = titles[name] || name;
+  const tt = document.getElementById('topbarTitle');
+  if (tt) tt.textContent = titles[name] || name;
 }
 
 // ── PHOTOS ──
@@ -5573,7 +5572,9 @@ let _dashPhotos = [];
 async function chargerDashboard(pid) {
   if (!pid) { navigate('login'); return; }
   _dashProviderId = pid;
-  
+  // Synchroniser avec l'ancien système (les boutons HTML l'utilisent)
+  providerId = pid;
+
   // Essayer de charger depuis Supabase
   _dashData = await getDashboardData(pid);
   
@@ -5596,10 +5597,14 @@ async function chargerDashboard(pid) {
   _dashPhotos = await getProviderPhotos(pid);
   _dashRenderPhotos();
   _dashChargerAvis();
+  // Synchroniser l'ancien système (boutons HTML : sauvegarderProfil, activerCode, etc.)
+  providerData = _dashData;
+  providerPhotos = _dashPhotos;
   // Init form edit
   setTimeout(() => {
     if (window.renderCategoriesSelect) renderCategoriesSelect('editCategorie');
     _dashRemplirFormulaire();
+    remplirFormulaire();
   }, 200);
 }
 
