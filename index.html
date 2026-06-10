@@ -1009,7 +1009,7 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 /* ── DASHBOARD ── */
 .dash-layout{display:flex;min-height:100vh;background:var(--fond);width:100%;}
 .sidebar{width:220px;background:var(--bleu);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;z-index:200;overflow:hidden;overflow-y:auto;}
-.sidebar-logo{display:flex;align-items:center;gap:8px;padding:14px 12px;overflow:hidden;max-width:220px;box-sizing:border-box;}
+.sidebar-logo{display:flex;align-items:center;gap:8px;padding:14px 12px;overflow:hidden;max-width:220px;box-sizing:border-box;border-bottom:1px solid rgba(255,255,255,.08);}
 .sidebar .logo-icon{width:40px;height:40px;background:var(--orange);border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Libre Baskerville',serif;font-weight:700;font-size:14px;flex-shrink:0;}
 .sidebar .logo-text{font-family:'Libre Baskerville',serif;font-weight:700;font-size:15px;color:#fff;}
 .sidebar .logo-text span{color:var(--orange);}
@@ -3888,7 +3888,7 @@ if (typeof inscrirePrestataire === 'undefined') {
 <div class="page" id="page-dashboard">
 <div class="dash-layout">
   <!-- SIDEBAR SPACER - pousse le contenu à droite -->
-  <div style="width:220px;flex-shrink:0;min-height:100vh;"></div>
+  <div style="width:220px;flex-shrink:0;min-height:100vh;pointer-events:none;"></div>
   <!-- SIDEBAR -->
 <div class="sidebar" style="width:220px !important;position:fixed !important;top:0;left:0;height:100vh;z-index:500;overflow-y:auto;overflow-x:hidden;">
   <!-- Logo -->
