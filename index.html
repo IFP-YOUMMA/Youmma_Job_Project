@@ -1005,7 +1005,7 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 
 /* ── DASHBOARD ── */
 .dash-layout{display:flex;min-height:100vh;background:var(--fond);}
-.sidebar{width:220px;background:var(--bleu);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;}
+.sidebar{width:220px;background:var(--bleu);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;z-index:200;overflow-y:auto;}
 .sidebar-logo{display:flex;align-items:center;gap:10px;padding:24px 20px 20px;}
 .sidebar .logo-icon{width:40px;height:40px;background:var(--orange);border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Libre Baskerville',serif;font-weight:700;font-size:14px;flex-shrink:0;}
 .sidebar .logo-text{font-family:'Libre Baskerville',serif;font-weight:700;font-size:15px;color:#fff;}
@@ -1018,11 +1018,12 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .sidebar-footer{padding:16px 12px;}
 .btn-deconnexion{width:100%;padding:11px;background:rgba(239,68,68,.15);color:#FCA5A5;border:1px solid rgba(239,68,68,.2);border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
 .btn-deconnexion:hover{background:rgba(239,68,68,.25);}
-.main{flex:1;margin-left:220px;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden;}
-.topbar{background:#fff;border-bottom:1px solid var(--bordure);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.main{flex:1;margin-left:220px;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden;position:relative;z-index:1;min-width:0;}
+.topbar{background:#fff;border-bottom:1px solid var(--bordure);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;min-width:0;}
 .topbar-title{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:var(--bleu);}
-.provider-chip{display:flex;align-items:center;gap:10px;overflow:hidden;}
-.provider-chip-avatar{width:36px;height:36px;border-radius:10px;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-weight:700;font-size:13px;flex-shrink:0;}
+.provider-chip{display:flex;align-items:center;gap:10px;overflow:hidden;min-width:0;}
+.provider-chip-avatar{width:34px;height:34px;min-width:34px;border-radius:9px;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-weight:700;font-size:12px;overflow:hidden;}
+.provider-chip-avatar img{width:34px;height:34px;object-fit:cover;border-radius:9px;display:block;}
 .provider-chip-name{font-size:13px;font-weight:700;color:var(--texte);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px;}
 .provider-chip-job{font-size:11px;color:var(--gris);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px;}
 .content{padding:20px;flex:1;overflow-x:hidden;}
@@ -1032,8 +1033,9 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .profile-banner{background:linear-gradient(145deg,var(--bleu),var(--bleu-mid));border-radius:18px;padding:22px 24px;display:flex;align-items:center;gap:18px;margin-bottom:22px;position:relative;overflow:hidden;}
 .profile-banner::before{content:'';position:absolute;top:-30px;right:-30px;width:110px;height:110px;border-radius:50%;background:rgba(232,93,4,.18);}
 .pb-avatar-wrap{position:relative;flex-shrink:0;}
-.pb-avatar-placeholder{width:72px;height:72px;border-radius:18px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-weight:700;font-size:24px;color:#fff;overflow:hidden;}
+.pb-avatar-placeholder{width:64px;height:64px;border-radius:14px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-weight:700;font-size:22px;color:#fff;overflow:hidden;}
 .pb-avatar-placeholder img{width:100%;height:100%;object-fit:cover;}
+.pb-avatar{width:64px;height:64px;border-radius:14px;object-fit:cover;border:2px solid rgba(255,255,255,.25);display:block;flex-shrink:0;}
 .pb-edit-photo{position:absolute;bottom:-4px;right:-4px;width:24px;height:24px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;border:2px solid var(--bleu);}
 .pb-info{flex:1;position:relative;z-index:1;}
 .pb-name{font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:3px;}
@@ -1473,7 +1475,7 @@ img { max-width:100%; }
   position: fixed !important;
   top: 0; left: 0;
   height: 100vh !important;
-  z-index: 100 !important;
+  z-index: 200 !important;
   overflow-y: auto !important;
 }
 .sidebar-logo {
@@ -1566,7 +1568,7 @@ img { max-width:100%; }
   position: fixed !important;
   top: 0; left: 0;
   height: 100vh !important;
-  z-index: 100 !important;
+  z-index: 200 !important;
   overflow-y: auto !important;
 }
 #page-dashboard .main {
@@ -4205,7 +4207,7 @@ function updateUI() {
 
   if (p.photo_url) {
     document.getElementById('pbAvatar').outerHTML = `<img id="pbAvatar" class="pb-avatar" src="${p.photo_url}" alt="Photo"/>`;
-    document.getElementById('chipAvatar').innerHTML = `<img src="${p.photo_url}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;"/>`;
+    document.getElementById('chipAvatar').innerHTML = `<img src="${p.photo_url}" style="width:34px;height:34px;object-fit:cover;border-radius:9px;display:block;"/>`;
   } else {
     document.getElementById('pbAvatar').textContent = ini;
     document.getElementById('chipAvatar').textContent = ini;
@@ -5698,7 +5700,7 @@ function _dashUpdateUI() {
   const chipAv = document.getElementById('chipAvatar');
   if (p.photo_url) {
     if(pbAv) pbAv.outerHTML = `<img id="pbAvatar" class="pb-avatar" src="${p.photo_url}" alt="Photo"/>`;
-    if(chipAv) chipAv.innerHTML = `<img src="${p.photo_url}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;"/>`;
+    if(chipAv) chipAv.innerHTML = `<img src="${p.photo_url}" style="width:34px;height:34px;object-fit:cover;border-radius:9px;display:block;"/>`;
   } else {
     if(pbAv) pbAv.textContent = ini;
     if(chipAv) chipAv.textContent = ini;
