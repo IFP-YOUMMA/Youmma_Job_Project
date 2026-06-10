@@ -3612,6 +3612,134 @@ async function connexion() {
 </div>
 </div>
 <script>
+(function() {
+  function showErr(msg) {
+    var e = document.getElementById('i-err');
+    if (e) { e.textContent = msg; e.style.display = 'block'; }
+  }
+  function hideErr() {
+    var e = document.getElementById('i-err');
+    if (e) e.style.display = 'none';
+  }
+
+  function goTo(step) {
+    for (var s = 1; s <= 3; s++) {
+      var el = document.getElementById('i-step' + s);
+      if (el) el.style.display = s === step ? 'block' : 'none';
+    }
+    // Mettre à jour les dots
+    var base = 'width:30px;height:30px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;';
+    var A = 'background:#E85D04;border-color:#E85D04;color:#fff;';
+    var D = 'background:#16A34A;border-color:#16A34A;color:#fff;';
+    var I = 'background:#fff;border-color:#E5E7EB;color:#6B7280;';
+    var d1 = document.getElementById('i-dot-1');
+    var d2 = document.getElementById('i-dot-2');
+    var d3 = document.getElementById('i-dot-3');
+    var l1 = document.getElementById('i-line-1');
+    var l2 = document.getElementById('i-line-2');
+    if (d1) { d1.style.cssText = (step > 1 ? D : A) + base; d1.innerHTML = step > 1 ? '<i class="fa-solid fa-check"></i>' : '1'; }
+    if (d2) { d2.style.cssText = (step > 2 ? D : step === 2 ? A : I) + base; d2.innerHTML = step > 2 ? '<i class="fa-solid fa-check"></i>' : '2'; }
+    if (d3) { d3.style.cssText = (step === 3 ? A : I) + base; d3.innerHTML = '3'; }
+    if (l1) l1.style.background = step > 1 ? '#16A34A' : '#E5E7EB';
+    if (l2) l2.style.background = step > 2 ? '#16A34A' : '#E5E7EB';
+    hideErr();
+    window.scrollTo(0, 0);
+  }
+
+  function init() {
+    // Bouton suivant étape 1
+    var b1 = document.getElementById('i-btn1');
+    if (b1) b1.onclick = function() {
+      var prenom = (document.getElementById('i-prenom') || {}).value || '';
+      var nom    = (document.getElementById('i-nom')    || {}).value || '';
+      var tel    = (document.getElementById('i-tel')    || {}).value || '';
+      var pin    = ((document.getElementById('i-pin1')||{}).value||'')
+                + ((document.getElementById('i-pin2')||{}).value||'')
+                + ((document.getElementById('i-pin3')||{}).value||'')
+                + ((document.getElementById('i-pin4')||{}).value||'');
+      if (!prenom.trim() || !nom.trim() || !tel.trim()) { showErr('Remplissez tous les champs'); return; }
+      if (pin.length < 4) { showErr('Entrez votre code PIN 4 chiffres'); return; }
+      goTo(2);
+    };
+
+    // Bouton suivant étape 2
+    var b2 = document.getElementById('i-btn2');
+    if (b2) b2.onclick = function() {
+      var cat = (document.getElementById('i-cat')    || {}).value || '';
+      var met = (document.getElementById('i-metier') || {}).value || '';
+      var dsc = (document.getElementById('i-desc')   || {}).value || '';
+      if (!cat || !met.trim() || !dsc.trim()) { showErr('Remplissez tous les champs'); return; }
+      goTo(3);
+    };
+
+    // Retour étape 2
+    var ba2 = document.getElementById('i-back2');
+    if (ba2) ba2.onclick = function() { goTo(1); };
+
+    // Retour étape 3
+    var ba3 = document.getElementById('i-back3');
+    if (ba3) ba3.onclick = function() { goTo(2); };
+
+    // Soumettre étape 3
+    var b3 = document.getElementById('i-submit');
+    if (b3) b3.onclick = async function() {
+      b3.disabled = true;
+      b3.textContent = 'Inscription en cours...';
+      var pin = ((document.getElementById('i-pin1')||{}).value||'')
+              + ((document.getElementById('i-pin2')||{}).value||'')
+              + ((document.getElementById('i-pin3')||{}).value||'')
+              + ((document.getElementById('i-pin4')||{}).value||'');
+      var fd = {
+        prenom:      (document.getElementById('i-prenom')  || {}).value || '',
+        nom:         (document.getElementById('i-nom')     || {}).value || '',
+        telephone:   (document.getElementById('i-tel')     || {}).value || '',
+        password:    pin,
+        categorie:   (document.getElementById('i-cat')     || {}).value || '',
+        metier:      (document.getElementById('i-metier')  || {}).value || '',
+        description: (document.getElementById('i-desc')    || {}).value || '',
+        ville:       (document.getElementById('i-ville')   || {}).value || 'Conakry',
+        commune:     (document.getElementById('i-commune') || {}).value || null,
+        quartier:    (document.getElementById('i-quartier')|| {}).value || null,
+        skills: []
+      };
+      try {
+        var res = await inscrirePrestataire(fd);
+        if (res.success) {
+          for (var s = 1; s <= 3; s++) {
+            var el = document.getElementById('i-step' + s);
+            if (el) el.style.display = 'none';
+          }
+          var su = document.getElementById('i-success');
+          if (su) su.style.display = 'block';
+        } else {
+          showErr(res.message || 'Erreur lors de l'inscription');
+          b3.disabled = false;
+          b3.textContent = 'Créer mon compte';
+        }
+      } catch(e) {
+        showErr('Erreur: ' + e.message);
+        b3.disabled = false;
+        b3.textContent = 'Créer mon compte';
+      }
+    };
+  }
+
+  // Initialiser dès que possible
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  // Re-initialiser si navigate('inscription') est appelé
+  var _origNav = window.navigate;
+  window.navigate = function(p) {
+    if (_origNav) _origNav(p);
+    if (p === 'inscription') setTimeout(init, 100);
+  };
+})();
+</script>
+
+<script>
 // Définition locale de inscrirePrestataire (fallback)
 if (typeof inscrirePrestataire === 'undefined') {
   window.inscrirePrestataire = async function(formData) {
