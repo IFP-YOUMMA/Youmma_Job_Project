@@ -2861,51 +2861,42 @@ function renderProviders() {
         <div class="pc2-info" style="flex:1;min-width:0;">
           <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:2px;">
             <div class="pc2-name" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.nom}</div>
-            <button class="btn-pfav" onclick="event.stopPropagation();toggleFav('${p.id}')" style="flex-shrink:0;background:none;border:none;cursor:pointer;font-size:18px;padding:2px 4px;line-height:1;">${isFav?'<i class="fa-solid fa-heart" style="color:#E85D04;"></i>':'<i class="fa-regular fa-heart" style="color:#ccc;"></i>'}</button>
+            <button class="btn-pfav" onclick="event.stopPropagation();toggleFav('${p.id}')" style="flex-shrink:0;background:none;border:none;cursor:pointer;font-size:17px;padding:2px 4px;line-height:1;">${isFav?'<i class="fa-solid fa-heart" style="color:#E85D04;"></i>':'<i class="fa-regular fa-heart" style="color:#bbb;"></i>'}</button>
           </div>
           <div class="pc2-metier">${p.metier}</div>
-          <div class="pc2-meta-row">
-            <div class="pc2-stars">${stars5}</div>
-            <span class="pc2-note">${p.note}</span>
-            <span class="pc2-avis">(${p.missions} avis)</span>
+          <div class="pc2-loc" style="margin:3px 0;"><i class="fa-solid fa-location-dot" style="color:var(--orange);"></i> ${p.ville}</div>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;">
+            <div style="display:flex;align-items:center;gap:3px;">${stars5}<span style="font-size:12px;font-weight:700;color:var(--bleu);margin-left:2px;">${p.note}</span></div>
+            ${p.badge_verifie?`<span class="badge-verifie" style="font-size:9px;padding:2px 7px;"><i class="fa-solid fa-check"></i> Vérifié</span>`:''}
+            ${p.badge_express?`<span class="badge-express" style="font-size:9px;padding:2px 7px;"> Express</span>`:''}
           </div>
-          <div class="pc2-loc"><i class="fa-solid fa-location-dot"></i> ${p.ville}</div>
-        </div>
-      </div>
-
-      <!-- BADGES -->
-      <div style="display:flex;gap:4px;flex-wrap:wrap;margin:8px 0 6px;">
-        ${p.badge_verifie?`<span class="badge-verifie" style="font-size:9.5px;padding:3px 8px;"><i class="fa-solid fa-check"></i> Vérifié</span>`:''}
-        ${p.badge_express?`<span class="badge-express" style="font-size:9.5px;padding:3px 8px;"> Express</span>`:''}
-        ${p.badge_top?`<span class="badge-top" style="font-size:9.5px;padding:3px 8px;"><i class="fa-solid fa-trophy" style="color:#F5C842;"></i> Top</span>`:''}
-      </div>
-
-      <!-- SKILLS -->
-      <div class="pc2-skills">${(p.skills||[]).slice(0,3).map(s=>`<span class="pc2-skill">${s}</span>`).join('')}</div>
-
-      <!-- STATS -->
-      <div class="pc2-stats">
-        <div class="pc2-s"><span class="pc2-sv">${p.vues}</span><span class="pc2-sl"><i class="fa-solid fa-eye"></i> Vues</span></div>
-        <div class="pc2-s"><span class="pc2-sv">${p.missions}</span><span class="pc2-sl"><i class="fa-solid fa-bullseye"></i> Missions</span></div>
-        <div class="pc2-s"><span class="pc2-sv">${p.note}</span><span class="pc2-sl"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Note</span></div>
+          ${p.dispo?`<div style="display:flex;align-items:center;gap:5px;margin-top:5px;font-size:11.5px;color:var(--gris);"><span class="dispo-led ${dispoClass}"></span>${p.dispo}</div>`:''}
+          <!-- BADGES VÉRIFICATION -->
+          <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;">
+            <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;background:${p.badge_verifie?'#F0FDF4':'#F9FAFB'};color:${p.badge_verifie?'#16A34A':'#9CA3AF'};border:1px solid ${p.badge_verifie?'#86EFAC':'#E5E7EB'};">
+              ${p.badge_verifie?'<i class="fa-solid fa-id-card"></i> CNI vérifiée':'<i class="fa-solid fa-id-card"></i> CNI en attente'}
+            </span>
+            <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;background:${p.badge_top?'#FFFBEB':'#F9FAFB'};color:${p.badge_top?'#D97706':'#9CA3AF'};border:1px solid ${p.badge_top?'#FDE68A':'#E5E7EB'};">
+              ${p.badge_top?'<i class="fa-solid fa-graduation-cap"></i> Diplôme vérifié':'<i class="fa-solid fa-graduation-cap"></i> Diplôme en attente'}
+            </span>
+          </div>        </div>
       </div>
 
       <!-- BOUTONS CONTACT alignés -->
-      <div style="display:grid;grid-template-columns:1fr 1fr${p.latitude?` 1fr`:''};gap:6px;margin-bottom:8px;">
-        <button class="btn-pwa" onclick="event.stopPropagation();openWA('${p.wa}','${p.nom}')" style="display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 6px;border-radius:10px;font-size:12.5px;font-weight:700;border:none;cursor:pointer;background:#25D366;color:#fff;">
-          <i class="fa-brands fa-whatsapp" style="font-size:14px;"></i> WhatsApp
+      <div style="display:grid;grid-template-columns:1fr 1fr${p.latitude?` 1fr`:''};gap:6px;margin:10px 0 8px;">
+        <button onclick="event.stopPropagation();openWA('${p.wa}','${p.nom}')" style="display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 4px;border-radius:10px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:#25D366;color:#fff;">
+          <i class="fa-brands fa-whatsapp" style="font-size:13px;"></i> WhatsApp
         </button>
-        <button onclick="event.stopPropagation();window.open('tel:${p.tel}')" style="display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 6px;border-radius:10px;font-size:12.5px;font-weight:700;border:1.5px solid #E85D04;cursor:pointer;background:#fff;color:#E85D04;">
-          <i class="fa-solid fa-phone" style="font-size:12px;"></i> Appeler
+        <button onclick="event.stopPropagation();window.open('tel:${p.tel}')" style="display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 4px;border-radius:10px;font-size:12px;font-weight:700;border:1.5px solid #E85D04;cursor:pointer;background:#fff;color:#E85D04;">
+          <i class="fa-solid fa-phone" style="font-size:11px;"></i> Appeler
         </button>
-        ${p.latitude?`<button onclick="event.stopPropagation();window.open('https://www.google.com/maps?q=${p.latitude},${p.longitude}')" style="display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 6px;border-radius:10px;font-size:12.5px;font-weight:700;border:1.5px solid #4285F4;cursor:pointer;background:#fff;color:#4285F4;"><i class="fa-solid fa-location-dot" style="font-size:12px;"></i> Localiser</button>`:''}
+        ${p.latitude?`<button onclick="event.stopPropagation();window.open('https://www.google.com/maps?q=${p.latitude},${p.longitude}')" style="display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 4px;border-radius:10px;font-size:12px;font-weight:700;border:1.5px solid #4285F4;cursor:pointer;background:#fff;color:#4285F4;"><i class="fa-solid fa-location-dot" style="font-size:11px;"></i> Localiser</button>`:''}
       </div>
 
-      <!-- BOUTON VOIR PROFIL - bien visible en bas -->
-      <button class="btn-pprofil" onclick="event.stopPropagation();openModal('${p.id}')" style="width:100%;padding:11px;border-radius:12px;background:var(--bleu);color:#fff;border:none;cursor:pointer;font-size:13.5px;font-weight:700;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;" onmouseover="this.style.background='#2d2d8e'" onmouseout="this.style.background='var(--bleu)'">
+      <!-- VOIR PROFIL -->
+      <button onclick="event.stopPropagation();openModal('${p.id}')" style="width:100%;padding:11px;border-radius:12px;background:var(--bleu);color:#fff;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
         <i class="fa-solid fa-user"></i> Voir le profil complet
       </button>
-
     </div>`;
   }).join('');
   observeFadeIn();
@@ -3004,21 +2995,31 @@ function openModal(id) {
       <div style="position:absolute;bottom:-16px;left:30%;width:80px;height:80px;border-radius:50%;background:rgba(245,200,66,.1);"></div>
       <div style="display:flex;gap:14px;align-items:flex-start;position:relative;z-index:1;">
         <div class="mp2-avatar" style="background:${p.bg};color:${p.color};overflow:hidden;padding:0;">
-            ${p.photo_url
-              ? `<img src="${p.photo_url}" style="width:100%;height:100%;object-fit:cover;display:block;" alt="${p.nom}"/>`
-              : p.ini}
-          </div>
+          ${p.photo_url
+            ? `<img src="${p.photo_url}" style="width:100%;height:100%;object-fit:cover;display:block;" alt="${p.nom}"/>`
+            : p.ini}
+        </div>
         <div style="flex:1;min-width:0;">
           <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:3px;">${p.nom}</div>
-          <div style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:8px;">${p.metier}</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:4px;">${p.metier} · <i class="fa-solid fa-location-dot"></i> ${p.ville}</div>
           <div style="display:flex;gap:5px;flex-wrap:wrap;">${badgesHtml}</div>
         </div>
       </div>
-      <!-- STATS BAR -->
-      <div class="mp-stats-bar">
-        <div class="mp-stat"><span class="mp-sv">${p.note} ★</span><span class="mp-sl">Note moyenne</span></div>
-        <div class="mp-stat"><span class="mp-sv">${p.missions}</span><span class="mp-sl"><i class="fa-solid fa-bullseye"></i> Missions</span></div>
-        <div class="mp-stat"><span class="mp-sv">${p.vues}</span><span class="mp-sl"><i class="fa-solid fa-eye"></i> Vues profil</span></div>
+    </div>
+
+    <!-- STATS (déplacées ici depuis la carte) -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+      <div style="background:var(--fond2);border-radius:14px;padding:14px;text-align:center;border:1px solid var(--bordure);">
+        <div style="font-size:22px;font-weight:800;color:var(--bleu);font-family:'Libre Baskerville',serif;">${p.vues}</div>
+        <div style="font-size:11px;color:var(--gris);margin-top:2px;"><i class="fa-solid fa-eye"></i> Vues profil</div>
+      </div>
+      <div style="background:var(--fond2);border-radius:14px;padding:14px;text-align:center;border:1px solid var(--bordure);">
+        <div style="font-size:22px;font-weight:800;color:var(--bleu);font-family:'Libre Baskerville',serif;">${p.missions}</div>
+        <div style="font-size:11px;color:var(--gris);margin-top:2px;"><i class="fa-solid fa-bullseye"></i> Missions</div>
+      </div>
+      <div style="background:#FFFBEB;border-radius:14px;padding:14px;text-align:center;border:1px solid #FDE68A;">
+        <div style="font-size:22px;font-weight:800;color:#D97706;font-family:'Libre Baskerville',serif;">${p.note} ★</div>
+        <div style="font-size:11px;color:var(--gris);margin-top:2px;">Note moyenne</div>
       </div>
     </div>
 
@@ -3042,17 +3043,33 @@ function openModal(id) {
     <div class="mp-skills-wrap">${(p.skills||[]).map(s=>`<span class="modal-skill">${s}</span>`).join('')}</div>
     ` : ''}
 
-    <!-- PORTFOLIO / RÉALISATIONS -->
-    ${(p.portfolio||[]).length ? `
-    <div class="mp-section-title"><i class="fa-solid fa-images"></i> Réalisations (${p.portfolio.length} projets)</div>
-    <div class="mp-portfolio-grid">${portfolioHtml}</div>
-    ` : ''}
+    <!-- RÉALISATIONS PHOTOS -->
+    <div class="mp-section-title"><i class="fa-solid fa-images"></i> Réalisations</div>
+    <div id="modalPhotos" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px;">
+      <div style="text-align:center;color:var(--gris);font-size:12px;grid-column:1/-1;padding:14px;">Chargement des photos...</div>
+    </div>
+
+    <!-- DIPLÔMES & PIÈCE D'IDENTITÉ -->
+    <div class="mp-section-title"><i class="fa-solid fa-shield-halved"></i> Vérification & Documents</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+      <div style="background:${p.badge_verifie?'#F0FDF4':'var(--fond2)'};border:1.5px solid ${p.badge_verifie?'#86EFAC':'var(--bordure)'};border-radius:14px;padding:14px;text-align:center;">
+        <div style="font-size:24px;margin-bottom:6px;">${p.badge_verifie?'✅':'⏳'}</div>
+        <div style="font-size:12px;font-weight:700;color:${p.badge_verifie?'#16A34A':'var(--gris)'};">Pièce d'identité</div>
+        <div style="font-size:10.5px;color:var(--gris);margin-top:3px;">${p.badge_verifie?'Vérifiée par YOUMMA':'En cours de vérification'}</div>
+      </div>
+      <div style="background:${p.badge_top?'#FFFBEB':'var(--fond2)'};border:1.5px solid ${p.badge_top?'#FDE68A':'var(--bordure)'};border-radius:14px;padding:14px;text-align:center;">
+        <div style="font-size:24px;margin-bottom:6px;">${p.badge_top?'🎓':'📄'}</div>
+        <div style="font-size:12px;font-weight:700;color:${p.badge_top?'#D97706':'var(--gris)'};">Diplôme / Formation</div>
+        <div style="font-size:10.5px;color:var(--gris);margin-top:3px;">${p.badge_top?'Certifié Top Artisan':'Non renseigné'}</div>
+      </div>
+    </div>
 
     <!-- AVIS CLIENTS -->
     ${(p.avis||[]).length ? `
-    <div class="mp-section-title"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Avis clients (${p.avis.length} avis · ${p.note}/5)</div>
+    <div class="mp-section-title"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Avis clients (${p.avis.length} · ${p.note}/5)</div>
     ${avisHtml}
-    ` : ''}
+    ` : `<div class="mp-section-title"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Avis clients</div>
+    <div style="text-align:center;padding:18px;background:var(--fond2);border-radius:12px;color:var(--gris);font-size:13px;margin-bottom:12px;">Aucun avis pour le moment. Soyez le premier à laisser un avis !</div>`}
 
     <!-- ACTIONS -->
     <div class="mp-actions-row">
@@ -3064,6 +3081,31 @@ function openModal(id) {
       <div style="font-size:11.5px;color:var(--gris);">Vous êtes artisan ? <span onclick="closeModal();ouvrirInscription()" style="color:var(--orange);font-weight:700;cursor:pointer;">Créez votre profil gratuit →</span></div>
     </div>
   `;
+
+  // Charger les photos depuis Supabase
+  if (p._supabase && p.id) {
+    getProviderPhotos(p.id).then(photos => {
+      const container = document.getElementById('modalPhotos');
+      if (!container) return;
+      const reals = photos.filter(ph => ph.type === 'realisation');
+      if (reals.length === 0) {
+        container.innerHTML = `<div style="text-align:center;color:var(--gris);font-size:12.5px;grid-column:1/-1;padding:14px;"><i class="fa-solid fa-image" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px;"></i>Aucune réalisation ajoutée</div>`;
+      } else {
+        container.innerHTML = reals.map(ph => `
+          <div style="aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--fond2);">
+            <img src="${ph.url}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onclick="window.open('${ph.url}','_blank')" title="Voir en grand"/>
+          </div>`).join('');
+      }
+    }).catch(() => {
+      const c = document.getElementById('modalPhotos');
+      if (c) c.innerHTML = '';
+    });
+  } else {
+    const c = document.getElementById('modalPhotos');
+    if (c) c.innerHTML = (p.portfolio||[]).length
+      ? `<div style="color:var(--gris);font-size:12px;grid-column:1/-1;">${(p.portfolio||[]).map(item=>`<span class="pc2-skill">${item}</span>`).join('')}</div>`
+      : `<div style="text-align:center;color:var(--gris);font-size:12.5px;grid-column:1/-1;padding:14px;">Aucune réalisation</div>`;
+  }
 
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
