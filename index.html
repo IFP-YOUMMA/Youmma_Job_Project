@@ -1727,7 +1727,9 @@ function generateToken() {
 
 async function connexionPrestataire(telephone, password) {
   try {
-    const hash = await hashPassword(password);
+    const msgBuf = new TextEncoder().encode(password);
+    const hashBuf = await crypto.subtle.digest('SHA-256', msgBuf);
+    const hash = Array.from(new Uint8Array(hashBuf)).map(b=>b.toString(16).padStart(2,'0')).join('');
     
     // D'abord chercher le prestataire par téléphone
     const { data: byTel, error: e1 } = await sb.from('providers')
@@ -3446,7 +3448,9 @@ document.addEventListener('keydown', e => {
 if (typeof connexionPrestataire === 'undefined') {
   window.connexionPrestataire = async function(telephone, password) {
     try {
-      var hash = await hashPassword(password);
+      var msgBuf = new TextEncoder().encode(password);
+      var hashBuf = await crypto.subtle.digest('SHA-256', msgBuf);
+      var hash = Array.from(new Uint8Array(hashBuf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
       var res = await sb.from('providers')
         .select('id,nom,prenom,metier,statut,password_hash')
         .eq('telephone', telephone)
@@ -5959,7 +5963,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function connexionAdmin(telephone, password) {
   try {
-    const hash = await hashPassword(password);
+    const msgBuf = new TextEncoder().encode(password);
+    const hashBuf = await crypto.subtle.digest('SHA-256', msgBuf);
+    const hash = Array.from(new Uint8Array(hashBuf)).map(b=>b.toString(16).padStart(2,'0')).join('');
     const { data, error } = await sb.from('admin_users').select('id,nom,role,telephone').eq('telephone',telephone).eq('password_hash',hash).single();
     if (error||!data) return { success:false, message:'Identifiants incorrects' };
     const token = generateToken();
