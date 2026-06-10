@@ -1545,6 +1545,32 @@ img { max-width:100%; }
 @media(max-width:520px) {
   #providersGrid { grid-template-columns: 1fr !important; }
 }
+
+/* ── DASHBOARD LAYOUT FIX ── */
+#page-dashboard { display: flex !important; min-height: 100vh; }
+#page-dashboard .sidebar {
+  width: 220px !important;
+  flex-shrink: 0 !important;
+  position: fixed !important;
+  top: 0; left: 0;
+  height: 100vh !important;
+  z-index: 100 !important;
+  overflow-y: auto !important;
+}
+#page-dashboard .main {
+  margin-left: 220px !important;
+  flex: 1 !important;
+  overflow-x: hidden !important;
+  min-height: 100vh !important;
+}
+@media(max-width:768px) {
+  #page-dashboard .sidebar { width: 56px !important; }
+  #page-dashboard .main { margin-left: 56px !important; }
+}
+@media(max-width:480px) {
+  #page-dashboard .sidebar { display: none !important; }
+  #page-dashboard .main { margin-left: 0 !important; }
+}
 </style>
 
 </head>
