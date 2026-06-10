@@ -3658,51 +3658,15 @@ async function connexion() {
     </div>
     <div style="display:flex;gap:10px;">
       <button id="i-back3" onclick="document.getElementById('i-step3').style.display='none';document.getElementById('i-step2').style.display='block';" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;">← Retour</button>
-      <button id="i-submit" onclick="(async function(btn){
-  btn.disabled=true; btn.textContent='Inscription...';
-  var pin=((document.getElementById('i-pin1')||{}).value||'')+((document.getElementById('i-pin2')||{}).value||'')+((document.getElementById('i-pin3')||{}).value||'')+((document.getElementById('i-pin4')||{}).value||'');
-  var fd={
-    prenom:((document.getElementById('i-prenom')||{}).value||'').trim(),
-    nom:((document.getElementById('i-nom')||{}).value||'').trim(),
-    telephone:((document.getElementById('i-tel')||{}).value||'').trim(),
-    password:pin,
-    categorie:(document.getElementById('i-cat')||{}).value||'',
-    metier:((document.getElementById('i-metier')||{}).value||'').trim(),
-    description:((document.getElementById('i-desc')||{}).value||'').trim(),
-    ville:(document.getElementById('i-ville')||{}).value||'Conakry',
-    commune:(document.getElementById('i-commune')||{}).value||null,
-    quartier:((document.getElementById('i-quartier')||{}).value||'').trim()||null,
-    skills:[]
-  };
-  try {
-    // SHA-256 inline
-    var msgBuffer = new TextEncoder().encode(fd.password);
-    var hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-    var hash = Array.from(new Uint8Array(hashBuffer)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
-    var row = {prenom:fd.prenom,nom:fd.nom,telephone:fd.telephone,password_hash:hash,metier:fd.metier,categorie:fd.categorie,description:fd.description,ville:fd.ville,commune:fd.commune,quartier:fd.quartier,statut:'en_attente',skills:[]};
-    var res = await sb.from('providers').insert([row]);
-    if(res.error){
-      var e=document.getElementById('i-err3');
-      if(e){e.textContent='Erreur: '+res.error.message;e.style.display='block';}
-      btn.disabled=false;btn.textContent='Créer mon compte';return;
-    }
-    document.getElementById('i-step3').style.display='none';
-    var su=document.getElementById('i-success');
-    if(su)su.style.display='block';
-  } catch(ex) {
-    var e=document.getElementById('i-err3');
-    if(e){e.textContent='Erreur: '+ex.message;e.style.display='block';}
-    btn.disabled=false;btn.textContent='Créer mon compte';
-  }
-})(this)" style="flex:2;padding:13px;background:#1A1A4E;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">Créer mon compte</button>
+      <button id="i-submit" style="flex:2;padding:13px;background:#1A1A4E;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">Créer mon compte</button>
     </div>
   </div>
   <div id="i-success" style="display:none;text-align:center;padding:20px 0;">
-    <div style="font-size:56px;margin-bottom:16px;"><i class="fa-solid fa-party-horn" style="font-size:48px;color:#E85D04;"></i></div>
-    <h3 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;margin-bottom:10px;">Inscription envoyée !</h3>
-    <p style="font-size:13.5px;color:#6B7280;line-height:1.7;margin-bottom:20px;">Votre demande est en cours d'examen.<br>Vous serez contacté(e) sous <strong>24h</strong> sur WhatsApp.</p>
-    <a href="https://wa.me/22461252510" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:13px 24px;border-radius:50px;text-decoration:none;font-weight:700;font-size:13.5px;">Confirmer sur WhatsApp</a>
-    <br><br><a href="#login" style="color:#E85D04;font-weight:600;font-size:13.5px;">Se connecter →</a>
+    <div style="font-size:56px;margin-bottom:16px;"><i class="fa-solid fa-circle-check" style="font-size:52px;color:#16A34A;"></i></div>
+    <h3 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;margin-bottom:10px;">Compte créé avec succès !</h3>
+    <p style="font-size:13.5px;color:#6B7280;line-height:1.7;margin-bottom:6px;">Votre profil est en cours de validation.<br>Vous serez contacté(e) sous <strong>24h</strong>.</p>
+    <p style="font-size:12px;color:#9CA3AF;margin-bottom:20px;">Vous pouvez dès maintenant accéder à votre tableau de bord.</p>
+    <button onclick="navigate('dashboard');if(typeof chargerDashboard==='function'&&providerId)chargerDashboard(providerId);" style="display:inline-flex;align-items:center;gap:8px;background:#E85D04;color:#fff;padding:13px 28px;border-radius:50px;border:none;font-weight:700;font-size:14px;cursor:pointer;"><i class="fa-solid fa-gauge"></i> Accéder à mon tableau de bord</button>
   </div>
   <div style="text-align:center;margin-top:16px;font-size:13px;">
     <a href="#login" style="color:#E85D04;text-decoration:none;font-weight:600;">Déjà inscrit ? Se connecter</a>
@@ -3894,14 +3858,62 @@ if (typeof inscrirePrestataire === 'undefined') {
     if(ba2)ba2.onclick=function(){goTo(1);};
     if(ba3)ba3.onclick=function(){goTo(2);};
     if(b3)b3.onclick=async function(){
-      b3.disabled=true;b3.textContent='Inscription en cours...';
+      b3.disabled=true;
+      b3.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Création du compte...';
       var pin=(document.getElementById('i-pin1').value||'')+(document.getElementById('i-pin2').value||'')+(document.getElementById('i-pin3').value||'')+(document.getElementById('i-pin4').value||'');
-      var fd={prenom:document.getElementById('i-prenom').value.trim(),nom:document.getElementById('i-nom').value.trim(),telephone:document.getElementById('i-tel').value.trim(),password:pin,categorie:document.getElementById('i-cat').value,metier:document.getElementById('i-metier').value.trim(),description:document.getElementById('i-desc').value.trim(),ville:(document.getElementById('i-ville')||{}).value||'Conakry',commune:(document.getElementById('i-commune')||{}).value||null,quartier:((document.getElementById('i-quartier')||{}).value||'').trim()||null,skills:[]};
+      var tel=document.getElementById('i-tel').value.trim();
+      var fd={
+        prenom:document.getElementById('i-prenom').value.trim(),
+        nom:document.getElementById('i-nom').value.trim(),
+        telephone:tel,
+        password:pin,
+        categorie:document.getElementById('i-cat').value,
+        metier:document.getElementById('i-metier').value.trim(),
+        description:document.getElementById('i-desc').value.trim(),
+        ville:(document.getElementById('i-ville')||{}).value||'Conakry',
+        commune:(document.getElementById('i-commune')||{}).value||null,
+        quartier:((document.getElementById('i-quartier')||{}).value||'').trim()||null,
+        skills:[]
+      };
       try{
-        var res=await inscrirePrestataire(fd);
-        if(res.success){[1,2,3].forEach(function(s){var el=document.getElementById('i-step'+s);if(el)el.style.display='none';});var su=document.getElementById('i-success');if(su)su.style.display='block';}
-        else{showErr(res.message||'Erreur');b3.disabled=false;b3.textContent='Créer mon compte';}
-      }catch(e){showErr('Erreur: '+e.message);b3.disabled=false;b3.textContent='Créer mon compte';}
+        // Vérifier si téléphone déjà utilisé
+        var chk = await sb.from('providers').select('id').eq('telephone',tel).maybeSingle();
+        if(chk.data){ showErr('Ce numéro de téléphone est déjà inscrit. Connectez-vous.'); b3.disabled=false; b3.textContent='Créer mon compte'; return; }
+
+        // Hasher le PIN
+        var hashBuf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
+        var hash = Array.from(new Uint8Array(hashBuf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+
+        // Insérer dans Supabase
+        var ins = await sb.from('providers').insert([{
+          prenom:fd.prenom, nom:fd.nom, telephone:fd.telephone,
+          password_hash:hash, metier:fd.metier, categorie:fd.categorie,
+          description:fd.description, ville:fd.ville,
+          commune:fd.commune, quartier:fd.quartier,
+          statut:'en_attente', skills:[], note_moyenne:4.5,
+          nb_vues:0, nb_favoris:0, nb_appels:0, nb_whatsapp:0, nb_avis:0
+        }]).select().single();
+
+        if(ins.error){
+          showErr('Erreur: '+ins.error.message);
+          b3.disabled=false; b3.textContent='Créer mon compte'; return;
+        }
+
+        // Connexion automatique
+        var newId = ins.data.id;
+        var token = generateToken();
+        setSession({provider_id:newId, token:token, nom:fd.nom, prenom:fd.prenom});
+        providerId = newId; _dashProviderId = newId;
+        sb.from('provider_sessions').insert({provider_id:newId, token:token}).catch(function(){});
+
+        // Afficher succès
+        [1,2,3].forEach(function(s){var el=document.getElementById('i-step'+s);if(el)el.style.display='none';});
+        var su=document.getElementById('i-success'); if(su) su.style.display='block';
+
+      }catch(e){
+        showErr('Erreur: '+e.message);
+        b3.disabled=false; b3.textContent='Créer mon compte';
+      }
     };
   }
   init();window.addEventListener('load',init);
