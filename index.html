@@ -548,8 +548,9 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 .mobile-menu-inner a:hover,.mobile-menu-inner button:hover{background:rgba(255,255,255,.07);color:#fff;}
 
 /* ── ANIMATIONS ── */
-.fade-in{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease;}
-.fade-in.visible{opacity:1;transform:translateY(0);}
+.fade-in{opacity:1;transform:translateY(0);transition:opacity .55s ease,transform .55s ease;}
+.fade-in.animate{opacity:0;transform:translateY(22px);}
+.fade-in.animate.visible{opacity:1;transform:translateY(0);}
 .fade-in-delay-1{transition-delay:.1s;}
 .fade-in-delay-2{transition-delay:.2s;}
 .fade-in-delay-3{transition-delay:.3s;}
@@ -2752,6 +2753,7 @@ function initNavScroll() {
 
 // ── RENDER ARTISANS SPOTLIGHT (top 6 artisans) ──
 function renderArtisans() {
+  if (!document.getElementById('artisansGrid')) return; // section supprimée
   const artisans = PRESTATAIRES
     .filter(p => p.badge_verifie)
     .sort((a,b) => {
@@ -2778,7 +2780,7 @@ function renderArtisans() {
     `).join('');
 
     return `
-    <div class="ac2-card fade-in" style="animation-delay:${i*0.09}s" onclick="openModal(${p.id})">
+    <div class="ac2-card fade-in" style="animation-delay:${i*0.09}s" onclick="openModal('${p.id}')">
       <div class="ac2-header">
         <div class="ac2-badges-row">${badgeRow}</div>
         <div class="ac2-avatar-wrap">
@@ -2808,7 +2810,7 @@ function renderArtisans() {
         </div>
         <div class="ac2-actions">
           <button class="btn-ac-wa" onclick="event.stopPropagation();openWA('${p.wa}','${p.nom}')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
-          <button class="btn-ac-profil" onclick="event.stopPropagation();openModal(${p.id})">👤 Voir profil</button>
+          <button class="btn-ac-profil" onclick="event.stopPropagation();openModal('${p.id}')">👤 Voir profil</button>
         </div>
       </div>
     </div>`;
@@ -2842,7 +2844,7 @@ function renderProviders() {
     const dispoClass = p.dispo && (p.dispo.includes('maintenant')||p.dispo.includes("aujourd'hui")) ? 'led-green' : 'led-yellow';
 
     return `
-    <div class="pc2-card fade-in" onclick="openModal(${p.id})">
+    <div class="pc2-card fade-in" onclick="openModal('${p.id}')">
       <div class="pc2-top">
         <div class="pc2-avatar-col">
           <div class="pc2-avatar" style="background:${p.bg};color:${p.color};">${p.ini}</div>
@@ -2875,7 +2877,7 @@ function renderProviders() {
       </div>
       <div class="pc2-actions">
         <button class="btn-pwa" onclick="event.stopPropagation();openWA('${p.wa}','${p.nom}')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
-        <button class="btn-pprofil" onclick="event.stopPropagation();openModal(${p.id})">👤 Voir profil</button>
+        <button class="btn-pprofil" onclick="event.stopPropagation();openModal('${p.id}')">👤 Voir profil</button>
         <button class="btn-pfav" onclick="event.stopPropagation();toggleFav(${p.id})">${isFav?'<i class="fa-solid fa-heart" style="color:#E85D04;"></i>':'🤍'}</button>
       </div>
     </div>`;
@@ -2931,8 +2933,8 @@ function loadMore() {
 
 // ── MODAL PROFIL ──
 function openModal(id) {
-  const p = PRESTATAIRES.find(x => x.id === id);
-  if (!p) return;
+  const p = PRESTATAIRES.find(x => x.id == id || x.id === id);
+  if (!p) { console.warn('openModal: prestataire non trouvé', id); return; }
 
   const stars5Full = Array.from({length:5},(_,j)=>`<span style="color:${j<Math.floor(p.note)?'#D4A017':'#CBD5E1'};font-size:16px;">★</span>`).join('');
   const badgesHtml = [
