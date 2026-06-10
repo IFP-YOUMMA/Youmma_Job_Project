@@ -3442,6 +3442,29 @@ document.addEventListener('keydown', e => {
 </div>
 
 <script>
+// Définition locale connexionPrestataire (fallback)
+if (typeof connexionPrestataire === 'undefined') {
+  window.connexionPrestataire = async function(telephone, password) {
+    try {
+      var hash = await hashPassword(password);
+      var res = await sb.from('providers')
+        .select('id,nom,prenom,metier,statut,password_hash')
+        .eq('telephone', telephone)
+        .single();
+      if (res.error || !res.data) return { success: false, message: 'Numéro non trouvé' };
+      if (res.data.password_hash !== hash) return { success: false, message: 'PIN incorrect' };
+      if (res.data.statut === 'suspendu') return { success: false, message: 'Compte suspendu' };
+      var token = Math.random().toString(36).slice(2) + Date.now();
+      localStorage.setItem('yj_provider_session', JSON.stringify({
+        provider_id: res.data.id, token: token, nom: res.data.nom, prenom: res.data.prenom
+      }));
+      sb.from('provider_sessions').insert({provider_id: res.data.id, token: token}).then(function(){}).catch(function(){});
+      return { success: true, provider: res.data };
+    } catch(e) { return { success: false, message: e.message }; }
+  };
+}
+</script>
+<script>
 // Auto-submit sur dernière case PIN
 document.addEventListener('DOMContentLoaded', function() {
   var lpin4 = document.getElementById('lpin4');
@@ -3473,19 +3496,7 @@ async function connexion() {
 
   if (btn) btn.disabled = true;
 
-  // Attendre que connexionPrestataire soit disponible
-  let attempts = 0;
-  while (typeof connexionPrestataire === 'undefined' && attempts < 20) {
-    await new Promise(r => setTimeout(r, 100));
-    attempts++;
-  }
-  
   try {
-    if (typeof connexionPrestataire === 'undefined') {
-      if (errBox) { errBox.textContent = 'Rechargez la page (Ctrl+Shift+R)'; errBox.classList.add('show'); }
-      if (btn) btn.disabled = false;
-      return;
-    }
     const res = await connexionPrestataire(tel.trim(), pin);
     if (res.success) {
       navigate('dashboard');
@@ -3601,6 +3612,26 @@ async function connexion() {
 </div>
 </div>
 <script>
+// Définition locale de inscrirePrestataire (fallback)
+if (typeof inscrirePrestataire === 'undefined') {
+  window.inscrirePrestataire = async function(formData) {
+    try {
+      var hash = await hashPassword(formData.password);
+      var row = {
+        prenom: formData.prenom, nom: formData.nom,
+        telephone: formData.telephone, password_hash: hash,
+        metier: formData.metier, categorie: formData.categorie,
+        description: formData.description, ville: formData.ville,
+        commune: formData.commune || null, quartier: formData.quartier || null,
+        statut: 'en_attente', skills: formData.skills || []
+      };
+      var res = await sb.from('providers').insert([row]);
+      if (res.error) return { success: false, message: res.error.message };
+      return { success: true };
+    } catch(e) { return { success: false, message: e.message }; }
+  };
+}
+<script>
 (function() {
   function showErr(msg){var e=document.getElementById('i-err');if(e){e.textContent=msg;e.style.display='block';}}
   function hideErr(){var e=document.getElementById('i-err');if(e)e.style.display='none';}
@@ -3638,10 +3669,6 @@ async function connexion() {
       var pin=(document.getElementById('i-pin1').value||'')+(document.getElementById('i-pin2').value||'')+(document.getElementById('i-pin3').value||'')+(document.getElementById('i-pin4').value||'');
       var fd={prenom:document.getElementById('i-prenom').value.trim(),nom:document.getElementById('i-nom').value.trim(),telephone:document.getElementById('i-tel').value.trim(),password:pin,categorie:document.getElementById('i-cat').value,metier:document.getElementById('i-metier').value.trim(),description:document.getElementById('i-desc').value.trim(),ville:(document.getElementById('i-ville')||{}).value||'Conakry',commune:(document.getElementById('i-commune')||{}).value||null,quartier:((document.getElementById('i-quartier')||{}).value||'').trim()||null,skills:[]};
       try{
-        // Attendre que inscrirePrestataire soit disponible
-        let _att=0;
-        while(typeof inscrirePrestataire==='undefined'&&_att<30){await new Promise(r=>setTimeout(r,100));_att++;}
-        if(typeof inscrirePrestataire==='undefined'){showErr('Rechargez la page (Ctrl+Shift+R)');b3.disabled=false;b3.textContent='Créer mon compte';return;}
         var res=await inscrirePrestataire(fd);
         if(res.success){[1,2,3].forEach(function(s){var el=document.getElementById('i-step'+s);if(el)el.style.display='none';});var su=document.getElementById('i-success');if(su)su.style.display='block';}
         else{showErr(res.message||'Erreur');b3.disabled=false;b3.textContent='Créer mon compte';}
