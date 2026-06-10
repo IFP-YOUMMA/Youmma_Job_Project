@@ -454,6 +454,8 @@ nav.scrolled{background:rgba(15,16,32,.96);backdrop-filter:blur(20px) saturate(1
 .modal-overlay.open{display:flex;}
 .modal{background:#fff;border-radius:var(--radius-xl) var(--radius-xl) 0 0;width:100%;max-width:540px;max-height:92vh;overflow-y:auto;animation:slideUp .3s ease;}
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+@keyframes pulse-green{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5);}50%{box-shadow:0 0 0 5px rgba(34,197,94,0);}}
+@keyframes pulse-yellow{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.5);}50%{box-shadow:0 0 0 5px rgba(245,158,11,0);}}
 .modal-header{display:flex;justify-content:space-between;align-items:center;padding:22px 24px 0;}
 .modal-title{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:var(--texte);}
 .modal-close{width:34px;height:34px;background:var(--fond);border:none;border-radius:50%;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;color:var(--gris);}
@@ -2859,27 +2861,36 @@ function renderProviders() {
           <div class="pc2-online-badge"></div>
         </div>
         <div class="pc2-info" style="flex:1;min-width:0;">
+          <!-- Ligne 1 : Nom + Favori -->
           <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:2px;">
             <div class="pc2-name" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.nom}</div>
             <button class="btn-pfav" onclick="event.stopPropagation();toggleFav('${p.id}')" style="flex-shrink:0;background:none;border:none;cursor:pointer;font-size:17px;padding:2px 4px;line-height:1;">${isFav?'<i class="fa-solid fa-heart" style="color:#E85D04;"></i>':'<i class="fa-regular fa-heart" style="color:#bbb;"></i>'}</button>
           </div>
+          <!-- Ligne 2 : Métier -->
           <div class="pc2-metier">${p.metier}</div>
-          <div class="pc2-loc" style="margin:3px 0;"><i class="fa-solid fa-location-dot" style="color:var(--orange);"></i> ${p.ville}</div>
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;">
-            <div style="display:flex;align-items:center;gap:3px;">${stars5}<span style="font-size:12px;font-weight:700;color:var(--bleu);margin-left:2px;">${p.note}</span></div>
-            ${p.badge_verifie?`<span class="badge-verifie" style="font-size:9px;padding:2px 7px;"><i class="fa-solid fa-check"></i> Vérifié</span>`:''}
-            ${p.badge_express?`<span class="badge-express" style="font-size:9px;padding:2px 7px;"> Express</span>`:''}
+          <!-- Ligne 3 : Lieu gauche | Étoiles + Note droite -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px;">
+            <div style="font-size:12px;color:var(--gris);display:flex;align-items:center;gap:4px;">
+              <i class="fa-solid fa-location-dot" style="color:var(--orange);font-size:11px;"></i> ${p.ville}
+            </div>
+            <div style="display:flex;align-items:center;gap:3px;">
+              ${stars5}<span style="font-size:12px;font-weight:700;color:var(--bleu);margin-left:3px;">${p.note}</span>
+            </div>
           </div>
-          ${p.dispo?`<div style="display:flex;align-items:center;gap:5px;margin-top:5px;font-size:11.5px;color:var(--gris);"><span class="dispo-led ${dispoClass}"></span>${p.dispo}</div>`:''}
-          <!-- BADGES VÉRIFICATION -->
-          <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;">
-            <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;background:${p.badge_verifie?'#F0FDF4':'#F9FAFB'};color:${p.badge_verifie?'#16A34A':'#9CA3AF'};border:1px solid ${p.badge_verifie?'#86EFAC':'#E5E7EB'};">
-              ${p.badge_verifie?'<i class="fa-solid fa-id-card"></i> CNI vérifiée':'<i class="fa-solid fa-id-card"></i> CNI en attente'}
+          <!-- Ligne 4 : Disponibilité gauche | Badge dispo droite -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding:5px 8px;background:var(--fond2);border-radius:8px;">
+            <span style="font-size:11px;color:var(--gris);">Disponibilité</span>
+            <span style="display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:${dispoClass==='led-green'?'#16A34A':'#D97706'};">
+              <span style="width:8px;height:8px;border-radius:50%;background:${dispoClass==='led-green'?'#22C55E':'#F59E0B'};display:inline-block;${dispoClass==='led-green'?'animation:pulse-green 1.5s infinite':'animation:pulse-yellow 1.5s infinite'};flex-shrink:0;"></span>
+              ${p.dispo||'Disponible'}
             </span>
-            <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;background:${p.badge_top?'#FFFBEB':'#F9FAFB'};color:${p.badge_top?'#D97706':'#9CA3AF'};border:1px solid ${p.badge_top?'#FDE68A':'#E5E7EB'};">
-              ${p.badge_top?'<i class="fa-solid fa-graduation-cap"></i> Diplôme vérifié':'<i class="fa-solid fa-graduation-cap"></i> Diplôme en attente'}
-            </span>
-          </div>        </div>
+          </div>
+          <!-- Ligne 5 : Pièce d'identité statut -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px;padding:5px 8px;background:${p.badge_verifie?'#F0FDF4':'#F9FAFB'};border-radius:8px;border:1px solid ${p.badge_verifie?'#86EFAC':'#E5E7EB'};">
+            <span style="font-size:11px;color:var(--gris);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-id-card"></i> Pièce d'identité</span>
+            <span style="font-size:10.5px;font-weight:700;color:${p.badge_verifie?'#16A34A':'#9CA3AF'};">${p.badge_verifie?'✅ Vérifiée':'⏳ En attente'}</span>
+          </div>
+        </div>        </div>
       </div>
 
       <!-- BOUTONS CONTACT alignés -->
