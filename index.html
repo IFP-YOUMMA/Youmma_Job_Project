@@ -3384,7 +3384,7 @@ async function validerReal(idx) {
       const ext      = file.name.split('.').pop().toLowerCase();
       const fileName = 'real_' + idx + '_' + Date.now() + '.' + ext;
       const { data, error } = await sb.storage
-        .from('photos')
+        .from('Photos')
         .upload(fileName, file, { upsert: true, contentType: file.type });
 
       if (error) {
@@ -3392,7 +3392,7 @@ async function validerReal(idx) {
         if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-check"></i> Valider et publier'; }
         return;
       }
-      const { data: urlData } = sb.storage.from('photos').getPublicUrl(fileName);
+      const { data: urlData } = sb.storage.from('Photos').getPublicUrl(fileName);
       imageUrl = urlData.publicUrl;
     }
 
@@ -5175,16 +5175,16 @@ async function uploadProviderPhoto(providerId, file, type='realisation') {
   try { fileToUpload = await resizeImage(file, type); } catch(e) { fileToUpload = file; }
 
   const filename = `${providerId}/${type}_${Date.now()}.jpg`;
-  const { error:uploadError } = await sb.storage.from('photos').upload(filename, fileToUpload, { cacheControl:'3600', upsert:false, contentType:'image/jpeg' });
+  const { error:uploadError } = await sb.storage.from('Photos').upload(filename, fileToUpload, { cacheControl:'3600', upsert:false, contentType:'image/jpeg' });
   if (uploadError) return { success:false, message:uploadError.message };
-  const { data:urlData } = sb.storage.from('photos').getPublicUrl(filename);
+  const { data:urlData } = sb.storage.from('Photos').getPublicUrl(filename);
   const publicUrl = urlData.publicUrl;
   if (type==='profil') {
     const oldProfil = photos.find(p => p.type==='profil');
     if (oldProfil) {
       await sb.from('provider_photos').delete().eq('id',oldProfil.id);
       const op = oldProfil.url.split('photos/')[1];
-      if (op) await sb.storage.from('photos').remove([op]);
+      if (op) await sb.storage.from('Photos').remove([op]);
     }
     await sb.from('providers').update({ photo_url:publicUrl }).eq('id',providerId);
   }
@@ -5195,7 +5195,7 @@ async function deleteProviderPhoto(photoId, providerId) {
   const { data:photo } = await sb.from('provider_photos').select('*').eq('id',photoId).single();
   if (!photo) return { success:false };
   const path = photo.url.split('Photos/')[1];
-  if (path) await sb.storage.from('photos').remove([path]);
+  if (path) await sb.storage.from('Photos').remove([path]);
   await sb.from('provider_photos').delete().eq('id',photoId);
   if (photo.type==='profil') await sb.from('providers').update({ photo_url:null }).eq('id',providerId);
   return { success:true };
