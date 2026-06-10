@@ -1571,6 +1571,11 @@ img { max-width:100%; }
   #page-dashboard .sidebar { display: none !important; }
   #page-dashboard .main { margin-left: 0 !important; }
 }
+
+/* ── DASHBOARD SIDEBAR CACHÉE HORS DASHBOARD ── */
+body:not(.on-dashboard) #page-dashboard .sidebar { display: none !important; }
+body.on-dashboard #page-dashboard { display: flex !important; }
+body:not(.on-dashboard) #page-dashboard { display: none !important; }
 </style>
 
 </head>
@@ -6104,6 +6109,7 @@ function openMaps(nom, ville) {
 
 function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.body.classList.remove('on-home','on-dashboard','on-admin');
   const mc = document.getElementById('mainContent');
   const mn = document.getElementById('mainNav');
   if (!page || page === 'home' || page === 'accueil') {
@@ -6117,6 +6123,8 @@ function navigate(page) {
     if (mn) mn.style.cssText = 'display:none!important';
     const el = document.getElementById('page-'+page);
     if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+    if (page === 'dashboard') document.body.classList.add('on-dashboard');
+    if (page === 'admin') document.body.classList.add('on-admin');
   }
 }
 window.addEventListener('load', async function() {
