@@ -5329,17 +5329,10 @@ function showToast(msg, type = '') {
   try {
     const s = getAdminSession();
     if (!s?.token) return;
-    const { data } = await sb.from('admin_sessions')
-      .select('admin_id').eq('token', s.token).gt('expire_le', new Date().toISOString()).single();
-    if (data) {
-      adminData = s;
-      const lw = document.getElementById('loginWrap');
-      const aw = document.getElementById('adminWrap');
-      if (lw) lw.style.display = 'none';
-      if (aw) aw.classList.add('visible');
-      if (typeof loadAll === 'function') await loadAll();
-    }
-  } catch(e) { /* session expirée ou invalide */ }
+    // Juste vérifier que la session existe dans localStorage
+    adminData = s;
+    // Ne pas faire de requête Supabase ici - laisser loadAll vérifier
+  } catch(e) {}
 })();
 </script>
 
