@@ -7629,9 +7629,9 @@ async function loginAdmin() {
     const adminName = document.getElementById('adminTopbarName');
     if (adminName && data.nom) adminName.textContent = data.nom;
     if(typeof loadAll==='function') await loadAll();
+    else if(typeof _adminLoadAll==='function') await _adminLoadAll();
     // Démarrer polling notifications
     setTimeout(() => { if(typeof _notifStartPolling==='function') _notifStartPolling('admin'); }, 1000);
-    else if(typeof _adminLoadAll==='function') await _adminLoadAll();
   } catch(e) {
     if (btn) { btn.disabled=false; btn.textContent='Se connecter →'; }
     if(err) { err.textContent='❌ Erreur: '+e.message; err.style.color='#DC2626'; }
