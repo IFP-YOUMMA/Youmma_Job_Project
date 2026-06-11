@@ -21,6 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://slawwbhlakilnviwzyrb.supabase.co';
@@ -1643,6 +1644,112 @@ img { max-width:100%; }
 
 body:not(.on-dashboard) #page-dashboard { display:none!important; }
 body.on-dashboard #page-dashboard { display:block!important; }
+
+/* ════════════════════════════════════════
+   RESPONSIVE MOBILE AMÉLIORÉ — YOUMMA JOBS
+   ════════════════════════════════════════ */
+
+/* Navbar mobile */
+@media(max-width:768px) {
+  .nav-ctas { display:none !important; }
+  .hamburger { display:flex !important; }
+  .nav-inner { height:60px !important; padding:0 16px !important; }
+}
+
+/* Hero mobile */
+@media(max-width:768px) {
+  .hero-inner { grid-template-columns:1fr !important; gap:32px !important; }
+  .hero-visual { display:none !important; }
+  .hero { padding:80px 16px 40px !important; min-height:auto !important; }
+  .hero h1 { font-size:clamp(28px,8vw,44px) !important; }
+  .hero-subtitle { font-size:15px !important; max-width:100% !important; }
+  .hero-actions { flex-direction:column !important; }
+  .btn-hero-main, .btn-hero-outline { width:100% !important; justify-content:center !important; }
+  .hero-kpis { flex-wrap:wrap !important; gap:0 !important; }
+  .kpi { padding-right:16px !important; margin-right:16px !important; }
+  .hero-express { flex-wrap:wrap !important; }
+  .btn-express { width:100% !important; text-align:center !important; }
+}
+
+/* Search section mobile */
+@media(max-width:768px) {
+  .search-box { flex-direction:column !important; padding:14px !important; align-items:stretch !important; }
+  .search-divider { display:none !important; }
+  .search-field { padding:10px 12px !important; border:1.5px solid var(--bordure) !important; border-radius:10px !important; background:#fff !important; }
+  .btn-search { width:100% !important; justify-content:center !important; margin-top:4px !important; }
+  .search-box-label { display:none !important; }
+  .search-filters { gap:6px !important; padding:8px 14px !important; }
+  .filter-chip { font-size:11.5px !important; padding:5px 12px !important; }
+}
+
+/* Counters mobile */
+@media(max-width:768px) {
+  .counters-inner { grid-template-columns:repeat(2,1fr) !important; padding:40px 16px !important; }
+}
+@media(max-width:400px) {
+  .counters-inner { grid-template-columns:1fr !important; }
+}
+
+/* Grille prestataires */
+@media(max-width:768px) {
+  #providersGrid { grid-template-columns:1fr !important; }
+  #artisansGrid { grid-template-columns:1fr !important; }
+  .prestataires-inner, .artisans-inner { padding:40px 16px !important; }
+}
+
+/* Tarifs mobile */
+@media(max-width:768px) {
+  .tarifs-grid { grid-template-columns:1fr !important; }
+  .tarif-card.featured { transform:none !important; }
+  .tarifs-inner { padding:40px 16px !important; }
+}
+
+/* Témoignages mobile */
+@media(max-width:768px) {
+  .temo-grid { grid-template-columns:1fr !important; }
+  .temo-inner { padding:40px 16px !important; }
+}
+
+/* Partenaires mobile */
+@media(max-width:768px) {
+  .part-grid { grid-template-columns:repeat(2,1fr) !important; }
+  .part-inner { padding:40px 16px !important; }
+}
+
+/* Comment ça marche mobile */
+@media(max-width:768px) {
+  .how-grid, .devenir-grid, .faq-grid, .contact-grid { grid-template-columns:1fr !important; gap:32px !important; }
+  .how-inner, .devenir-inner, .faq-inner, .contact-inner { padding:40px 16px !important; }
+}
+
+/* Modal mobile */
+@media(max-width:480px) {
+  .modal { border-radius:20px 20px 0 0 !important; }
+  .modal-body { padding:14px 16px 24px !important; }
+  .modal-meta-grid { grid-template-columns:1fr !important; }
+  .mp2-meta-strip { flex-direction:column !important; }
+  .modal-actions { gap:8px !important; }
+}
+
+/* Admin mobile */
+@media(max-width:768px) {
+  #adminWrap.visible .admin-main { margin-left:0 !important; padding:12px !important; }
+  #adminSidebarEl { display:none !important; }
+  .admin-stats-row { grid-template-columns:repeat(2,1fr) !important; }
+  #adminWrap.visible table { display:block !important; overflow-x:auto !important; white-space:nowrap !important; }
+}
+
+/* FAQ box sticky → static mobile */
+@media(max-width:768px) {
+  .faq-cta-box { position:static !important; }
+}
+
+/* Sections générales */
+@media(max-width:480px) {
+  section, .bg-section { padding-left:16px !important; padding-right:16px !important; }
+  .section-title-wrap, .section-head { padding:0 !important; }
+}
+
 </style>
 
 </head>
@@ -6525,8 +6632,7 @@ function openMaps(nom, ville) {
   window.open('https://www.google.com/maps/search/' + q, '_blank');
 }
 </script>
-</body>
-</html>
+
 <script>
 // ── CHARGER RÉALISATIONS SAUVEGARDÉES ──
 (function() {
@@ -6672,6 +6778,20 @@ async function initAdmin() {
   } catch(e) {}
 }
 
+// ── ADMIN LOGOUT ALIAS ──
+function logoutAdmin() {
+  localStorage.removeItem('yj_admin_session');
+  adminData = null;
+  const lw = document.getElementById('loginWrap');
+  const aw = document.getElementById('adminWrap');
+  const sb = document.getElementById('adminSidebarEl');
+  if (aw) { aw.classList.remove('visible'); aw.style.cssText = ''; }
+  if (lw) { lw.style.cssText = ''; }
+  if (sb) { sb.style.cssText = 'display:none;'; }
+  navigate('home');
+}
+
+
 function showAdmin(name) {
   document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
   const t = document.getElementById('admin-'+name);
@@ -6775,4 +6895,4 @@ async function _adminValidDoc(id, docType, statut) {
 }
 </script>
 </body>
-</html<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</html>
