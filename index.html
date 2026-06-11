@@ -2162,6 +2162,204 @@ body.on-dashboard #page-dashboard { display:block!important; }
   .rpt-period-btn { font-size:12px; padding:6px 12px; }
 }
 
+
+/* ════════════════════════════════════════════════════════════
+   SYSTÈME NOTIFICATIONS — YOUMMA JOBS
+   ════════════════════════════════════════════════════════════ */
+
+/* Cloche bouton */
+.notif-bell-btn {
+  position:relative; cursor:pointer;
+  width:38px; height:38px; border-radius:10px;
+  background:#F4F6FB; border:1.5px solid #E5E7EB;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .2s; flex-shrink:0;
+  font-size:16px; color:#6B7280;
+}
+.notif-bell-btn:hover { background:#EEF2FF; border-color:#C7D2FE; color:#1A1A4E; }
+.notif-bell-btn.has-notif { border-color:#E85D04; color:#E85D04; background:#FFF7F0; }
+
+/* Badge compteur */
+.notif-badge {
+  position:absolute; top:-5px; right:-5px;
+  min-width:18px; height:18px; border-radius:9px;
+  background:#DC2626; color:#fff;
+  font-size:10px; font-weight:800;
+  display:flex; align-items:center; justify-content:center;
+  padding:0 4px; border:2px solid #fff;
+  animation: notif-pop .3s cubic-bezier(.68,-.55,.27,1.55);
+  line-height:1;
+}
+.notif-badge.hidden { display:none; }
+@keyframes notif-pop {
+  0% { transform:scale(0); }
+  100% { transform:scale(1); }
+}
+
+/* Panel notifications slide-in */
+.notif-panel {
+  position:fixed; top:0; right:-380px; width:370px; height:100vh;
+  background:#fff; z-index:999999;
+  box-shadow:-8px 0 40px rgba(0,0,0,.15);
+  display:flex; flex-direction:column;
+  transition:right .3s cubic-bezier(.4,0,.2,1);
+  font-family:'DM Sans',sans-serif;
+}
+.notif-panel.open { right:0; }
+
+/* Overlay derrière le panel */
+.notif-overlay {
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.3);
+  z-index:999998; display:none;
+  backdrop-filter:blur(2px);
+}
+.notif-overlay.open { display:block; }
+
+/* Header panel */
+.notif-panel-header {
+  padding:18px 20px;
+  border-bottom:1px solid #F0F0F8;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-shrink:0;
+}
+.notif-panel-title {
+  font-family:'Libre Baskerville',serif;
+  font-size:16px; font-weight:700; color:#1A1A4E;
+  display:flex; align-items:center; gap:8px;
+}
+.notif-panel-count {
+  background:#F4F6FB; color:#6B7280;
+  border-radius:20px; padding:2px 9px;
+  font-size:11.5px; font-weight:700;
+}
+.notif-panel-actions {
+  display:flex; gap:6px; align-items:center;
+}
+.notif-mark-all {
+  font-size:11.5px; color:#E85D04; font-weight:600;
+  cursor:pointer; padding:4px 10px; border-radius:6px;
+  background:none; border:none; font-family:'DM Sans',sans-serif;
+  transition:background .15s;
+}
+.notif-mark-all:hover { background:#FFF7F0; }
+.notif-close-btn {
+  width:30px; height:30px; border-radius:8px;
+  background:#F4F6FB; border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; color:#6B7280; transition:background .15s;
+}
+.notif-close-btn:hover { background:#E5E7EB; }
+
+/* Filtres */
+.notif-filters {
+  padding:10px 16px; border-bottom:1px solid #F7F8FC;
+  display:flex; gap:6px; flex-shrink:0; overflow-x:auto;
+}
+.notif-filter-btn {
+  padding:5px 13px; border-radius:20px;
+  font-size:12px; font-weight:600; cursor:pointer;
+  border:1.5px solid #E5E7EB; background:#fff; color:#6B7280;
+  white-space:nowrap; transition:all .15s; font-family:'DM Sans',sans-serif;
+}
+.notif-filter-btn.active {
+  background:#1A1A4E; border-color:#1A1A4E; color:#fff;
+}
+
+/* Liste notifications */
+.notif-list {
+  flex:1; overflow-y:auto; padding:8px 0;
+}
+.notif-list::-webkit-scrollbar { width:4px; }
+.notif-list::-webkit-scrollbar-track { background:#F7F8FC; }
+.notif-list::-webkit-scrollbar-thumb { background:#E5E7EB; border-radius:2px; }
+
+/* Item notification */
+.notif-item {
+  display:flex; gap:12px; padding:14px 16px;
+  border-bottom:1px solid #F7F8FC; cursor:pointer;
+  transition:background .15s; position:relative;
+}
+.notif-item:hover { background:#FAFBFF; }
+.notif-item.unread { background:#FFFBF5; }
+.notif-item.unread::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:3px; background:#E85D04; border-radius:0 2px 2px 0;
+}
+.notif-icon-wrap {
+  width:40px; height:40px; border-radius:11px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:17px; flex-shrink:0;
+}
+.notif-item-body { flex:1; min-width:0; }
+.notif-item-title {
+  font-size:13px; font-weight:700; color:#1A1A4E;
+  margin-bottom:3px; line-height:1.3;
+}
+.notif-item.unread .notif-item-title { color:#0F1020; }
+.notif-item-msg {
+  font-size:12px; color:#6B7280; line-height:1.5;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.notif-item-time {
+  font-size:10.5px; color:#9CA3AF; margin-top:4px;
+  display:flex; align-items:center; gap:4px;
+}
+.notif-unread-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:#E85D04; flex-shrink:0; margin-left:auto; margin-top:6px;
+}
+
+/* Empty state */
+.notif-empty {
+  text-align:center; padding:60px 20px; color:#9CA3AF;
+}
+.notif-empty-icon { font-size:44px; margin-bottom:14px; }
+
+/* Footer panel */
+.notif-panel-footer {
+  padding:12px 16px; border-top:1px solid #F0F0F8;
+  text-align:center; flex-shrink:0;
+}
+
+/* Toast notification popup (coin bas-droite) */
+.notif-toast-popup {
+  position:fixed; bottom:24px; right:24px; z-index:9999997;
+  width:320px; background:#fff; border-radius:14px;
+  box-shadow:0 8px 32px rgba(0,0,0,.18);
+  border-left:4px solid #E85D04;
+  padding:14px 16px; display:flex; gap:12px; align-items:flex-start;
+  transform:translateX(360px); transition:transform .4s cubic-bezier(.4,0,.2,1);
+  font-family:'DM Sans',sans-serif;
+}
+.notif-toast-popup.show { transform:translateX(0); }
+.notif-toast-icon {
+  width:36px; height:36px; border-radius:9px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; flex-shrink:0;
+}
+.notif-toast-content { flex:1; min-width:0; }
+.notif-toast-title { font-size:13px; font-weight:700; color:#1A1A4E; margin-bottom:2px; }
+.notif-toast-msg { font-size:12px; color:#6B7280; line-height:1.4; }
+.notif-toast-close {
+  background:none; border:none; cursor:pointer;
+  color:#9CA3AF; font-size:16px; padding:0; line-height:1;
+  flex-shrink:0;
+}
+
+/* Badge sidebar admin */
+.sidebar-notif-badge {
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:18px; height:18px; border-radius:9px;
+  background:#DC2626; color:#fff; font-size:10px; font-weight:800;
+  padding:0 4px; margin-left:auto; border:none;
+}
+
+@media(max-width:500px) {
+  .notif-panel { width:100vw; right:-100vw; }
+  .notif-panel.open { right:0; }
+}
+
 </style>
 
 </head>
@@ -2317,6 +2515,57 @@ async function verifierSession() {
 }
 
 </script>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PANEL NOTIFICATIONS GLOBAL
+     ═══════════════════════════════════════════════════════ -->
+<div class="notif-overlay" id="notifOverlay" onclick="_notifClose()"></div>
+<div class="notif-panel" id="notifPanel">
+  <div class="notif-panel-header">
+    <div class="notif-panel-title">
+      <i class="fa-solid fa-bell" style="color:#E85D04;"></i>
+      Notifications
+      <span class="notif-panel-count" id="notifCount">0</span>
+    </div>
+    <div class="notif-panel-actions">
+      <button class="notif-mark-all" onclick="_notifMarkAll()">
+        <i class="fa-solid fa-check-double"></i> Tout lire
+      </button>
+      <button class="notif-close-btn" onclick="_notifClose()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+  <div class="notif-filters">
+    <button class="notif-filter-btn active" onclick="_notifFilter('all',this)">Toutes</button>
+    <button class="notif-filter-btn" onclick="_notifFilter('inscription',this)">📋 Inscriptions</button>
+    <button class="notif-filter-btn" onclick="_notifFilter('code',this)">🔑 Codes</button>
+    <button class="notif-filter-btn" onclick="_notifFilter('mission',this)">🎯 Missions</button>
+    <button class="notif-filter-btn" onclick="_notifFilter('avis',this)">⭐ Avis</button>
+    <button class="notif-filter-btn" onclick="_notifFilter('abonnement',this)">💳 Abonnement</button>
+  </div>
+  <div class="notif-list" id="notifList">
+    <div class="notif-empty">
+      <div class="notif-empty-icon">🔔</div>
+      <div style="font-weight:600;color:#374151;margin-bottom:6px;">Aucune notification</div>
+      <div style="font-size:12px;">Vous êtes à jour !</div>
+    </div>
+  </div>
+  <div class="notif-panel-footer">
+    <span style="font-size:12px;color:#9CA3AF;">Les notifications sont mises à jour en temps réel</span>
+  </div>
+</div>
+
+<!-- Toast popup notifications -->
+<div class="notif-toast-popup" id="notifToastPopup">
+  <div class="notif-toast-icon" id="notifToastIcon">🔔</div>
+  <div class="notif-toast-content">
+    <div class="notif-toast-title" id="notifToastTitle">Notification</div>
+    <div class="notif-toast-msg" id="notifToastMsg"></div>
+  </div>
+  <button class="notif-toast-close" onclick="_notifToastHide()">×</button>
+</div>
 
 <div class="notif-center" id="notifCenter"></div>
 <div class="toast" id="toast"></div>
@@ -4490,6 +4739,11 @@ if (typeof inscrirePrestataire === 'undefined') {
       <div class="topbar-title" id="topbarTitle" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><i class="fa-solid fa-chart-line" style="width:16px;"></i> Tableau de bord</div>
     </div>
     <div class="topbar-right">
+      <!-- Cloche notifications prestataire -->
+      <button class="notif-bell-btn" id="dashNotifBell" onclick="_notifOpen('provider')" title="Notifications" style="margin-right:8px;">
+        <i class="fa-solid fa-bell"></i>
+        <span class="notif-badge hidden" id="dashNotifBadge">0</span>
+      </button>
       <div class="provider-chip">
         <div class="provider-chip-avatar" id="chipAvatar">?</div>
         <div>
@@ -5394,6 +5648,11 @@ async function chargerAvis() {
     <div onclick="showAdmin('realisations')" id="amenu-realisations" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-images" style="width:16px;"></i> Réalisations</div>
     <div onclick="showAdmin('missions')" id="amenu-missions" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-bullseye" style="width:16px;"></i> Missions</div>
     <div onclick="showAdmin('rapports')" id="amenu-rapports" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-chart-line" style="width:16px;"></i> Rapports</div>
+    <div onclick="showAdmin('notifications')" id="amenu-notifications" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;display:flex;align-items:center;gap:9px;">
+      <i class="fa-solid fa-bell" style="width:16px;"></i> 
+      <span>Notifications</span>
+      <span class="sidebar-notif-badge hidden" id="sidebarNotifBadge">0</span>
+    </div>
   </div>
   <div style="padding:8px;border-top:1px solid rgba(255,255,255,.08);margin-top:10px;">
     <div onclick="logoutAdmin()" style="padding:10px 12px;border-radius:8px;color:#FCA5A5;font-size:13px;font-weight:600;cursor:pointer;background:rgba(239,68,68,.1);"><i class="fa-solid fa-right-from-bracket" style="width:16px;"></i> Déconnexion</div>
@@ -5411,6 +5670,11 @@ async function chargerAvis() {
         <span id="adminTopbarTitle" style="margin-left:8px;"><i class="fa-solid fa-chart-pie" style="color:#E85D04;margin-right:6px;"></i>Vue d'ensemble</span>
       </div>
       <div class="atp-right">
+        <!-- Cloche notifications admin -->
+        <button class="notif-bell-btn" id="adminNotifBell" onclick="_notifOpen('admin')" title="Notifications">
+          <i class="fa-solid fa-bell"></i>
+          <span class="notif-badge hidden" id="adminNotifBadge">0</span>
+        </button>
         <div style="display:flex;align-items:center;gap:8px;background:#F4F6FB;border-radius:10px;padding:7px 14px;">
           <div style="width:28px;height:28px;border-radius:8px;background:#E85D04;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">A</div>
           <div>
@@ -5547,6 +5811,16 @@ async function chargerAvis() {
         <div style="text-align:center;padding:60px;color:#9CA3AF;">
           <i class="fa-solid fa-spinner fa-spin" style="font-size:28px;margin-bottom:12px;display:block;"></i>
           Chargement des rapports...
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS ADMIN -->
+    <div class="admin-section" id="admin-notifications">
+      <div class="admin-section-inner" id="adminNotifSectionContent">
+        <div style="text-align:center;padding:40px;color:#9CA3AF;">
+          <i class="fa-solid fa-spinner fa-spin" style="font-size:24px;display:block;margin-bottom:10px;"></i>
+          Chargement des notifications...
         </div>
       </div>
     </div>
@@ -5725,6 +5999,32 @@ function logoutAdmin() {
 }
 
 // ── SECTIONS ──
+function showSection(name) {
+  // Cacher toutes les sections
+  document.querySelectorAll('#page-dashboard .section').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('section-' + name);
+  if (target) target.classList.add('active');
+  // Mettre à jour les nav-items actifs
+  document.querySelectorAll('#page-dashboard .nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('#page-dashboard .nav-item').forEach(n => {
+    const oc = n.getAttribute('onclick') || '';
+    if (oc.includes("showSection('" + name + "')") || oc.includes('showSection("' + name + '")')) {
+      n.classList.add('active');
+    }
+  });
+  // Mettre à jour le titre topbar
+  const titles = { dashboard:'Tableau de bord', profil:'Mon profil', photos:'Photos & Galerie', documents:'Documents & Vérification', missions:'Mes missions', abonnement:'Abonnement', avis:'Mes avis' };
+  const tt = document.getElementById('topbarTitle');
+  if (tt) tt.innerHTML = '<i class="fa-solid fa-chart-line" style="width:16px;"></i> ' + (titles[name] || name);
+  // Scroll vers le haut du contenu principal
+  const mainEl = document.querySelector('#page-dashboard .main');
+  if (mainEl) mainEl.scrollTop = 0;
+  // Charger les données si besoin
+  if (name === 'documents') { const pid = providerId || _dashProviderId; if (pid) chargerDocuments(pid); }
+  if (name === 'missions') { const pid = providerId || _dashProviderId; if (pid) chargerMissions(pid); }
+}
+
+
 // ── LOAD DATA ──
 async function getProvidersAdmin({ statut='',limite=100 }={}) {
   let q = sb.from('providers').select('id,prenom,nom,metier,categorie,ville,commune,telephone,statut,note_moyenne,nb_vues,photo_url,created_at,essai_actif,essai_fin,abonnement_actif,abonnement_fin,disponibilite,doc_cni_url,doc_cni_statut,doc_diplome_url,doc_diplome_statut').order('created_at',{ascending:false}).limit(limite);
@@ -5747,12 +6047,6 @@ async function getAdminStats() {
 
 
 async function loadAll() {
-  // Afficher un indicateur de chargement dans le dashboard
-  const dashEl = document.getElementById('admin-dashboard');
-  const dashBody = dashEl ? dashEl.querySelector('.adm-body, [id="dashboardAll"]') : null;
-  const loadingHTML = '<div style="text-align:center;padding:60px 20px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin" style="font-size:32px;color:#E85D04;display:block;margin-bottom:16px;"></i><div style="font-size:14px;">Chargement des données...</div></div>';
-  const statIds = ['statTotal','statAttente','statValides','statRejetes','statSuspendu'];
-  statIds.forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="font-size:12px;"></i>'; });
   try {
     const stats = await getAdminStats();
     const setS = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
@@ -5771,18 +6065,7 @@ async function loadAll() {
         return `<div style="margin-bottom:28px;"><div style="font-family:'Libre Baskerville',serif;font-size:15px;font-weight:700;color:${s.color};margin-bottom:12px;">${s.label} (${list.length})</div>${typeof actionsHTML==='function'?renderTableHTML(s.key,list):''}</div>`;
       }).join('') || '<div style="text-align:center;padding:40px;color:#9CA3AF;">Aucun prestataire</div>';
     }
-  } catch(e) {
-    console.error('loadAll:',e);
-    // Afficher l'erreur visiblement dans le dashboard
-    const errEl = document.getElementById('dashboardAll') || document.querySelector('#admin-dashboard');
-    if (errEl) errEl.innerHTML = `<div style="text-align:center;padding:40px;color:#DC2626;background:#FEF2F2;border-radius:14px;border:1.5px solid #FECACA;margin:20px;">
-      <i class="fa-solid fa-triangle-exclamation" style="font-size:28px;margin-bottom:10px;display:block;"></i>
-      <div style="font-weight:700;margin-bottom:6px;">Erreur de chargement</div>
-      <div style="font-size:12px;color:#6B7280;margin-bottom:14px;">${e.message}</div>
-      <button onclick="loadAll()" style="padding:8px 18px;background:#E85D04;border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">Réessayer</button>
-    </div>`;
-    statIds.forEach(id => { const el = document.getElementById(id); if(el) el.textContent = '—'; });
-  }
+  } catch(e) { console.error('loadAll:',e); }
 }
 function renderTable(statut, data) {
   const ids = { en_attente:'tableEnAttente', valide:'tableValide', rejete:'tableRejete', suspendu:'tableSuspendu' };
@@ -6667,6 +6950,8 @@ async function chargerDashboard(pid) {
     _dashRemplirFormulaire();
     remplirFormulaire();
   }, 200);
+  // Démarrer polling notifications prestataire
+  setTimeout(() => { if(typeof _notifStartPolling==='function') _notifStartPolling('provider'); }, 1500);
 }
 
 function _dashUpdateUI() {
@@ -6923,6 +7208,7 @@ function _adminShowSection(name) {
   document.querySelectorAll('#page-admin .anav').forEach(n=>n.classList.remove('active'));
   if(name==='codes') _adminLoadCodes();
   else if(name==='rapports') renderRapports();
+  else if(name==='notifications') renderAdminNotifSection();
 }
 
 function _adminRenderTable(statut,data) {
@@ -7267,10 +7553,10 @@ function _showAdminPanel() {
   ].join(';') + ';';
 
   // ── SIDEBAR DANS L'OVERLAY ────────────────────────────────
-  const sidebarEl = document.getElementById('adminSidebarEl');
-  if (sidebarEl) {
-    overlay.appendChild(sidebarEl);
-    sidebarEl.style.cssText = [
+  const sb = document.getElementById('adminSidebarEl');
+  if (sb) {
+    overlay.appendChild(sb);
+    sb.style.cssText = [
       'display:flex!important','flex-direction:column',
       'width:220px','min-width:220px','flex-shrink:0',
       'height:100vh','position:sticky','top:0',
@@ -7343,6 +7629,8 @@ async function loginAdmin() {
     const adminName = document.getElementById('adminTopbarName');
     if (adminName && data.nom) adminName.textContent = data.nom;
     if(typeof loadAll==='function') await loadAll();
+    // Démarrer polling notifications
+    setTimeout(() => { if(typeof _notifStartPolling==='function') _notifStartPolling('admin'); }, 1000);
     else if(typeof _adminLoadAll==='function') await _adminLoadAll();
   } catch(e) {
     if (btn) { btn.disabled=false; btn.textContent='Se connecter →'; }
@@ -7368,9 +7656,9 @@ function logoutAdmin() {
   if (overlay) overlay.style.display = 'none';
   // Remettre sidebar dans adminWrap
   const aw = document.getElementById('adminWrap');
-  const sidebarEl = document.getElementById('adminSidebarEl');
-  if (aw && sidebarEl) aw.insertBefore(sidebarEl, aw.firstChild);
-  if (sidebarEl) { sidebarEl.removeAttribute('style'); sidebarEl.style.display = 'none'; }
+  const sb = document.getElementById('adminSidebarEl');
+  if (aw && sb) aw.insertBefore(sb, aw.firstChild);
+  if (sb) { sb.removeAttribute('style'); sb.style.display = 'none'; }
   if (aw) { aw.classList.remove('visible'); aw.removeAttribute('style'); }
   // Réafficher login
   const lw = document.getElementById('loginWrap');
@@ -8014,6 +8302,534 @@ function _rptExportCSV() {
     URL.revokeObjectURL(url);
   } catch(e) { showToast('Erreur export: '+e.message,'error'); }
 }
+
+
+
+// ══════════════════════════════════════════════════════════════════
+// SYSTÈME DE NOTIFICATIONS YOUMMA JOBS — COMPLET
+// Admin : nouvelles inscriptions, codes activés, missions, avis
+// Prestataire : statut profil, avis reçus, abonnement
+// ══════════════════════════════════════════════════════════════════
+
+var _notifMode = null;       // 'admin' | 'provider'
+var _notifItems = [];        // toutes les notifs chargées
+var _notifFilter = 'all';    // filtre actif
+var _notifPollTimer = null;  // timer polling
+var _notifLastCheck = null;  // dernière vérification
+
+// ── CONFIG ──
+const NOTIF_CONFIG = {
+  types: {
+    inscription:  { icon: '👤', color: '#10B981', bg: '#ECFDF5', label: 'Nouvelle inscription' },
+    code:         { icon: '🔑', color: '#E85D04', bg: '#FFF7F0', label: 'Code activé' },
+    mission:      { icon: '🎯', color: '#8B5CF6', bg: '#F5F3FF', label: 'Mission' },
+    avis:         { icon: '⭐', color: '#D97706', bg: '#FFFBEB', label: 'Avis client' },
+    abonnement:   { icon: '💳', color: '#2563EB', bg: '#EFF6FF', label: 'Abonnement' },
+    statut:       { icon: '✅', color: '#16A34A', bg: '#F0FDF4', label: 'Statut profil' },
+    validation:   { icon: '🛡️', color: '#16A34A', bg: '#F0FDF4', label: 'Document validé' },
+    system:       { icon: '🔔', color: '#6B7280', bg: '#F9FAFB', label: 'Système' },
+  }
+};
+
+// ── OPEN/CLOSE PANEL ──
+function _notifOpen(mode) {
+  _notifMode = mode || 'admin';
+  const panel = document.getElementById('notifPanel');
+  const overlay = document.getElementById('notifOverlay');
+  if (panel) panel.classList.add('open');
+  if (overlay) overlay.classList.add('open');
+  _notifLoadPanel();
+}
+
+function _notifClose() {
+  const panel = document.getElementById('notifPanel');
+  const overlay = document.getElementById('notifOverlay');
+  if (panel) panel.classList.remove('open');
+  if (overlay) overlay.classList.remove('open');
+}
+
+// ── FILTRE ──
+function _notifFilter(type, btn) {
+  _notifFilter = type;
+  document.querySelectorAll('.notif-filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  _notifRenderList();
+}
+
+// ── MARQUER TOUT LU ──
+async function _notifMarkAll() {
+  const ids = _notifItems.filter(n => !n.lu).map(n => n.id);
+  if (!ids.length) return;
+  try {
+    await sb.from('notifications').update({ lu: true }).in('id', ids);
+    _notifItems.forEach(n => n.lu = true);
+    _notifRenderList();
+    _notifUpdateBadges(0);
+    showToast('✅ Toutes les notifications marquées comme lues');
+  } catch(e) { console.warn('markAll:', e); }
+}
+
+// ── CHARGER NOTIFICATIONS ──
+async function _notifLoadPanel() {
+  const list = document.getElementById('notifList');
+  if (list) list.innerHTML = '<div style="text-align:center;padding:30px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin"></i></div>';
+  
+  try {
+    let query = sb.from('notifications')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(50);
+    
+    // Filtrer selon le mode
+    if (_notifMode === 'provider' && (providerId || _dashProviderId)) {
+      const pid = providerId || _dashProviderId;
+      query = query.eq('destinataire_id', pid).eq('destinataire_type', 'provider');
+    } else if (_notifMode === 'admin') {
+      query = query.eq('destinataire_type', 'admin');
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+    
+    _notifItems = data || [];
+    const unread = _notifItems.filter(n => !n.lu).length;
+    
+    // Mettre à jour le count dans le header
+    const countEl = document.getElementById('notifCount');
+    if (countEl) countEl.textContent = _notifItems.length;
+    
+    _notifUpdateBadges(unread);
+    _notifRenderList();
+    
+  } catch(e) {
+    // Si la table n'existe pas encore, afficher les notifs générées dynamiquement
+    _notifItems = await _notifGenerateDynamic();
+    const unread = _notifItems.filter(n => !n.lu).length;
+    _notifUpdateBadges(unread);
+    _notifRenderList();
+  }
+}
+
+// ── GÉNÉRER NOTIFS DYNAMIQUEMENT (depuis les données existantes) ──
+async function _notifGenerateDynamic() {
+  const notifs = [];
+  const now = new Date();
+  
+  try {
+    if (_notifMode === 'admin') {
+      // Nouvelles inscriptions (7 derniers jours)
+      const { data: newProviders } = await sb.from('providers')
+        .select('id,prenom,nom,metier,categorie,created_at,statut')
+        .gte('created_at', new Date(now - 7*86400000).toISOString())
+        .order('created_at', { ascending: false })
+        .limit(20);
+      
+      (newProviders || []).forEach(p => {
+        notifs.push({
+          id: 'ins_' + p.id,
+          type: 'inscription',
+          titre: 'Nouvelle inscription',
+          message: `${p.prenom} ${p.nom} — ${p.metier} (${p.categorie})`,
+          lu: p.statut !== 'en_attente',
+          created_at: p.created_at,
+          data: { provider_id: p.id, statut: p.statut }
+        });
+      });
+      
+      // Codes activés récemment
+      const { data: codes } = await sb.from('activation_codes')
+        .select('id,code,utilise_le,duree_jours,providers(prenom,nom)')
+        .eq('utilise', true)
+        .gte('utilise_le', new Date(now - 30*86400000).toISOString())
+        .order('utilise_le', { ascending: false })
+        .limit(10);
+      
+      (codes || []).forEach(c => {
+        notifs.push({
+          id: 'code_' + c.id,
+          type: 'code',
+          titre: 'Code activé',
+          message: c.providers
+            ? `${c.providers.prenom} ${c.providers.nom} — ${c.duree_jours} jours`
+            : `Code ${c.code} — ${c.duree_jours} jours`,
+          lu: true,
+          created_at: c.utilise_le,
+          data: { code_id: c.id }
+        });
+      });
+      
+      // Missions en attente
+      const { data: missions } = await sb.from('missions')
+        .select('id,description,created_at,providers(prenom,nom)')
+        .eq('statut', 'en_attente')
+        .order('created_at', { ascending: false })
+        .limit(10);
+      
+      (missions || []).forEach(m => {
+        notifs.push({
+          id: 'mis_' + m.id,
+          type: 'mission',
+          titre: 'Mission à valider',
+          message: `${m.providers?.prenom || ''} ${m.providers?.nom || ''} — ${m.description}`,
+          lu: false,
+          created_at: m.created_at,
+          data: { mission_id: m.id }
+        });
+      });
+      
+    } else if (_notifMode === 'provider') {
+      const pid = providerId || _dashProviderId;
+      if (!pid) return notifs;
+      
+      // Statut du profil
+      const { data: p } = await sb.from('providers')
+        .select('statut,doc_cni_statut,doc_diplome_statut,essai_actif,essai_fin,created_at')
+        .eq('id', pid).single();
+      
+      if (p) {
+        notifs.push({
+          id: 'statut_' + pid,
+          type: 'statut',
+          titre: p.statut === 'valide' ? '✅ Profil validé !' : p.statut === 'en_attente' ? '⏳ Profil en attente' : '❌ Profil rejeté',
+          message: p.statut === 'valide'
+            ? 'Votre profil est maintenant visible par tous les clients.'
+            : p.statut === 'en_attente'
+            ? 'Votre profil est en cours de vérification par notre équipe (24h).'
+            : 'Contactez le support YOUMMA JOBS sur WhatsApp.',
+          lu: p.statut === 'valide',
+          created_at: p.created_at,
+          data: {}
+        });
+        
+        // Abonnement essai
+        if (p.essai_actif && p.essai_fin) {
+          const jours = Math.max(0, Math.ceil((new Date(p.essai_fin) - now) / 86400000));
+          notifs.push({
+            id: 'abo_' + pid,
+            type: 'abonnement',
+            titre: jours > 0 ? `🎁 Essai gratuit — ${jours} jours restants` : '⚠️ Essai expiré',
+            message: jours > 0
+              ? `Votre essai gratuit se termine le ${new Date(p.essai_fin).toLocaleDateString('fr-FR')}.`
+              : 'Activez votre abonnement pour rester visible.',
+            lu: jours > 5,
+            created_at: p.essai_fin,
+            data: {}
+          });
+        }
+        
+        // Documents validés
+        if (p.doc_cni_statut === 'valide') {
+          notifs.push({
+            id: 'cni_' + pid,
+            type: 'validation',
+            titre: '🪪 CNI validée',
+            message: 'Votre pièce d'identité a été vérifiée. Badge ✅ actif.',
+            lu: true,
+            created_at: new Date(now - 86400000).toISOString(),
+            data: {}
+          });
+        }
+        if (p.doc_diplome_statut === 'valide') {
+          notifs.push({
+            id: 'dip_' + pid,
+            type: 'validation',
+            titre: '🎓 Diplôme validé',
+            message: 'Votre diplôme a été vérifié. Badge Top Artisan actif.',
+            lu: true,
+            created_at: new Date(now - 86400000).toISOString(),
+            data: {}
+          });
+        }
+      }
+      
+      // Avis reçus
+      const { data: avis } = await sb.from('reviews')
+        .select('id,note,client_nom,created_at')
+        .eq('provider_id', pid)
+        .eq('valide', true)
+        .order('created_at', { ascending: false })
+        .limit(5);
+      
+      (avis || []).forEach(a => {
+        notifs.push({
+          id: 'avis_' + a.id,
+          type: 'avis',
+          titre: `⭐ Avis ${a.note}/5 reçu`,
+          message: `${a.client_nom} vous a laissé un avis ${('★').repeat(a.note)}`,
+          lu: new Date(a.created_at) < new Date(now - 7*86400000),
+          created_at: a.created_at,
+          data: { avis_id: a.id }
+        });
+      });
+    }
+    
+  } catch(e) {
+    console.warn('_notifGenerateDynamic:', e.message);
+  }
+  
+  // Trier par date décroissante
+  return notifs.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+}
+
+// ── RENDU DE LA LISTE ──
+function _notifRenderList() {
+  const list = document.getElementById('notifList');
+  if (!list) return;
+  
+  // Filtrer
+  let items = _notifItems;
+  if (_notifFilter !== 'all') {
+    items = items.filter(n => n.type === _notifFilter);
+  }
+  
+  if (!items.length) {
+    list.innerHTML = `
+      <div class="notif-empty">
+        <div class="notif-empty-icon">🔔</div>
+        <div style="font-weight:600;color:#374151;margin-bottom:6px;">Aucune notification</div>
+        <div style="font-size:12px;">Vous êtes à jour !</div>
+      </div>`;
+    return;
+  }
+  
+  list.innerHTML = items.map(n => {
+    const cfg = NOTIF_CONFIG.types[n.type] || NOTIF_CONFIG.types.system;
+    const timeAgo = _notifTimeAgo(n.created_at);
+    return `
+      <div class="notif-item ${n.lu ? '' : 'unread'}" onclick="_notifClick('${n.id}')">
+        <div class="notif-icon-wrap" style="background:${cfg.bg};color:${cfg.color};">
+          ${cfg.icon}
+        </div>
+        <div class="notif-item-body">
+          <div class="notif-item-title">${n.titre}</div>
+          <div class="notif-item-msg">${n.message}</div>
+          <div class="notif-item-time">
+            <i class="fa-regular fa-clock" style="font-size:9px;"></i> ${timeAgo}
+            ${!n.lu ? '<span class="notif-unread-dot"></span>' : ''}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── CLICK NOTIFICATION ──
+async function _notifClick(id) {
+  const n = _notifItems.find(x => x.id == id);
+  if (!n) return;
+  
+  // Marquer comme lue
+  if (!n.lu) {
+    n.lu = true;
+    try { await sb.from('notifications').update({ lu: true }).eq('id', id); } catch(e) {}
+    const unread = _notifItems.filter(x => !x.lu).length;
+    _notifUpdateBadges(unread);
+    _notifRenderList();
+  }
+  
+  // Action selon le type
+  if (n.type === 'inscription' && n.data?.provider_id) {
+    _notifClose();
+    if (_notifMode === 'admin') { showAdmin('en_attente'); }
+  } else if (n.type === 'mission') {
+    _notifClose();
+    if (_notifMode === 'admin') showAdmin('missions');
+    else showSection('missions');
+  } else if (n.type === 'abonnement') {
+    _notifClose();
+    if (_notifMode === 'provider') showSection('abonnement');
+  } else if (n.type === 'avis') {
+    _notifClose();
+    if (_notifMode === 'provider') showSection('avis');
+  }
+}
+
+// ── MISE À JOUR DES BADGES (compteurs) ──
+function _notifUpdateBadges(count) {
+  // Badge cloche admin
+  const adminBadge = document.getElementById('adminNotifBadge');
+  if (adminBadge) {
+    adminBadge.textContent = count;
+    adminBadge.className = 'notif-badge' + (count > 0 ? '' : ' hidden');
+  }
+  // Badge cloche dashboard
+  const dashBadge = document.getElementById('dashNotifBadge');
+  if (dashBadge) {
+    dashBadge.textContent = count;
+    dashBadge.className = 'notif-badge' + (count > 0 ? '' : ' hidden');
+  }
+  // Badge sidebar admin
+  const sideBadge = document.getElementById('sidebarNotifBadge');
+  if (sideBadge) {
+    sideBadge.textContent = count;
+    sideBadge.className = 'sidebar-notif-badge' + (count > 0 ? '' : ' hidden');
+  }
+  // Cloche "has-notif"
+  ['adminNotifBell','dashNotifBell'].forEach(id => {
+    const bell = document.getElementById(id);
+    if (bell) bell.classList.toggle('has-notif', count > 0);
+  });
+}
+
+// ── TOAST POPUP NOTIFICATION ──
+function _notifToastShow(titre, message, type) {
+  const cfg = NOTIF_CONFIG.types[type] || NOTIF_CONFIG.types.system;
+  const popup = document.getElementById('notifToastPopup');
+  if (!popup) return;
+  
+  document.getElementById('notifToastIcon').textContent = cfg.icon;
+  document.getElementById('notifToastIcon').style.background = cfg.bg;
+  document.getElementById('notifToastTitle').textContent = titre;
+  document.getElementById('notifToastMsg').textContent = message;
+  popup.style.borderLeftColor = cfg.color;
+  
+  popup.classList.add('show');
+  setTimeout(() => _notifToastHide(), 5000);
+}
+
+function _notifToastHide() {
+  const popup = document.getElementById('notifToastPopup');
+  if (popup) popup.classList.remove('show');
+}
+
+// ── POLLING — Vérifier les nouvelles notifs toutes les 30s ──
+function _notifStartPolling(mode) {
+  if (_notifPollTimer) clearInterval(_notifPollTimer);
+  _notifPollTimer = setInterval(() => _notifPoll(mode), 30000);
+  // Premier check
+  _notifPoll(mode);
+}
+
+async function _notifPoll(mode) {
+  try {
+    const notifs = await _notifGenerateDynamic();
+    if (!notifs.length) return;
+    
+    const unread = notifs.filter(n => !n.lu).length;
+    _notifUpdateBadges(unread);
+    
+    // Si nouvelles notifs non lues depuis le dernier check
+    if (_notifLastCheck) {
+      const newOnes = notifs.filter(n =>
+        !n.lu && new Date(n.created_at) > _notifLastCheck
+      );
+      newOnes.slice(0, 2).forEach(n => {
+        _notifToastShow(n.titre, n.message, n.type);
+      });
+    }
+    
+    _notifLastCheck = new Date();
+    // Si panel ouvert, rafraîchir
+    if (document.getElementById('notifPanel')?.classList.contains('open')) {
+      _notifItems = notifs;
+      _notifRenderList();
+    }
+  } catch(e) {}
+}
+
+// ── SECTION NOTIFICATIONS DANS L'ADMIN ──
+async function renderAdminNotifSection() {
+  const container = document.getElementById('adminNotifSectionContent');
+  if (!container) return;
+  
+  container.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+      <div class="adm-section-title"><i class="fa-solid fa-bell" style="color:#E85D04;"></i> Centre de notifications</div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="_notifMarkAllAdmin()" style="padding:8px 16px;background:#fff;border:1.5px solid #E5E7EB;border-radius:9px;color:#6B7280;font-size:12.5px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;" onmouseover="this.style.borderColor='#1A1A4E'" onmouseout="this.style.borderColor='#E5E7EB'">
+          <i class="fa-solid fa-check-double"></i> Tout marquer lu
+        </button>
+        <button onclick="renderAdminNotifSection()" style="padding:8px 14px;background:#F4F6FB;border:1.5px solid #E5E7EB;border-radius:9px;color:#6B7280;font-size:12.5px;cursor:pointer;" onmouseover="this.style.borderColor='#1A1A4E'" onmouseout="this.style.borderColor='#E5E7EB'">
+          <i class="fa-solid fa-arrows-rotate"></i>
+        </button>
+      </div>
+    </div>
+    <div id="adminNotifList" style="display:flex;flex-direction:column;gap:10px;">
+      <div style="text-align:center;padding:30px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin"></i></div>
+    </div>
+  `;
+  
+  try {
+    _notifMode = 'admin';
+    const notifs = await _notifGenerateDynamic();
+    const list = document.getElementById('adminNotifList');
+    if (!list) return;
+    
+    if (!notifs.length) {
+      list.innerHTML = '<div class="adm-empty"><div class="adm-empty-icon">🔔</div>Aucune notification pour le moment</div>';
+      return;
+    }
+    
+    list.innerHTML = notifs.map(n => {
+      const cfg = NOTIF_CONFIG.types[n.type] || NOTIF_CONFIG.types.system;
+      const timeAgo = _notifTimeAgo(n.created_at);
+      return `
+        <div style="background:#fff;border-radius:14px;padding:14px 16px;border:1.5px solid ${n.lu ? '#F0F0F8' : '#FDE8D8'};display:flex;gap:12px;align-items:flex-start;transition:background .15s;cursor:pointer;" onclick="_notifAdminAction('${n.id}','${n.type}',${JSON.stringify(n.data||{}).replace(/"/g,'&quot;')})" onmouseover="this.style.background='#FAFBFF'" onmouseout="this.style.background='#fff'">
+          <div style="width:40px;height:40px;border-radius:11px;background:${cfg.bg};color:${cfg.color};display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">${cfg.icon}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:13px;font-weight:${n.lu ? '600' : '700'};color:${n.lu ? '#374151' : '#0F1020'};margin-bottom:3px;">${n.titre}</div>
+            <div style="font-size:12px;color:#6B7280;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${n.message}</div>
+            <div style="font-size:10.5px;color:#9CA3AF;margin-top:4px;display:flex;align-items:center;gap:4px;">
+              <i class="fa-regular fa-clock" style="font-size:9px;"></i> ${timeAgo}
+              ${!n.lu ? '<span style="width:7px;height:7px;border-radius:50%;background:#E85D04;flex-shrink:0;margin-left:auto;display:inline-block;"></span>' : ''}
+            </div>
+          </div>
+          <span style="flex-shrink:0;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700;background:${cfg.bg};color:${cfg.color};">${cfg.label}</span>
+        </div>`;
+    }).join('');
+    
+    // Mettre à jour badges
+    const unread = notifs.filter(n => !n.lu).length;
+    _notifUpdateBadges(unread);
+    _notifItems = notifs;
+    
+  } catch(e) {
+    const list = document.getElementById('adminNotifList');
+    if (list) list.innerHTML = '<div class="adm-empty">Erreur de chargement</div>';
+  }
+}
+
+function _notifAdminAction(id, type, data) {
+  if (type === 'inscription') showAdmin('en_attente');
+  else if (type === 'mission') showAdmin('missions');
+  else if (type === 'code') showAdmin('codes');
+}
+
+async function _notifMarkAllAdmin() {
+  _notifItems.forEach(n => n.lu = true);
+  _notifUpdateBadges(0);
+  renderAdminNotifSection();
+  showToast('✅ Toutes les notifications lues');
+}
+
+// ── TEMPS RELATIF ──
+function _notifTimeAgo(dateStr) {
+  if (!dateStr) return '—';
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const m = Math.floor(diff / 60000);
+  const h = Math.floor(diff / 3600000);
+  const d = Math.floor(diff / 86400000);
+  if (m < 1) return "À l'instant";
+  if (m < 60) return m + ' min';
+  if (h < 24) return h + 'h';
+  if (d < 7) return d + ' jour' + (d > 1 ? 's' : '');
+  return new Date(dateStr).toLocaleDateString('fr-FR', { day:'numeric', month:'short' });
+}
+
+// ── INITIALISATION AU CHARGEMENT ──
+document.addEventListener('DOMContentLoaded', function() {
+  // Polling notifications admin après login
+  // (déclenché dans loginAdmin et initAdmin)
+});
+
+// Exposer globalement
+window._notifOpen = _notifOpen;
+window._notifClose = _notifClose;
+window._notifFilter = _notifFilter;
+window._notifMarkAll = _notifMarkAll;
+window._notifToastHide = _notifToastHide;
+window._notifStartPolling = _notifStartPolling;
+window._notifUpdateBadges = _notifUpdateBadges;
+window.renderAdminNotifSection = renderAdminNotifSection;
 
 </script>
 </body>
