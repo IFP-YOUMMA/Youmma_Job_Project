@@ -2361,13 +2361,10 @@ body.on-dashboard #page-dashboard { display:block!important; }
 }
 
 
-/* ── ADMIN MODE — Approche simple et fiable ── */
-body.admin-mode { overflow-x:hidden; }
+/* ── ADMIN MODE CSS ── */
 body.admin-mode #mainContent,
-body.admin-mode #mainNav,
-body.admin-mode .hero,
-body.admin-mode .page:not(#page-admin) { display:none!important; }
-body.admin-mode #page-admin { display:block!important; }
+body.admin-mode #mainNav { display:none!important; }
+body.admin-mode #page-admin { display:block!important; min-height:100vh; }
 body.admin-mode #page-admin.logged #loginWrap { display:none!important; }
 body.admin-mode #page-admin.logged #adminSidebarEl {
   display:flex!important; flex-direction:column;
@@ -2376,11 +2373,11 @@ body.admin-mode #page-admin.logged #adminSidebarEl {
   box-shadow:4px 0 20px rgba(0,0,0,.35);
 }
 body.admin-mode #page-admin.logged #adminWrap {
-  display:block!important; margin-left:220px; min-height:100vh;
-  background:#F4F6FB;
+  display:block!important; margin-left:220px;
+  min-height:100vh; background:#F4F6FB;
 }
-body.admin-mode #page-admin.logged #adminWrap .admin-main {
-  display:block!important; padding:0; min-height:100vh;
+body.admin-mode #page-admin.logged .admin-main {
+  display:block!important; padding:0;
 }
 
 </style>
@@ -6019,17 +6016,13 @@ async function chargerAvis() {
 function logoutAdmin() {
   localStorage.removeItem('yj_admin_session');
   adminData = null;
-  // Enlever le mode admin
   document.body.classList.remove('admin-mode');
   const pa = document.getElementById('page-admin');
-  if (pa) pa.classList.remove('logged');
-  // Reset styles
+  if (pa) { pa.classList.remove('logged'); pa.classList.remove('active'); pa.style.cssText = ''; }
   const lw = document.getElementById('loginWrap');
   if (lw) lw.removeAttribute('style');
   const aw = document.getElementById('adminWrap');
   if (aw) { aw.classList.remove('visible'); aw.removeAttribute('style'); }
-  const adminSbEl = document.getElementById('adminSidebarEl');
-  if (adminSbEl) adminSbEl.removeAttribute('style');
   navigate('home');
 }
 
@@ -7490,38 +7483,24 @@ function openMaps(nom, ville) {
 
 
 function navigate(page) {
-  // Reset toutes les pages
-  document.querySelectorAll('.page').forEach(p => {
-    p.classList.remove('active');
-    p.style.cssText = '';
-  });
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.cssText = ''; });
   document.body.classList.remove('on-home','on-dashboard','on-admin','admin-mode');
-  
   const mc = document.getElementById('mainContent');
   const mn = document.getElementById('mainNav');
-  
   if (!page || page === 'home' || page === 'accueil') {
     document.body.classList.add('on-home');
     if (mc) mc.style.cssText = '';
     if (mn) mn.style.cssText = '';
     window.scrollTo(0,0);
-    
   } else if (page === 'admin') {
-    // Mode admin : activer page-admin avec formulaire login
     document.body.classList.add('on-admin','admin-mode');
     if (mc) mc.style.cssText = 'display:none!important';
     if (mn) mn.style.cssText = 'display:none!important';
     const pa = document.getElementById('page-admin');
-    if (pa) {
-      pa.classList.add('active');
-      pa.style.cssText = 'display:block!important;min-height:100vh;';
-    }
-    // Afficher le formulaire de login (pas encore authentifié)
+    if (pa) { pa.classList.add('active'); pa.style.cssText = 'display:block!important;min-height:100vh;'; }
     const lw = document.getElementById('loginWrap');
     if (lw) lw.removeAttribute('style');
-    
   } else {
-    // Autres pages dashboard, inscription etc
     if (mc) mc.style.cssText = 'display:none!important';
     if (mn) mn.style.cssText = 'display:none!important';
     const el = document.getElementById('page-'+page);
@@ -7565,32 +7544,20 @@ window.addEventListener('hashchange', async function() {
 <script>
 // ── FONCTIONS ADMIN ──
 function _showAdminPanel() {
-  // Approche simple : body.admin-mode + page-admin.logged
   document.body.classList.add('admin-mode');
-  
   const pa = document.getElementById('page-admin');
-  if (pa) pa.classList.add('logged');
-  
-  // Cacher login, montrer panel
+  if (pa) { pa.classList.add('active'); pa.classList.add('logged'); }
   const lw = document.getElementById('loginWrap');
   if (lw) lw.style.cssText = 'display:none!important';
-  
   const aw = document.getElementById('adminWrap');
   if (aw) { aw.classList.add('visible'); aw.removeAttribute('style'); }
-  
   const sidebarEl = document.getElementById('adminSidebarEl');
   if (sidebarEl) sidebarEl.removeAttribute('style');
-  
-  // S'assurer qu'une admin-section est active
   const activeSec = document.querySelector('#adminWrap .admin-section.active');
   if (!activeSec) {
     const first = document.querySelector('#adminWrap .admin-section');
     if (first) first.classList.add('active');
   }
-  
-  // Cacher l'overlay si présent
-  const ov = document.getElementById('_adminOverlay');
-  if (ov) ov.style.display = 'none';
 }
 
 async function loginAdmin() {
@@ -8514,7 +8481,7 @@ async function _notifGenerateDynamic() {
             id: 'cni_' + pid,
             type: 'validation',
             titre: '🪪 CNI validée',
-            message: 'Votre pièce d'identité a été vérifiée. Badge ✅ actif.',
+            message: 'Votre pièce d\'identité a été vérifiée. Badge ✅ actif.',
             lu: true,
             created_at: new Date(now - 86400000).toISOString(),
             data: {}
