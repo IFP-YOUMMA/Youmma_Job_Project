@@ -5326,17 +5326,20 @@ function showToast(msg, type = '') {
 
 // ── AUTO-LOGIN si session admin ──
 (async () => {
-  const s = getAdminSession();
-  if (s?.token) {
+  try {
+    const s = getAdminSession();
+    if (!s?.token) return;
     const { data } = await sb.from('admin_sessions')
       .select('admin_id').eq('token', s.token).gt('expire_le', new Date().toISOString()).single();
     if (data) {
       adminData = s;
-      document.getElementById('loginWrap').style.display = 'none';
-      document.getElementById('adminWrap').classList.add('visible');
-      await loadAll();
+      const lw = document.getElementById('loginWrap');
+      const aw = document.getElementById('adminWrap');
+      if (lw) lw.style.display = 'none';
+      if (aw) aw.classList.add('visible');
+      if (typeof loadAll === 'function') await loadAll();
     }
-  }
+  } catch(e) { /* session expirée ou invalide */ }
 })();
 </script>
 
@@ -5803,9 +5806,12 @@ window.addEventListener('popstate', (e) => {
     navigate('dashboard');
     await chargerDashboard(pid);
   } else if (hash === 'admin') {
-    await new Promise(r => setTimeout(r, 50));
+    await new Promise(r => setTimeout(r, 100));
     navigate('admin');
-    // initAdmin inline si pas encore définie
+    // Forcer l'affichage si navigate échoue
+    const pa = document.getElementById('page-admin');
+    if (pa) { pa.style.display = 'block'; pa.classList.add('active'); }
+    // Auto-login ou afficher formulaire
     if (typeof initAdmin === 'function') {
       await initAdmin();
     } else {
