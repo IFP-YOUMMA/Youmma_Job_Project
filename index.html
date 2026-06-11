@@ -7553,10 +7553,10 @@ function _showAdminPanel() {
   ].join(';') + ';';
 
   // ── SIDEBAR DANS L'OVERLAY ────────────────────────────────
-  const sb = document.getElementById('adminSidebarEl');
-  if (sb) {
-    overlay.appendChild(sb);
-    sb.style.cssText = [
+  const adminSb = document.getElementById('adminSidebarEl');
+  if (adminSb) {
+    overlay.appendChild(adminSb);
+    adminSb.style.cssText = [
       'display:flex!important','flex-direction:column',
       'width:220px','min-width:220px','flex-shrink:0',
       'height:100vh','position:sticky','top:0',
@@ -7655,10 +7655,10 @@ function logoutAdmin() {
   const overlay = document.getElementById('_adminOverlay');
   if (overlay) overlay.style.display = 'none';
   // Remettre sidebar dans adminWrap
-  const aw = document.getElementById('adminWrap');
-  const sb = document.getElementById('adminSidebarEl');
-  if (aw && sb) aw.insertBefore(sb, aw.firstChild);
-  if (sb) { sb.removeAttribute('style'); sb.style.display = 'none'; }
+  const aw2 = document.getElementById('adminWrap');
+  const adminSbFinal = document.getElementById('adminSidebarEl');
+  if (aw2 && adminSbFinal) aw2.insertBefore(adminSbFinal, aw2.firstChild);
+  if (adminSbFinal) { adminSbFinal.removeAttribute('style'); adminSbFinal.style.display = 'none'; }
   if (aw) { aw.classList.remove('visible'); aw.removeAttribute('style'); }
   // Réafficher login
   const lw = document.getElementById('loginWrap');
