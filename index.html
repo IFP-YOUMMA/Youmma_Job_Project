@@ -5805,7 +5805,25 @@ window.addEventListener('popstate', (e) => {
   } else if (hash === 'admin') {
     await new Promise(r => setTimeout(r, 50));
     navigate('admin');
-    await initAdmin();
+    // initAdmin inline si pas encore définie
+    if (typeof initAdmin === 'function') {
+      await initAdmin();
+    } else {
+      const raw = localStorage.getItem('yj_admin_session');
+      if (raw) {
+        try {
+          const s = JSON.parse(raw);
+          if (s?.token) {
+            adminData = s;
+            const lw = document.getElementById('loginWrap');
+            const aw = document.getElementById('adminWrap');
+            if (lw) lw.style.display = 'none';
+            if (aw) aw.classList.add('visible');
+            if (typeof loadAll === 'function') await loadAll();
+          }
+        } catch(e) {}
+      }
+    }
   } else if (hash === 'inscription') {
     if (pid) { navigate('dashboard'); await chargerDashboard(pid); return; }
     navigate('inscription');
