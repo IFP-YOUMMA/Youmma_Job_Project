@@ -1263,7 +1263,7 @@ footer{background:var(--bleu);padding:70px 5% 28px;}
 #loginWrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
 #adminWrap  { display: none; }
 
-#adminWrap.visible { display: flex; }
+#adminWrap.visible { display: flex !important; min-height:100vh; background:var(--fond); }
 
 #mainNav { display:none; }
 body.on-home #mainNav { display:flex!important; }
@@ -6717,55 +6717,63 @@ window.addEventListener('hashchange', async function() {
 <script>
 // ── FONCTIONS ADMIN ──
 function _showAdminPanel() {
-  const lw = document.getElementById('loginWrap');
-  const aw = document.getElementById('adminWrap');
-  const sb = document.getElementById('adminSidebarEl');
-  const am = aw ? aw.querySelector('.admin-main') : null;
+  // Cacher nav et main content
   const mn = document.getElementById('mainNav');
   const mc = document.getElementById('mainContent');
-  if (mn) mn.style.cssText = 'display:none!important';
-  if (mc) mc.style.cssText = 'display:none!important';
-  if (lw) lw.style.cssText = 'display:none!important';
-  if (sb) sb.style.cssText = 'display:block!important;position:fixed;top:0;left:0;width:220px;height:100vh;background:#0D0D2E;z-index:9999;overflow-y:auto;';
-  if (am) am.style.cssText = 'display:block!important;margin-left:220px;padding:24px;background:#F4F6FB;min-height:100vh;';
-  if (aw) { aw.classList.add('visible'); aw.style.cssText = 'display:block!important'; }
-  document.getElementById('page-admin')?.classList.add('logged');
+  if (mn) mn.style.display = 'none';
+  if (mc) mc.style.display = 'none';
+
+  // Afficher la page admin
+  const pa = document.getElementById('page-admin');
+  if (pa) { pa.classList.add('active'); pa.classList.add('logged'); }
+
+  // Cacher le login, afficher le panel
+  const lw = document.getElementById('loginWrap');
+  const aw = document.getElementById('adminWrap');
+  if (lw) lw.style.display = 'none';
+  if (aw) {
+    aw.classList.add('visible');
+    // display:flex pour que sidebar + main soient côte à côte
+    aw.style.cssText = 'display:flex!important;min-height:100vh;';
+  }
+
+  // Afficher la sidebar
+  const sb = document.getElementById('adminSidebarEl');
+  if (sb) sb.style.cssText = 'display:flex!important;flex-direction:column;position:fixed;top:0;left:0;width:220px;height:100vh;background:#0D0D2E;z-index:9999;overflow-y:auto;';
+
+  // Pousser le contenu principal
+  const am = aw ? aw.querySelector('.admin-main') : null;
+  if (am) am.style.cssText = 'display:block;margin-left:220px;flex:1;padding:28px;background:#F4F6FB;min-height:100vh;box-sizing:border-box;';
 }
 
 async function loginAdmin() {
   const tel = (document.getElementById('adminTel') || document.querySelector('#page-admin #adminTel'))?.value.trim();
   const pwd = (document.getElementById('adminPwd') || document.querySelector('#page-admin #adminPwd'))?.value;
   const err = document.getElementById('loginError') || document.querySelector('#page-admin #loginError');
-  if (!tel||!pwd) { if(err) err.textContent='Remplissez tous les champs'; return; }
-  if (err) { err.textContent='Connexion...'; err.style.color='#7A7F9A'; }
+  const btn = document.querySelector('#page-admin .btn-login');
+  if (!tel||!pwd) { if(err) { err.textContent='Remplissez tous les champs'; err.style.color='#DC2626'; } return; }
+  if (err) { err.textContent='⏳ Connexion...'; err.style.color='#7A7F9A'; }
+  if (btn) { btn.disabled=true; btn.textContent='Connexion...'; }
   try {
-    // Hash SHA-256
     const hashBuf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pwd));
     const hash = Array.from(new Uint8Array(hashBuf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-
-    // Essai avec hash
     let { data, error } = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).eq('password_hash',hash).single();
-    // Fallback mot de passe en clair
     if (error||!data) ({ data, error } = await sb.from('admin_users').select('id,nom,role').eq('telephone',tel).eq('password_hash',pwd).single());
-
+    if (btn) { btn.disabled=false; btn.textContent='Se connecter →'; }
     if (error||!data) {
-      if(err) { err.textContent='Identifiants incorrects'; err.style.color='#DC2626'; }
+      if(err) { err.textContent='❌ Identifiants incorrects'; err.style.color='#DC2626'; }
       return;
     }
     const token = generateToken();
     try { await sb.from('admin_sessions').insert({admin_id:data.id,token}); } catch(e){}
     localStorage.setItem('yj_admin_session', JSON.stringify({admin_id:data.id,token,nom:data.nom,role:data.role}));
     adminData = data;
-    // Afficher le panel admin
-    const loginWrap = document.getElementById('loginWrap') || document.querySelector('#page-admin .login-wrap');
-    const adminWrap = document.getElementById('adminWrap') || document.querySelector('#page-admin .admin-wrap');
-    if(loginWrap) loginWrap.style.display='none';
-    if(adminWrap) adminWrap.classList.add('visible');
-    // Charger les données
+    _showAdminPanel();
     if(typeof loadAll==='function') await loadAll();
     else if(typeof _adminLoadAll==='function') await _adminLoadAll();
   } catch(e) {
-    if(err) { err.textContent='Erreur: '+e.message; err.style.color='#DC2626'; }
+    if (btn) { btn.disabled=false; btn.textContent='Se connecter →'; }
+    if(err) { err.textContent='❌ Erreur: '+e.message; err.style.color='#DC2626'; }
   }
 }
 
@@ -6774,7 +6782,7 @@ async function initAdmin() {
   if (!raw) return;
   try {
     const s = JSON.parse(raw);
-    if (s?.token) { adminData = s; _showAdminPanel(); await loadAll(); }
+    if (s?.token) { adminData = s; navigate('admin'); _showAdminPanel(); await loadAll(); }
   } catch(e) {}
 }
 
@@ -6785,9 +6793,11 @@ function logoutAdmin() {
   const lw = document.getElementById('loginWrap');
   const aw = document.getElementById('adminWrap');
   const sb = document.getElementById('adminSidebarEl');
-  if (aw) { aw.classList.remove('visible'); aw.style.cssText = ''; }
+  const pa = document.getElementById('page-admin');
+  if (aw) { aw.classList.remove('visible'); aw.style.cssText = 'display:none'; }
   if (lw) { lw.style.cssText = ''; }
-  if (sb) { sb.style.cssText = 'display:none;'; }
+  if (sb) { sb.style.cssText = 'display:none'; }
+  if (pa) { pa.classList.remove('active','logged'); }
   navigate('home');
 }
 
