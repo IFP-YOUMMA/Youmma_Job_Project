@@ -2013,6 +2013,155 @@ body.on-dashboard #page-dashboard { display:block!important; }
   .admin-topbar-pro .atp-right { display:none; }
 }
 
+
+/* ═══════════════════════════════════════════════════════════════
+   RAPPORTS ADMIN — CSS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Sélecteur de période */
+.rpt-period-bar {
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:24px; flex-wrap:wrap;
+}
+.rpt-period-btn {
+  padding:8px 18px; border-radius:50px;
+  font-size:13px; font-weight:600;
+  cursor:pointer; border:1.5px solid #E5E7EB;
+  background:#fff; color:#6B7280;
+  transition:all .2s; font-family:'DM Sans',sans-serif;
+}
+.rpt-period-btn.active {
+  background:#1A1A4E; border-color:#1A1A4E; color:#fff;
+}
+.rpt-period-btn:hover:not(.active) { border-color:#1A1A4E; color:#1A1A4E; }
+
+/* Date picker custom */
+.rpt-date-input {
+  padding:8px 12px; border:1.5px solid #E5E7EB; border-radius:10px;
+  font-size:13px; font-family:'DM Sans',sans-serif; outline:none;
+  background:#fff; color:#374151; cursor:pointer;
+}
+.rpt-date-input:focus { border-color:#E85D04; }
+
+/* KPI Cards rapports */
+.rpt-kpi-grid {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:14px; margin-bottom:24px;
+}
+.rpt-kpi-card {
+  background:#fff; border-radius:14px;
+  padding:18px 16px; border:1.5px solid #F0F0F8;
+  position:relative; overflow:hidden;
+  transition:transform .2s, box-shadow .2s;
+}
+.rpt-kpi-card:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(26,26,78,.08); }
+.rpt-kpi-label {
+  font-size:11px; font-weight:700; color:#9CA3AF;
+  letter-spacing:.06em; text-transform:uppercase; margin-bottom:8px;
+}
+.rpt-kpi-val {
+  font-family:'Libre Baskerville',serif;
+  font-size:30px; font-weight:700; color:#1A1A4E; line-height:1;
+}
+.rpt-kpi-sub { font-size:12px; color:#9CA3AF; margin-top:4px; }
+.rpt-kpi-icon {
+  position:absolute; top:16px; right:16px;
+  width:36px; height:36px; border-radius:9px;
+  display:flex; align-items:center; justify-content:center; font-size:16px;
+}
+.rpt-kpi-trend {
+  display:inline-flex; align-items:center; gap:3px;
+  font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px;
+  margin-top:6px;
+}
+.rpt-kpi-trend.up   { background:#ECFDF5; color:#059669; }
+.rpt-kpi-trend.down { background:#FEF2F2; color:#DC2626; }
+.rpt-kpi-trend.flat { background:#F3F4F6; color:#9CA3AF; }
+
+/* Grille 2 colonnes rapports */
+.rpt-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.rpt-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
+
+/* Carte rapport générique */
+.rpt-card {
+  background:#fff; border-radius:14px;
+  border:1.5px solid #F0F0F8; overflow:hidden;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.rpt-card-header {
+  padding:16px 18px 0;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.rpt-card-title {
+  font-family:'Libre Baskerville',serif;
+  font-size:14px; font-weight:700; color:#1A1A4E;
+  display:flex; align-items:center; gap:7px;
+}
+.rpt-card-body { padding:16px 18px; }
+
+/* Barres de progression */
+.rpt-bar-row {
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:10px;
+}
+.rpt-bar-label { font-size:12.5px; color:#374151; min-width:110px; font-weight:500; }
+.rpt-bar-track {
+  flex:1; height:8px; background:#F3F4F6; border-radius:4px; overflow:hidden;
+}
+.rpt-bar-fill {
+  height:100%; border-radius:4px;
+  transition:width .6s cubic-bezier(.4,0,.2,1);
+}
+.rpt-bar-val { font-size:12px; font-weight:700; color:#1A1A4E; min-width:28px; text-align:right; }
+
+/* Liste des inscriptions */
+.rpt-list-item {
+  display:flex; align-items:center; gap:12px;
+  padding:10px 0; border-bottom:1px solid #F7F8FC;
+}
+.rpt-list-item:last-child { border-bottom:none; }
+.rpt-list-avatar {
+  width:34px; height:34px; border-radius:9px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Libre Baskerville',serif; font-size:11px; font-weight:700;
+  flex-shrink:0; overflow:hidden;
+}
+.rpt-list-avatar img { width:100%; height:100%; object-fit:cover; }
+.rpt-list-name { font-size:13px; font-weight:700; color:#1A1A4E; }
+.rpt-list-sub  { font-size:11px; color:#9CA3AF; }
+.rpt-list-date { font-size:11.5px; color:#9CA3AF; margin-left:auto; white-space:nowrap; }
+
+/* Tableau mensuel */
+.rpt-monthly-table {
+  width:100%; border-collapse:collapse; font-size:13px;
+}
+.rpt-monthly-table th {
+  padding:10px 14px; text-align:left;
+  font-size:10.5px; font-weight:700; color:#9CA3AF;
+  letter-spacing:.06em; text-transform:uppercase;
+  background:#FAFBFF; border-bottom:1.5px solid #F0F0F8;
+}
+.rpt-monthly-table td {
+  padding:11px 14px; border-bottom:1px solid #F7F8FC; color:#374151;
+}
+.rpt-monthly-table tr:last-child td { border-bottom:none; }
+.rpt-monthly-table tr:hover td { background:#FAFBFF; }
+.rpt-month-name { font-weight:700; color:#1A1A4E; }
+
+/* Donut chart simple (CSS only) */
+.rpt-donut-wrap { position:relative; width:120px; height:120px; margin:0 auto 12px; }
+
+/* Responsive rapports */
+@media(max-width:900px) {
+  .rpt-kpi-grid { grid-template-columns:repeat(2,1fr) !important; }
+  .rpt-grid-2, .rpt-grid-3 { grid-template-columns:1fr !important; }
+}
+@media(max-width:600px) {
+  .rpt-kpi-grid { grid-template-columns:1fr 1fr !important; }
+  .rpt-period-bar { gap:6px; }
+  .rpt-period-btn { font-size:12px; padding:6px 12px; }
+}
+
 </style>
 
 </head>
@@ -5244,6 +5393,7 @@ async function chargerAvis() {
     <div onclick="showAdmin('codes')" id="amenu-codes" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-key" style="width:16px;"></i> Codes d'activation</div>
     <div onclick="showAdmin('realisations')" id="amenu-realisations" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-images" style="width:16px;"></i> Réalisations</div>
     <div onclick="showAdmin('missions')" id="amenu-missions" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-bullseye" style="width:16px;"></i> Missions</div>
+    <div onclick="showAdmin('rapports')" id="amenu-rapports" style="padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:2px;"><i class="fa-solid fa-chart-line" style="width:16px;"></i> Rapports</div>
   </div>
   <div style="padding:8px;border-top:1px solid rgba(255,255,255,.08);margin-top:10px;">
     <div onclick="logoutAdmin()" style="padding:10px 12px;border-radius:8px;color:#FCA5A5;font-size:13px;font-weight:600;cursor:pointer;background:rgba(239,68,68,.1);"><i class="fa-solid fa-right-from-bracket" style="width:16px;"></i> Déconnexion</div>
@@ -5387,6 +5537,17 @@ async function chargerAvis() {
           </div>
         </div>
         <div id="codesTable"></div>
+      </div>
+    </div>
+
+    <!-- RAPPORTS -->
+    <div class="admin-section" id="admin-rapports">
+      <div class="admin-section-inner" id="rapportsContent">
+        <!-- Chargé dynamiquement par renderRapports() -->
+        <div style="text-align:center;padding:60px;color:#9CA3AF;">
+          <i class="fa-solid fa-spinner fa-spin" style="font-size:28px;margin-bottom:12px;display:block;"></i>
+          Chargement des rapports...
+        </div>
       </div>
     </div>
 
@@ -6770,6 +6931,7 @@ function _adminShowSection(name) {
   const el=document.getElementById('admin-'+name);if(el)el.classList.add('active');
   document.querySelectorAll('#page-admin .anav').forEach(n=>n.classList.remove('active'));
   if(name==='codes') _adminLoadCodes();
+  else if(name==='rapports') renderRapports();
 }
 
 function _adminRenderTable(statut,data) {
@@ -7325,6 +7487,489 @@ async function _adminValidDoc(id, docType, statut) {
     await loadAll();
   } catch(e) { showToast('Erreur: '+e.message); }
 }
+
+
+// ══════════════════════════════════════════════════════════
+// RAPPORTS ADMIN — Statistiques journalières & mensuelles
+// ══════════════════════════════════════════════════════════
+
+var _rptPeriod = 'jour'; // 'jour' | 'semaine' | 'mois' | 'annee'
+var _rptData = null;
+
+async function renderRapports() {
+  const container = document.getElementById('rapportsContent');
+  if (!container) return;
+  container.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+      <div class="adm-section-title"><i class="fa-solid fa-chart-line" style="color:#E85D04;"></i> Rapports & Statistiques</div>
+      <button onclick="renderRapports()" style="padding:7px 14px;background:#F4F6FB;border:1.5px solid #E5E7EB;border-radius:9px;color:#6B7280;font-size:12.5px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;" onmouseover="this.style.borderColor='#1A1A4E'" onmouseout="this.style.borderColor='#E5E7EB'">
+        <i class="fa-solid fa-arrows-rotate"></i> Actualiser
+      </button>
+    </div>
+
+    <!-- Sélecteur de période -->
+    <div class="rpt-period-bar">
+      <button class="rpt-period-btn ${_rptPeriod==='jour'?'active':''}" onclick="_rptSetPeriod('jour')">Aujourd'hui</button>
+      <button class="rpt-period-btn ${_rptPeriod==='semaine'?'active':''}" onclick="_rptSetPeriod('semaine')">7 derniers jours</button>
+      <button class="rpt-period-btn ${_rptPeriod==='mois'?'active':''}" onclick="_rptSetPeriod('mois')">Ce mois</button>
+      <button class="rpt-period-btn ${_rptPeriod==='annee'?'active':''}" onclick="_rptSetPeriod('annee')">Cette année</button>
+      <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+        <span style="font-size:12px;color:#9CA3AF;">Personnalisé :</span>
+        <input type="date" class="rpt-date-input" id="rptDateFrom" onchange="_rptCustomRange()"/>
+        <span style="font-size:12px;color:#9CA3AF;">→</span>
+        <input type="date" class="rpt-date-input" id="rptDateTo" onchange="_rptCustomRange()"/>
+      </div>
+    </div>
+
+    <div id="rptBody"><div style="text-align:center;padding:40px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin"></i> Chargement...</div></div>
+  `;
+
+  // Initialiser les dates par défaut
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+  const d = document.getElementById('rptDateFrom');
+  const d2 = document.getElementById('rptDateTo');
+  if (d && !d.value) d.value = todayStr;
+  if (d2 && !d2.value) d2.value = todayStr;
+
+  await _rptLoadData();
+}
+
+function _rptSetPeriod(p) {
+  _rptPeriod = p;
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+  const d = document.getElementById('rptDateFrom');
+  const d2 = document.getElementById('rptDateTo');
+
+  if (p === 'jour') {
+    if (d) d.value = todayStr;
+    if (d2) d2.value = todayStr;
+  } else if (p === 'semaine') {
+    const w = new Date(today); w.setDate(today.getDate()-6);
+    if (d) d.value = w.toISOString().split('T')[0];
+    if (d2) d2.value = todayStr;
+  } else if (p === 'mois') {
+    const m = new Date(today.getFullYear(), today.getMonth(), 1);
+    if (d) d.value = m.toISOString().split('T')[0];
+    if (d2) d2.value = todayStr;
+  } else if (p === 'annee') {
+    const y = new Date(today.getFullYear(), 0, 1);
+    if (d) d.value = y.toISOString().split('T')[0];
+    if (d2) d2.value = todayStr;
+  }
+
+  // Mettre à jour les boutons
+  document.querySelectorAll('.rpt-period-btn').forEach(b => b.classList.remove('active'));
+  const btns = document.querySelectorAll('.rpt-period-btn');
+  const idx = ['jour','semaine','mois','annee'].indexOf(p);
+  if (btns[idx]) btns[idx].classList.add('active');
+
+  _rptLoadData();
+}
+
+function _rptCustomRange() {
+  document.querySelectorAll('.rpt-period-btn').forEach(b => b.classList.remove('active'));
+  _rptPeriod = 'custom';
+  _rptLoadData();
+}
+
+async function _rptLoadData() {
+  const body = document.getElementById('rptBody');
+  if (!body) return;
+  body.innerHTML = '<div style="text-align:center;padding:40px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin"></i> Chargement...</div>';
+
+  try {
+    const df = document.getElementById('rptDateFrom')?.value;
+    const dt = document.getElementById('rptDateTo')?.value;
+    const dateFrom = df ? df + 'T00:00:00' : null;
+    const dateTo   = dt ? dt + 'T23:59:59' : null;
+
+    // Requêtes Supabase parallèles
+    const [allProviders, recentProviders, allCodes, usedCodes] = await Promise.all([
+      sb.from('providers').select('id,prenom,nom,metier,categorie,statut,ville,commune,photo_url,created_at,note_moyenne,nb_vues,nb_appels,nb_whatsapp,essai_actif,abonnement_actif,abonnement_fin'),
+      sb.from('providers').select('id,prenom,nom,metier,categorie,statut,photo_url,created_at,ville,commune')
+        .gte('created_at', dateFrom || new Date(Date.now()-30*86400000).toISOString())
+        .lte('created_at', dateTo || new Date().toISOString())
+        .order('created_at', {ascending:false}).limit(50),
+      sb.from('activation_codes').select('id,code,duree_jours,montant,utilise,utilise_le,created_at,expire_le'),
+      sb.from('activation_codes').select('id,montant,utilise_le,duree_jours')
+        .eq('utilise', true)
+        .gte('utilise_le', dateFrom || new Date(Date.now()-30*86400000).toISOString())
+        .lte('utilise_le', dateTo || new Date().toISOString())
+    ]);
+
+    const providers = allProviders.data || [];
+    const recent    = recentProviders.data || [];
+    const codes     = allCodes.data || [];
+    const paidCodes = usedCodes.data || [];
+
+    // Calculs
+    const total     = providers.length;
+    const valides   = providers.filter(p => p.statut === 'valide').length;
+    const attente   = providers.filter(p => p.statut === 'en_attente').length;
+    const suspendu  = providers.filter(p => p.statut === 'suspendu').length;
+    const newInscriptions = recent.length;
+    const revenus   = paidCodes.reduce((s, c) => s + (c.montant || 0), 0);
+    const nbCodesVendus = paidCodes.length;
+
+    // Top catégories
+    const catCount = {};
+    providers.forEach(p => { catCount[p.categorie] = (catCount[p.categorie]||0)+1; });
+    const topCats = Object.entries(catCount).sort((a,b)=>b[1]-a[1]).slice(0,6);
+    const maxCat = topCats[0]?.[1] || 1;
+
+    // Inscriptions par mois (12 derniers mois)
+    const moisLabels = [];
+    const moisData = [];
+    const now = new Date();
+    for (let i=11; i>=0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+      const end = new Date(now.getFullYear(), now.getMonth()-i+1, 0);
+      const label = d.toLocaleDateString('fr-FR', {month:'short', year:'2-digit'});
+      const count = providers.filter(p => {
+        const cd = new Date(p.created_at);
+        return cd >= d && cd <= end;
+      }).length;
+      moisLabels.push(label);
+      moisData.push(count);
+    }
+    const maxMois = Math.max(...moisData, 1);
+
+    // Activité par jour (7 derniers jours)
+    const joursData = [];
+    for (let i=6; i>=0; i--) {
+      const d = new Date(); d.setDate(now.getDate()-i); d.setHours(0,0,0,0);
+      const d2 = new Date(d); d2.setHours(23,59,59,999);
+      const label = i===0?'Aujourd'hui':i===1?'Hier':d.toLocaleDateString('fr-FR',{weekday:'short'});
+      const count = providers.filter(p => { const cd=new Date(p.created_at); return cd>=d&&cd<=d2; }).length;
+      joursData.push({label, count});
+    }
+    const maxJour = Math.max(...joursData.map(j=>j.count), 1);
+
+    // Taux de conversion
+    const tauxValidation = total > 0 ? Math.round(valides/total*100) : 0;
+    const noteMoyenne = providers.length > 0
+      ? (providers.reduce((s,p)=>s+(parseFloat(p.note_moyenne)||0),0)/providers.length).toFixed(1)
+      : '—';
+
+    // Villes top
+    const villeCount = {};
+    providers.forEach(p => {
+      const v = p.commune || p.ville || 'Inconnu';
+      villeCount[v] = (villeCount[v]||0)+1;
+    });
+    const topVilles = Object.entries(villeCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
+
+    // ── RENDU HTML ─────────────────────────────────────────
+    const formatGNF = n => new Intl.NumberFormat('fr-FR').format(n) + ' GNF';
+    const df_label = document.getElementById('rptDateFrom')?.value || '';
+    const dt_label = document.getElementById('rptDateTo')?.value || '';
+    const periodLabel = df_label === dt_label
+      ? new Date(df_label).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})
+      : `${new Date(df_label).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})} → ${new Date(dt_label).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'})}`;
+
+    body.innerHTML = `
+      <!-- Période affichée -->
+      <div style="background:linear-gradient(135deg,#1A1A4E,#2D2D6B);border-radius:12px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <i class="fa-solid fa-calendar-days" style="color:#F5C842;font-size:16px;"></i>
+          <span style="color:#fff;font-size:14px;font-weight:600;">${periodLabel}</span>
+        </div>
+        <div style="display:flex;gap:16px;">
+          <div style="text-align:center;">
+            <div style="font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;color:#F5C842;">${newInscriptions}</div>
+            <div style="font-size:10.5px;color:rgba(255,255,255,.5);">Inscriptions</div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,.1);"></div>
+          <div style="text-align:center;">
+            <div style="font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;color:#4ADE80;">${nbCodesVendus}</div>
+            <div style="font-size:10.5px;color:rgba(255,255,255,.5);">Codes activés</div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,.1);"></div>
+          <div style="text-align:center;">
+            <div style="font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;color:#FB923C;">${formatGNF(revenus)}</div>
+            <div style="font-size:10.5px;color:rgba(255,255,255,.5);">Revenus</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI globaux -->
+      <div class="rpt-kpi-grid">
+        <div class="rpt-kpi-card">
+          <div class="rpt-kpi-icon" style="background:#EEF2FF;color:#1A1A4E;"><i class="fa-solid fa-users"></i></div>
+          <div class="rpt-kpi-label">Total prestataires</div>
+          <div class="rpt-kpi-val">${total}</div>
+          <div class="rpt-kpi-sub">dont <strong>${valides}</strong> actifs</div>
+          <div class="rpt-kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i> ${tauxValidation}% validés</div>
+        </div>
+        <div class="rpt-kpi-card">
+          <div class="rpt-kpi-icon" style="background:#ECFDF5;color:#059669;"><i class="fa-solid fa-user-plus"></i></div>
+          <div class="rpt-kpi-label">Nouvelles inscriptions</div>
+          <div class="rpt-kpi-val">${newInscriptions}</div>
+          <div class="rpt-kpi-sub">Sur la période sélectionnée</div>
+          ${newInscriptions>0?'<div class="rpt-kpi-trend up"><i class="fa-solid fa-arrow-up"></i> Actif</div>':'<div class="rpt-kpi-trend flat">— Aucune</div>'}
+        </div>
+        <div class="rpt-kpi-card">
+          <div class="rpt-kpi-icon" style="background:#FFF7ED;color:#E85D04;"><i class="fa-solid fa-key"></i></div>
+          <div class="rpt-kpi-label">Revenus (codes)</div>
+          <div class="rpt-kpi-val" style="font-size:18px;">${formatGNF(revenus)}</div>
+          <div class="rpt-kpi-sub">${nbCodesVendus} code${nbCodesVendus>1?'s':''} activé${nbCodesVendus>1?'s':''}</div>
+          ${revenus>0?'<div class="rpt-kpi-trend up"><i class="fa-solid fa-arrow-up"></i> +'+formatGNF(revenus)+'</div>':'<div class="rpt-kpi-trend flat">— Aucun revenu</div>'}
+        </div>
+        <div class="rpt-kpi-card">
+          <div class="rpt-kpi-icon" style="background:#FEF9C3;color:#D97706;"><i class="fa-solid fa-star"></i></div>
+          <div class="rpt-kpi-label">Note moyenne</div>
+          <div class="rpt-kpi-val">${noteMoyenne}</div>
+          <div class="rpt-kpi-sub">Sur ${total} prestataires</div>
+          <div class="rpt-kpi-trend ${parseFloat(noteMoyenne)>=4?'up':'flat'}"><i class="fa-solid fa-star" style="font-size:9px;"></i> /5.0</div>
+        </div>
+      </div>
+
+      <!-- Ligne 2 : Graphique inscriptions par jour + Répartition statuts -->
+      <div class="rpt-grid-2">
+
+        <!-- Activité 7 derniers jours -->
+        <div class="rpt-card">
+          <div class="rpt-card-header">
+            <div class="rpt-card-title"><i class="fa-solid fa-chart-bar" style="color:#E85D04;"></i> Inscriptions — 7 derniers jours</div>
+          </div>
+          <div class="rpt-card-body">
+            ${joursData.map(j => `
+              <div class="rpt-bar-row">
+                <div class="rpt-bar-label" style="font-size:11.5px;">${j.label}</div>
+                <div class="rpt-bar-track">
+                  <div class="rpt-bar-fill" style="width:${Math.round(j.count/maxJour*100)}%;background:${j.count>0?'linear-gradient(90deg,#E85D04,#F59E0B)':'#E5E7EB'};"></div>
+                </div>
+                <div class="rpt-bar-val">${j.count}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- Répartition par statut -->
+        <div class="rpt-card">
+          <div class="rpt-card-header">
+            <div class="rpt-card-title"><i class="fa-solid fa-circle-half-stroke" style="color:#1A1A4E;"></i> Répartition des statuts</div>
+          </div>
+          <div class="rpt-card-body">
+            ${[
+              {label:'Validés',     count:valides,  color:'#10B981', pct: total?Math.round(valides/total*100):0},
+              {label:'En attente',  count:attente,  color:'#F59E0B', pct: total?Math.round(attente/total*100):0},
+              {label:'Suspendus',   count:suspendu, color:'#8B5CF6', pct: total?Math.round(suspendu/total*100):0},
+              {label:'Rejetés',     count:providers.filter(p=>p.statut==='rejete').length, color:'#EF4444',
+               pct: total?Math.round(providers.filter(p=>p.statut==='rejete').length/total*100):0},
+            ].map(s => `
+              <div class="rpt-bar-row">
+                <div class="rpt-bar-label" style="display:flex;align-items:center;gap:6px;">
+                  <span style="width:8px;height:8px;border-radius:50%;background:${s.color};flex-shrink:0;display:inline-block;"></span>
+                  ${s.label}
+                </div>
+                <div class="rpt-bar-track">
+                  <div class="rpt-bar-fill" style="width:${s.pct}%;background:${s.color};opacity:.8;"></div>
+                </div>
+                <div class="rpt-bar-val">${s.count} <span style="color:#9CA3AF;font-weight:400;">(${s.pct}%)</span></div>
+              </div>`).join('')}
+            <div style="margin-top:16px;padding-top:14px;border-top:1px solid #F0F0F8;display:flex;justify-content:space-between;">
+              <span style="font-size:12px;color:#9CA3AF;">En attente validation</span>
+              <span style="font-size:13px;font-weight:700;color:${attente>0?'#D97706':'#9CA3AF'};">${attente} prestataire${attente>1?'s':''}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ligne 3 : Top catégories + Top villes -->
+      <div class="rpt-grid-2">
+
+        <!-- Top catégories -->
+        <div class="rpt-card">
+          <div class="rpt-card-header">
+            <div class="rpt-card-title"><i class="fa-solid fa-layer-group" style="color:#7C3AED;"></i> Top catégories</div>
+          </div>
+          <div class="rpt-card-body">
+            ${topCats.length ? topCats.map((c,i) => `
+              <div class="rpt-bar-row">
+                <div class="rpt-bar-label" style="font-size:12px;">
+                  <span style="color:#9CA3AF;margin-right:5px;">#${i+1}</span>${c[0]}
+                </div>
+                <div class="rpt-bar-track">
+                  <div class="rpt-bar-fill" style="width:${Math.round(c[1]/maxCat*100)}%;background:linear-gradient(90deg,#7C3AED,#A78BFA);"></div>
+                </div>
+                <div class="rpt-bar-val">${c[1]}</div>
+              </div>`).join('')
+            : '<div style="text-align:center;color:#9CA3AF;padding:20px;">Aucune donnée</div>'}
+          </div>
+        </div>
+
+        <!-- Top villes -->
+        <div class="rpt-card">
+          <div class="rpt-card-header">
+            <div class="rpt-card-title"><i class="fa-solid fa-location-dot" style="color:#059669;"></i> Répartition géographique</div>
+          </div>
+          <div class="rpt-card-body">
+            ${topVilles.length ? topVilles.map((v,i) => `
+              <div class="rpt-bar-row">
+                <div class="rpt-bar-label" style="font-size:12px;">
+                  <span style="color:#9CA3AF;margin-right:5px;">#${i+1}</span>${v[0]}
+                </div>
+                <div class="rpt-bar-track">
+                  <div class="rpt-bar-fill" style="width:${Math.round(v[1]/(topVilles[0][1]||1)*100)}%;background:linear-gradient(90deg,#059669,#34D399);"></div>
+                </div>
+                <div class="rpt-bar-val">${v[1]}</div>
+              </div>`).join('')
+            : '<div style="text-align:center;color:#9CA3AF;padding:20px;">Aucune donnée</div>'}
+          </div>
+        </div>
+      </div>
+
+      <!-- Ligne 4 : Inscriptions mensuelles (12 mois) + Dernières inscriptions -->
+      <div class="rpt-grid-2">
+
+        <!-- Graphique mensuel -->
+        <div class="rpt-card">
+          <div class="rpt-card-header" style="margin-bottom:0;">
+            <div class="rpt-card-title"><i class="fa-solid fa-calendar-check" style="color:#1A73E8;"></i> Inscriptions — 12 derniers mois</div>
+          </div>
+          <div class="rpt-card-body">
+            <div style="overflow-x:auto;">
+              <table class="rpt-monthly-table" style="min-width:400px;">
+                <thead>
+                  <tr>
+                    <th>Mois</th>
+                    <th style="text-align:center;">Inscriptions</th>
+                    <th>Évolution</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${moisData.map((v,i) => {
+                    const prev = i>0 ? moisData[i-1] : null;
+                    const diff = prev !== null ? v - prev : null;
+                    const trend = diff === null ? '' : diff > 0
+                      ? `<span style="color:#059669;font-size:11px;font-weight:700;">▲ +${diff}</span>`
+                      : diff < 0
+                      ? `<span style="color:#DC2626;font-size:11px;font-weight:700;">▼ ${diff}</span>`
+                      : `<span style="color:#9CA3AF;font-size:11px;">—</span>`;
+                    const isCurrentMonth = i === moisData.length - 1;
+                    return `<tr ${isCurrentMonth?'style="background:#FFF7ED;"':''}>
+                      <td><span class="rpt-month-name" ${isCurrentMonth?'style="color:#E85D04;"':''}>${moisLabels[i]}${isCurrentMonth?' ●':''}</span></td>
+                      <td style="text-align:center;">
+                        <div style="display:flex;align-items:center;gap:6px;">
+                          <div style="flex:1;height:6px;background:#F3F4F6;border-radius:3px;overflow:hidden;min-width:60px;">
+                            <div style="height:100%;width:${Math.round(v/maxMois*100)}%;background:linear-gradient(90deg,#1A1A4E,#E85D04);border-radius:3px;"></div>
+                          </div>
+                          <span style="font-weight:700;color:#1A1A4E;min-width:20px;">${v}</span>
+                        </div>
+                      </td>
+                      <td>${trend}</td>
+                    </tr>`;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dernières inscriptions -->
+        <div class="rpt-card">
+          <div class="rpt-card-header">
+            <div class="rpt-card-title"><i class="fa-solid fa-user-clock" style="color:#E85D04;"></i> Dernières inscriptions</div>
+          </div>
+          <div class="rpt-card-body">
+            ${recent.length === 0
+              ? '<div style="text-align:center;padding:30px;color:#9CA3AF;"><i class="fa-solid fa-inbox" style="font-size:28px;display:block;margin-bottom:10px;"></i>Aucune inscription sur cette période</div>'
+              : recent.slice(0,10).map(p => {
+                  const ini = ((p.prenom||'?')[0]+(p.nom||'?')[0]).toUpperCase();
+                  const catColors = {'Artisans':'#FDE8D8,#C74B00','IT':'#E0E0F8,#2D2D6B','Éducation':'#E8F0FE,#1A73E8','Santé & Beauté':'#E0F8E9,#1B5E20','Transport':'#FEF3C7,#B45309','Services Express':'#EDE9FE,#7C3AED'};
+                  const [bg,col] = (catColors[p.categorie]||'#F4F6FB,#6B7280').split(',');
+                  const dateStr = new Date(p.created_at).toLocaleDateString('fr-FR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+                  const statutC = {valide:'#059669',en_attente:'#D97706',rejete:'#DC2626',suspendu:'#7C3AED'}[p.statut]||'#9CA3AF';
+                  return `<div class="rpt-list-item">
+                    <div class="rpt-list-avatar" style="background:${bg};">
+                      ${p.photo_url?`<img src="${p.photo_url}" alt="${ini}"/>`:`<span style="color:${col};">${ini}</span>`}
+                    </div>
+                    <div style="flex:1;min-width:0;">
+                      <div class="rpt-list-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.prenom||''} ${p.nom||''}</div>
+                      <div class="rpt-list-sub">${p.metier||'—'} · <span style="color:${statutC};font-weight:600;">${p.statut?.replace('_',' ')||'—'}</span></div>
+                    </div>
+                    <div class="rpt-list-date">${dateStr}</div>
+                  </div>`;
+                }).join('')}
+          </div>
+        </div>
+      </div>
+
+      <!-- Ligne 5 : Codes d'activation -->
+      <div class="rpt-card" style="margin-bottom:16px;">
+        <div class="rpt-card-header">
+          <div class="rpt-card-title"><i class="fa-solid fa-key" style="color:#E85D04;"></i> Codes d'activation — Résumé</div>
+        </div>
+        <div class="rpt-card-body">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px;flex-wrap:wrap;">
+            ${[
+              {label:'Total générés',   val: codes.length,                          col:'#1A1A4E', icon:'fa-key'},
+              {label:'Activés',         val: codes.filter(c=>c.utilise).length,     col:'#059669', icon:'fa-check-circle'},
+              {label:'Non utilisés',    val: codes.filter(c=>!c.utilise).length,    col:'#D97706', icon:'fa-clock'},
+              {label:'Revenus totaux',  val: formatGNF(codes.filter(c=>c.utilise).reduce((s,c)=>s+(c.montant||0),0)), col:'#E85D04', icon:'fa-coins'},
+            ].map(k => `
+              <div style="background:#FAFBFF;border-radius:12px;padding:14px 16px;border:1.5px solid #F0F0F8;text-align:center;">
+                <i class="fa-solid ${k.icon}" style="color:${k.col};font-size:18px;margin-bottom:8px;display:block;"></i>
+                <div style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:${k.col};">${k.val}</div>
+                <div style="font-size:11px;color:#9CA3AF;margin-top:3px;">${k.label}</div>
+              </div>`).join('')}
+          </div>
+          <!-- Détail codes par durée -->
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            ${[{d:30,p:50000},{d:90,p:130000},{d:365,p:450000}].map(t => {
+              const n = codes.filter(c=>c.duree_jours===t.d&&c.utilise).length;
+              return `<div style="flex:1;min-width:120px;background:#fff;border:1.5px solid #E5E7EB;border-radius:10px;padding:12px;text-align:center;">
+                <div style="font-size:11px;font-weight:700;color:#9CA3AF;margin-bottom:4px;">${t.d} JOURS</div>
+                <div style="font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;color:#1A1A4E;">${n}</div>
+                <div style="font-size:11px;color:#9CA3AF;">activé${n>1?'s':''} · ${new Intl.NumberFormat('fr-FR').format(t.p)} GNF</div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer export -->
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:4px;">
+        <button onclick="_rptExportCSV()" style="padding:9px 18px;background:#fff;border:1.5px solid #E5E7EB;border-radius:10px;color:#374151;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:7px;" onmouseover="this.style.borderColor='#1A1A4E'" onmouseout="this.style.borderColor='#E5E7EB'">
+          <i class="fa-solid fa-file-csv" style="color:#059669;"></i> Exporter CSV
+        </button>
+        <button onclick="window.print()" style="padding:9px 18px;background:#1A1A4E;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:7px;">
+          <i class="fa-solid fa-print"></i> Imprimer
+        </button>
+      </div>
+    `;
+
+  } catch(e) {
+    body.innerHTML = `<div style="text-align:center;padding:40px;color:#DC2626;background:#FEF2F2;border-radius:14px;border:1.5px solid #FECACA;">
+      <i class="fa-solid fa-triangle-exclamation" style="font-size:28px;margin-bottom:10px;display:block;"></i>
+      <div style="font-weight:700;margin-bottom:4px;">Erreur de chargement</div>
+      <div style="font-size:12px;color:#9CA3AF;">${e.message}</div>
+    </div>`;
+    console.error('renderRapports:', e);
+  }
+}
+
+function _rptExportCSV() {
+  try {
+    const rows = [['Mois','Inscriptions']];
+    // Données basiques exportées
+    showToast('📊 Export CSV en préparation...','success');
+    // Récupérer les données depuis le tableau mensuel si disponible
+    document.querySelectorAll('.rpt-monthly-table tbody tr').forEach(tr => {
+      const cells = tr.querySelectorAll('td');
+      if (cells.length >= 2) rows.push([cells[0].textContent.trim(), cells[1].textContent.trim()]);
+    });
+    const csv = rows.map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=url; a.download='rapport_yoummajobs.csv'; a.click();
+    URL.revokeObjectURL(url);
+  } catch(e) { showToast('Erreur export: '+e.message,'error'); }
+}
+
 </script>
 </body>
 </html>
