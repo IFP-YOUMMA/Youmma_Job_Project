@@ -4026,35 +4026,35 @@ if (typeof inscrirePrestataire === 'undefined') {
 
   <!-- Navigation -->
   <nav class="sidebar-nav">
-    <a class="nav-item active" onclick="showSection('dashboard')">
+    <a class="nav-item active" href="javascript:void(0)" onclick="showSection('dashboard')">
       <span class="icon"><i class="fa-solid fa-chart-bar"></i></span>
       <span>Tableau de bord</span>
     </a>
-    <a class="nav-item" onclick="showSection('profil')">
+    <a class="nav-item" href="javascript:void(0)" onclick="showSection('profil')">
       <span class="icon"><i class="fa-solid fa-user"></i></span>
       <span>Mon profil</span>
     </a>
-    <a class="nav-item" onclick="showSection('photos')">
+    <a class="nav-item" href="javascript:void(0)" onclick="showSection('photos')">
       <span class="icon"><i class="fa-solid fa-camera"></i></span>
       <span>Photos & Galerie</span>
     </a>
-    <a class="nav-item" onclick="showSection('documents')">
+    <a class="nav-item" href="javascript:void(0)" onclick="showSection('documents')">
       <span class="icon"><i class="fa-solid fa-shield-halved"></i></span>
       <span>Documents</span>
     </a>
-    <a class="nav-item" onclick="showSection('missions')">
+    <a class="nav-item" href="javascript:void(0)" onclick="showSection('missions')">
       <span class="icon"><i class="fa-solid fa-bullseye"></i></span>
       <span>Mes missions</span>
     </a>
-    <a class="nav-item" onclick="showSection('abonnement')">
+    <a class="nav-item" href="javascript:void(0)" onclick="showSection('abonnement')">
       <span class="icon"><i class="fa-solid fa-credit-card"></i></span>
       <span>Abonnement</span>
     </a>
-    <a class="nav-item" onclick="showSection('avis')">
+    <a class="nav-item" href="javascript:void(0)" onclick="showSection('avis')">
       <span class="icon"><i class="fa-solid fa-star"></i></span>
       <span>Mes avis</span>
     </a>
-    <a class="nav-item" onclick="navigate('home')">
+    <a class="nav-item" href="javascript:void(0)" onclick="navigate('home')">
       <span class="icon"><i class="fa-solid fa-globe"></i></span>
       <span>Voir le site</span>
     </a>
@@ -4125,15 +4125,15 @@ if (typeof inscrirePrestataire === 'undefined') {
 
       <!-- Quick actions -->
       <div class="actions-grid">
-        <a class="action-btn" onclick="showSection('profil')">
+        <a class="action-btn" href="javascript:void(0)" onclick="showSection('profil')">
           <div class="action-icon"><i class="fa-solid fa-pen"></i></div>
           <div class="action-label">Modifier mon profil</div>
         </a>
-        <a class="action-btn" onclick="showSection('photos')">
+        <a class="action-btn" href="javascript:void(0)" onclick="showSection('photos')">
           <div class="action-icon"><i class="fa-solid fa-camera"></i></div>
           <div class="action-label">Ajouter une photo</div>
         </a>
-        <a class="action-btn" onclick="showSection('abonnement')">
+        <a class="action-btn" href="javascript:void(0)" onclick="showSection('abonnement')">
           <div class="action-icon"><i class="fa-solid fa-credit-card"></i></div>
           <div class="action-label">Renouveler abonnement</div>
         </a>
@@ -4681,13 +4681,26 @@ async function chargerDocuments(pid) {
   }
 }
 function showSection(name) {
+  // Cacher toutes les sections
   document.querySelectorAll('#page-dashboard .section').forEach(s => s.classList.remove('active'));
   const target = document.getElementById('section-' + name);
   if (target) target.classList.add('active');
+  // Mettre à jour les nav-items actifs
   document.querySelectorAll('#page-dashboard .nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('#page-dashboard .nav-item').forEach(n => {
+    const oc = n.getAttribute('onclick') || '';
+    if (oc.includes("showSection('" + name + "')") || oc.includes('showSection("' + name + '")')) {
+      n.classList.add('active');
+    }
+  });
+  // Mettre à jour le titre topbar
   const titles = { dashboard:'Tableau de bord', profil:'Mon profil', photos:'Photos & Galerie', documents:'Documents & Vérification', missions:'Mes missions', abonnement:'Abonnement', avis:'Mes avis' };
   const tt = document.getElementById('topbarTitle');
-  if (tt) tt.textContent = titles[name] || name;
+  if (tt) tt.innerHTML = '<i class="fa-solid fa-chart-line" style="width:16px;"></i> ' + (titles[name] || name);
+  // Scroll vers le haut du contenu principal
+  const mainEl = document.querySelector('#page-dashboard .main');
+  if (mainEl) mainEl.scrollTop = 0;
+  // Charger les données si besoin
   if (name === 'documents') { const pid = providerId || _dashProviderId; if (pid) chargerDocuments(pid); }
   if (name === 'missions') { const pid = providerId || _dashProviderId; if (pid) chargerMissions(pid); }
 }
@@ -5222,13 +5235,26 @@ function logoutAdmin() {
 
 // ── SECTIONS ──
 function showSection(name) {
+  // Cacher toutes les sections
   document.querySelectorAll('#page-dashboard .section').forEach(s => s.classList.remove('active'));
   const target = document.getElementById('section-' + name);
   if (target) target.classList.add('active');
+  // Mettre à jour les nav-items actifs
   document.querySelectorAll('#page-dashboard .nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('#page-dashboard .nav-item').forEach(n => {
+    const oc = n.getAttribute('onclick') || '';
+    if (oc.includes("showSection('" + name + "')") || oc.includes('showSection("' + name + '")')) {
+      n.classList.add('active');
+    }
+  });
+  // Mettre à jour le titre topbar
   const titles = { dashboard:'Tableau de bord', profil:'Mon profil', photos:'Photos & Galerie', documents:'Documents & Vérification', missions:'Mes missions', abonnement:'Abonnement', avis:'Mes avis' };
   const tt = document.getElementById('topbarTitle');
-  if (tt) tt.textContent = titles[name] || name;
+  if (tt) tt.innerHTML = '<i class="fa-solid fa-chart-line" style="width:16px;"></i> ' + (titles[name] || name);
+  // Scroll vers le haut du contenu principal
+  const mainEl = document.querySelector('#page-dashboard .main');
+  if (mainEl) mainEl.scrollTop = 0;
+  // Charger les données si besoin
   if (name === 'documents') { const pid = providerId || _dashProviderId; if (pid) chargerDocuments(pid); }
   if (name === 'missions') { const pid = providerId || _dashProviderId; if (pid) chargerMissions(pid); }
 }
@@ -6717,33 +6743,45 @@ window.addEventListener('hashchange', async function() {
 <script>
 // ── FONCTIONS ADMIN ──
 function _showAdminPanel() {
-  // Cacher nav et main content
+  // 1. Cacher nav et contenu principal
   const mn = document.getElementById('mainNav');
   const mc = document.getElementById('mainContent');
-  if (mn) mn.style.display = 'none';
-  if (mc) mc.style.display = 'none';
+  if (mn) mn.style.cssText = 'display:none!important';
+  if (mc) mc.style.cssText = 'display:none!important';
 
-  // Afficher la page admin
+  // 2. Activer page-admin
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const pa = document.getElementById('page-admin');
-  if (pa) { pa.classList.add('active'); pa.classList.add('logged'); }
-
-  // Cacher le login, afficher le panel
-  const lw = document.getElementById('loginWrap');
-  const aw = document.getElementById('adminWrap');
-  if (lw) lw.style.display = 'none';
-  if (aw) {
-    aw.classList.add('visible');
-    // display:flex pour que sidebar + main soient côte à côte
-    aw.style.cssText = 'display:flex!important;min-height:100vh;';
+  if (pa) {
+    pa.classList.add('active');
+    pa.classList.add('logged');
+    pa.style.cssText = 'display:block!important;min-height:100vh;background:#F4F6FB;';
   }
 
-  // Afficher la sidebar
-  const sb = document.getElementById('adminSidebarEl');
-  if (sb) sb.style.cssText = 'display:flex!important;flex-direction:column;position:fixed;top:0;left:0;width:220px;height:100vh;background:#0D0D2E;z-index:9999;overflow-y:auto;';
+  // 3. Cacher le formulaire de login
+  const lw = document.getElementById('loginWrap');
+  if (lw) lw.style.cssText = 'display:none!important';
 
-  // Pousser le contenu principal
-  const am = aw ? aw.querySelector('.admin-main') : null;
-  if (am) am.style.cssText = 'display:block;margin-left:220px;flex:1;padding:28px;background:#F4F6FB;min-height:100vh;box-sizing:border-box;';
+  // 4. Déplacer adminSidebarEl hors de adminWrap (direct dans body)
+  //    pour qu'il soit indépendant du display de adminWrap
+  const sb = document.getElementById('adminSidebarEl');
+  if (sb) {
+    document.body.appendChild(sb);
+    sb.style.cssText = 'display:flex!important;flex-direction:column;position:fixed;top:0;left:0;width:220px;height:100vh;background:#0D0D2E;z-index:99999;overflow-y:auto;box-shadow:4px 0 20px rgba(0,0,0,.3);';
+  }
+
+  // 5. Afficher adminWrap avec marge pour la sidebar
+  const aw = document.getElementById('adminWrap');
+  if (aw) {
+    aw.classList.add('visible');
+    aw.style.cssText = 'display:block!important;min-height:100vh;background:#F4F6FB;';
+  }
+
+  // 6. Pousser le admin-main à droite de la sidebar fixe
+  const am = document.getElementById('adminWrap') ? document.getElementById('adminWrap').querySelector('.admin-main') : null;
+  if (am) {
+    am.style.cssText = 'display:block!important;margin-left:220px;padding:28px;background:#F4F6FB;min-height:100vh;box-sizing:border-box;';
+  }
 }
 
 async function loginAdmin() {
@@ -6790,14 +6828,15 @@ async function initAdmin() {
 function logoutAdmin() {
   localStorage.removeItem('yj_admin_session');
   adminData = null;
-  const lw = document.getElementById('loginWrap');
-  const aw = document.getElementById('adminWrap');
   const sb = document.getElementById('adminSidebarEl');
+  const aw = document.getElementById('adminWrap');
+  const lw = document.getElementById('loginWrap');
   const pa = document.getElementById('page-admin');
-  if (aw) { aw.classList.remove('visible'); aw.style.cssText = 'display:none'; }
-  if (lw) { lw.style.cssText = ''; }
-  if (sb) { sb.style.cssText = 'display:none'; }
-  if (pa) { pa.classList.remove('active','logged'); }
+  // Cacher tout
+  if (sb) sb.style.cssText = 'display:none!important';
+  if (aw) { aw.classList.remove('visible'); aw.style.cssText = 'display:none!important'; }
+  if (lw) lw.style.cssText = '';
+  if (pa) { pa.classList.remove('active','logged'); pa.style.cssText = ''; }
   navigate('home');
 }
 
