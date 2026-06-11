@@ -7544,17 +7544,61 @@ window.addEventListener('hashchange', async function() {
 <script>
 // ── FONCTIONS ADMIN ──
 function _showAdminPanel() {
-  document.body.classList.add('admin-mode');
+  // Cacher tout le contenu public
+  ['mainNav','mainContent'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.cssText = 'display:none!important';
+  });
+  document.querySelectorAll('.page').forEach(p => {
+    if (p.id !== 'page-admin') p.style.cssText = 'display:none!important';
+  });
+
+  // Afficher page-admin
   const pa = document.getElementById('page-admin');
-  if (pa) { pa.classList.add('active'); pa.classList.add('logged'); }
+  if (pa) {
+    pa.style.cssText = 'display:block!important;';
+    pa.classList.add('active','logged');
+  }
+
+  // Cacher le formulaire login
   const lw = document.getElementById('loginWrap');
   if (lw) lw.style.cssText = 'display:none!important';
-  const aw = document.getElementById('adminWrap');
-  if (aw) { aw.classList.add('visible'); aw.removeAttribute('style'); }
+
+  // Sidebar : position fixed, toujours visible
   const sidebarEl = document.getElementById('adminSidebarEl');
-  if (sidebarEl) sidebarEl.removeAttribute('style');
-  const activeSec = document.querySelector('#adminWrap .admin-section.active');
-  if (!activeSec) {
+  if (sidebarEl) {
+    sidebarEl.style.cssText = [
+      'display:flex!important',
+      'flex-direction:column',
+      'position:fixed',
+      'top:0','left:0',
+      'width:220px',
+      'height:100vh',
+      'background:#0D0D2E',
+      'z-index:9999',
+      'overflow-y:auto',
+      'box-shadow:4px 0 20px rgba(0,0,0,.3)'
+    ].join(';') + ';';
+  }
+
+  // AdminWrap : prend tout l'espace à droite
+  const aw = document.getElementById('adminWrap');
+  if (aw) {
+    aw.classList.add('visible');
+    aw.style.cssText = [
+      'display:block!important',
+      'margin-left:220px',
+      'min-height:100vh',
+      'background:#F4F6FB'
+    ].join(';') + ';';
+  }
+
+  // Admin-main : visible et paddé
+  const am = document.querySelector('#adminWrap .admin-main');
+  if (am) am.style.cssText = 'display:block!important;';
+
+  // S'assurer qu'une section est active
+  if (!document.querySelector('#adminWrap .admin-section.active')) {
     const first = document.querySelector('#adminWrap .admin-section');
     if (first) first.classList.add('active');
   }
