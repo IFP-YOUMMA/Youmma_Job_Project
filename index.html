@@ -5018,10 +5018,16 @@ window.addEventListener('popstate', (e) => {
 // ══════════════════════════════════════════
 // INTÉGRATION SUPABASE → INDEX PRINCIPAL
 // ══════════════════════════════════════════
+// Guard: prevent concurrent executions
+let _loadProvidersRunning = false;
 async function loadProvidersFromSupabase() {
+  if (_loadProvidersRunning) return;
+  _loadProvidersRunning = true;
   try {
     const grid = document.getElementById('providersGrid');
-    if (grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin" style="font-size:28px;display:block;margin-bottom:12px;"></i>Chargement des artisans...</div>';
+    // Only show spinner if grid is empty (not already populated)
+    const alreadyHasContent = grid && grid.children.length > 0 && !grid.querySelector('.fa-spinner');
+    if (grid && !alreadyHasContent) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin" style="font-size:28px;display:block;margin-bottom:12px;"></i>Chargement des artisans...</div>';
 
     let data;
     try { const _r = await getProviders({ limite: 20 }); data = _r; }
@@ -5029,7 +5035,7 @@ async function loadProvidersFromSupabase() {
     console.log('getProviders result:', data?.length, 'prestataires');
 
     if (!data || data.length === 0) {
-      if (grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#9CA3AF;font-size:13px;">Aucun artisan disponible pour le moment. Vérifiez la console.</div>';
+      if (grid && !alreadyHasContent) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#9CA3AF;font-size:13px;">Aucun artisan disponible pour le moment. Vérifiez la console.</div>';
       return;
     }
     const catColors = {
@@ -5085,6 +5091,7 @@ async function loadProvidersFromSupabase() {
       renderProviders();
     }
   } catch(e) { console.warn('Supabase non configuré, données statiques utilisées'); }
+  finally { _loadProvidersRunning = false; }
 }
 
 function updateCatSelect() {
@@ -5769,7 +5776,8 @@ window.addEventListener('load', async function() {
   }
   else {
     navigate('home');
-    setTimeout(async function(){ if (typeof loadProvidersFromSupabase==='function') await loadProvidersFromSupabase(); }, 100);
+    // Use a small delay so the IIFE router has priority; guard prevents double-load
+    setTimeout(async function(){ if (typeof loadProvidersFromSupabase==='function') await loadProvidersFromSupabase(); }, 300);
     if (typeof renderCategoriesGrid==='function') renderCategoriesGrid('catsGrid');
   }
 });
