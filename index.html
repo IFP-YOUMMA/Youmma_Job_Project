@@ -27,13 +27,27 @@
 
 // ══ PATCH: Bloquer DataCloneError Headers dans postMessage (Supabase bug) ══
 (function() {
-  // Intercepter console.error pour filtrer l'erreur Supabase Headers
+  // Filtrer erreurs Supabase DataCloneError (console.error ET console.warn)
+  const _filterMsg = (...args) => args.map(a => String(a?.message || a || '')).join(' ');
+  const _isSupabaseError = (msg) => msg.includes('DataCloneError') || msg.includes('Headers object') || msg.includes('could not be cloned');
+  
   const _origConsoleError = console.error;
   console.error = function(...args) {
-    const msg = args.map(a => String(a?.message || a || '')).join(' ');
-    if (msg.includes('DataCloneError') || msg.includes('Headers object') || msg.includes('postMessage')) return;
+    if (_isSupabaseError(_filterMsg(...args))) return;
     _origConsoleError.apply(console, args);
   };
+  const _origConsoleWarn = console.warn;
+  console.warn = function(...args) {
+    if (_isSupabaseError(_filterMsg(...args))) return;
+    _origConsoleWarn.apply(console, args);
+  };
+  
+  // Intercepter les unhandledrejection liés à Supabase
+  window.addEventListener('unhandledrejection', function(e) {
+    if (e.reason && _isSupabaseError(String(e.reason?.message || e.reason))) {
+      e.preventDefault();
+    }
+  });
 
   // Patcher postMessage pour éviter que Supabase envoie des objets non-clonables
   const _origPostMessage = window.postMessage.bind(window);
@@ -55,10 +69,29 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     persistSession: false,
     autoRefreshToken: false,
-    detectSessionInUrl: false
+    detectSessionInUrl: false,
+    storageKey: 'yj_auth'
   },
-  realtime: { params: { eventsPerSecond: 2 } }
+  global: {
+    headers: { 'x-client-info': 'yoummajobs/1.0' }
+  }
 });
+
+// Bloquer BroadcastChannel de Supabase (cause DataCloneError)
+(function() {
+  const _OrigBC = window.BroadcastChannel;
+  if (!_OrigBC) return;
+  window.BroadcastChannel = function(name) {
+    const bc = new _OrigBC(name);
+    const _origPostMsg = bc.postMessage.bind(bc);
+    bc.postMessage = function(data) {
+      try { _origPostMsg(data); }
+      catch(e) { /* silencieux - DataCloneError Supabase */ }
+    };
+    return bc;
+  };
+  window.BroadcastChannel.prototype = _OrigBC.prototype;
+})();
 const SESSION_KEY = 'yj_provider_session';
 const ADMIN_SESSION_KEY = 'yj_admin_session';
 
