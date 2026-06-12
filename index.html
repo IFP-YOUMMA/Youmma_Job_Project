@@ -25,6 +25,22 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 
+// ── STUB GLOBAL openSoonHub (chargé tôt pour les onclick HTML) ──
+function openSoonHub() {
+  if (window._openSoonHubReady) {
+    window._openSoonHubReady();
+  } else {
+    // Attendre que la vraie fonction soit prête
+    var _t = setInterval(function() {
+      if (window._openSoonHubReady) {
+        clearInterval(_t);
+        window._openSoonHubReady();
+      }
+    }, 50);
+  }
+}
+
+
 // ══ PATCH: Bloquer DataCloneError Headers dans postMessage (Supabase bug) ══
 (function() {
   // Filtrer erreurs Supabase DataCloneError (console.error ET console.warn)
@@ -8356,8 +8372,7 @@ async function confirmerNotifLancement() {
 }
 
 // Ouvrir le hub et initialiser
-const _origOpenSoonHub = window.openSoonHub;
-var openSoonHub = window.openSoonHub = function() {
+window._openSoonHubReady = window.openSoonHub = function() {
   // Cacher mainContent et nav directement
   const mc = document.getElementById('mainContent');
   const mn = document.getElementById('mainNav');
