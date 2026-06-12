@@ -5899,40 +5899,41 @@ window.addEventListener('load', async function() {
 });
 window.addEventListener('hashchange', async function() {
   const hash = location.hash.replace('#','').toLowerCase().trim();
-  if (document.getElementById('adminWrap')?.classList.contains('visible') && (hash==='admin'||hash==='')) return;
-  if (document.getElementById('page-dashboard')?.classList.contains('active') && (hash==='dashboard'||hash==='')) return;
-  if (hash==='admin') { navigate('admin'); if(typeof initAdmin==='function') await initAdmin(); }
-  else if (hash==='dashboard') {
+  
+  // Ignorer si admin ou dashboard actif
+  if (document.getElementById('adminWrap')?.classList.contains('visible') && (hash===''||hash==='admin')) return;
+  if (document.getElementById('page-dashboard')?.classList.contains('active') && (hash===''||hash==='dashboard')) return;
+  
+  // Pages spéciales
+  if (hash === 'admin') { if(typeof _realNavigate==='function') _realNavigate('admin'); if(typeof initAdmin==='function') await initAdmin(); return; }
+  if (hash === 'dashboard') {
     const pid = typeof verifierSession==='function' ? await verifierSession() : null;
-    if (!pid) { navigate('login'); return; }
-    navigate('dashboard');
-    if (typeof chargerDashboard==='function') await chargerDashboard(pid);
-  } else if (hash==='inscription') { navigate('inscription'); }
-  else if (hash==='login') { navigate('login'); }
-  else {
-    // Ancres de la page d'accueil → navigate home puis scroller
-    const homeAnchors = ['accueil','prestataires','artisans','categories','tarifs','temoignages','contact','faq','realisations','partenaires','devenir'];
-    if (homeAnchors.includes(hash) || homeAnchors.some(a => hash.startsWith(a))) {
-      // Si mainContent est caché → navigate home d'abord
-      const mc = document.getElementById('mainContent');
-      const isHidden = mc && (mc.style.display === 'none' || getComputedStyle(mc).display === 'none');
-      if (isHidden) {
-        navigate('home');
-        setTimeout(function(){ 
-          if(typeof loadProvidersFromSupabase==='function') loadProvidersFromSupabase();
-          const el = document.getElementById(hash);
-          if (el) el.scrollIntoView({behavior:'smooth',block:'start'});
-        }, 200);
-      } else {
-        // Déjà sur home → juste scroller
-        const el = document.getElementById(hash);
-        if (el) el.scrollIntoView({behavior:'smooth',block:'start'});
-      }
-    } else {
-      navigate('home');
-      setTimeout(function(){ if(typeof loadProvidersFromSupabase==='function') loadProvidersFromSupabase(); }, 100);
-    }
+    if (!pid) { if(typeof _realNavigate==='function') _realNavigate('login'); return; }
+    if(typeof _realNavigate==='function') _realNavigate('dashboard');
+    if(typeof chargerDashboard==='function') await chargerDashboard(pid);
+    return;
   }
+  if (hash === 'inscription') { if(typeof _realNavigate==='function') _realNavigate('inscription'); return; }
+  if (hash === 'login') { if(typeof _realNavigate==='function') _realNavigate('login'); return; }
+  if (hash === 'nouveautes') { if(typeof openSoonHub==='function') openSoonHub(); return; }
+  if (typeof SOON_MODULES !== 'undefined' && SOON_MODULES[hash]) { if(typeof openSoonPage==='function') openSoonPage(hash); return; }
+  
+  // Ancres de la page d'accueil (tarifs, prestataires, categories, etc.)
+  // Afficher mainContent directement sans passer par navigate()
+  const mc = document.getElementById('mainContent');
+  const mn = document.getElementById('mainNav');
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); p.style.display=''; });
+  document.body.classList.add('on-home');
+  document.body.classList.remove('on-admin','admin-mode','on-dashboard');
+  if (mc) mc.style.cssText = 'display:block!important;';
+  if (mn) mn.style.cssText = '';
+  
+  // Charger les données si nécessaire
+  setTimeout(async function(){
+    if(typeof loadProvidersFromSupabase==='function') await loadProvidersFromSupabase();
+    const el = document.getElementById(hash);
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 100);
 });
 </script>
 
