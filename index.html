@@ -22,6 +22,37 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script>
+// ══ PRE-PATCH: Doit s'exécuter AVANT le chargement de supabase-js ══
+// Patch BroadcastChannel AVANT que Supabase ne crée ses instances internes
+(function() {
+  var _OrigBC = window.BroadcastChannel;
+  if (!_OrigBC) return;
+  window.BroadcastChannel = function(name) {
+    var bc = new _OrigBC(name);
+    var _origPM = bc.postMessage.bind(bc);
+    bc.postMessage = function(data) {
+      try { _origPM(data); } catch(e) { /* DataCloneError silencieux */ }
+    };
+    return bc;
+  };
+  window.BroadcastChannel.prototype = _OrigBC.prototype;
+
+  // Patch structuredClone pour éviter le clone de Headers
+  if (window.structuredClone) {
+    var _origSC = window.structuredClone;
+    window.structuredClone = function(val, opts) {
+      try { return _origSC(val, opts); } catch(e) {
+        if (e.name === 'DataCloneError') return JSON.parse(JSON.stringify(val, function(k,v) {
+          if (v instanceof Headers || v instanceof Request || v instanceof Response) return undefined;
+          return v;
+        }));
+        throw e;
+      }
+    };
+  }
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 
@@ -4224,21 +4255,36 @@ function showSection(name) {
 
 // ── LOAD DATA ──
 async function getProvidersAdmin({ statut='',limite=100 }={}) {
-  let q = sb.from('providers').select('id,prenom,nom,metier,categorie,ville,commune,telephone,statut,note_moyenne,nb_vues,photo_url,created_at,essai_actif,essai_fin,abonnement_actif,abonnement_fin,disponibilite,doc_cni_url,doc_cni_statut,doc_diplome_url,doc_diplome_statut').order('created_at',{ascending:false}).limit(limite);
-  if (statut) q = q.eq('statut',statut);
-  const { data } = await q;
-  return data||[];
+  // ── fetch natif PostgREST ──
+  try {
+    const cols = 'id,prenom,nom,metier,categorie,ville,commune,telephone,statut,note_moyenne,nb_vues,photo_url,created_at,essai_actif,essai_fin,abonnement_actif,abonnement_fin,disponibilite,doc_cni_url,doc_cni_statut,doc_diplome_url,doc_diplome_statut';
+    let url = SUPABASE_URL + '/rest/v1/providers?select=' + cols + '&order=created_at.desc&limit=' + limite;
+    if (statut) url += '&statut=eq.' + encodeURIComponent(statut);
+    const resp = await fetch(url, {
+      headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'Accept': 'application/json' }
+    });
+    if (!resp.ok) return [];
+    const data = await resp.json();
+    return Array.isArray(data) ? data : [];
+  } catch(e) { return []; }
 }
 
 async function getAdminStats() {
+  // fetch natif avec Prefer:count=exact
+  async function _count(filter='') {
+    try {
+      const url = SUPABASE_URL + '/rest/v1/providers?select=id' + (filter ? '&' + filter : '');
+      const r = await fetch(url, { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'Accept': 'application/json', 'Prefer': 'count=exact', 'Range-Unit': 'items', 'Range': '0-0' } });
+      const ct = r.headers.get('content-range') || '';
+      const m = ct.match(/\/([0-9]+)/);
+      return m ? parseInt(m[1]) : 0;
+    } catch(e) { return 0; }
+  }
   const [total,att,val,rej,sus] = await Promise.all([
-    sb.from('providers').select('id',{count:'exact',head:true}),
-    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','en_attente'),
-    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','valide'),
-    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','rejete'),
-    sb.from('providers').select('id',{count:'exact',head:true}).eq('statut','suspendu'),
+    _count(), _count('statut=eq.en_attente'), _count('statut=eq.valide'),
+    _count('statut=eq.rejete'), _count('statut=eq.suspendu')
   ]);
-  return {total:total.count||0,en_attente:att.count||0,valides:val.count||0,rejetes:rej.count||0,suspendu:sus.count||0};
+  return {total,en_attente:att,valides:val,rejetes:rej,suspendu:sus};
 }
 
 async function loadAll() {
@@ -4486,29 +4532,30 @@ async function deconnexion() {
   navigate('home');
 }
 async function getProviders({ categorie='', recherche='', limite=20, offset=0 }={}) {
+  // ── Requête directe PostgREST (bypass supabase-js pour éviter DataCloneError) ──
   try {
-    let query = sb.from('providers')
-      .select('id,nom,prenom,metier,categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_favoris,nb_avis,nb_appels,nb_whatsapp,telephone,skills,description,latitude,longitude,tarif,experience,type_compte,nom_entreprise')
-      .eq('statut', 'valide')
-      .order('created_at', { ascending: false })
-      .limit(limite);
-
-    if (offset > 0) query = query.range(offset, offset + limite - 1);
-    if (categorie) query = query.eq('categorie', categorie);
-    if (recherche) query = query.or(`nom.ilike.%${recherche}%,prenom.ilike.%${recherche}%,metier.ilike.%${recherche}%`);
-
-    const result = await query;
-    console.log('getProviders RAW:', JSON.stringify({
-      data_length: result.data?.length,
-      error_msg: result.error?.message||null,
-      status: result.status,
-      first: result.data?.[0]?.id
-    }));
-    if (result.error && !result.data?.length) {
-      console.warn('getProviders error:', result.error?.message||'');
+    const cols = 'id,nom,prenom,metier,categorie,ville,commune,quartier,photo_url,note_moyenne,nb_vues,nb_favoris,nb_avis,nb_appels,nb_whatsapp,telephone,skills,description,latitude,longitude,tarif,experience,type_compte,nom_entreprise';
+    let url = SUPABASE_URL + '/rest/v1/providers?select=' + cols + '&statut=eq.valide&order=created_at.desc&limit=' + limite;
+    if (offset > 0) url += '&offset=' + offset;
+    if (categorie) url += '&categorie=eq.' + encodeURIComponent(categorie);
+    if (recherche) {
+      const r = encodeURIComponent(recherche);
+      url += '&or=(nom.ilike.*' + r + '*,prenom.ilike.*' + r + '*,metier.ilike.*' + r + '*)';
+    }
+    const resp = await fetch(url, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Accept': 'application/json'
+      }
+    });
+    if (!resp.ok) {
+      console.warn('getProviders HTTP:', resp.status);
       return [];
     }
-    return result.data || [];
+    const data = await resp.json();
+    console.log('getProviders OK:', data?.length, 'prestataires');
+    return Array.isArray(data) ? data : [];
   } catch(e) {
     console.warn('getProviders exception:', String(e?.message||e));
     return [];
@@ -7419,8 +7466,8 @@ window.navigate = function(page) {
 <!-- Overlays sidebar mobile -->
 <div class="sidebar-overlay" id="adminSidebarOverlay" onclick="toggleAdminSidebar()"></div>
 <div class="sidebar-overlay" id="dashSidebarOverlay" onclick="toggleDashSidebar()"></div>
-</body>
-</html>
+
+<script>
 
 // ── HAMBURGERS MOBILE ──
 function toggleAdminSidebar() {
@@ -7715,12 +7762,12 @@ const SOON_MODULES = {
   'emplois': {
     icon: '💼',
     title: 'Emplois',
-    desc: 'Trouvez les meilleures opportunités d'emploi en Guinée.',
-    desc2: 'Des milliers d'offres d'emploi dans tous les secteurs — BTP, santé, IT, transport, commerce et bien plus.',
+    desc: "Trouvez les meilleures opportunités d'emploi en Guinée.",
+    desc2: "Des milliers d'offres d'emploi dans tous les secteurs — BTP, santé, IT, transport, commerce et bien plus.",
     features: [
       { icon: '🔍', text: 'Recherche par secteur et localisation' },
       { icon: '📩', text: 'Candidature en un clic' },
-      { icon: '🏢', text: 'Offres d'entreprises vérifiées' },
+      { icon: '🏢', text: "Offres d'entreprises vérifiées" },
       { icon: '🔔', text: 'Alertes emploi personnalisées' },
     ],
     color: '#2563EB',
@@ -7756,9 +7803,9 @@ const SOON_MODULES = {
   },
   'appels-offres': {
     icon: '📋',
-    title: 'Appels d'offres',
-    desc: 'Accédez aux opportunités proposées par les entreprises, ONG et institutions.',
-    desc2: 'Répondez aux appels d'offres des grandes organisations actives en Guinée. Contrats publics, ONG, ambassades, sociétés minières.',
+    title: "Appels d'offres",
+    desc: "Accédez aux opportunités proposées par les entreprises, ONG et institutions.",
+    desc2: "Répondez aux appels d'offres des grandes organisations actives en Guinée. Contrats publics, ONG, ambassades, sociétés minières.",
     features: [
       { icon: '🏛️', text: 'Marchés publics et institutionnels' },
       { icon: '🌍', text: 'ONG et organisations internationales' },
@@ -7774,7 +7821,7 @@ const OTHER_MODULES_LABELS = {
   'emplois': 'Emplois',
   'formations': 'Formations',
   'freelance': 'Freelance',
-  'appels-offres': 'Appels d'offres',
+  'appels-offres': "Appels d'offres",
 };
 
 function openSoonPage(moduleKey) {
@@ -8075,15 +8122,23 @@ window.soumettreCommentaire = soumettreCommentaire;
 
 async function debugProviders() {
   try {
-    // Test 1: sans filtre
-    const r1 = await sb.from('providers').select('id,nom,statut').limit(5);
-    console.log('DEBUG no filter:', r1.data?.length, r1.data?.map(p=>p.statut+':'+p.nom));
-    // Test 2: avec statut valide
-    const r2 = await sb.from('providers').select('id,nom').eq('statut','valide').limit(5);
-    console.log('DEBUG valide:', r2.data?.length, r2.error?.message);
-    // Test 3: compter tous
-    const r3 = await sb.from('providers').select('statut');
-    console.log('DEBUG all statuts:', r3.data?.map(p=>p.statut));
-  } catch(e) { console.log('DEBUG error:', e.message); }
+    const base = SUPABASE_URL + '/rest/v1/providers';
+    const h = { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'Accept': 'application/json' };
+    const r1 = await fetch(base + '?select=id,nom,statut&limit=5', { headers: h });
+    const d1 = r1.ok ? await r1.json() : [];
+    console.log('DEBUG no filter:', d1?.length, d1?.map(p=>p.statut+':'+p.nom));
+    const r2 = await fetch(base + '?select=id,nom&statut=eq.valide&limit=5', { headers: h });
+    const d2 = r2.ok ? await r2.json() : [];
+    console.log('DEBUG valide:', d2?.length, r2.status);
+    const r3 = await fetch(base + '?select=statut', { headers: h });
+    const d3 = r3.ok ? await r3.json() : [];
+    console.log('DEBUG all statuts:', d3?.map(p=>p.statut));
+  } catch(e) { console.log('DEBUG error:', String(e?.message||e)); }
 }
 setTimeout(debugProviders, 2000);
+
+
+</script>
+
+</body>
+</html>
