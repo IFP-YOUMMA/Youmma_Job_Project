@@ -4498,9 +4498,14 @@ async function getProviders({ categorie='', recherche='', limite=20, offset=0 }=
     if (recherche) query = query.or(`nom.ilike.%${recherche}%,prenom.ilike.%${recherche}%,metier.ilike.%${recherche}%`);
 
     const result = await query;
-    // Ne retourner [] que si error ET pas de data (DataCloneError arrive même avec data)
+    console.log('getProviders RAW:', JSON.stringify({
+      data_length: result.data?.length,
+      error_msg: result.error?.message||null,
+      status: result.status,
+      first: result.data?.[0]?.id
+    }));
     if (result.error && !result.data?.length) {
-      console.warn('getProviders:', result.error?.message||'');
+      console.warn('getProviders error:', result.error?.message||'');
       return [];
     }
     return result.data || [];
@@ -8065,3 +8070,20 @@ window.setHubStar = setHubStar;
 window.voterModule = voterModule;
 window.soumettreSuggestion = soumettreSuggestion;
 window.soumettreCommentaire = soumettreCommentaire;
+
+
+
+async function debugProviders() {
+  try {
+    // Test 1: sans filtre
+    const r1 = await sb.from('providers').select('id,nom,statut').limit(5);
+    console.log('DEBUG no filter:', r1.data?.length, r1.data?.map(p=>p.statut+':'+p.nom));
+    // Test 2: avec statut valide
+    const r2 = await sb.from('providers').select('id,nom').eq('statut','valide').limit(5);
+    console.log('DEBUG valide:', r2.data?.length, r2.error?.message);
+    // Test 3: compter tous
+    const r3 = await sb.from('providers').select('statut');
+    console.log('DEBUG all statuts:', r3.data?.map(p=>p.statut));
+  } catch(e) { console.log('DEBUG error:', e.message); }
+}
+setTimeout(debugProviders, 2000);
