@@ -2863,11 +2863,13 @@ async function connexion() {
     init();
   }
   // Re-initialiser si navigate('inscription') est appelé
-  var _origNav = window.navigate;
-  window.navigate = function(p) {
-    if (_origNav) _origNav(p);
-    if (p === 'inscription') setTimeout(init, 100);
-  };
+  window.navigate = (function(_prev){
+    return function(p) {
+      if (typeof _realNavigate === 'function') _realNavigate(p);
+      else if (_prev) _prev(p);
+      if (p === 'inscription') setTimeout(init, 100);
+    };
+  })(window.navigate);
 })();
 </script>
 
@@ -2985,7 +2987,7 @@ if (typeof inscrirePrestataire === 'undefined') {
     };
   }
   init();window.addEventListener('load',init);
-  var _on=window.navigate;window.navigate=function(p){if(_on)_on(p);if(p==='inscription')setTimeout(init,100);};
+  var _on=window.navigate;window.navigate=(function(_p){return function(p){if(typeof _realNavigate==='function')_realNavigate(p);else if(_p)_p(p);if(p==='inscription')setTimeout(init,100);};})(window.navigate);
 })();
 </script>
 </div>
@@ -5853,6 +5855,7 @@ function navigate(page) {
     window.scrollTo(0,0);
   }
 }
+window._realNavigate = navigate;
 
 window.addEventListener('load', async function() {
   const hash = location.hash.replace('#','').toLowerCase().trim();
