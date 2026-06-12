@@ -24,6 +24,30 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+
+// ══ PATCH: Bloquer DataCloneError Headers dans postMessage (Supabase bug) ══
+(function() {
+  // Intercepter console.error pour filtrer l'erreur Supabase Headers
+  const _origConsoleError = console.error;
+  console.error = function(...args) {
+    const msg = args.map(a => String(a?.message || a || '')).join(' ');
+    if (msg.includes('DataCloneError') || msg.includes('Headers object') || msg.includes('postMessage')) return;
+    _origConsoleError.apply(console, args);
+  };
+
+  // Patcher postMessage pour éviter que Supabase envoie des objets non-clonables
+  const _origPostMessage = window.postMessage.bind(window);
+  window.postMessage = function(data, targetOrigin, transfer) {
+    try {
+      // Test si clonable
+      JSON.stringify(data);
+      _origPostMessage(data, targetOrigin || '*', transfer);
+    } catch(e) {
+      // Silencieux si non-clonable
+    }
+  };
+})();
+
 const SUPABASE_URL = 'https://slawwbhlakilnviwzyrb.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsYXd3YmhsYWtpbG52aXd6eXJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MjQxODAsImV4cCI6MjA5NjAwMDE4MH0.XgZRkUrkjCUzSlB0Nyp0QdJf4xZjMcTO5V1bKSDUHNg';
 const { createClient } = supabase;
@@ -482,12 +506,12 @@ async function verifierSession() {
     </div>
   </div>
   <div class="notif-filters">
-    <button class="notif-filter-btn active" onclick="_notifFilter('all',this)">Toutes</button>
-    <button class="notif-filter-btn" onclick="_notifFilter('inscription',this)">📋 Inscriptions</button>
-    <button class="notif-filter-btn" onclick="_notifFilter('code',this)">🔑 Codes</button>
-    <button class="notif-filter-btn" onclick="_notifFilter('mission',this)">🎯 Missions</button>
-    <button class="notif-filter-btn" onclick="_notifFilter('avis',this)">⭐ Avis</button>
-    <button class="notif-filter-btn" onclick="_notifFilter('abonnement',this)">💳 Abonnement</button>
+    <button class="notif-filter-btn active" onclick="_notifSetFilter('all',this)">Toutes</button>
+    <button class="notif-filter-btn" onclick="_notifSetFilter('inscription',this)">📋 Inscriptions</button>
+    <button class="notif-filter-btn" onclick="_notifSetFilter('code',this)">🔑 Codes</button>
+    <button class="notif-filter-btn" onclick="_notifSetFilter('mission',this)">🎯 Missions</button>
+    <button class="notif-filter-btn" onclick="_notifSetFilter('avis',this)">⭐ Avis</button>
+    <button class="notif-filter-btn" onclick="_notifSetFilter('abonnement',this)">💳 Abonnement</button>
   </div>
   <div class="notif-list" id="notifList">
     <div class="notif-empty">
@@ -2206,7 +2230,7 @@ function filterProviders() {
 }
 
 // ── ADMIN RÉALISATIONS ──
-const _realData = [
+var _realData = [
   {idx:0, label:'Réalisation 1', metier:'Construction', gradient:'linear-gradient(135deg,#1A1A4E,#C74B00)'},
   {idx:1, label:'Réalisation 2', metier:'Électricité',  gradient:'linear-gradient(135deg,#1A0A4E,#7C3AED)'},
   {idx:2, label:'Réalisation 3', metier:'Plomberie',    gradient:'linear-gradient(135deg,#0A2E1A,#0F6E56)'},
@@ -4433,8 +4457,13 @@ async function getProviders({ categorie='', recherche='', limite=20, offset=0 }=
     if (categorie) query = query.eq('categorie', categorie);
     if (recherche) query = query.or(`nom.ilike.%${recherche}%,prenom.ilike.%${recherche}%,metier.ilike.%${recherche}%`);
 
-    const { data, error } = await query;
-    if (error) { console.error('getProviders ERROR:', error.message, error.code); return []; }
+    let data, error;
+    try {
+      const _r = await Promise.resolve(query).catch(e => ({ data: [], error: { message: String(e?.message||e) } }));
+      data = _r.data || [];
+      error = _r.error || null;
+    } catch(_e) { return []; }
+    if (error) { console.warn('getProviders: ' + String(error?.message||'')); return []; }
     console.log('getProviders OK:', data?.length, 'résultats');
     // Valeurs par défaut pour colonnes optionnelles
     return (data||[]).map(p => ({
@@ -4640,7 +4669,7 @@ async function geocoderAdresse(commune,quartier) {
 // Remplace / complète la liste dans le fichier principal
 // ============================================================
 
-const CATEGORIES = [
+var CATEGORIES = [
   {
     id: 'sante-beaute',
     nom: 'Santé & Beauté',
@@ -4910,7 +4939,9 @@ async function loadProvidersFromSupabase() {
     const grid = document.getElementById('providersGrid');
     if (grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin" style="font-size:28px;display:block;margin-bottom:12px;"></i>Chargement des artisans...</div>';
 
-    const data = await getProviders({ limite: 20 });
+    let data;
+    try { const _r = await getProviders({ limite: 20 }); data = _r; }
+    catch(_fe) { data = []; console.warn('getProviders fetch error'); }
     console.log('getProviders result:', data?.length, 'prestataires');
 
     if (!data || data.length === 0) {
@@ -5670,7 +5701,30 @@ window.addEventListener('hashchange', async function() {
     if (typeof chargerDashboard==='function') await chargerDashboard(pid);
   } else if (hash==='inscription') { navigate('inscription'); }
   else if (hash==='login') { navigate('login'); }
-  else { navigate('home'); setTimeout(function(){ if(typeof loadProvidersFromSupabase==='function') loadProvidersFromSupabase(); }, 100); }
+  else {
+    // Ancres de la page d'accueil → navigate home puis scroller
+    const homeAnchors = ['accueil','prestataires','artisans','categories','tarifs','temoignages','contact','faq','realisations','partenaires','devenir'];
+    if (homeAnchors.includes(hash) || homeAnchors.some(a => hash.startsWith(a))) {
+      // Si mainContent est caché → navigate home d'abord
+      const mc = document.getElementById('mainContent');
+      const isHidden = mc && (mc.style.display === 'none' || getComputedStyle(mc).display === 'none');
+      if (isHidden) {
+        navigate('home');
+        setTimeout(function(){ 
+          if(typeof loadProvidersFromSupabase==='function') loadProvidersFromSupabase();
+          const el = document.getElementById(hash);
+          if (el) el.scrollIntoView({behavior:'smooth',block:'start'});
+        }, 200);
+      } else {
+        // Déjà sur home → juste scroller
+        const el = document.getElementById(hash);
+        if (el) el.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    } else {
+      navigate('home');
+      setTimeout(function(){ if(typeof loadProvidersFromSupabase==='function') loadProvidersFromSupabase(); }, 100);
+    }
+  }
 });
 </script>
 
@@ -6478,7 +6532,7 @@ function _notifClose() {
 }
 
 // ── FILTRE ──
-function _notifFilter(type, btn) {
+function _notifSetFilter(type, btn) {
   _notifFilter = type;
   document.querySelectorAll('.notif-filter-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
