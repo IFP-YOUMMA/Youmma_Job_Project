@@ -270,20 +270,11 @@ body.admin-mode #page-admin.logged #adminWrap{
 
 /* ── NAV LIENS PROCHAINEMENT ── */
 .nav-link-soon {
-  color:rgba(255,255,255,.45)!important;
-  font-size:12.5px!important;
-  display:flex!important;align-items:center!important;gap:4px!important;
+  color:rgba(255,255,255,.5)!important;
+  font-size:13px!important;
   transition:color .2s!important;
-  position:relative!important;
 }
-.nav-link-soon:hover { color:rgba(255,255,255,.75)!important; }
-.nav-link-soon::after {
-  content:'Bientôt';
-  font-size:8.5px;font-weight:700;
-  background:rgba(245,200,66,.2);color:#F5C842;
-  padding:1px 5px;border-radius:20px;margin-left:3px;
-  white-space:nowrap;
-}
+.nav-link-soon:hover { color:rgba(255,255,255,.8)!important; }
 @media(max-width:1200px){
   .nav-soon-sep,.nav-link-soon{display:none!important;}
 }
@@ -558,10 +549,10 @@ async function verifierSession() {
       <li><a href="#categories">Catégories</a></li>
       <li><a href="#tarifs">Tarifs</a></li>
       <li class="nav-soon-sep" style="color:rgba(255,255,255,.2);font-size:11px;padding:0 4px;align-self:center;">|</li>
-      <li><a href="javascript:void(0)" onclick="openSoonPage('emplois')" class="nav-link-soon"><i class="fa-solid fa-clock" style="font-size:9px;"></i> Emplois</a></li>
-      <li><a href="javascript:void(0)" onclick="openSoonPage('formations')" class="nav-link-soon"><i class="fa-solid fa-clock" style="font-size:9px;"></i> Formations</a></li>
-      <li><a href="javascript:void(0)" onclick="openSoonPage('freelance')" class="nav-link-soon"><i class="fa-solid fa-clock" style="font-size:9px;"></i> Freelance</a></li>
-      <li><a href="javascript:void(0)" onclick="openSoonPage('appels-offres')" class="nav-link-soon"><i class="fa-solid fa-clock" style="font-size:9px;"></i> Appels d'offres</a></li>
+      <li><a href="javascript:void(0)" onclick="openSoonPage('emplois')" class="nav-link-soon">Emplois <span style="font-size:8px;background:rgba(245,200,66,.25);color:#F5C842;padding:1px 5px;border-radius:20px;margin-left:2px;">Bientôt</span></a></li>
+      <li><a href="javascript:void(0)" onclick="openSoonPage('formations')" class="nav-link-soon">Formations <span style="font-size:8px;background:rgba(245,200,66,.25);color:#F5C842;padding:1px 5px;border-radius:20px;margin-left:2px;">Bientôt</span></a></li>
+      <li><a href="javascript:void(0)" onclick="openSoonPage('freelance')" class="nav-link-soon">Freelance <span style="font-size:8px;background:rgba(245,200,66,.25);color:#F5C842;padding:1px 5px;border-radius:20px;margin-left:2px;">Bientôt</span></a></li>
+      <li><a href="javascript:void(0)" onclick="openSoonPage('appels-offres')" class="nav-link-soon">Appels d'offres <span style="font-size:8px;background:rgba(245,200,66,.25);color:#F5C842;padding:1px 5px;border-radius:20px;margin-left:2px;">Bientôt</span></a></li>
     </ul>
     <div class="nav-ctas">
       <button class="btn-nav-ghost" onclick="
