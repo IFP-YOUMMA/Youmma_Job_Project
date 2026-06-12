@@ -267,6 +267,27 @@ body.admin-mode #page-admin.logged #adminWrap{
 .kpi-label{font-size:9px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;opacity:.7!important;}
 }
 
+
+/* ── NAV LIENS PROCHAINEMENT ── */
+.nav-link-soon {
+  color:rgba(255,255,255,.45)!important;
+  font-size:12.5px!important;
+  display:flex!important;align-items:center!important;gap:4px!important;
+  transition:color .2s!important;
+  position:relative!important;
+}
+.nav-link-soon:hover { color:rgba(255,255,255,.75)!important; }
+.nav-link-soon::after {
+  content:'Bientôt';
+  font-size:8.5px;font-weight:700;
+  background:rgba(245,200,66,.2);color:#F5C842;
+  padding:1px 5px;border-radius:20px;margin-left:3px;
+  white-space:nowrap;
+}
+@media(max-width:1200px){
+  .nav-soon-sep,.nav-link-soon{display:none!important;}
+}
+
 </style>
 
 </head>
@@ -474,6 +495,55 @@ async function verifierSession() {
 </div>
 
 <div class="notif-center" id="notifCenter"></div>
+
+<!-- ── PAGES PROCHAINEMENT ── -->
+<div class="page" id="page-soon" style="min-height:100vh;background:linear-gradient(135deg,#0D0D2E 0%,#1A1A4E 100%);display:flex;align-items:center;justify-content:center;padding:40px 20px;">
+  <div style="width:100%;max-width:560px;text-align:center;">
+
+    <!-- Bouton retour -->
+    <button onclick="navigate('home')" style="display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:50px;color:rgba(255,255,255,.7);font-size:13px;cursor:pointer;margin-bottom:36px;transition:background .2s;" onmouseover="this.style.background='rgba(255,255,255,.15)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">
+      <i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Retour à l'accueil
+    </button>
+
+    <!-- Icône animée -->
+    <div id="soonIcon" style="font-size:64px;margin-bottom:20px;"></div>
+
+    <!-- Badge statut -->
+    <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.3);border-radius:50px;padding:6px 16px;font-size:12px;font-weight:700;color:#F5C842;margin-bottom:20px;">
+      <i class="fa-solid fa-clock" style="font-size:10px;"></i> Prochainement disponible
+    </div>
+
+    <!-- Titre et description -->
+    <h1 id="soonTitle" style="font-family:'Libre Baskerville',serif;font-size:clamp(26px,5vw,38px);font-weight:700;color:#fff;margin-bottom:14px;line-height:1.2;"></h1>
+    <p id="soonDesc" style="font-size:15px;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:10px;max-width:440px;margin-left:auto;margin-right:auto;"></p>
+    <p id="soonDesc2" style="font-size:13.5px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:36px;max-width:440px;margin-left:auto;margin-right:auto;"></p>
+
+    <!-- Formulaire notification -->
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:24px;margin-bottom:28px;">
+      <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Soyez informé du lancement</div>
+      <div style="font-size:12.5px;color:rgba(255,255,255,.5);margin-bottom:16px;">Entrez votre email pour recevoir une notification dès que cette fonctionnalité sera disponible.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <input id="soonEmail" type="email" placeholder="votre@email.com" style="flex:1;min-width:200px;padding:12px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;color:#fff;font-size:14px;outline:none;font-family:'DM Sans',sans-serif;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='rgba(255,255,255,.15)'" placeholder="votre@email.com"/>
+        <button onclick="soonNotify()" id="soonBtn" style="padding:12px 22px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:7px;transition:background .2s;" onmouseover="this.style.background='#C74B00'" onmouseout="this.style.background='#E85D04'">
+          <i class="fa-solid fa-bell"></i> Me notifier
+        </button>
+      </div>
+      <div id="soonSuccess" style="display:none;margin-top:12px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);border-radius:9px;padding:10px 14px;font-size:13px;color:#34D399;display:none;align-items:center;gap:8px;">
+        <i class="fa-solid fa-circle-check"></i> <span>Merci ! Vous serez notifié dès le lancement.</span>
+      </div>
+    </div>
+
+    <!-- Features à venir -->
+    <div id="soonFeatures" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:32px;text-align:left;"></div>
+
+    <!-- Autres modules -->
+    <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:24px;">
+      <div style="font-size:12px;color:rgba(255,255,255,.35);margin-bottom:12px;">Autres modules à venir</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;" id="soonOtherModules"></div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <nav id="mainNav">
@@ -483,13 +553,15 @@ async function verifierSession() {
     </a>
     <ul class="nav-links">
       <li><a href="#accueil">Accueil</a></li>
-      <li><a href="#prestataires">Artisans</a></li>
+      <li><a href="#prestataires" onclick="filterCat('')">Artisans</a></li>
+      <li><a href="#prestataires" onclick="filterCat('Services Express')">Express</a></li>
       <li><a href="#categories">Catégories</a></li>
-      <li><a href="#prestataires">Annuaire</a></li>
-      <li><a href="#temoignages">Avis</a></li>
       <li><a href="#tarifs">Tarifs</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li class="nav-soon-sep" style="color:rgba(255,255,255,.2);font-size:11px;padding:0 4px;align-self:center;">|</li>
+      <li><a href="javascript:void(0)" onclick="openSoonPage('emplois')" class="nav-link-soon"><i class="fa-solid fa-clock" style="font-size:9px;"></i> Emplois</a></li>
+      <li><a href="javascript:void(0)" onclick="openSoonPage('formations')" class="nav-link-soon"><i class="fa-solid fa-clock" style="font-size:9px;"></i> Formations</a></li>
+      <li><a href="javascript:void(0)" onclick="openSoonPage('freelance')" class="nav-link-soon"><i class="fa-solid fa-clock" style="font-size:9px;"></i> Freelance</a></li>
+      <li><a href="javascript:void(0)" onclick="openSoonPage('appels-offres')" class="nav-link-soon"><i class="fa-solid fa-clock" style="font-size:9px;"></i> Appels d'offres</a></li>
     </ul>
     <div class="nav-ctas">
       <button class="btn-nav-ghost" onclick="
@@ -516,18 +588,21 @@ async function verifierSession() {
 
 <div class="mobile-menu" id="mobileMenu" onclick="toggleMenu()">
   <div class="mobile-menu-inner" onclick="event.stopPropagation()">
+    <div style="padding:10px 16px 6px;font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;">Disponible</div>
     <a href="#accueil" onclick="toggleMenu()"><i class="fa-solid fa-house"></i> Accueil</a>
-    <a href="#prestataires" onclick="toggleMenu()"> Artisans</a>
-    <a href="#prestataires" onclick="toggleMenu()">👥 Annuaire</a>
-    <a href="#categories" onclick="toggleMenu()">📂 Catégories</a>
-    <a href="#partenaires" onclick="toggleMenu()">🤝 Partenaires</a>
-    <a href="#temoignages" onclick="toggleMenu()"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Avis clients</a>
-    <a href="#tarifs" onclick="toggleMenu()">💰 Tarifs</a>
-    <a href="#faq" onclick="toggleMenu()">❓ FAQ</a>
+    <a href="#prestataires" onclick="toggleMenu();filterCat('')"><i class="fa-solid fa-hammer"></i> Artisans</a>
+    <a href="#prestataires" onclick="toggleMenu();filterCat('Services Express')"><i class="fa-solid fa-bolt"></i> Services Express</a>
+    <a href="#categories" onclick="toggleMenu()"><i class="fa-solid fa-grid-2"></i> Catégories</a>
+    <a href="#tarifs" onclick="toggleMenu()"><i class="fa-solid fa-tag"></i> Tarifs</a>
+    <div style="height:1px;background:rgba(255,255,255,.1);margin:8px 16px;"></div>
+    <div style="padding:6px 16px;font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;">Prochainement</div>
+    <a href="javascript:void(0)" onclick="toggleMenu();openSoonPage('emplois')" style="opacity:.65;"><i class="fa-solid fa-briefcase"></i> Emplois <span style="font-size:9px;background:rgba(245,200,66,.2);color:#F5C842;padding:1px 6px;border-radius:20px;margin-left:4px;">Bientôt</span></a>
+    <a href="javascript:void(0)" onclick="toggleMenu();openSoonPage('formations')" style="opacity:.65;"><i class="fa-solid fa-graduation-cap"></i> Formations <span style="font-size:9px;background:rgba(245,200,66,.2);color:#F5C842;padding:1px 6px;border-radius:20px;margin-left:4px;">Bientôt</span></a>
+    <a href="javascript:void(0)" onclick="toggleMenu();openSoonPage('freelance')" style="opacity:.65;"><i class="fa-solid fa-laptop-code"></i> Freelance <span style="font-size:9px;background:rgba(245,200,66,.2);color:#F5C842;padding:1px 6px;border-radius:20px;margin-left:4px;">Bientôt</span></a>
+    <a href="javascript:void(0)" onclick="toggleMenu();openSoonPage('appels-offres')" style="opacity:.65;"><i class="fa-solid fa-file-signature"></i> Appels d'offres <span style="font-size:9px;background:rgba(245,200,66,.2);color:#F5C842;padding:1px 6px;border-radius:20px;margin-left:4px;">Bientôt</span></a>
+    <div style="height:1px;background:rgba(255,255,255,.1);margin:8px 16px;"></div>
     <a href="#contact" onclick="toggleMenu()"><i class="fa-solid fa-phone"></i> Contact</a>
-    <button onclick="toggleMenu();ouvrirInscription();" style="background:var(--orange);color:#fff;margin-top:12px;border-radius:12px;text-align:center;">🚀 Devenir artisan</button>
   </div>
-</div>
 
 <div id="mainContent">
 
@@ -7347,3 +7422,179 @@ if (typeof _dashUpdateUI === 'function') {
     }
   };
 }
+
+
+
+// ══════════════════════════════════════════════════════════════
+// PAGES "PROCHAINEMENT" — YOUMMA JOBS
+// ══════════════════════════════════════════════════════════════
+
+const SOON_MODULES = {
+  'emplois': {
+    icon: '💼',
+    title: 'Emplois',
+    desc: 'Trouvez les meilleures opportunités d'emploi en Guinée.',
+    desc2: 'Des milliers d'offres d'emploi dans tous les secteurs — BTP, santé, IT, transport, commerce et bien plus.',
+    features: [
+      { icon: '🔍', text: 'Recherche par secteur et localisation' },
+      { icon: '📩', text: 'Candidature en un clic' },
+      { icon: '🏢', text: 'Offres d'entreprises vérifiées' },
+      { icon: '🔔', text: 'Alertes emploi personnalisées' },
+    ],
+    color: '#2563EB',
+    bg: '#EFF6FF',
+  },
+  'formations': {
+    icon: '🎓',
+    title: 'Formations',
+    desc: 'Des formations professionnelles certifiantes accessibles à tous.',
+    desc2: 'Développez vos compétences avec des formateurs certifiés. Formations en ligne et en présentiel, adaptées au marché guinéen.',
+    features: [
+      { icon: '📚', text: 'Formations certifiantes reconnues' },
+      { icon: '🎥', text: 'Cours en ligne et présentiel' },
+      { icon: '🏆', text: 'Certificats téléchargeables' },
+      { icon: '💰', text: 'Tarifs adaptés au marché local' },
+    ],
+    color: '#7C3AED',
+    bg: '#F5F3FF',
+  },
+  'freelance': {
+    icon: '💻',
+    title: 'Freelance',
+    desc: 'Le marché du freelance guinéen sur une seule plateforme.',
+    desc2: 'Développeurs, graphistes, rédacteurs, consultants — trouvez des missions adaptées à vos compétences ou recrutez les meilleurs talents.',
+    features: [
+      { icon: '🤝', text: 'Mise en relation clients-freelances' },
+      { icon: '💳', text: 'Paiement sécurisé Orange Money' },
+      { icon: '⭐', text: 'Système de notation et avis' },
+      { icon: '📋', text: 'Contrats simplifiés en ligne' },
+    ],
+    color: '#059669',
+    bg: '#ECFDF5',
+  },
+  'appels-offres': {
+    icon: '📋',
+    title: 'Appels d'offres',
+    desc: 'Accédez aux opportunités proposées par les entreprises, ONG et institutions.',
+    desc2: 'Répondez aux appels d'offres des grandes organisations actives en Guinée. Contrats publics, ONG, ambassades, sociétés minières.',
+    features: [
+      { icon: '🏛️', text: 'Marchés publics et institutionnels' },
+      { icon: '🌍', text: 'ONG et organisations internationales' },
+      { icon: '⛏️', text: 'Secteur minier et industrie' },
+      { icon: '📊', text: 'Dossiers de soumission guidés' },
+    ],
+    color: '#D97706',
+    bg: '#FFFBEB',
+  },
+};
+
+const OTHER_MODULES_LABELS = {
+  'emplois': 'Emplois',
+  'formations': 'Formations',
+  'freelance': 'Freelance',
+  'appels-offres': 'Appels d'offres',
+};
+
+function openSoonPage(moduleKey) {
+  const m = SOON_MODULES[moduleKey];
+  if (!m) return;
+
+  // Masquer tout
+  document.getElementById('mainContent').style.cssText = 'display:none!important';
+  document.getElementById('mainNav').style.cssText = 'display:none!important';
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.cssText = ''; });
+
+  // Afficher page soon
+  const page = document.getElementById('page-soon');
+  if (!page) return;
+  page.classList.add('active');
+  page.style.cssText = 'display:flex!important;min-height:100vh;';
+  page.dataset.module = moduleKey;
+
+  // Remplir le contenu
+  document.getElementById('soonIcon').textContent = m.icon;
+  document.getElementById('soonTitle').textContent = m.title;
+  document.getElementById('soonDesc').textContent = m.desc;
+  document.getElementById('soonDesc2').textContent = m.desc2;
+  document.getElementById('soonEmail').value = '';
+  document.getElementById('soonSuccess').style.display = 'none';
+  document.getElementById('soonBtn').textContent = '';
+  document.getElementById('soonBtn').innerHTML = '<i class="fa-solid fa-bell"></i> Me notifier';
+
+  // Features
+  const featDiv = document.getElementById('soonFeatures');
+  if (featDiv) {
+    featDiv.innerHTML = m.features.map(f => `
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;display:flex;align-items:flex-start;gap:10px;">
+        <span style="font-size:20px;flex-shrink:0;">${f.icon}</span>
+        <span style="font-size:13px;color:rgba(255,255,255,.75);line-height:1.5;">${f.text}</span>
+      </div>`).join('');
+  }
+
+  // Autres modules
+  const othersDiv = document.getElementById('soonOtherModules');
+  if (othersDiv) {
+    othersDiv.innerHTML = Object.entries(OTHER_MODULES_LABELS)
+      .filter(([k]) => k !== moduleKey)
+      .map(([k, label]) => `
+        <button onclick="openSoonPage('${k}')" style="padding:8px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:50px;color:rgba(255,255,255,.6);font-size:12.5px;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;" onmouseover="this.style.background='rgba(255,255,255,.12)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.6)'">
+          ${SOON_MODULES[k].icon} ${label}
+        </button>`).join('');
+  }
+
+  // Scroll top
+  window.scrollTo(0, 0);
+
+  // Mettre à jour l'URL
+  history.pushState({}, '', '#' + moduleKey);
+}
+
+async function soonNotify() {
+  const email = document.getElementById('soonEmail')?.value.trim();
+  const btn = document.getElementById('soonBtn');
+  const succ = document.getElementById('soonSuccess');
+  const page = document.getElementById('page-soon');
+  const moduleKey = page?.dataset.module || 'soon';
+
+  if (!email || !email.includes('@')) {
+    document.getElementById('soonEmail').style.borderColor = '#EF4444';
+    setTimeout(() => document.getElementById('soonEmail').style.borderColor = 'rgba(255,255,255,.15)', 2000);
+    return;
+  }
+
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...'; }
+
+  try {
+    // Sauvegarder dans Supabase (table soon_notifications)
+    await sb.from('soon_notifications').upsert({
+      email,
+      module: moduleKey,
+      created_at: new Date().toISOString()
+    }, { onConflict: 'email,module' });
+  } catch(e) {
+    // Silencieux si table pas encore créée
+    console.warn('soon_notifications:', e.message);
+  }
+
+  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-bell"></i> Me notifier'; }
+  if (succ) { succ.style.display = 'flex'; }
+  document.getElementById('soonEmail').value = '';
+}
+
+// Gérer le hash #emplois, #formations, etc. au chargement
+window.addEventListener('load', function() {
+  const hash = location.hash.replace('#', '').toLowerCase().trim();
+  if (SOON_MODULES[hash]) {
+    openSoonPage(hash);
+  }
+});
+
+window.addEventListener('hashchange', function() {
+  const hash = location.hash.replace('#', '').toLowerCase().trim();
+  if (SOON_MODULES[hash]) {
+    openSoonPage(hash);
+  }
+});
+
+window.openSoonPage = openSoonPage;
+window.soonNotify = soonNotify;
