@@ -487,6 +487,169 @@ async function verifierSession() {
 
 <div class="notif-center" id="notifCenter"></div>
 
+
+<!-- ── PAGE HUB NOUVEAUTÉS ── -->
+<div class="page" id="page-soon-hub" style="min-height:100vh;background:#F4F6FB;">
+
+  <!-- Header -->
+  <div style="background:linear-gradient(135deg,#0D0D2E 0%,#1A1A4E 100%);padding:60px 20px 80px;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(232,93,4,.15),transparent 60%),radial-gradient(circle at 70% 50%,rgba(124,58,237,.15),transparent 60%);"></div>
+    <div style="position:relative;z-index:1;max-width:640px;margin:0 auto;">
+      <button onclick="navigate('home')" style="display:inline-flex;align-items:center;gap:7px;padding:7px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:50px;color:rgba(255,255,255,.7);font-size:12.5px;cursor:pointer;margin-bottom:28px;" onmouseover="this.style.background='rgba(255,255,255,.15)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">
+        <i class="fa-solid fa-arrow-left" style="font-size:10px;"></i> Retour à l'accueil
+      </button>
+      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.3);border-radius:50px;padding:5px 16px;font-size:12px;font-weight:700;color:#F5C842;margin-bottom:18px;">
+        ✨ Vision YOUMMA JOBS
+      </div>
+      <h1 style="font-family:'Libre Baskerville',serif;font-size:clamp(24px,5vw,40px);font-weight:700;color:#fff;margin-bottom:14px;line-height:1.2;">
+        La plateforme nationale<br>des compétences et opportunités
+      </h1>
+      <p style="font-size:15px;color:rgba(255,255,255,.65);line-height:1.7;max-width:500px;margin:0 auto;">
+        YOUMMA JOBS se construit avec vous. Découvrez ce qui arrive bientôt et donnez-nous votre avis.
+      </p>
+    </div>
+  </div>
+
+  <!-- Cards 4 modules -->
+  <div style="max-width:900px;margin:-40px auto 0;padding:0 20px 40px;">
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:32px;" id="soonHubCards">
+
+      <!-- Emplois -->
+      <div onclick="openSoonPage('emplois')" style="background:#fff;border-radius:18px;padding:24px;cursor:pointer;border:1.5px solid #F0F0F8;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(37,99,235,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.06)'">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="font-size:32px;">💼</div>
+          <span style="font-size:10px;font-weight:700;background:#EFF6FF;color:#2563EB;padding:3px 10px;border-radius:20px;">Bientôt</span>
+        </div>
+        <div style="font-family:'Libre Baskerville',serif;font-size:17px;font-weight:700;color:#1A1A4E;margin-bottom:6px;">Emplois</div>
+        <div style="font-size:12.5px;color:#6B7280;line-height:1.6;margin-bottom:14px;">Offres d'emploi dans tous les secteurs de Guinée.</div>
+        <div style="font-size:12px;color:#2563EB;font-weight:600;display:flex;align-items:center;gap:4px;">En savoir plus <i class="fa-solid fa-arrow-right" style="font-size:10px;"></i></div>
+      </div>
+
+      <!-- Formations -->
+      <div onclick="openSoonPage('formations')" style="background:#fff;border-radius:18px;padding:24px;cursor:pointer;border:1.5px solid #F0F0F8;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(124,58,237,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.06)'">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="font-size:32px;">🎓</div>
+          <span style="font-size:10px;font-weight:700;background:#F5F3FF;color:#7C3AED;padding:3px 10px;border-radius:20px;">Bientôt</span>
+        </div>
+        <div style="font-family:'Libre Baskerville',serif;font-size:17px;font-weight:700;color:#1A1A4E;margin-bottom:6px;">Formations</div>
+        <div style="font-size:12.5px;color:#6B7280;line-height:1.6;margin-bottom:14px;">Formations certifiantes adaptées au marché guinéen.</div>
+        <div style="font-size:12px;color:#7C3AED;font-weight:600;display:flex;align-items:center;gap:4px;">En savoir plus <i class="fa-solid fa-arrow-right" style="font-size:10px;"></i></div>
+      </div>
+
+      <!-- Freelance -->
+      <div onclick="openSoonPage('freelance')" style="background:#fff;border-radius:18px;padding:24px;cursor:pointer;border:1.5px solid #F0F0F8;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(5,150,105,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.06)'">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="font-size:32px;">💻</div>
+          <span style="font-size:10px;font-weight:700;background:#ECFDF5;color:#059669;padding:3px 10px;border-radius:20px;">Bientôt</span>
+        </div>
+        <div style="font-family:'Libre Baskerville',serif;font-size:17px;font-weight:700;color:#1A1A4E;margin-bottom:6px;">Freelance</div>
+        <div style="font-size:12.5px;color:#6B7280;line-height:1.6;margin-bottom:14px;">Missions et opportunités pour talents indépendants.</div>
+        <div style="font-size:12px;color:#059669;font-weight:600;display:flex;align-items:center;gap:4px;">En savoir plus <i class="fa-solid fa-arrow-right" style="font-size:10px;"></i></div>
+      </div>
+
+      <!-- Appels d'offres -->
+      <div onclick="openSoonPage('appels-offres')" style="background:#fff;border-radius:18px;padding:24px;cursor:pointer;border:1.5px solid #F0F0F8;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(217,119,6,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.06)'">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="font-size:32px;">📋</div>
+          <span style="font-size:10px;font-weight:700;background:#FFFBEB;color:#D97706;padding:3px 10px;border-radius:20px;">Bientôt</span>
+        </div>
+        <div style="font-family:'Libre Baskerville',serif;font-size:17px;font-weight:700;color:#1A1A4E;margin-bottom:6px;">Appels d'offres</div>
+        <div style="font-size:12.5px;color:#6B7280;line-height:1.6;margin-bottom:14px;">Opportunités ONG, institutions et entreprises.</div>
+        <div style="font-size:12px;color:#D97706;font-weight:600;display:flex;align-items:center;gap:4px;">En savoir plus <i class="fa-solid fa-arrow-right" style="font-size:10px;"></i></div>
+      </div>
+    </div>
+
+    <!-- Section commentaires / suggestions -->
+    <div style="background:#fff;border-radius:20px;border:1.5px solid #F0F0F8;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);">
+      <div style="background:linear-gradient(135deg,#1A1A4E,#2D2D6B);padding:24px 28px;">
+        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;">
+          💬 Votre avis nous construit
+        </div>
+        <p style="font-size:13px;color:rgba(255,255,255,.65);margin:0;">Suggérez un service, commentez une nouveauté ou votez pour ce qui vous importe le plus. Chaque avis est lu par l'équipe YOUMMA JOBS.</p>
+      </div>
+
+      <!-- Onglets -->
+      <div style="display:flex;border-bottom:1.5px solid #F0F0F8;">
+        <button onclick="switchSuggTab('suggestion')" id="tab-suggestion" style="flex:1;padding:14px;font-size:13px;font-weight:700;color:#E85D04;background:#FFF7F0;border:none;border-bottom:2px solid #E85D04;cursor:pointer;font-family:'DM Sans',sans-serif;">
+          💡 Suggérer un service
+        </button>
+        <button onclick="switchSuggTab('vote')" id="tab-vote" style="flex:1;padding:14px;font-size:13px;font-weight:600;color:#6B7280;background:#fff;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:'DM Sans',sans-serif;">
+          👍 Voter pour un module
+        </button>
+        <button onclick="switchSuggTab('commentaire')" id="tab-commentaire" style="flex:1;padding:14px;font-size:13px;font-weight:600;color:#6B7280;background:#fff;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:'DM Sans',sans-serif;">
+          💬 Laisser un avis
+        </button>
+      </div>
+
+      <!-- Contenu onglets -->
+      <div style="padding:24px 28px;">
+
+        <!-- Suggestion -->
+        <div id="panel-suggestion">
+          <div style="font-size:13.5px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Quel service souhaitez-vous voir sur YOUMMA JOBS ?</div>
+          <input id="sugg-nom" type="text" placeholder="Votre prénom (optionnel)" style="width:100%;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13px;box-sizing:border-box;margin-bottom:10px;outline:none;font-family:'DM Sans',sans-serif;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
+          <input id="sugg-service" type="text" placeholder="Ex: Livraison à domicile, Aide ménagère, Traiteur..." style="width:100%;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13px;box-sizing:border-box;margin-bottom:10px;outline:none;font-family:'DM Sans',sans-serif;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
+          <textarea id="sugg-detail" placeholder="Décrivez pourquoi ce service est important pour vous..." style="width:100%;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13px;box-sizing:border-box;min-height:80px;resize:none;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:14px;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"></textarea>
+          <button onclick="soumettreSuggestion()" style="padding:12px 28px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s;" onmouseover="this.style.background='#C74B00'" onmouseout="this.style.background='#E85D04'">
+            <i class="fa-solid fa-paper-plane"></i> Envoyer ma suggestion
+          </button>
+          <div id="sugg-success" style="display:none;margin-top:12px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:12px 16px;font-size:13px;color:#059669;display:none;align-items:center;gap:8px;">
+            <i class="fa-solid fa-circle-check"></i> Merci ! Votre suggestion a été transmise à l'équipe.
+          </div>
+        </div>
+
+        <!-- Vote -->
+        <div id="panel-vote" style="display:none;">
+          <div style="font-size:13.5px;font-weight:700;color:#1A1A4E;margin-bottom:16px;">Quel module voulez-vous le plus rapidement ?</div>
+          <div id="voteModules" style="display:flex;flex-direction:column;gap:10px;"></div>
+          <div id="vote-success" style="display:none;margin-top:14px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:12px 16px;font-size:13px;color:#059669;align-items:center;gap:8px;display:none;">
+            <i class="fa-solid fa-circle-check"></i> Vote enregistré ! Merci.
+          </div>
+        </div>
+
+        <!-- Commentaire -->
+        <div id="panel-commentaire" style="display:none;">
+          <div style="font-size:13.5px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Partagez votre avis sur YOUMMA JOBS</div>
+          <input id="comm-nom" type="text" placeholder="Votre prénom" style="width:100%;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13px;box-sizing:border-box;margin-bottom:10px;outline:none;font-family:'DM Sans',sans-serif;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
+          <select id="comm-module" style="width:100%;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13px;box-sizing:border-box;margin-bottom:10px;outline:none;background:#fff;font-family:'DM Sans',sans-serif;">
+            <option value="">Sur quel module laissez-vous un avis ?</option>
+            <option value="emplois">💼 Emplois</option>
+            <option value="formations">🎓 Formations</option>
+            <option value="freelance">💻 Freelance</option>
+            <option value="appels-offres">📋 Appels d'offres</option>
+            <option value="general">🌟 YOUMMA JOBS en général</option>
+          </select>
+          <textarea id="comm-texte" placeholder="Votre avis, suggestion ou commentaire..." style="width:100%;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13px;box-sizing:border-box;min-height:90px;resize:none;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:14px;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"></textarea>
+          <!-- Étoiles -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+            <span style="font-size:13px;color:#6B7280;">Satisfaction :</span>
+            <div id="starRating" style="display:flex;gap:4px;">
+              ${[1,2,3,4,5].map(i=>`<button onclick="setHubStar(${i})" id="hubStar${i}" style="background:none;border:none;font-size:22px;cursor:pointer;color:#E5E7EB;transition:color .15s;">★</button>`).join('')}
+            </div>
+          </div>
+          <button onclick="soumettreCommentaire()" style="padding:12px 28px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s;" onmouseover="this.style.background='#C74B00'" onmouseout="this.style.background='#E85D04'">
+            <i class="fa-solid fa-paper-plane"></i> Envoyer mon avis
+          </button>
+          <div id="comm-success" style="display:none;margin-top:12px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:12px 16px;font-size:13px;color:#059669;align-items:center;gap:8px;">
+            <i class="fa-solid fa-circle-check"></i> Merci pour votre avis !
+          </div>
+        </div>
+      </div>
+
+      <!-- Suggestions déjà soumises (les plus récentes) -->
+      <div style="border-top:1.5px solid #F0F0F8;padding:20px 28px;background:#FAFBFF;">
+        <div style="font-size:12px;font-weight:700;color:#9CA3AF;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;">Suggestions de la communauté</div>
+        <div id="suggestionsList" style="display:flex;flex-direction:column;gap:10px;">
+          <div style="text-align:center;color:#9CA3AF;font-size:13px;padding:20px;">
+            <i class="fa-solid fa-spinner fa-spin"></i> Chargement...
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- ── PAGES PROCHAINEMENT ── -->
 <div class="page" id="page-soon" style="min-height:100vh;background:linear-gradient(135deg,#0D0D2E 0%,#1A1A4E 100%);display:flex;align-items:center;justify-content:center;padding:40px 20px;">
   <div style="width:100%;max-width:560px;text-align:center;">
@@ -548,11 +711,10 @@ async function verifierSession() {
       <li><a href="#prestataires" onclick="filterCat('Services Express')">Express</a></li>
       <li><a href="#categories">Catégories</a></li>
       <li><a href="#tarifs">Tarifs</a></li>
-      <li class="nav-soon-sep" style="color:rgba(255,255,255,.2);font-size:11px;padding:0 4px;align-self:center;">|</li>
-      <li><a href="javascript:void(0)" onclick="openSoonPage('emplois')" class="nav-link-soon">Emplois <span style="font-size:8px;background:rgba(245,200,66,.25);color:#F5C842;padding:1px 5px;border-radius:20px;margin-left:2px;">Bientôt</span></a></li>
-      <li><a href="javascript:void(0)" onclick="openSoonPage('formations')" class="nav-link-soon">Formations <span style="font-size:8px;background:rgba(245,200,66,.25);color:#F5C842;padding:1px 5px;border-radius:20px;margin-left:2px;">Bientôt</span></a></li>
-      <li><a href="javascript:void(0)" onclick="openSoonPage('freelance')" class="nav-link-soon">Freelance <span style="font-size:8px;background:rgba(245,200,66,.25);color:#F5C842;padding:1px 5px;border-radius:20px;margin-left:2px;">Bientôt</span></a></li>
-      <li><a href="javascript:void(0)" onclick="openSoonPage('appels-offres')" class="nav-link-soon">Appels d'offres <span style="font-size:8px;background:rgba(245,200,66,.25);color:#F5C842;padding:1px 5px;border-radius:20px;margin-left:2px;">Bientôt</span></a></li>
+      <li><a href="javascript:void(0)" onclick="openSoonHub()" class="nav-link-soon" style="display:flex;align-items:center;gap:5px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.3);border-radius:50px;padding:5px 13px!important;">
+        <span style="font-size:9px;">✨</span> Nouveautés
+        <span style="font-size:8px;background:#F5C842;color:#0D0D2E;padding:1px 6px;border-radius:20px;font-weight:800;">4</span>
+      </a></li>
     </ul>
     <div class="nav-ctas">
       <button class="btn-nav-ghost" onclick="
@@ -5453,6 +5615,7 @@ window.addEventListener('load', async function() {
     if (typeof chargerDashboard==='function') await chargerDashboard(pid);
   } else if (hash === 'inscription') { navigate('inscription'); }
   else if (hash === 'login') { navigate('login'); }
+  else if (hash === 'nouveautes') { openSoonHub(); }
   else if (typeof SOON_MODULES !== 'undefined' && SOON_MODULES[hash]) {
     openSoonPage(hash);
   }
@@ -7593,3 +7756,206 @@ window.addEventListener('hashchange', function() {
 
 window.openSoonPage = openSoonPage;
 window.soonNotify = soonNotify;
+
+// ══════════════════════════════════════════════════════════════
+// HUB NOUVEAUTÉS — Suggestions, Votes, Commentaires
+// ══════════════════════════════════════════════════════════════
+
+var _hubStar = 0;
+var _voteModules = {
+  'emplois':      { label:'💼 Emplois',       votes: 0 },
+  'formations':   { label:'🎓 Formations',    votes: 0 },
+  'freelance':    { label:'💻 Freelance',     votes: 0 },
+  'appels-offres':{ label:'📋 Appels d\'offres', votes: 0 },
+};
+
+function openSoonHub() {
+  // Cacher tout le site
+  document.getElementById('mainContent').style.cssText = 'display:none!important';
+  document.getElementById('mainNav').style.cssText = 'display:none!important';
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.cssText = ''; });
+
+  // Afficher le hub
+  const hub = document.getElementById('page-soon-hub');
+  if (hub) {
+    hub.classList.add('active');
+    hub.style.cssText = 'display:block!important;min-height:100vh;';
+  }
+
+  // Initialiser les étoiles
+  _renderStars();
+  // Charger les votes depuis Supabase
+  _loadVotes();
+  // Charger les suggestions récentes
+  _loadSuggestions();
+
+  history.pushState({}, '', '#nouveautes');
+  window.scrollTo(0, 0);
+}
+
+function switchSuggTab(tab) {
+  ['suggestion','vote','commentaire'].forEach(t => {
+    const panel = document.getElementById('panel-'+t);
+    const btn = document.getElementById('tab-'+t);
+    if (panel) panel.style.display = t === tab ? 'block' : 'none';
+    if (btn) {
+      btn.style.color = t === tab ? '#E85D04' : '#6B7280';
+      btn.style.background = t === tab ? '#FFF7F0' : '#fff';
+      btn.style.borderBottom = t === tab ? '2px solid #E85D04' : '2px solid transparent';
+      btn.style.fontWeight = t === tab ? '700' : '600';
+    }
+  });
+}
+
+function setHubStar(n) {
+  _hubStar = n;
+  _renderStars();
+}
+
+function _renderStars() {
+  for (let i = 1; i <= 5; i++) {
+    const s = document.getElementById('hubStar'+i);
+    if (s) s.style.color = i <= _hubStar ? '#F5C842' : '#E5E7EB';
+  }
+}
+
+// Charger les votes
+async function _loadVotes() {
+  const container = document.getElementById('voteModules');
+  if (!container) return;
+  
+  try {
+    const { data } = await sb.from('soon_votes')
+      .select('module,count')
+      .order('count', { ascending: false });
+    
+    if (data) {
+      data.forEach(row => {
+        if (_voteModules[row.module]) _voteModules[row.module].votes = row.count || 0;
+      });
+    }
+  } catch(e) {}
+
+  const total = Object.values(_voteModules).reduce((s,m) => s + m.votes, 0) || 1;
+  
+  container.innerHTML = Object.entries(_voteModules).map(([key, m]) => {
+    const pct = Math.round(m.votes / total * 100);
+    return `
+      <div onclick="voterModule('${key}')" style="background:#FAFBFF;border:1.5px solid #F0F0F8;border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#E85D04';this.style.background='#FFF7F0'" onmouseout="this.style.borderColor='#F0F0F8';this.style.background='#FAFBFF'">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-size:13.5px;font-weight:700;color:#1A1A4E;">${m.label}</span>
+          <span style="font-size:12px;font-weight:700;color:#E85D04;">${m.votes} vote${m.votes>1?'s':''}</span>
+        </div>
+        <div style="height:6px;background:#F3F4F6;border-radius:3px;overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#E85D04,#F59E0B);border-radius:3px;transition:width .5s;"></div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function voterModule(moduleKey) {
+  try {
+    await sb.from('soon_votes').upsert({ module: moduleKey, count: (_voteModules[moduleKey]?.votes||0) + 1 }, { onConflict: 'module' });
+    if (_voteModules[moduleKey]) _voteModules[moduleKey].votes++;
+    _loadVotes();
+    const s = document.getElementById('vote-success');
+    if (s) { s.style.display = 'flex'; setTimeout(() => s.style.display = 'none', 3000); }
+  } catch(e) { console.warn('vote:', e); }
+}
+
+// Soumettre une suggestion
+async function soumettreSuggestion() {
+  const nom = document.getElementById('sugg-nom')?.value.trim() || 'Anonyme';
+  const service = document.getElementById('sugg-service')?.value.trim();
+  const detail = document.getElementById('sugg-detail')?.value.trim();
+  const succ = document.getElementById('sugg-success');
+  
+  if (!service) {
+    document.getElementById('sugg-service').style.borderColor = '#EF4444';
+    setTimeout(() => document.getElementById('sugg-service').style.borderColor = '#E5E7EB', 2000);
+    return;
+  }
+  
+  try {
+    await sb.from('soon_suggestions').insert({ nom, service, detail, created_at: new Date().toISOString() });
+  } catch(e) { console.warn('suggestion:', e); }
+  
+  document.getElementById('sugg-service').value = '';
+  document.getElementById('sugg-detail').value = '';
+  if (succ) { succ.style.display = 'flex'; setTimeout(() => succ.style.display = 'none', 4000); }
+  setTimeout(_loadSuggestions, 500);
+}
+
+// Soumettre un commentaire
+async function soumettreCommentaire() {
+  const nom = document.getElementById('comm-nom')?.value.trim() || 'Anonyme';
+  const module = document.getElementById('comm-module')?.value || 'general';
+  const texte = document.getElementById('comm-texte')?.value.trim();
+  const note = _hubStar || null;
+  const succ = document.getElementById('comm-success');
+  
+  if (!texte) {
+    document.getElementById('comm-texte').style.borderColor = '#EF4444';
+    setTimeout(() => document.getElementById('comm-texte').style.borderColor = '#E5E7EB', 2000);
+    return;
+  }
+  
+  try {
+    await sb.from('soon_suggestions').insert({ nom, service: module, detail: texte, note, type: 'commentaire', created_at: new Date().toISOString() });
+  } catch(e) { console.warn('commentaire:', e); }
+  
+  document.getElementById('comm-texte').value = '';
+  _hubStar = 0; _renderStars();
+  if (succ) { succ.style.display = 'flex'; setTimeout(() => succ.style.display = 'none', 4000); }
+  setTimeout(_loadSuggestions, 500);
+}
+
+// Charger les suggestions récentes
+async function _loadSuggestions() {
+  const list = document.getElementById('suggestionsList');
+  if (!list) return;
+  
+  try {
+    const { data } = await sb.from('soon_suggestions')
+      .select('nom,service,detail,note,created_at')
+      .order('created_at', { ascending: false })
+      .limit(5);
+    
+    if (!data || !data.length) {
+      list.innerHTML = '<div style="text-align:center;color:#9CA3AF;font-size:13px;padding:16px;">Soyez le premier à donner votre avis !</div>';
+      return;
+    }
+    
+    list.innerHTML = data.map(s => {
+      const ago = typeof _notifTimeAgo === 'function' ? _notifTimeAgo(s.created_at) : new Date(s.created_at).toLocaleDateString('fr-FR');
+      const stars = s.note ? '★'.repeat(s.note) + '☆'.repeat(5-s.note) : '';
+      return `
+        <div style="background:#fff;border-radius:12px;padding:14px 16px;border:1.5px solid #F0F0F8;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div style="font-size:13px;font-weight:700;color:#1A1A4E;">${s.nom || 'Anonyme'}</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              ${stars ? `<span style="color:#F5C842;font-size:12px;">${stars}</span>` : ''}
+              <span style="font-size:11px;color:#9CA3AF;">${ago}</span>
+            </div>
+          </div>
+          ${s.service && s.service !== 'general' ? `<span style="font-size:10.5px;background:#F4F6FB;color:#6B7280;padding:2px 8px;border-radius:20px;margin-bottom:6px;display:inline-block;">${s.service}</span>` : ''}
+          <div style="font-size:13px;color:#374151;line-height:1.6;margin-top:4px;">${s.detail || s.service || ''}</div>
+        </div>`;
+    }).join('');
+  } catch(e) {
+    list.innerHTML = '<div style="text-align:center;color:#9CA3AF;font-size:13px;padding:16px;">Erreur de chargement</div>';
+  }
+}
+
+// Gérer le hash #nouveautes
+window.addEventListener('hashchange', function() {
+  const hash = location.hash.replace('#','').toLowerCase().trim();
+  if (hash === 'nouveautes') openSoonHub();
+});
+
+window.openSoonHub = openSoonHub;
+window.switchSuggTab = switchSuggTab;
+window.setHubStar = setHubStar;
+window.voterModule = voterModule;
+window.soumettreSuggestion = soumettreSuggestion;
+window.soumettreCommentaire = soumettreCommentaire;
