@@ -551,166 +551,320 @@ async function verifierSession() {
 <div class="notif-center" id="notifCenter"></div>
 
 
-<!-- ── PAGE HUB NOUVEAUTÉS ── -->
-<div class="page" id="page-soon-hub" style="min-height:100vh;background:#F4F6FB;">
+<!-- ── PAGE NOUVEAUTÉS — YOUMMA JOBS ── -->
+<div class="page" id="page-soon-hub">
 
-  <!-- Header -->
-  <div style="background:linear-gradient(135deg,#0D0D2E 0%,#1A1A4E 100%);padding:60px 20px 80px;text-align:center;position:relative;overflow:hidden;">
-    <div style="position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(232,93,4,.15),transparent 60%),radial-gradient(circle at 70% 50%,rgba(124,58,237,.15),transparent 60%);"></div>
-    <div style="position:relative;z-index:1;max-width:640px;margin:0 auto;">
-      <button onclick="navigate('home')" style="display:inline-flex;align-items:center;gap:7px;padding:7px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:50px;color:rgba(255,255,255,.7);font-size:12.5px;cursor:pointer;margin-bottom:28px;" onmouseover="this.style.background='rgba(255,255,255,.15)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">
-        <i class="fa-solid fa-arrow-left" style="font-size:10px;"></i> Retour à l'accueil
+<!-- ── NAVBAR INTERNE ── -->
+<nav style="position:sticky;top:0;z-index:100;background:rgba(13,13,46,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.08);padding:0 5%;height:64px;display:flex;align-items:center;justify-content:space-between;">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button onclick="navigate('home')" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:rgba(255,255,255,.7);padding:7px 14px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.2s;" onmouseover="this.style.background='rgba(255,255,255,.13)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
+      <i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Accueil
+    </button>
+  </div>
+  <div style="font-family:'Libre Baskerville',serif;font-size:15px;font-weight:700;color:#fff;letter-spacing:.02em;">YOUMMA<span style="color:#E85D04;">JOBS</span></div>
+  <div style="font-size:11px;font-weight:700;color:#F5C842;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.25);padding:4px 12px;border-radius:20px;">✨ Nouveautés</div>
+</nav>
+
+<!-- ── HERO ── -->
+<section style="background:linear-gradient(135deg,#0A0A1E 0%,#1A1A4E 50%,#0D0D2E 100%);padding:80px 5% 100px;text-align:center;position:relative;overflow:hidden;">
+  <!-- Effets visuels -->
+  <div style="position:absolute;top:-100px;left:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(232,93,4,.18),transparent 70%);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(124,58,237,.15),transparent 70%);pointer-events:none;"></div>
+  <div style="position:relative;z-index:1;max-width:720px;margin:0 auto;">
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.3);border-radius:50px;padding:6px 18px;font-size:12px;font-weight:700;color:#F5C842;margin-bottom:28px;letter-spacing:.05em;">
+      <i class="fa-solid fa-rocket" style="font-size:11px;"></i> VISION & ROADMAP 2025–2026
+    </div>
+    <h1 style="font-family:'Libre Baskerville',serif;font-size:clamp(28px,5vw,52px);font-weight:700;color:#fff;margin-bottom:20px;line-height:1.15;">
+      L'avenir de YOUMMAJOBS<br><span style="color:#E85D04;">commence aujourd'hui</span>
+    </h1>
+    <p style="font-size:clamp(14px,2vw,17px);color:rgba(255,255,255,.65);line-height:1.75;max-width:580px;margin:0 auto 36px;">
+      Découvrez les prochaines fonctionnalités qui viendront enrichir l'écosystème YOUMMAJOBS et créer davantage d'opportunités pour les professionnels et les entreprises en Guinée.
+    </p>
+    <!-- Stats -->
+    <div style="display:flex;justify-content:center;gap:0;flex-wrap:wrap;">
+      <div style="padding:0 28px;border-right:1px solid rgba(255,255,255,.1);text-align:center;">
+        <div style="font-family:'Libre Baskerville',serif;font-size:28px;font-weight:700;color:#E85D04;">3</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;">Services actifs</div>
+      </div>
+      <div style="padding:0 28px;border-right:1px solid rgba(255,255,255,.1);text-align:center;">
+        <div style="font-family:'Libre Baskerville',serif;font-size:28px;font-weight:700;color:#F5C842;">4</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;">Modules en préparation</div>
+      </div>
+      <div style="padding:0 28px;text-align:center;">
+        <div style="font-family:'Libre Baskerville',serif;font-size:28px;font-weight:700;color:#A78BFA;">1</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;">Écosystème national</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 1 : DISPONIBLE MAINTENANT ── -->
+<section style="background:#F7F8FC;padding:72px 5%;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <div style="display:inline-flex;align-items:center;gap:7px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:50px;padding:5px 16px;font-size:12px;font-weight:700;color:#059669;margin-bottom:16px;">
+        <i class="fa-solid fa-circle-check"></i> Disponible maintenant
+      </div>
+      <h2 style="font-family:'Libre Baskerville',serif;font-size:clamp(22px,3.5vw,34px);font-weight:700;color:#1A1A4E;margin-bottom:10px;">Ce qui est disponible aujourd'hui</h2>
+      <p style="font-size:15px;color:#6B7280;max-width:500px;margin:0 auto;">Trois services opérationnels pour connecter clients et professionnels en Guinée.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+      <div onclick="navigate('home')" style="background:#fff;border-radius:20px;padding:28px;border:2px solid #ECFDF5;cursor:pointer;transition:.25s;box-shadow:0 2px 16px rgba(5,150,105,.07);" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(5,150,105,.15)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 16px rgba(5,150,105,.07)'">
+        <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#059669,#10B981);display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 6px 20px rgba(5,150,105,.3);">
+          <i class="fa-solid fa-hammer" style="color:#fff;font-size:20px;"></i>
+        </div>
+        <div style="font-size:9px;font-weight:800;color:#059669;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">✓ Actif</div>
+        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:8px;">Artisans</div>
+        <div style="font-size:13px;color:#6B7280;line-height:1.6;">Mise en relation avec des artisans qualifiés et vérifiés.</div>
+      </div>
+      <div onclick="navigate('home')" style="background:#fff;border-radius:20px;padding:28px;border:2px solid #ECFDF5;cursor:pointer;transition:.25s;box-shadow:0 2px 16px rgba(5,150,105,.07);" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(5,150,105,.15)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 16px rgba(5,150,105,.07)'">
+        <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#2563EB,#3B82F6);display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 6px 20px rgba(37,99,235,.3);">
+          <i class="fa-solid fa-briefcase" style="color:#fff;font-size:20px;"></i>
+        </div>
+        <div style="font-size:9px;font-weight:800;color:#059669;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">✓ Actif</div>
+        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:8px;">Prestataires</div>
+        <div style="font-size:13px;color:#6B7280;line-height:1.6;">Trouvez rapidement des professionnels compétents et certifiés.</div>
+      </div>
+      <div onclick="navigate('home')" style="background:#fff;border-radius:20px;padding:28px;border:2px solid #ECFDF5;cursor:pointer;transition:.25s;box-shadow:0 2px 16px rgba(5,150,105,.07);" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(5,150,105,.15)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 16px rgba(5,150,105,.07)'">
+        <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#E85D04,#F59E0B);display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 6px 20px rgba(232,93,4,.3);">
+          <i class="fa-solid fa-bolt" style="color:#fff;font-size:20px;"></i>
+        </div>
+        <div style="font-size:9px;font-weight:800;color:#059669;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">✓ Actif</div>
+        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:8px;">Services Express</div>
+        <div style="font-size:13px;color:#6B7280;line-height:1.6;">Réponse rapide pour les besoins urgents.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 2 : PROCHAINES ÉVOLUTIONS ── -->
+<section style="background:#fff;padding:72px 5%;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <div style="display:inline-flex;align-items:center;gap:7px;background:#FFF7F0;border:1px solid #FDE8D8;border-radius:50px;padding:5px 16px;font-size:12px;font-weight:700;color:#E85D04;margin-bottom:16px;">
+        <i class="fa-solid fa-clock"></i> En préparation
+      </div>
+      <h2 style="font-family:'Libre Baskerville',serif;font-size:clamp(22px,3.5vw,34px);font-weight:700;color:#1A1A4E;margin-bottom:10px;">Les prochaines évolutions</h2>
+      <p style="font-size:15px;color:#6B7280;max-width:540px;margin:0 auto;">Quatre modules en cours de développement pour transformer YOUMMAJOBS en écosystème complet.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
+
+      <div style="background:linear-gradient(135deg,#EFF6FF,#F8FAFF);border-radius:20px;padding:28px;border:1.5px solid #BFDBFE;transition:.25s;position:relative;overflow:hidden;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 16px 40px rgba(37,99,235,.12)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="position:absolute;top:16px;right:16px;background:#2563EB;color:#fff;font-size:9.5px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.05em;">BIENTÔT</div>
+        <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#1D4ED8,#3B82F6);display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 6px 20px rgba(37,99,235,.3);">
+          <i class="fa-solid fa-suitcase" style="color:#fff;font-size:20px;"></i>
+        </div>
+        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:8px;">Emplois</div>
+        <div style="font-size:13px;color:#6B7280;line-height:1.65;margin-bottom:20px;">Publication et recherche d'offres d'emploi dans tous les secteurs de Guinée.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
+          <span style="font-size:10.5px;background:#DBEAFE;color:#1E40AF;padding:3px 10px;border-radius:20px;font-weight:600;">Toutes villes</span>
+          <span style="font-size:10.5px;background:#DBEAFE;color:#1E40AF;padding:3px 10px;border-radius:20px;font-weight:600;">CV en ligne</span>
+          <span style="font-size:10.5px;background:#DBEAFE;color:#1E40AF;padding:3px 10px;border-radius:20px;font-weight:600;">Alertes emploi</span>
+        </div>
+        <button onclick="ouvrirNotifLancement('emplois',this)" style="width:100%;padding:11px;background:#2563EB;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;" onmouseover="this.style.background='#1D4ED8'" onmouseout="this.style.background='#2563EB'">
+          <i class="fa-solid fa-bell"></i> M'informer du lancement
+        </button>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#F5F3FF,#FAF9FF);border-radius:20px;padding:28px;border:1.5px solid #DDD6FE;transition:.25s;position:relative;overflow:hidden;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 16px 40px rgba(124,58,237,.12)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="position:absolute;top:16px;right:16px;background:#7C3AED;color:#fff;font-size:9.5px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.05em;">BIENTÔT</div>
+        <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#6D28D9,#8B5CF6);display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 6px 20px rgba(124,58,237,.3);">
+          <i class="fa-solid fa-graduation-cap" style="color:#fff;font-size:20px;"></i>
+        </div>
+        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:8px;">Formations</div>
+        <div style="font-size:13px;color:#6B7280;line-height:1.65;margin-bottom:20px;">Accès aux formations professionnelles et certifiantes adaptées au marché guinéen.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
+          <span style="font-size:10.5px;background:#EDE9FE;color:#5B21B6;padding:3px 10px;border-radius:20px;font-weight:600;">Certifiantes</span>
+          <span style="font-size:10.5px;background:#EDE9FE;color:#5B21B6;padding:3px 10px;border-radius:20px;font-weight:600;">En ligne</span>
+          <span style="font-size:10.5px;background:#EDE9FE;color:#5B21B6;padding:3px 10px;border-radius:20px;font-weight:600;">Présentiel</span>
+        </div>
+        <button onclick="ouvrirNotifLancement('formations',this)" style="width:100%;padding:11px;background:#7C3AED;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;" onmouseover="this.style.background='#6D28D9'" onmouseout="this.style.background='#7C3AED'">
+          <i class="fa-solid fa-bell"></i> M'informer du lancement
+        </button>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#ECFDF5,#F0FDF9);border-radius:20px;padding:28px;border:1.5px solid #A7F3D0;transition:.25s;position:relative;overflow:hidden;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 16px 40px rgba(5,150,105,.12)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="position:absolute;top:16px;right:16px;background:#059669;color:#fff;font-size:9.5px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.05em;">BIENTÔT</div>
+        <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#047857,#10B981);display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 6px 20px rgba(5,150,105,.3);">
+          <i class="fa-solid fa-laptop-code" style="color:#fff;font-size:20px;"></i>
+        </div>
+        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:8px;">Freelance</div>
+        <div style="font-size:13px;color:#6B7280;line-height:1.65;margin-bottom:20px;">Missions et opportunités pour travailleurs indépendants. Paiement sécurisé Orange Money.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
+          <span style="font-size:10.5px;background:#D1FAE5;color:#065F46;padding:3px 10px;border-radius:20px;font-weight:600;">Orange Money</span>
+          <span style="font-size:10.5px;background:#D1FAE5;color:#065F46;padding:3px 10px;border-radius:20px;font-weight:600;">Contrats</span>
+          <span style="font-size:10.5px;background:#D1FAE5;color:#065F46;padding:3px 10px;border-radius:20px;font-weight:600;">Portfolio</span>
+        </div>
+        <button onclick="ouvrirNotifLancement('freelance',this)" style="width:100%;padding:11px;background:#059669;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;" onmouseover="this.style.background='#047857'" onmouseout="this.style.background='#059669'">
+          <i class="fa-solid fa-bell"></i> M'informer du lancement
+        </button>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#FFFBEB,#FFFDF5);border-radius:20px;padding:28px;border:1.5px solid #FDE68A;transition:.25s;position:relative;overflow:hidden;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 16px 40px rgba(217,119,6,.12)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="position:absolute;top:16px;right:16px;background:#D97706;color:#fff;font-size:9.5px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.05em;">BIENTÔT</div>
+        <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#B45309,#F59E0B);display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 6px 20px rgba(217,119,6,.3);">
+          <i class="fa-solid fa-file-signature" style="color:#fff;font-size:20px;"></i>
+        </div>
+        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#1A1A4E;margin-bottom:8px;">Appels d'offres</div>
+        <div style="font-size:13px;color:#6B7280;line-height:1.65;margin-bottom:20px;">Accès aux opportunités publiées par entreprises, ONG et institutions publiques.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
+          <span style="font-size:10.5px;background:#FEF3C7;color:#92400E;padding:3px 10px;border-radius:20px;font-weight:600;">ONG</span>
+          <span style="font-size:10.5px;background:#FEF3C7;color:#92400E;padding:3px 10px;border-radius:20px;font-weight:600;">Marchés publics</span>
+          <span style="font-size:10.5px;background:#FEF3C7;color:#92400E;padding:3px 10px;border-radius:20px;font-weight:600;">Secteur minier</span>
+        </div>
+        <button onclick="ouvrirNotifLancement('appels-offres',this)" style="width:100%;padding:11px;background:#D97706;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;" onmouseover="this.style.background='#B45309'" onmouseout="this.style.background='#D97706'">
+          <i class="fa-solid fa-bell"></i> M'informer du lancement
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 3 : VOTE ── -->
+<section style="background:#F7F8FC;padding:72px 5%;">
+  <div style="max-width:700px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:40px;">
+      <div style="display:inline-flex;align-items:center;gap:7px;background:#FFF7F0;border:1px solid #FDE8D8;border-radius:50px;padding:5px 16px;font-size:12px;font-weight:700;color:#E85D04;margin-bottom:16px;">
+        <i class="fa-solid fa-chart-bar"></i> Votre avis compte
+      </div>
+      <h2 style="font-family:'Libre Baskerville',serif;font-size:clamp(20px,3.5vw,30px);font-weight:700;color:#1A1A4E;margin-bottom:10px;">Quel service souhaitez-vous<br>voir arriver en premier ?</h2>
+      <p style="font-size:14px;color:#6B7280;">Votre vote influence nos priorités de développement.</p>
+    </div>
+    <div style="background:#fff;border-radius:20px;padding:28px;border:1.5px solid #F0F0F8;box-shadow:0 4px 20px rgba(0,0,0,.06);">
+      <div id="hubVoteOptions" style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px;"></div>
+      <button onclick="soumettrVoteHub()" style="width:100%;padding:14px;background:linear-gradient(135deg,#E85D04,#F59E0B);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 4px 16px rgba(232,93,4,.3);transition:.2s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
+        <i class="fa-solid fa-check-circle"></i> Voter maintenant
       </button>
-      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.3);border-radius:50px;padding:5px 16px;font-size:12px;font-weight:700;color:#F5C842;margin-bottom:18px;">
-        ✨ Vision YOUMMA JOBS
+      <div id="hubVoteSucces" style="display:none;margin-top:14px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:12px 16px;font-size:13px;color:#059669;align-items:center;gap:8px;">
+        <i class="fa-solid fa-circle-check"></i> Votre vote a été enregistré. Merci !
       </div>
-      <h1 style="font-family:'Libre Baskerville',serif;font-size:clamp(24px,5vw,40px);font-weight:700;color:#fff;margin-bottom:14px;line-height:1.2;">
-        La plateforme nationale<br>des compétences et opportunités
-      </h1>
-      <p style="font-size:15px;color:rgba(255,255,255,.65);line-height:1.7;max-width:500px;margin:0 auto;">
-        YOUMMA JOBS se construit avec vous. Découvrez ce qui arrive bientôt et donnez-nous votre avis.
-      </p>
+      <div id="hubVoteStats" style="margin-top:20px;padding-top:20px;border-top:1px solid #F0F0F8;"></div>
     </div>
   </div>
+</section>
 
-  <!-- Cards 4 modules -->
-  <div style="max-width:900px;margin:-40px auto 0;padding:0 20px 40px;">
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:32px;" id="soonHubCards">
-
-      <!-- Emplois -->
-      <div onclick="openSoonPage('emplois')" style="background:#fff;border-radius:18px;padding:24px;cursor:pointer;border:1.5px solid #F0F0F8;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(37,99,235,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.06)'">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <div style="font-size:32px;">💼</div>
-          <span style="font-size:10px;font-weight:700;background:#EFF6FF;color:#2563EB;padding:3px 10px;border-radius:20px;">Bientôt</span>
-        </div>
-        <div style="font-family:'Libre Baskerville',serif;font-size:17px;font-weight:700;color:#1A1A4E;margin-bottom:6px;">Emplois</div>
-        <div style="font-size:12.5px;color:#6B7280;line-height:1.6;margin-bottom:14px;">Offres d'emploi dans tous les secteurs de Guinée.</div>
-        <div style="font-size:12px;color:#2563EB;font-weight:600;display:flex;align-items:center;gap:4px;">En savoir plus <i class="fa-solid fa-arrow-right" style="font-size:10px;"></i></div>
+<!-- ── SECTION 4 : SUGGESTION ── -->
+<section style="background:#fff;padding:72px 5%;">
+  <div style="max-width:680px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:40px;">
+      <div style="display:inline-flex;align-items:center;gap:7px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:50px;padding:5px 16px;font-size:12px;font-weight:700;color:#2563EB;margin-bottom:16px;">
+        <i class="fa-solid fa-lightbulb"></i> Vos idées
       </div>
-
-      <!-- Formations -->
-      <div onclick="openSoonPage('formations')" style="background:#fff;border-radius:18px;padding:24px;cursor:pointer;border:1.5px solid #F0F0F8;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(124,58,237,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.06)'">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <div style="font-size:32px;">🎓</div>
-          <span style="font-size:10px;font-weight:700;background:#F5F3FF;color:#7C3AED;padding:3px 10px;border-radius:20px;">Bientôt</span>
-        </div>
-        <div style="font-family:'Libre Baskerville',serif;font-size:17px;font-weight:700;color:#1A1A4E;margin-bottom:6px;">Formations</div>
-        <div style="font-size:12.5px;color:#6B7280;line-height:1.6;margin-bottom:14px;">Formations certifiantes adaptées au marché guinéen.</div>
-        <div style="font-size:12px;color:#7C3AED;font-weight:600;display:flex;align-items:center;gap:4px;">En savoir plus <i class="fa-solid fa-arrow-right" style="font-size:10px;"></i></div>
-      </div>
-
-      <!-- Freelance -->
-      <div onclick="openSoonPage('freelance')" style="background:#fff;border-radius:18px;padding:24px;cursor:pointer;border:1.5px solid #F0F0F8;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(5,150,105,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.06)'">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <div style="font-size:32px;">💻</div>
-          <span style="font-size:10px;font-weight:700;background:#ECFDF5;color:#059669;padding:3px 10px;border-radius:20px;">Bientôt</span>
-        </div>
-        <div style="font-family:'Libre Baskerville',serif;font-size:17px;font-weight:700;color:#1A1A4E;margin-bottom:6px;">Freelance</div>
-        <div style="font-size:12.5px;color:#6B7280;line-height:1.6;margin-bottom:14px;">Missions et opportunités pour talents indépendants.</div>
-        <div style="font-size:12px;color:#059669;font-weight:600;display:flex;align-items:center;gap:4px;">En savoir plus <i class="fa-solid fa-arrow-right" style="font-size:10px;"></i></div>
-      </div>
-
-      <!-- Appels d'offres -->
-      <div onclick="openSoonPage('appels-offres')" style="background:#fff;border-radius:18px;padding:24px;cursor:pointer;border:1.5px solid #F0F0F8;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(217,119,6,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.06)'">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <div style="font-size:32px;">📋</div>
-          <span style="font-size:10px;font-weight:700;background:#FFFBEB;color:#D97706;padding:3px 10px;border-radius:20px;">Bientôt</span>
-        </div>
-        <div style="font-family:'Libre Baskerville',serif;font-size:17px;font-weight:700;color:#1A1A4E;margin-bottom:6px;">Appels d'offres</div>
-        <div style="font-size:12.5px;color:#6B7280;line-height:1.6;margin-bottom:14px;">Opportunités ONG, institutions et entreprises.</div>
-        <div style="font-size:12px;color:#D97706;font-weight:600;display:flex;align-items:center;gap:4px;">En savoir plus <i class="fa-solid fa-arrow-right" style="font-size:10px;"></i></div>
+      <h2 style="font-family:'Libre Baskerville',serif;font-size:clamp(20px,3.5vw,30px);font-weight:700;color:#1A1A4E;margin-bottom:10px;">Proposez une idée pour<br>améliorer YOUMMAJOBS</h2>
+      <p style="font-size:14px;color:#6B7280;">Chaque suggestion est lue par notre équipe.</p>
+    </div>
+    <div style="background:#F7F8FC;border-radius:20px;padding:28px;border:1.5px solid #F0F0F8;">
+      <input id="hubSuggNom" type="text" placeholder="Votre prénom (optionnel)" style="width:100%;padding:12px 15px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;box-sizing:border-box;margin-bottom:12px;outline:none;font-family:'DM Sans',sans-serif;background:#fff;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
+      <textarea id="hubSuggTexte" placeholder="Décrivez votre idée ou suggestion..." style="width:100%;padding:12px 15px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;box-sizing:border-box;min-height:110px;resize:none;outline:none;font-family:'DM Sans',sans-serif;background:#fff;margin-bottom:14px;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"></textarea>
+      <button onclick="soumettreSuggHub()" style="width:100%;padding:13px;background:#1A1A4E;border:none;border-radius:10px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;" onmouseover="this.style.background='#2D2D6B'" onmouseout="this.style.background='#1A1A4E'">
+        <i class="fa-solid fa-paper-plane"></i> Envoyer ma suggestion
+      </button>
+      <div id="hubSuggSucces" style="display:none;margin-top:12px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:12px 16px;font-size:13px;color:#059669;align-items:center;gap:8px;">
+        <i class="fa-solid fa-circle-check"></i> Suggestion envoyée ! Merci pour votre contribution.
       </div>
     </div>
-
-    <!-- Section commentaires / suggestions -->
-    <div style="background:#fff;border-radius:20px;border:1.5px solid #F0F0F8;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);">
-      <div style="background:linear-gradient(135deg,#1A1A4E,#2D2D6B);padding:24px 28px;">
-        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;">
-          💬 Votre avis nous construit
-        </div>
-        <p style="font-size:13px;color:rgba(255,255,255,.65);margin:0;">Suggérez un service, commentez une nouveauté ou votez pour ce qui vous importe le plus. Chaque avis est lu par l'équipe YOUMMA JOBS.</p>
-      </div>
-
-      <!-- Onglets -->
-      <div style="display:flex;border-bottom:1.5px solid #F0F0F8;">
-        <button onclick="switchSuggTab('suggestion')" id="tab-suggestion" style="flex:1;padding:14px;font-size:13px;font-weight:700;color:#E85D04;background:#FFF7F0;border:none;border-bottom:2px solid #E85D04;cursor:pointer;font-family:'DM Sans',sans-serif;">
-          💡 Suggérer un service
-        </button>
-        <button onclick="switchSuggTab('vote')" id="tab-vote" style="flex:1;padding:14px;font-size:13px;font-weight:600;color:#6B7280;background:#fff;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:'DM Sans',sans-serif;">
-          👍 Voter pour un module
-        </button>
-        <button onclick="switchSuggTab('commentaire')" id="tab-commentaire" style="flex:1;padding:14px;font-size:13px;font-weight:600;color:#6B7280;background:#fff;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:'DM Sans',sans-serif;">
-          💬 Laisser un avis
-        </button>
-      </div>
-
-      <!-- Contenu onglets -->
-      <div style="padding:24px 28px;">
-
-        <!-- Suggestion -->
-        <div id="panel-suggestion">
-          <div style="font-size:13.5px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Quel service souhaitez-vous voir sur YOUMMA JOBS ?</div>
-          <input id="sugg-nom" type="text" placeholder="Votre prénom (optionnel)" style="width:100%;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13px;box-sizing:border-box;margin-bottom:10px;outline:none;font-family:'DM Sans',sans-serif;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
-          <input id="sugg-service" type="text" placeholder="Ex: Livraison à domicile, Aide ménagère, Traiteur..." style="width:100%;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13px;box-sizing:border-box;margin-bottom:10px;outline:none;font-family:'DM Sans',sans-serif;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
-          <textarea id="sugg-detail" placeholder="Décrivez pourquoi ce service est important pour vous..." style="width:100%;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13px;box-sizing:border-box;min-height:80px;resize:none;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:14px;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"></textarea>
-          <button onclick="soumettreSuggestion()" style="padding:12px 28px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s;" onmouseover="this.style.background='#C74B00'" onmouseout="this.style.background='#E85D04'">
-            <i class="fa-solid fa-paper-plane"></i> Envoyer ma suggestion
-          </button>
-          <div id="sugg-success" style="display:none;margin-top:12px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:12px 16px;font-size:13px;color:#059669;display:none;align-items:center;gap:8px;">
-            <i class="fa-solid fa-circle-check"></i> Merci ! Votre suggestion a été transmise à l'équipe.
-          </div>
-        </div>
-
-        <!-- Vote -->
-        <div id="panel-vote" style="display:none;">
-          <div style="font-size:13.5px;font-weight:700;color:#1A1A4E;margin-bottom:16px;">Quel module voulez-vous le plus rapidement ?</div>
-          <div id="voteModules" style="display:flex;flex-direction:column;gap:10px;"></div>
-          <div id="vote-success" style="display:none;margin-top:14px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:12px 16px;font-size:13px;color:#059669;align-items:center;gap:8px;display:none;">
-            <i class="fa-solid fa-circle-check"></i> Vote enregistré ! Merci.
-          </div>
-        </div>
-
-        <!-- Commentaire -->
-        <div id="panel-commentaire" style="display:none;">
-          <div style="font-size:13.5px;font-weight:700;color:#1A1A4E;margin-bottom:12px;">Partagez votre avis sur YOUMMA JOBS</div>
-          <input id="comm-nom" type="text" placeholder="Votre prénom" style="width:100%;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13px;box-sizing:border-box;margin-bottom:10px;outline:none;font-family:'DM Sans',sans-serif;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
-          <select id="comm-module" style="width:100%;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13px;box-sizing:border-box;margin-bottom:10px;outline:none;background:#fff;font-family:'DM Sans',sans-serif;">
-            <option value="">Sur quel module laissez-vous un avis ?</option>
-            <option value="emplois">💼 Emplois</option>
-            <option value="formations">🎓 Formations</option>
-            <option value="freelance">💻 Freelance</option>
-            <option value="appels-offres">📋 Appels d'offres</option>
-            <option value="general">🌟 YOUMMA JOBS en général</option>
-          </select>
-          <textarea id="comm-texte" placeholder="Votre avis, suggestion ou commentaire..." style="width:100%;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13px;box-sizing:border-box;min-height:90px;resize:none;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:14px;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"></textarea>
-          <!-- Étoiles -->
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
-            <span style="font-size:13px;color:#6B7280;">Satisfaction :</span>
-            <div id="starRating" style="display:flex;gap:4px;">
-              ${[1,2,3,4,5].map(i=>`<button onclick="setHubStar(${i})" id="hubStar${i}" style="background:none;border:none;font-size:22px;cursor:pointer;color:#E5E7EB;transition:color .15s;">★</button>`).join('')}
-            </div>
-          </div>
-          <button onclick="soumettreCommentaire()" style="padding:12px 28px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s;" onmouseover="this.style.background='#C74B00'" onmouseout="this.style.background='#E85D04'">
-            <i class="fa-solid fa-paper-plane"></i> Envoyer mon avis
-          </button>
-          <div id="comm-success" style="display:none;margin-top:12px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:12px 16px;font-size:13px;color:#059669;align-items:center;gap:8px;">
-            <i class="fa-solid fa-circle-check"></i> Merci pour votre avis !
-          </div>
-        </div>
-      </div>
-
-      <!-- Suggestions déjà soumises (les plus récentes) -->
-      <div style="border-top:1.5px solid #F0F0F8;padding:20px 28px;background:#FAFBFF;">
-        <div style="font-size:12px;font-weight:700;color:#9CA3AF;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;">Suggestions de la communauté</div>
-        <div id="suggestionsList" style="display:flex;flex-direction:column;gap:10px;">
-          <div style="text-align:center;color:#9CA3AF;font-size:13px;padding:20px;">
-            <i class="fa-solid fa-spinner fa-spin"></i> Chargement...
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
+</section>
+
+<!-- ── SECTION 5 : TIMELINE ── -->
+<section style="background:linear-gradient(135deg,#0A0A1E,#1A1A4E,#0D0D2E);padding:80px 5%;">
+  <div style="max-width:800px;margin:0 auto;text-align:center;">
+    <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.25);border-radius:50px;padding:5px 16px;font-size:12px;font-weight:700;color:#F5C842;margin-bottom:24px;">
+      <i class="fa-solid fa-road"></i> Vision stratégique
+    </div>
+    <h2 style="font-family:'Libre Baskerville',serif;font-size:clamp(22px,3.5vw,36px);font-weight:700;color:#fff;margin-bottom:12px;">Notre feuille de route</h2>
+    <p style="font-size:14px;color:rgba(255,255,255,.55);margin-bottom:56px;">De la mise en relation artisanale à l'écosystème national complet.</p>
+
+    <!-- Timeline -->
+    <div style="position:relative;max-width:500px;margin:0 auto;">
+      <!-- Ligne verticale -->
+      <div style="position:absolute;left:50%;transform:translateX(-50%);top:40px;bottom:40px;width:2px;background:linear-gradient(180deg,#E85D04,#7C3AED,#F5C842);opacity:.4;"></div>
+
+      <!-- Étape 1 -->
+      <div style="position:relative;margin-bottom:48px;">
+        <div style="background:rgba(5,150,105,.15);border:1.5px solid rgba(5,150,105,.4);border-radius:16px;padding:24px 28px;margin:0 16px;">
+          <div style="font-size:10px;font-weight:800;color:#10B981;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">✓ Aujourd'hui</div>
+          <div style="font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:12px;">Services disponibles</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.8);"><i class="fa-solid fa-check-circle" style="color:#10B981;"></i> Artisans qualifiés</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.8);"><i class="fa-solid fa-check-circle" style="color:#10B981;"></i> Prestataires professionnels</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.8);"><i class="fa-solid fa-check-circle" style="color:#10B981;"></i> Services Express</div>
+          </div>
+        </div>
+        <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:-28px;width:14px;height:14px;border-radius:50%;background:#E85D04;border:3px solid #0A0A1E;z-index:1;"></div>
+      </div>
+
+      <!-- Étape 2 -->
+      <div style="position:relative;margin-bottom:48px;">
+        <div style="background:rgba(232,93,4,.1);border:1.5px solid rgba(232,93,4,.3);border-radius:16px;padding:24px 28px;margin:0 16px;">
+          <div style="font-size:10px;font-weight:800;color:#F97316;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">🕒 Demain</div>
+          <div style="font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:12px;">Modules en développement</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.65);"><i class="fa-solid fa-clock" style="color:#F97316;"></i> Emplois & Recrutement</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.65);"><i class="fa-solid fa-clock" style="color:#F97316;"></i> Formations certifiantes</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.65);"><i class="fa-solid fa-clock" style="color:#F97316;"></i> Freelance & Missions</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.65);"><i class="fa-solid fa-clock" style="color:#F97316;"></i> Appels d'offres</div>
+          </div>
+        </div>
+        <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:-28px;width:14px;height:14px;border-radius:50%;background:#7C3AED;border:3px solid #0A0A1E;z-index:1;"></div>
+      </div>
+
+      <!-- Étape 3 -->
+      <div style="position:relative;">
+        <div style="background:rgba(245,200,66,.08);border:1.5px solid rgba(245,200,66,.25);border-radius:16px;padding:24px 28px;margin:0 16px;">
+          <div style="font-size:10px;font-weight:800;color:#F5C842;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">🏆 Vision finale</div>
+          <div style="font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:10px;">Écosystème national complet</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;">La plateforme nationale des compétences, services, formations et opportunités professionnelles en Guinée.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA final -->
+    <div style="margin-top:60px;padding:32px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:20px;">
+      <div style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:10px;">Rejoignez l'aventure YOUMMAJOBS</div>
+      <div style="font-size:13.5px;color:rgba(255,255,255,.55);margin-bottom:24px;">Artisan, professionnel ou entreprise — votre place est sur YOUMMAJOBS.</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button onclick="navigate('inscription')" style="padding:13px 28px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(232,93,4,.35);transition:.2s;" onmouseover="this.style.background='#C74B00'" onmouseout="this.style.background='#E85D04'">
+          <i class="fa-solid fa-plus"></i> Devenir prestataire
+        </button>
+        <button onclick="navigate('home')" style="padding:13px 28px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:.2s;" onmouseover="this.style.background='rgba(255,255,255,.15)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">
+          <i class="fa-solid fa-search"></i> Trouver un artisan
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MODAL NOTIFICATION LANCEMENT ── -->
+<div id="hubNotifModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:20px;padding:32px;width:100%;max-width:420px;box-shadow:0 32px 80px rgba(0,0,0,.3);">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div id="hubNotifIcon" style="font-size:40px;margin-bottom:12px;"></div>
+      <div id="hubNotifTitre" style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;margin-bottom:6px;"></div>
+      <div style="font-size:13px;color:#6B7280;">Recevez une notification dès le lancement.</div>
+    </div>
+    <input id="hubNotifEmail" type="email" placeholder="votre@email.com" style="width:100%;padding:12px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:14px;box-sizing:border-box;margin-bottom:12px;outline:none;font-family:'DM Sans',sans-serif;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
+    <button onclick="confirmerNotifLancement()" style="width:100%;padding:13px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;">
+      <i class="fa-solid fa-bell"></i> Me notifier au lancement
+    </button>
+    <button onclick="fermerNotifModal()" style="width:100%;padding:10px;background:#F4F6FB;border:none;border-radius:10px;color:#6B7280;font-size:13px;cursor:pointer;">Fermer</button>
+    <div id="hubNotifSucces" style="display:none;margin-top:12px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:9px;padding:11px;font-size:13px;color:#059669;text-align:center;">
+      ✅ Vous serez notifié au lancement !
+    </div>
+  </div>
+</div>
+
+<!-- CSS responsive hub -->
+<style>
+@media(max-width:768px){
+  #page-soon-hub section > div { padding-left:14px!important;padding-right:14px!important; }
+  #page-soon-hub div[style*="grid-template-columns:repeat(3"] { grid-template-columns:1fr!important; }
+  #page-soon-hub div[style*="grid-template-columns:repeat(2"] { grid-template-columns:1fr!important; }
+  #page-soon-hub div[style*="padding:80px 5%"] { padding:48px 14px!important; }
+  #page-soon-hub div[style*="padding:72px 5%"] { padding:48px 14px!important; }
+}
+</style>
+
 </div>
 
 <!-- ── PAGES PROCHAINEMENT ── -->
@@ -821,7 +975,6 @@ async function verifierSession() {
     <div style="height:1px;background:rgba(255,255,255,.1);margin:8px 16px;"></div>
     <a href="javascript:void(0)" onclick="toggleMenu();navigate('login')" style="background:rgba(255,255,255,.06);border-radius:8px;margin:0 8px;"><i class="fa-solid fa-lock"></i> Connexion</a>
     <a href="javascript:void(0)" onclick="toggleMenu();navigate('inscription')" style="background:#E85D04;border-radius:8px;margin:0 8px;color:#fff!important;"><i class="fa-solid fa-plus"></i> Devenir artisan</a>
-  </div>
 </div>
 
 <div id="mainContent">
@@ -8065,3 +8218,158 @@ window.setHubStar = setHubStar;
 window.voterModule = voterModule;
 window.soumettreSuggestion = soumettreSuggestion;
 window.soumettreCommentaire = soumettreCommentaire;
+
+// ══════════════════════════════════════════════════════════════
+// PAGE NOUVEAUTÉS — JS complet
+// ══════════════════════════════════════════════════════════════
+
+var _hubVoteSelected = null;
+var _hubNotifModule = null;
+
+// Initialiser les options de vote
+function _initHubVote() {
+  const modules = [
+    { key:'emplois', label:'💼 Emplois', color:'#2563EB' },
+    { key:'formations', label:'🎓 Formations', color:'#7C3AED' },
+    { key:'freelance', label:'💻 Freelance', color:'#059669' },
+    { key:'appels-offres', label:'📋 Appels d\'offres', color:'#D97706' },
+  ];
+  const container = document.getElementById('hubVoteOptions');
+  if (!container) return;
+  container.innerHTML = modules.map(m => `
+    <label onclick="selectVoteHub('${m.key}',this)" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid #F0F0F8;border-radius:12px;cursor:pointer;transition:.2s;background:#fff;" id="voteLabel-${m.key}">
+      <div style="width:20px;height:20px;border-radius:50%;border:2px solid #D1D5DB;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.2s;" id="voteCircle-${m.key}"></div>
+      <span style="font-size:14px;font-weight:600;color:#1A1A4E;">${m.label}</span>
+    </label>`).join('');
+}
+
+function selectVoteHub(key, el) {
+  _hubVoteSelected = key;
+  // Reset tous
+  ['emplois','formations','freelance','appels-offres'].forEach(k => {
+    const lbl = document.getElementById('voteLabel-'+k);
+    const circ = document.getElementById('voteCircle-'+k);
+    if (lbl) { lbl.style.borderColor = '#F0F0F8'; lbl.style.background = '#fff'; }
+    if (circ) { circ.style.borderColor = '#D1D5DB'; circ.innerHTML = ''; circ.style.background = ''; }
+  });
+  // Activer celui sélectionné
+  const lbl = document.getElementById('voteLabel-'+key);
+  const circ = document.getElementById('voteCircle-'+key);
+  if (lbl) { lbl.style.borderColor = '#E85D04'; lbl.style.background = '#FFF7F0'; }
+  if (circ) { circ.style.borderColor = '#E85D04'; circ.style.background = '#E85D04'; circ.innerHTML = '<i class="fa-solid fa-check" style="color:#fff;font-size:9px;"></i>'; }
+}
+
+async function soumettrVoteHub() {
+  if (!_hubVoteSelected) {
+    showToast('Choisissez une option avant de voter');
+    return;
+  }
+  try {
+    // Incrémenter le vote
+    const { data: current } = await sb.from('soon_votes').select('count').eq('module', _hubVoteSelected).single();
+    const newCount = (current?.count || 0) + 1;
+    await sb.from('soon_votes').upsert({ module: _hubVoteSelected, count: newCount }, { onConflict: 'module' });
+    
+    const succ = document.getElementById('hubVoteSucces');
+    if (succ) { succ.style.display = 'flex'; }
+    
+    // Charger les stats
+    await _loadHubVoteStats();
+  } catch(e) { console.warn('vote:', e); }
+}
+
+async function _loadHubVoteStats() {
+  const statsDiv = document.getElementById('hubVoteStats');
+  if (!statsDiv) return;
+  try {
+    const { data } = await sb.from('soon_votes').select('module,count').order('count', { ascending: false });
+    if (!data || !data.length) return;
+    const total = data.reduce((s,r) => s + (r.count||0), 0) || 1;
+    const labels = { emplois:'💼 Emplois', formations:'🎓 Formations', freelance:'💻 Freelance', 'appels-offres':'📋 Appels d\'offres' };
+    const colors = { emplois:'#2563EB', formations:'#7C3AED', freelance:'#059669', 'appels-offres':'#D97706' };
+    statsDiv.innerHTML = '<div style="font-size:12px;font-weight:700;color:#9CA3AF;margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em;">Résultats actuels — '+total+' vote'+(total>1?'s':'')+'</div>' +
+      data.map(r => {
+        const pct = Math.round((r.count||0)/total*100);
+        const col = colors[r.module] || '#E85D04';
+        return `<div style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;">
+            <span style="font-weight:600;color:#374151;">${labels[r.module]||r.module}</span>
+            <span style="font-weight:700;color:${col};">${pct}%</span>
+          </div>
+          <div style="height:8px;background:#F3F4F6;border-radius:4px;overflow:hidden;">
+            <div style="height:100%;width:${pct}%;background:${col};border-radius:4px;transition:width .6s;"></div>
+          </div>
+        </div>`;
+      }).join('');
+  } catch(e) {}
+}
+
+// Suggestion
+async function soumettreSuggHub() {
+  const nom = document.getElementById('hubSuggNom')?.value.trim() || 'Anonyme';
+  const texte = document.getElementById('hubSuggTexte')?.value.trim();
+  const succ = document.getElementById('hubSuggSucces');
+  if (!texte) { document.getElementById('hubSuggTexte').style.borderColor='#EF4444'; setTimeout(()=>{document.getElementById('hubSuggTexte').style.borderColor='#E5E7EB';},2000); return; }
+  try {
+    await sb.from('soon_suggestions').insert({ nom, service:'general', detail:texte, type:'suggestion', created_at:new Date().toISOString() });
+  } catch(e) { console.warn('suggestion:', e); }
+  document.getElementById('hubSuggTexte').value = '';
+  if (succ) { succ.style.display = 'flex'; setTimeout(()=>succ.style.display='none', 4000); }
+}
+
+// Modal notification lancement
+var _hubNotifModuleIcons = { emplois:'💼', formations:'🎓', freelance:'💻', 'appels-offres':'📋' };
+var _hubNotifModuleTitres = { emplois:'Emplois', formations:'Formations', freelance:'Freelance', 'appels-offres':'Appels d\'offres' };
+
+function ouvrirNotifLancement(module, btn) {
+  _hubNotifModule = module;
+  const modal = document.getElementById('hubNotifModal');
+  if (modal) { modal.style.display = 'flex'; }
+  const icon = document.getElementById('hubNotifIcon');
+  const titre = document.getElementById('hubNotifTitre');
+  if (icon) icon.textContent = _hubNotifModuleIcons[module] || '🔔';
+  if (titre) titre.textContent = 'Lancement de ' + (_hubNotifModuleTitres[module] || module);
+  document.getElementById('hubNotifEmail').value = '';
+  document.getElementById('hubNotifSucces').style.display = 'none';
+}
+
+function fermerNotifModal() {
+  const modal = document.getElementById('hubNotifModal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function confirmerNotifLancement() {
+  const email = document.getElementById('hubNotifEmail')?.value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('hubNotifEmail').style.borderColor = '#EF4444';
+    setTimeout(()=>document.getElementById('hubNotifEmail').style.borderColor='#E5E7EB',2000);
+    return;
+  }
+  try {
+    await sb.from('soon_notifications').upsert({ email, module: _hubNotifModule, created_at:new Date().toISOString() }, { onConflict:'email,module' });
+  } catch(e) { console.warn('notif:', e); }
+  const succ = document.getElementById('hubNotifSucces');
+  if (succ) succ.style.display = 'block';
+  setTimeout(fermerNotifModal, 2500);
+}
+
+// Ouvrir le hub et initialiser
+const _origOpenSoonHub = window.openSoonHub;
+window.openSoonHub = function() {
+  navigate('soon-hub');
+  const hub = document.getElementById('page-soon-hub');
+  if (hub) hub.style.cssText = 'display:block!important;min-height:100vh;';
+  setTimeout(() => {
+    _initHubVote();
+    _loadHubVoteStats();
+  }, 100);
+  history.pushState({}, '', '#nouveautes');
+  window.scrollTo(0, 0);
+};
+
+window.selectVoteHub = selectVoteHub;
+window.soumettrVoteHub = soumettrVoteHub;
+window.soumettreSuggHub = soumettreSuggHub;
+window.ouvrirNotifLancement = ouvrirNotifLancement;
+window.fermerNotifModal = fermerNotifModal;
+window.confirmerNotifLancement = confirmerNotifLancement;
