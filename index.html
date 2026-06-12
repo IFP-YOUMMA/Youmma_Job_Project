@@ -51,7 +51,14 @@
 const SUPABASE_URL = 'https://slawwbhlakilnviwzyrb.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsYXd3YmhsYWtpbG52aXd6eXJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MjQxODAsImV4cCI6MjA5NjAwMDE4MH0.XgZRkUrkjCUzSlB0Nyp0QdJf4xZjMcTO5V1bKSDUHNg';
 const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+    detectSessionInUrl: false
+  },
+  realtime: { params: { eventsPerSecond: 2 } }
+});
 const SESSION_KEY = 'yj_provider_session';
 const ADMIN_SESSION_KEY = 'yj_admin_session';
 
@@ -4457,27 +4464,15 @@ async function getProviders({ categorie='', recherche='', limite=20, offset=0 }=
     if (categorie) query = query.eq('categorie', categorie);
     if (recherche) query = query.or(`nom.ilike.%${recherche}%,prenom.ilike.%${recherche}%,metier.ilike.%${recherche}%`);
 
-    let data, error;
-    try {
-      const _r = await Promise.resolve(query).catch(e => ({ data: [], error: { message: String(e?.message||e) } }));
-      data = _r.data || [];
-      error = _r.error || null;
-    } catch(_e) { return []; }
-    if (error) { console.warn('getProviders: ' + String(error?.message||'')); return []; }
-    console.log('getProviders OK:', data?.length, 'résultats');
-    // Valeurs par défaut pour colonnes optionnelles
-    return (data||[]).map(p => ({
-      ...p,
-      nb_missions: p.nb_missions || 0,
-      disponibilite: p.disponibilite || 'Disponible maintenant',
-      doc_cni_statut: p.doc_cni_statut || null,
-      doc_diplome_statut: p.doc_diplome_statut || null,
-    }));
+    const result = await query;
+    if (result.error) { console.warn('getProviders:', result.error?.message||''); return []; }
+    return result.data || [];
   } catch(e) {
-    console.error('getProviders exception:', e.message);
+    console.warn('getProviders exception:', String(e?.message||e));
     return [];
   }
 }
+
 async function getDashboardData(providerId) {
   try {
     // Colonnes de base toujours présentes
