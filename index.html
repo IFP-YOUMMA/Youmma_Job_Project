@@ -89,6 +89,125 @@ nav.scrolled{background:rgba(15,16,32,.96);backdrop-filter:blur(20px) saturate(1
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
 .hamburger span{width:22px;height:2px;background:rgba(255,255,255,.7);border-radius:2px;transition:all .3s;}
 
+/* ── NAV BIENTÔT BADGES ── */
+.nav-badge-soon{display:inline-block;background:var(--or);color:var(--bleu);font-size:9px;font-weight:800;padding:2px 6px;border-radius:20px;letter-spacing:.03em;vertical-align:middle;margin-left:3px;line-height:1.5;}
+.nav-soon-link{opacity:.75;transition:opacity var(--transition)!important;}
+.nav-soon-link:hover{opacity:1!important;}
+
+/* ── BOUTON NOUVEAUTÉS NAV ── */
+.btn-nav-nouveautes{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:rgba(245,200,66,.12);border:1.5px solid rgba(245,200,66,.3);border-radius:50px;color:var(--or);font-size:12.5px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;white-space:nowrap;}
+.btn-nav-nouveautes:hover{background:rgba(245,200,66,.22);border-color:var(--or);transform:translateY(-1px);}
+.btn-nav-nouveautes .notif-dot{width:7px;height:7px;border-radius:50%;background:var(--or);box-shadow:0 0 0 3px rgba(245,200,66,.25);animation:pulse 2s ease-in-out infinite;flex-shrink:0;}
+
+/* ── MOBILE MENU LABELS & BADGES ── */
+.mm-section-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:10px 15px 4px;pointer-events:none;}
+.mm-badge-soon{display:inline-block;background:var(--or);color:var(--bleu);font-size:9px;font-weight:800;padding:2px 6px;border-radius:20px;margin-left:6px;vertical-align:middle;}
+.mm-soon-link{opacity:.8!important;}
+
+/* ══════════════════════════════════
+   PAGE VISION / NOUVEAUTÉS
+   ══════════════════════════════════ */
+.vision-page{min-height:100vh;background:var(--blanc);font-family:'DM Sans',sans-serif;}
+
+/* Hero vision */
+.vision-hero{background:linear-gradient(135deg,#0A0A1E 0%,#1A1A4E 55%,#0D0D2E 100%);padding:100px 5% 72px;text-align:center;position:relative;overflow:hidden;}
+.vision-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+.vision-hero-glow{position:absolute;width:600px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(245,200,66,.1) 0%,transparent 65%);top:-20%;left:50%;transform:translateX(-50%);pointer-events:none;}
+.vision-topbar{display:flex;justify-content:center;gap:12px;margin-bottom:40px;position:relative;z-index:2;flex-wrap:wrap;}
+.vision-back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:50px;color:rgba(255,255,255,.8);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.vision-back-btn:hover{background:rgba(255,255,255,.13);color:#fff;}
+.vision-tag-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--orange);border:none;border-radius:50px;color:#fff;font-size:13px;font-weight:700;cursor:default;font-family:'DM Sans',sans-serif;box-shadow:0 4px 16px rgba(232,93,4,.35);}
+.vision-hero-title{font-family:'Libre Baskerville',serif;font-size:clamp(32px,5vw,58px);font-weight:700;color:#fff;line-height:1.1;letter-spacing:-.025em;margin-bottom:18px;position:relative;z-index:2;}
+.vision-hero-sub{font-size:16px;color:rgba(255,255,255,.5);line-height:1.7;font-weight:300;max-width:520px;margin:0 auto;position:relative;z-index:2;}
+
+/* Modules grid */
+.vision-body{max-width:960px;margin:0 auto;padding:56px 5% 80px;}
+.vision-section-title{font-family:'Libre Baskerville',serif;font-size:13px;font-weight:700;color:var(--gris);letter-spacing:.1em;text-transform:uppercase;margin-bottom:22px;display:flex;align-items:center;gap:10px;}
+.vision-section-title::after{content:'';flex:1;height:1px;background:var(--bordure);}
+.vision-modules-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:48px;}
+.vision-module-card{background:#fff;border:1.5px solid var(--bordure);border-radius:20px;padding:24px 22px 20px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.vision-module-card:hover{border-color:var(--orange);box-shadow:0 8px 32px rgba(232,93,4,.1);transform:translateY(-3px);}
+.vision-module-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--or));transform:scaleX(0);transition:transform .3s;transform-origin:left;}
+.vision-module-card:hover::after{transform:scaleX(1);}
+.vmc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+.vmc-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.vmc-badge{padding:4px 11px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:.04em;}
+.vmc-badge.bientot-bleu{background:rgba(26,26,78,.08);color:var(--bleu-mid);border:1px solid rgba(26,26,78,.15);}
+.vmc-badge.bientot-or{background:rgba(245,200,66,.12);color:#B45309;border:1px solid rgba(245,200,66,.3);}
+.vmc-title{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:var(--texte);margin-bottom:7px;}
+.vmc-desc{font-size:13px;color:var(--gris);line-height:1.65;margin-bottom:16px;font-weight:400;}
+.vmc-link{font-size:13px;font-weight:700;color:var(--orange);display:inline-flex;align-items:center;gap:5px;transition:gap .2s;}
+.vision-module-card:hover .vmc-link{gap:9px;}
+
+/* Feedback box */
+.vision-feedback{background:var(--bleu);border-radius:22px;padding:32px 36px;color:#fff;position:relative;overflow:hidden;}
+.vision-feedback::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(232,93,4,.15);pointer-events:none;}
+.vf-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.vf-icon{font-size:22px;}
+.vf-title{font-family:'Libre Baskerville',serif;font-size:19px;font-weight:700;color:#fff;}
+.vf-desc{font-size:13.5px;color:rgba(255,255,255,.55);line-height:1.65;margin-bottom:22px;font-weight:300;}
+.vf-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.vf-tab{padding:8px 18px;border-radius:50px;font-size:12.5px;font-weight:700;cursor:pointer;border:1.5px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.5);transition:all .2s;font-family:'DM Sans',sans-serif;}
+.vf-tab.active,.vf-tab:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:#fff;}
+.vf-tab.active{border-color:var(--orange);color:var(--or);}
+.vf-textarea{width:100%;padding:14px 16px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);border-radius:14px;color:#fff;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;resize:none;height:90px;transition:border-color .2s;margin-bottom:14px;}
+.vf-textarea::placeholder{color:rgba(255,255,255,.3);}
+.vf-textarea:focus{border-color:var(--orange);}
+.vf-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+.vf-vote-row{display:flex;gap:10px;align-items:center;}
+.vf-vote-label{font-size:12px;color:rgba(255,255,255,.4);font-weight:500;}
+.vf-vote-btn{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:50px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.6);transition:all .2s;font-family:'DM Sans',sans-serif;}
+.vf-vote-btn:hover,.vf-vote-btn.voted{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:#fff;}
+.vf-vote-btn.voted.up{border-color:#4ADE80;color:#4ADE80;}
+.vf-vote-btn.voted.down{border-color:#F87171;color:#F87171;}
+.vf-submit-btn{padding:12px 28px;background:var(--orange);border:none;border-radius:50px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;box-shadow:0 4px 14px rgba(232,93,4,.35);}
+.vf-submit-btn:hover{background:var(--orange-dark);transform:translateY(-1px);}
+.vf-success{display:none;align-items:center;gap:8px;background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.25);border-radius:12px;padding:12px 18px;font-size:13px;color:#4ADE80;font-weight:600;margin-top:12px;}
+
+/* Vote popularity pills on module cards */
+.vmc-votes{display:flex;align-items:center;gap:5px;margin-top:4px;}
+.vmc-vote-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid var(--bordure);background:var(--fond);color:var(--gris);transition:all .2s;font-family:'DM Sans',sans-serif;user-select:none;}
+.vmc-vote-pill:hover{border-color:var(--orange);color:var(--orange);}
+.vmc-vote-pill.active-up{border-color:#16A34A;background:rgba(22,163,74,.08);color:#16A34A;}
+.vmc-vote-pill.active-down{border-color:#DC2626;background:rgba(220,38,38,.06);color:#DC2626;}
+
+@media(max-width:640px){
+  .vision-modules-grid{grid-template-columns:1fr;}
+  .vision-feedback{padding:22px 18px;}
+  .vf-bottom{flex-direction:column;align-items:flex-start;}
+}
+
+/* ── PAGES "BIENTÔT DISPONIBLE" ── */
+.soon-page{min-height:100vh;background:linear-gradient(135deg,#0A0A1E 0%,#1A1A4E 60%,#0D0D2E 100%);display:flex;align-items:center;justify-content:center;padding:80px 5% 60px;position:relative;overflow:hidden;}
+.soon-page::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+.soon-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(232,93,4,.12) 0%,transparent 65%);top:-10%;right:-10%;pointer-events:none;}
+.soon-inner{max-width:640px;width:100%;text-align:center;position:relative;z-index:2;}
+.soon-icon-wrap{width:80px;height:80px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 28px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);}
+.soon-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.25);border-radius:50px;padding:6px 16px;}
+.soon-eyebrow-dot{width:7px;height:7px;border-radius:50%;background:var(--or);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.3);opacity:.7;}}
+.soon-eyebrow-text{font-size:11px;font-weight:700;color:var(--or);letter-spacing:.1em;text-transform:uppercase;}
+.soon-title{font-family:'Libre Baskerville',serif;font-size:clamp(30px,5vw,52px);font-weight:700;color:#fff;line-height:1.1;letter-spacing:-.025em;margin-bottom:18px;}
+.soon-title .hl{color:var(--or);font-style:italic;}
+.soon-desc{font-size:16px;color:rgba(255,255,255,.55);line-height:1.75;font-weight:300;margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;}
+.soon-notify-box{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:var(--radius-xl);padding:28px 32px;margin-bottom:32px;backdrop-filter:blur(8px);}
+.soon-notify-label{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:12px;font-weight:500;}
+.soon-notify-row{display:flex;gap:10px;}
+.soon-email-input{flex:1;padding:13px 18px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:var(--radius-lg);color:#fff;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
+.soon-email-input::placeholder{color:rgba(255,255,255,.3);}
+.soon-email-input:focus{border-color:var(--orange);}
+.soon-btn-notify{padding:13px 24px;background:var(--orange);border:none;border-radius:var(--radius-lg);color:#fff;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:'DM Sans',sans-serif;box-shadow:0 4px 16px rgba(232,93,4,.4);}
+.soon-btn-notify:hover{background:var(--orange-dark);transform:translateY(-1px);}
+.soon-btn-notify:disabled{opacity:.6;cursor:default;transform:none;}
+.soon-success-msg{display:none;align-items:center;gap:8px;background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.25);border-radius:12px;padding:12px 18px;font-size:13.5px;color:#4ADE80;font-weight:600;margin-top:12px;}
+.soon-back-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:50px;color:rgba(255,255,255,.7);font-size:13.5px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.soon-back-btn:hover{background:rgba(255,255,255,.12);color:#fff;}
+.soon-features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;}
+.soon-feat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:16px;text-align:center;}
+.soon-feat-icon{font-size:22px;margin-bottom:8px;}
+.soon-feat-text{font-size:12px;color:rgba(255,255,255,.45);line-height:1.5;}
+@media(max-width:600px){.soon-notify-row{flex-direction:column;}.soon-features{grid-template-columns:1fr;}.soon-page{padding:100px 5% 50px;}}
+
 /* ── HERO ── */
 .hero{min-height:100vh;display:flex;align-items:center;padding:90px 5% 60px;position:relative;overflow:hidden;}
 .hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0A0A1E 0%,#1A1A4E 50%,#0D0D2E 100%);}
@@ -2330,14 +2449,12 @@ async function verifierSession() {
     <ul class="nav-links">
       <li><a href="#accueil">Accueil</a></li>
       <li><a href="#prestataires">Artisans</a></li>
-      <li><a href="#categories">Catégories</a></li>
-      <li><a href="#prestataires">Annuaire</a></li>
-      <li><a href="#temoignages">Avis</a></li>
+      <li><a href="#prestataires">Prestataires</a></li>
+      <li><a href="#prestataires" onclick="filterByExpress();return false;">Express</a></li>
       <li><a href="#tarifs">Tarifs</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-ctas">
+      <button class="btn-nav-nouveautes" onclick="navigateVision()"><span class="notif-dot"></span> Nouveautés</button>
       <button class="btn-nav-ghost" onclick="
   document.getElementById('mainContent').style.display='none';
   document.getElementById('mainNav').style.display='none';
@@ -2363,15 +2480,17 @@ async function verifierSession() {
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu" onclick="toggleMenu()">
   <div class="mobile-menu-inner" onclick="event.stopPropagation()">
+    <div class="mm-section-label">Disponible maintenant</div>
     <a href="#accueil" onclick="toggleMenu()"><i class="fa-solid fa-house"></i> Accueil</a>
-    <a href="#prestataires" onclick="toggleMenu()"> Artisans</a>
-    <a href="#prestataires" onclick="toggleMenu()">👥 Annuaire</a>
-    <a href="#categories" onclick="toggleMenu()">📂 Catégories</a>
-    <a href="#partenaires" onclick="toggleMenu()">🤝 Partenaires</a>
-    <a href="#temoignages" onclick="toggleMenu()"><i class="fa-solid fa-star" style="color:#F5C842;"></i> Avis clients</a>
+    <a href="#prestataires" onclick="toggleMenu()">🔨 Artisans</a>
+    <a href="#prestataires" onclick="toggleMenu()">👥 Prestataires</a>
+    <a href="#prestataires" onclick="toggleMenu();filterByExpress();">⚡ Services Express</a>
     <a href="#tarifs" onclick="toggleMenu()">💰 Tarifs</a>
-    <a href="#faq" onclick="toggleMenu()">❓ FAQ</a>
-    <a href="#contact" onclick="toggleMenu()"><i class="fa-solid fa-phone"></i> Contact</a>
+    <div class="mm-section-label" style="margin-top:8px;">Prochainement</div>
+    <a href="javascript:void(0)" onclick="toggleMenu();navigateSoon('emplois');" class="mm-soon-link">💼 Emplois <span class="mm-badge-soon">Bientôt</span></a>
+    <a href="javascript:void(0)" onclick="toggleMenu();navigateSoon('formations');" class="mm-soon-link">🎓 Formations <span class="mm-badge-soon">Bientôt</span></a>
+    <a href="javascript:void(0)" onclick="toggleMenu();navigateSoon('freelance');" class="mm-soon-link">💻 Freelance <span class="mm-badge-soon">Bientôt</span></a>
+    <a href="javascript:void(0)" onclick="toggleMenu();navigateSoon('appels');" class="mm-soon-link">📋 Appels d'offres <span class="mm-badge-soon">Bientôt</span></a>
     <button onclick="toggleMenu();ouvrirInscription();" style="background:var(--orange);color:#fff;margin-top:12px;border-radius:12px;text-align:center;">🚀 Devenir artisan</button>
   </div>
 </div>
@@ -5713,6 +5832,259 @@ async function chargerAvis() {
 
 <div class="toast" id="toast"></div>
 
+<!-- ══════════════════════════════════════════════
+     PAGES "BIENTÔT DISPONIBLE"
+     ══════════════════════════════════════════════ -->
+
+<!-- PAGE : EMPLOIS -->
+<div class="page" id="page-emplois">
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,30,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07);height:76px;display:flex;align-items:center;padding:0 5%;">
+    <div style="max-width:1320px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;">
+      <a href="#" onclick="navigate('home');return false;" style="display:flex;align-items:center;gap:10px;text-decoration:none;"><div style="width:36px;height:36px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;font-family:'Libre Baskerville',serif;">YJ</div><span style="font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;color:#fff;">YOUMMA<span style="color:var(--or);">JOBS</span></span></a>
+      <button onclick="navigate('home')" class="soon-back-btn" style="margin:0;">← Retour à l'accueil</button>
+    </div>
+  </nav>
+  <div class="soon-page">
+    <div class="soon-glow"></div>
+    <div class="soon-inner">
+      <div class="soon-icon-wrap">💼</div>
+      <div class="soon-eyebrow"><span class="soon-eyebrow-dot"></span><span class="soon-eyebrow-text">Prochainement</span></div>
+      <h1 class="soon-title">Offres d'<em class="hl">Emploi</em><br>en Guinée</h1>
+      <p class="soon-desc">Cette fonctionnalité sera disponible prochainement. Trouvez des offres d'emploi vérifiées publiées par des entreprises locales et internationales en Guinée.</p>
+      <div class="soon-features">
+        <div class="soon-feat"><div class="soon-feat-icon">🏢</div><div class="soon-feat-text">Offres des entreprises vérifiées</div></div>
+        <div class="soon-feat"><div class="soon-feat-icon">📍</div><div class="soon-feat-text">Emplois par ville et secteur</div></div>
+        <div class="soon-feat"><div class="soon-feat-icon">📩</div><div class="soon-feat-text">Candidature directe en ligne</div></div>
+      </div>
+      <div class="soon-notify-box">
+        <div class="soon-notify-label">Publiez votre adresse email pour être informé du lancement</div>
+        <div class="soon-notify-row">
+          <input type="email" class="soon-email-input" id="email-emplois" placeholder="votre.email@exemple.com"/>
+          <button class="soon-btn-notify" onclick="notifyMe('emplois')">🔔 Me notifier</button>
+        </div>
+        <div class="soon-success-msg" id="success-emplois">✅ Parfait ! Vous serez notifié dès le lancement.</div>
+      </div>
+      <button class="soon-back-btn" onclick="navigate('home')"><i class="fa-solid fa-arrow-left"></i> Retour à l'accueil</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE : FORMATIONS -->
+<div class="page" id="page-formations">
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,30,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07);height:76px;display:flex;align-items:center;padding:0 5%;">
+    <div style="max-width:1320px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;">
+      <a href="#" onclick="navigate('home');return false;" style="display:flex;align-items:center;gap:10px;text-decoration:none;"><div style="width:36px;height:36px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;font-family:'Libre Baskerville',serif;">YJ</div><span style="font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;color:#fff;">YOUMMA<span style="color:var(--or);">JOBS</span></span></a>
+      <button onclick="navigate('home')" class="soon-back-btn" style="margin:0;">← Retour à l'accueil</button>
+    </div>
+  </nav>
+  <div class="soon-page">
+    <div class="soon-glow"></div>
+    <div class="soon-inner">
+      <div class="soon-icon-wrap">🎓</div>
+      <div class="soon-eyebrow"><span class="soon-eyebrow-dot"></span><span class="soon-eyebrow-text">Prochainement</span></div>
+      <h1 class="soon-title"><em class="hl">Formations</em><br>Professionnelles</h1>
+      <p class="soon-desc">Les formations professionnelles seront bientôt accessibles sur YOUMMA JOBS. Découvrez prochainement des formations certifiantes et qualifiantes adaptées au marché guinéen.</p>
+      <div class="soon-features">
+        <div class="soon-feat"><div class="soon-feat-icon">📜</div><div class="soon-feat-text">Formations certifiantes et qualifiantes</div></div>
+        <div class="soon-feat"><div class="soon-feat-icon">🧑‍🏫</div><div class="soon-feat-text">Formateurs locaux vérifiés</div></div>
+        <div class="soon-feat"><div class="soon-feat-icon">📱</div><div class="soon-feat-text">Apprentissage en ligne et présentiel</div></div>
+      </div>
+      <div class="soon-notify-box">
+        <div class="soon-notify-label">Publiez votre adresse email pour être informé du lancement</div>
+        <div class="soon-notify-row">
+          <input type="email" class="soon-email-input" id="email-formations" placeholder="votre.email@exemple.com"/>
+          <button class="soon-btn-notify" onclick="notifyMe('formations')">🔔 Me notifier</button>
+        </div>
+        <div class="soon-success-msg" id="success-formations">✅ Parfait ! Vous serez notifié dès le lancement.</div>
+      </div>
+      <button class="soon-back-btn" onclick="navigate('home')"><i class="fa-solid fa-arrow-left"></i> Retour à l'accueil</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE : FREELANCE -->
+<div class="page" id="page-freelance">
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,30,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07);height:76px;display:flex;align-items:center;padding:0 5%;">
+    <div style="max-width:1320px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;">
+      <a href="#" onclick="navigate('home');return false;" style="display:flex;align-items:center;gap:10px;text-decoration:none;"><div style="width:36px;height:36px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;font-family:'Libre Baskerville',serif;">YJ</div><span style="font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;color:#fff;">YOUMMA<span style="color:var(--or);">JOBS</span></span></a>
+      <button onclick="navigate('home')" class="soon-back-btn" style="margin:0;">← Retour à l'accueil</button>
+    </div>
+  </nav>
+  <div class="soon-page">
+    <div class="soon-glow"></div>
+    <div class="soon-inner">
+      <div class="soon-icon-wrap">💻</div>
+      <div class="soon-eyebrow"><span class="soon-eyebrow-dot"></span><span class="soon-eyebrow-text">Prochainement</span></div>
+      <h1 class="soon-title">Espace <em class="hl">Freelance</em><br>& Missions</h1>
+      <p class="soon-desc">Le service Freelance arrive bientôt sur YOUMMA JOBS. Trouvez des missions et des opportunités adaptées à vos compétences, ou publiez un projet et recevez des propositions.</p>
+      <div class="soon-features">
+        <div class="soon-feat"><div class="soon-feat-icon">🎯</div><div class="soon-feat-text">Missions adaptées à vos compétences</div></div>
+        <div class="soon-feat"><div class="soon-feat-icon">🤝</div><div class="soon-feat-text">Mise en relation directe client-freelance</div></div>
+        <div class="soon-feat"><div class="soon-feat-icon">💳</div><div class="soon-feat-text">Paiement sécurisé Mobile Money</div></div>
+      </div>
+      <div class="soon-notify-box">
+        <div class="soon-notify-label">Publiez votre adresse email pour être informé du lancement</div>
+        <div class="soon-notify-row">
+          <input type="email" class="soon-email-input" id="email-freelance" placeholder="votre.email@exemple.com"/>
+          <button class="soon-btn-notify" onclick="notifyMe('freelance')">🔔 Me notifier</button>
+        </div>
+        <div class="soon-success-msg" id="success-freelance">✅ Parfait ! Vous serez notifié dès le lancement.</div>
+      </div>
+      <button class="soon-back-btn" onclick="navigate('home')"><i class="fa-solid fa-arrow-left"></i> Retour à l'accueil</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE : APPELS D'OFFRES -->
+<div class="page" id="page-appels">
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,30,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07);height:76px;display:flex;align-items:center;padding:0 5%;">
+    <div style="max-width:1320px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;">
+      <a href="#" onclick="navigate('home');return false;" style="display:flex;align-items:center;gap:10px;text-decoration:none;"><div style="width:36px;height:36px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;font-family:'Libre Baskerville',serif;">YJ</div><span style="font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;color:#fff;">YOUMMA<span style="color:var(--or);">JOBS</span></span></a>
+      <button onclick="navigate('home')" class="soon-back-btn" style="margin:0;">← Retour à l'accueil</button>
+    </div>
+  </nav>
+  <div class="soon-page">
+    <div class="soon-glow"></div>
+    <div class="soon-inner">
+      <div class="soon-icon-wrap">📋</div>
+      <div class="soon-eyebrow"><span class="soon-eyebrow-dot"></span><span class="soon-eyebrow-text">Prochainement</span></div>
+      <h1 class="soon-title">Appels d'<em class="hl">Offres</em><br>& Opportunités</h1>
+      <p class="soon-desc">Les appels d'offres seront disponibles prochainement. Accédez aux opportunités publiées par les entreprises, ONG et institutions publiques en Guinée.</p>
+      <div class="soon-features">
+        <div class="soon-feat"><div class="soon-feat-icon">🏛️</div><div class="soon-feat-text">Offres des institutions et ONG</div></div>
+        <div class="soon-feat"><div class="soon-feat-icon">📊</div><div class="soon-feat-text">Marchés publics et privés</div></div>
+        <div class="soon-feat"><div class="soon-feat-icon">🔔</div><div class="soon-feat-text">Alertes selon votre secteur</div></div>
+      </div>
+      <div class="soon-notify-box">
+        <div class="soon-notify-label">Publiez votre adresse email pour être informé du lancement</div>
+        <div class="soon-notify-row">
+          <input type="email" class="soon-email-input" id="email-appels" placeholder="votre.email@exemple.com"/>
+          <button class="soon-btn-notify" onclick="notifyMe('appels')">🔔 Me notifier</button>
+        </div>
+        <div class="soon-success-msg" id="success-appels">✅ Parfait ! Vous serez notifié dès le lancement.</div>
+      </div>
+      <button class="soon-back-btn" onclick="navigate('home')"><i class="fa-solid fa-arrow-left"></i> Retour à l'accueil</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE VISION / NOUVEAUTÉS
+     ══════════════════════════════════════════════ -->
+<div class="page" id="page-vision">
+  <div class="vision-page">
+
+    <!-- HERO -->
+    <div class="vision-hero">
+      <div class="vision-hero-glow"></div>
+      <div class="vision-topbar">
+        <button class="vision-back-btn" onclick="navigate('home')"><i class="fa-solid fa-arrow-left"></i> Retour à l'accueil</button>
+        <div class="vision-tag-btn"><i class="fa-solid fa-bolt"></i> Vision YOUMMA JOBS</div>
+      </div>
+      <h1 class="vision-hero-title">La plateforme nationale<br>des compétences et<br><em style="color:var(--or);font-style:italic;">opportunités</em></h1>
+      <p class="vision-hero-sub">YOUMMA JOBS se construit avec vous. Découvrez ce qui arrive bientôt et donnez-nous votre avis.</p>
+    </div>
+
+    <!-- BODY -->
+    <div class="vision-body">
+
+      <!-- MODULES GRID -->
+      <div class="vision-section-title">Modules à venir</div>
+      <div class="vision-modules-grid">
+
+        <!-- EMPLOIS -->
+        <div class="vision-module-card" onclick="navigateSoon('emplois')">
+          <div class="vmc-top">
+            <div class="vmc-icon" style="background:#FFF3E8;">💼</div>
+            <span class="vmc-badge bientot-bleu">Bientôt</span>
+          </div>
+          <div class="vmc-title">Emplois</div>
+          <div class="vmc-desc">Offres d'emploi dans tous les secteurs de Guinée. Trouvez votre prochain poste en quelques clics.</div>
+          <div class="vmc-votes" id="votes-emplois">
+            <button class="vmc-vote-pill" onclick="voteModule(event,'emplois',1)" id="up-emplois">👍 <span id="up-count-emplois">0</span></button>
+            <button class="vmc-vote-pill" onclick="voteModule(event,'emplois',-1)" id="down-emplois">👎 <span id="down-count-emplois">0</span></button>
+          </div>
+          <div style="margin-top:12px;"><span class="vmc-link">En savoir plus →</span></div>
+        </div>
+
+        <!-- FORMATIONS -->
+        <div class="vision-module-card" onclick="navigateSoon('formations')">
+          <div class="vmc-top">
+            <div class="vmc-icon" style="background:#E8F5E9;">🎓</div>
+            <span class="vmc-badge bientot-bleu">Bientôt</span>
+          </div>
+          <div class="vmc-title">Formations</div>
+          <div class="vmc-desc">Formations certifiantes adaptées au marché guinéen. Développez vos compétences avec des formateurs locaux vérifiés.</div>
+          <div class="vmc-votes" id="votes-formations">
+            <button class="vmc-vote-pill" onclick="voteModule(event,'formations',1)" id="up-formations">👍 <span id="up-count-formations">0</span></button>
+            <button class="vmc-vote-pill" onclick="voteModule(event,'formations',-1)" id="down-formations">👎 <span id="down-count-formations">0</span></button>
+          </div>
+          <div style="margin-top:12px;"><span class="vmc-link">En savoir plus →</span></div>
+        </div>
+
+        <!-- FREELANCE -->
+        <div class="vision-module-card" onclick="navigateSoon('freelance')">
+          <div class="vmc-top">
+            <div class="vmc-icon" style="background:#EDE9FE;">💻</div>
+            <span class="vmc-badge bientot-or">Bientôt</span>
+          </div>
+          <div class="vmc-title">Freelance</div>
+          <div class="vmc-desc">Missions et opportunités pour talents indépendants. Proposez vos services ou trouvez un freelance qualifié.</div>
+          <div class="vmc-votes" id="votes-freelance">
+            <button class="vmc-vote-pill" onclick="voteModule(event,'freelance',1)" id="up-freelance">👍 <span id="up-count-freelance">0</span></button>
+            <button class="vmc-vote-pill" onclick="voteModule(event,'freelance',-1)" id="down-freelance">👎 <span id="down-count-freelance">0</span></button>
+          </div>
+          <div style="margin-top:12px;"><span class="vmc-link">En savoir plus →</span></div>
+        </div>
+
+        <!-- APPELS D'OFFRES -->
+        <div class="vision-module-card" onclick="navigateSoon('appels')">
+          <div class="vmc-top">
+            <div class="vmc-icon" style="background:#FEF3C7;">📋</div>
+            <span class="vmc-badge bientot-or">Bientôt</span>
+          </div>
+          <div class="vmc-title">Appels d'offres</div>
+          <div class="vmc-desc">Opportunités ONG, institutions et entreprises. Accédez aux marchés publics et privés en Guinée.</div>
+          <div class="vmc-votes" id="votes-appels">
+            <button class="vmc-vote-pill" onclick="voteModule(event,'appels',1)" id="up-appels">👍 <span id="up-count-appels">0</span></button>
+            <button class="vmc-vote-pill" onclick="voteModule(event,'appels',-1)" id="down-appels">👎 <span id="down-count-appels">0</span></button>
+          </div>
+          <div style="margin-top:12px;"><span class="vmc-link">En savoir plus →</span></div>
+        </div>
+
+      </div>
+
+      <!-- FEEDBACK BOX -->
+      <div class="vision-section-title">Votre avis</div>
+      <div class="vision-feedback">
+        <div class="vf-header">
+          <span class="vf-icon">💬</span>
+          <span class="vf-title">Votre avis nous construit</span>
+        </div>
+        <p class="vf-desc">Suggérez un service, commentez une nouveauté ou votez pour ce qui vous importe le plus. Chaque avis est lu par l'équipe YOUMMA JOBS.</p>
+        <div class="vf-tabs">
+          <button class="vf-tab active" onclick="selectVfTab(this,'suggestion')">💡 Suggestion</button>
+          <button class="vf-tab" onclick="selectVfTab(this,'commentaire')">💬 Commentaire</button>
+          <button class="vf-tab" onclick="selectVfTab(this,'bug')">🐛 Signaler un bug</button>
+        </div>
+        <input type="hidden" id="vf-type" value="suggestion"/>
+        <textarea class="vf-textarea" id="vf-text" placeholder="Partagez votre idée, votre avis ou votre suggestion ici..."></textarea>
+        <div class="vf-bottom">
+          <div class="vf-vote-row">
+            <span class="vf-vote-label">Ce retour vous semble :</span>
+            <button class="vf-vote-btn" id="vf-up" onclick="toggleVfVote('up')">👍 Utile</button>
+            <button class="vf-vote-btn" id="vf-down" onclick="toggleVfVote('down')">👎 Peu utile</button>
+          </div>
+          <button class="vf-submit-btn" onclick="submitFeedback()"><i class="fa-solid fa-paper-plane"></i> Envoyer</button>
+        </div>
+        <div class="vf-success" id="vf-success">✅ Merci ! Votre avis a bien été transmis à l'équipe YOUMMA JOBS.</div>
+      </div>
+
+    </div><!-- /vision-body -->
+  </div><!-- /vision-page -->
+</div><!-- /page-vision -->
+
+
 <script>
 // (adminData, allProviders déclarés globalement en haut)
 
@@ -6426,8 +6798,19 @@ window.addEventListener('popstate', (e) => {
 
 // Init au chargement
 document.addEventListener('DOMContentLoaded', async function initRouter() {
-  const hash = location.hash.replace('#','');
+  const hash = location.hash.replace('#','').toLowerCase().trim();
   
+  // Pages "bientôt disponible"
+  if (['emplois','formations','freelance','appels'].includes(hash)) {
+    navigateSoon(hash);
+    return;
+  }
+  // Page vision
+  if (hash === 'vision') {
+    navigateVision();
+    return;
+  }
+
   // Vérifier session prestataire
   const pid = await verifierSession();
   
@@ -7177,6 +7560,157 @@ function openMaps(nom, ville) {
 })();
 
 
+// ── MODULES "BIENTÔT DISPONIBLE" ──
+const SOON_MODULES = ['emplois','formations','freelance','appels'];
+
+// ── NAVIGATION VISION PAGE ──
+function navigateVision() {
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.cssText = ''; });
+  document.body.classList.remove('on-home','on-dashboard','on-admin');
+  const mc = document.getElementById('mainContent');
+  const mn = document.getElementById('mainNav');
+  if (mc) mc.style.cssText = 'display:none!important';
+  if (mn) mn.style.cssText = 'display:none!important';
+  const el = document.getElementById('page-vision');
+  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+  history.pushState({}, '', '#vision');
+  // Charger les votes depuis localStorage
+  setTimeout(loadModuleVotes, 50);
+}
+
+// ── VOTES MODULES ──
+function loadModuleVotes() {
+  const votes = JSON.parse(localStorage.getItem('yj_module_votes') || '{}');
+  ['emplois','formations','freelance','appels'].forEach(m => {
+    const v = votes[m] || {up:0, down:0, userVote:0};
+    const upEl = document.getElementById('up-count-' + m);
+    const downEl = document.getElementById('down-count-' + m);
+    if (upEl) upEl.textContent = v.up;
+    if (downEl) downEl.textContent = v.down;
+    const upBtn = document.getElementById('up-' + m);
+    const downBtn = document.getElementById('down-' + m);
+    if (upBtn) upBtn.classList.toggle('active-up', v.userVote === 1);
+    if (downBtn) downBtn.classList.toggle('active-down', v.userVote === -1);
+  });
+}
+
+function voteModule(e, module, dir) {
+  e.stopPropagation();
+  const votes = JSON.parse(localStorage.getItem('yj_module_votes') || '{}');
+  if (!votes[module]) votes[module] = {up:0, down:0, userVote:0};
+  const v = votes[module];
+  if (v.userVote === dir) {
+    // Annuler le vote
+    if (dir === 1) v.up = Math.max(0, v.up - 1);
+    else v.down = Math.max(0, v.down - 1);
+    v.userVote = 0;
+  } else {
+    // Changer de vote
+    if (v.userVote === 1) v.up = Math.max(0, v.up - 1);
+    if (v.userVote === -1) v.down = Math.max(0, v.down - 1);
+    if (dir === 1) v.up++;
+    else v.down++;
+    v.userVote = dir;
+  }
+  localStorage.setItem('yj_module_votes', JSON.stringify(votes));
+  loadModuleVotes();
+  // Tentative Supabase en arrière-plan
+  try { sb.from('module_votes').upsert({module, votes_up: v.up, votes_down: v.down}).then(()=>{}).catch(()=>{}); } catch(e){}
+}
+
+// ── FEEDBACK FORM ──
+function selectVfTab(btn, type) {
+  document.querySelectorAll('.vf-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('vf-type').value = type;
+  const placeholders = {suggestion:'Partagez votre idée ou suggestion ici...', commentaire:'Partagez votre commentaire sur la plateforme...', bug:'Décrivez le problème rencontré...'};
+  document.getElementById('vf-text').placeholder = placeholders[type] || '';
+}
+
+var _vfVote = 0;
+function toggleVfVote(dir) {
+  const upBtn = document.getElementById('vf-up');
+  const downBtn = document.getElementById('vf-down');
+  if (dir === 'up') {
+    _vfVote = _vfVote === 1 ? 0 : 1;
+    upBtn.classList.toggle('voted up', _vfVote === 1);
+    downBtn.classList.remove('voted','down');
+  } else {
+    _vfVote = _vfVote === -1 ? 0 : -1;
+    downBtn.classList.toggle('voted down', _vfVote === -1);
+    upBtn.classList.remove('voted','up');
+  }
+}
+
+function submitFeedback() {
+  const txt = (document.getElementById('vf-text')?.value || '').trim();
+  const type = document.getElementById('vf-type')?.value || 'suggestion';
+  const successEl = document.getElementById('vf-success');
+  if (!txt) {
+    const ta = document.getElementById('vf-text');
+    if (ta) { ta.style.borderColor = 'var(--rouge)'; setTimeout(()=>ta.style.borderColor='', 2000); }
+    return;
+  }
+  const entry = { type, texte: txt, vote: _vfVote, date: new Date().toISOString() };
+  try {
+    const stored = JSON.parse(localStorage.getItem('yj_feedbacks') || '[]');
+    stored.push(entry);
+    localStorage.setItem('yj_feedbacks', JSON.stringify(stored));
+  } catch(e) {}
+  try { sb.from('feedbacks').insert(entry).then(()=>{}).catch(()=>{}); } catch(e){}
+  if (successEl) { successEl.style.display = 'flex'; }
+  const ta = document.getElementById('vf-text');
+  if (ta) { ta.value = ''; ta.disabled = true; }
+  document.querySelectorAll('.vf-submit-btn').forEach(b => { b.disabled = true; b.textContent = '✓ Envoyé'; });
+}
+
+function navigateSoon(module) {
+  if (!SOON_MODULES.includes(module)) return;
+  // Cacher tout
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.cssText = ''; });
+  document.body.classList.remove('on-home','on-dashboard','on-admin');
+  const mc = document.getElementById('mainContent');
+  const mn = document.getElementById('mainNav');
+  if (mc) mc.style.cssText = 'display:none!important';
+  if (mn) mn.style.cssText = 'display:none!important';
+  const el = document.getElementById('page-' + module);
+  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+  history.pushState({}, '', '#' + module);
+}
+
+function notifyMe(module) {
+  const emailEl = document.getElementById('email-' + module);
+  const successEl = document.getElementById('success-' + module);
+  const btn = emailEl ? emailEl.nextElementSibling : null;
+  if (!emailEl || !emailEl.value.trim() || !emailEl.value.includes('@')) {
+    emailEl && (emailEl.style.borderColor = 'var(--rouge)');
+    setTimeout(() => { if(emailEl) emailEl.style.borderColor = ''; }, 2000);
+    return;
+  }
+  // Sauvegarder localement + Supabase en arrière-plan
+  const entry = { module, email: emailEl.value.trim(), date: new Date().toISOString() };
+  try {
+    const stored = JSON.parse(localStorage.getItem('yj_notify_list') || '[]');
+    stored.push(entry);
+    localStorage.setItem('yj_notify_list', JSON.stringify(stored));
+  } catch(e) {}
+  // Tentative Supabase (non bloquante)
+  try {
+    sb.from('notify_waitlist').insert(entry).then(() => {}).catch(() => {});
+  } catch(e) {}
+  // Afficher succès
+  if (btn) { btn.disabled = true; btn.textContent = '✓ Enregistré !'; }
+  if (emailEl) emailEl.disabled = true;
+  if (successEl) { successEl.style.display = 'flex'; }
+}
+
+// Étendre le routeur pour les pages "bientôt"
+window.addEventListener('popstate', function(e) {
+  const hash = location.hash.replace('#','').toLowerCase().trim();
+  if (hash === 'vision') { navigateVision(); return; }
+  if (SOON_MODULES.includes(hash)) { navigateSoon(hash); return; }
+});
+
 function navigate(page) {
   // Cacher toutes les pages SPA
   document.querySelectorAll('.page').forEach(p => {
@@ -7196,6 +7730,15 @@ function navigate(page) {
     // Cacher l'overlay admin si visible
     const ov = document.getElementById('_adminOverlay');
     if (ov) ov.style.display = 'none';
+    // Cacher aussi les pages "bientôt"
+    SOON_MODULES.forEach(m => {
+      const sp = document.getElementById('page-' + m);
+      if (sp) { sp.classList.remove('active'); sp.style.cssText = ''; }
+    });
+    // Cacher la page vision
+    const pv = document.getElementById('page-vision');
+    if (pv) { pv.classList.remove('active'); pv.style.cssText = ''; }
+    history.pushState({}, '', location.pathname);
     window.scrollTo(0,0);
   } else if (page === 'admin') {
     // Page admin : cacher nav/content, montrer page-admin avec le LOGIN
