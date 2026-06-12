@@ -4498,7 +4498,11 @@ async function getProviders({ categorie='', recherche='', limite=20, offset=0 }=
     if (recherche) query = query.or(`nom.ilike.%${recherche}%,prenom.ilike.%${recherche}%,metier.ilike.%${recherche}%`);
 
     const result = await query;
-    if (result.error) { console.warn('getProviders:', result.error?.message||''); return []; }
+    // Ne retourner [] que si error ET pas de data (DataCloneError arrive même avec data)
+    if (result.error && !result.data?.length) {
+      console.warn('getProviders:', result.error?.message||'');
+      return [];
+    }
     return result.data || [];
   } catch(e) {
     console.warn('getProviders exception:', String(e?.message||e));
