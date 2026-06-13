@@ -1110,6 +1110,336 @@ article, section, aside, nav, footer, header { display: block; }
 #mobileTapbar { display: none; }
 
 </style>
+<style id="responsive-final">
+
+/* ════════════════════════════════════════════════════════
+   RESPONSIVE FINAL — YOUMMA JOBS
+   Corrige tous les problèmes d'affichage mobile/tablette
+   ════════════════════════════════════════════════════════ */
+
+/* BASE */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { overflow-x: hidden !important; max-width: 100vw; }
+img { max-width: 100%; height: auto; }
+
+/* ── NAV ── */
+#mainNav {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  background: rgba(13,13,46,.97) !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: clamp(60px,8vw,100px) clamp(14px,5%,80px) clamp(40px,6vw,70px) !important;
+}
+.hero-inner {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 32px !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+}
+.hero h1 {
+  font-size: clamp(26px, 5vw, 64px) !important;
+  line-height: 1.15 !important;
+}
+.hero-subtitle {
+  font-size: clamp(13px, 2vw, 17px) !important;
+}
+.hero-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+}
+.hero-actions .btn-hero-main,
+.hero-actions .btn-hero-outline {
+  flex: 1 1 140px !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+.hero-kpis {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0 !important;
+}
+.kpi { flex: 1 1 80px !important; text-align: center !important; padding: 0 12px !important; }
+.kpi-num { font-size: clamp(18px, 3vw, 28px) !important; }
+.kpi-label { font-size: clamp(9px, 1.5vw, 12px) !important; }
+
+/* ── SECTIONS PADDING ── */
+#prestataires { padding: clamp(32px,5vw,60px) clamp(12px,4%,40px) !important; }
+#categories { padding: clamp(32px,5vw,60px) clamp(12px,4%,40px) !important; }
+#tarifs { padding: clamp(32px,5vw,60px) clamp(12px,4%,40px) !important; }
+#realisations { padding: clamp(32px,5vw,60px) 0 !important; }
+.counters-inner, .how-inner, .devenir-inner,
+.temo-inner, .faq-inner, .part-inner {
+  padding: clamp(32px,5vw,60px) clamp(12px,4%,80px) !important;
+}
+
+/* ── GRILLES ARTISANS ── */
+#artisansGrid, #providersGrid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+  gap: 14px !important;
+}
+
+/* ── GRILLE CATÉGORIES ── */
+.cats-grid {
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+}
+
+/* ── GRILLE TARIFS ── */
+.tarifs-grid {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+}
+
+/* ── GRILLE HOW / DEVENIR ── */
+.how-grid, .devenir-grid {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+}
+
+/* ── GRILLE TEMOIGNAGES ── */
+.temo-grid {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+}
+
+/* ── SEARCH BOX ── */
+.search-box {
+  flex-wrap: wrap !important;
+}
+
+/* ════════════════════════
+   MOBILE < 640px
+   ════════════════════════ */
+@media (max-width: 639px) {
+
+  /* NAV */
+  .nav-links, .nav-ctas { display: none !important; }
+  #navHamburger { display: flex !important; }
+  .nav-logo-text { font-size: 14px !important; }
+  #mainNav .nav-inner { height: 52px !important; padding: 0 12px !important; }
+
+  /* HERO */
+  .hero { padding: 64px 14px 36px !important; }
+  .hero-inner { grid-template-columns: 1fr !important; gap: 20px !important; }
+  .hero-visual { display: none !important; }
+  .hero h1 { font-size: clamp(24px, 7vw, 34px) !important; }
+  .hero-actions { flex-direction: column !important; }
+  .hero-actions .btn-hero-main,
+  .hero-actions .btn-hero-outline { width: 100% !important; justify-content: center !important; }
+  .hero-kpis { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+  .kpi { border-right: none !important; border-bottom: none !important; background: rgba(255,255,255,.05); border-radius: 12px; padding: 12px 8px !important; }
+  .hero-express, .express-inner { flex-direction: column !important; }
+  .btn-express { width: 100% !important; text-align: center !important; justify-content: center !important; }
+
+  /* SEARCH */
+  .search-box { flex-direction: column !important; gap: 8px !important; padding: 12px !important; }
+  .search-field { width: 100% !important; }
+  .btn-search { width: 100% !important; justify-content: center !important; }
+  .search-filters { flex-wrap: wrap !important; padding: 8px 12px !important; gap: 6px !important; }
+  .filter-chip { font-size: 11px !important; padding: 5px 10px !important; }
+
+  /* SECTIONS */
+  section { overflow-x: hidden !important; }
+  #prestataires { padding: 28px 12px !important; }
+
+  /* GRILLES 1 colonne */
+  #artisansGrid, #providersGrid { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .cats-grid { grid-template-columns: repeat(2,1fr) !important; gap: 8px !important; }
+  .tarifs-grid { grid-template-columns: 1fr !important; }
+  .tarif-card.featured { transform: none !important; }
+  .how-grid, .devenir-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+  .temo-grid { grid-template-columns: 1fr !important; }
+  .counters-inner { grid-template-columns: repeat(2,1fr) !important; gap: 10px !important; }
+  .part-grid { grid-template-columns: repeat(2,1fr) !important; }
+  .faq-grid { grid-template-columns: 1fr !important; }
+
+  /* SECTION RÉALISATIONS */
+  #realisations > div > div[style] { padding: 0 12px !important; }
+  .real-pub-card { flex: 0 0 85vw !important; }
+
+  /* TEXTES */
+  h2 { font-size: clamp(20px,6vw,28px) !important; }
+  .section-title { font-size: clamp(20px,6vw,28px) !important; }
+  p { font-size: 14px !important; line-height: 1.65 !important; }
+
+  /* MODALS */
+  .modal-backdrop { align-items: flex-end !important; }
+  .modal {
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 90vh !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .modal-meta-grid { grid-template-columns: 1fr !important; }
+  .modal-actions { flex-direction: column !important; gap: 8px !important; }
+  .modal-actions a, .modal-actions button { width: 100% !important; justify-content: center !important; }
+
+  /* DASHBOARD PRESTATAIRE */
+  #page-dashboard .sidebar {
+    transform: translateX(-100%) !important;
+    width: min(280px, 88vw) !important;
+    transition: transform .3s ease !important;
+    z-index: 9999 !important;
+  }
+  #page-dashboard .sidebar.open { transform: translateX(0) !important; }
+  #page-dashboard .main { margin-left: 0 !important; width: 100% !important; }
+  #page-dashboard .topbar { padding: 0 12px !important; height: 52px !important; }
+  .dash-hamburger { display: flex !important; }
+  .stats-row { grid-template-columns: repeat(2,1fr) !important; gap: 10px !important; }
+  .section { padding: 14px 12px !important; }
+  .form-row { grid-template-columns: 1fr !important; }
+  .actions-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  #lpin1,#lpin2,#lpin3,#lpin4 { width: 52px !important; height: 52px !important; font-size: 20px !important; }
+
+  /* ADMIN */
+  #adminSidebarEl {
+    transform: translateX(-100%) !important;
+    transition: transform .3s ease !important;
+  }
+  #adminSidebarEl.open { transform: translateX(0) !important; }
+  #adminWrap { margin-left: 0 !important; width: 100% !important; }
+  .admin-hamburger { display: flex !important; }
+  .adm-stats-grid { grid-template-columns: repeat(2,1fr) !important; gap: 8px !important; }
+  .admin-section-inner { padding: 12px !important; }
+  .adm-table-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  .adm-table { min-width: 580px !important; font-size: 12px !important; }
+  #missKpis { grid-template-columns: repeat(2,1fr) !important; }
+  #rptMoisListe { grid-template-columns: 1fr !important; }
+  #rptJoursListe table { min-width: 520px !important; }
+  .rpt-detail-grid { grid-template-columns: 1fr !important; }
+
+  /* LOGIN */
+  .login-left-panel { display: none !important; }
+  .login-right-panel { width: 100% !important; min-height: 100vh !important; padding: 28px 16px !important; }
+
+  /* PAGE NOUVEAUTÉS */
+  #page-soon-hub nav { padding: 0 14px !important; }
+  #page-soon-hub section { padding: 32px 14px !important; }
+  #page-soon-hub div[style*="grid-template-columns:repeat(3"] { grid-template-columns: 1fr !important; }
+  #page-soon-hub div[style*="grid-template-columns:repeat(2"] { grid-template-columns: 1fr !important; }
+
+  /* FOOTER */
+  .footer-top { grid-template-columns: 1fr !important; gap: 24px !important; }
+
+  /* TAPBAR spacing */
+  body { padding-bottom: 62px !important; }
+}
+
+/* ════════════════════════
+   TABLETTE 640–1024px
+   ════════════════════════ */
+@media (min-width: 640px) and (max-width: 1024px) {
+
+  /* NAV */
+  .nav-links { display: none !important; }
+  .nav-ctas { display: none !important; }
+  #navHamburger { display: flex !important; }
+  #mainNav .nav-inner { height: 58px !important; padding: 0 3% !important; }
+
+  /* HERO */
+  .hero { padding: 80px 4% 48px !important; }
+  .hero-inner { grid-template-columns: 1fr !important; gap: 24px !important; }
+  .hero-visual { display: none !important; }
+  .hero h1 { font-size: clamp(28px, 4.5vw, 46px) !important; }
+  .hero-actions { flex-direction: row !important; flex-wrap: wrap !important; gap: 10px !important; }
+  .hero-actions .btn-hero-main,
+  .hero-actions .btn-hero-outline { flex: 1 1 160px !important; justify-content: center !important; }
+  .hero-kpis {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    padding-top: 16px !important;
+  }
+  .kpi { flex: 1 !important; text-align: center !important; padding: 0 16px !important; }
+
+  /* SECTIONS */
+  #prestataires { padding: 40px 3% !important; }
+
+  /* GRILLES 2 cols tablette */
+  #artisansGrid, #providersGrid { grid-template-columns: repeat(2,1fr) !important; gap: 14px !important; }
+  .cats-grid { grid-template-columns: repeat(3,1fr) !important; }
+  .tarifs-grid { grid-template-columns: repeat(2,1fr) !important; }
+  .how-grid, .devenir-grid { grid-template-columns: repeat(2,1fr) !important; }
+  .temo-grid { grid-template-columns: repeat(2,1fr) !important; }
+  .counters-inner { grid-template-columns: repeat(3,1fr) !important; }
+  .part-grid { grid-template-columns: repeat(3,1fr) !important; }
+
+  /* CAROUSEL RÉALISATIONS 2 cartes */
+  .real-pub-card { flex: 0 0 calc(50% - 8px) !important; }
+
+  /* DASHBOARD tablette */
+  #page-dashboard .sidebar {
+    width: 72px !important;
+    transform: none !important;
+    display: flex !important;
+  }
+  #page-dashboard .sidebar .sidebar-logo span,
+  #page-dashboard .sidebar .nav-item > span:last-child,
+  #page-dashboard .sidebar .btn-deconnexion span { display: none !important; }
+  #page-dashboard .sidebar .nav-item { justify-content: center !important; padding: 12px 0 !important; }
+  #page-dashboard .sidebar .sidebar-logo { justify-content: center !important; padding: 16px 0 !important; }
+  #page-dashboard .main { margin-left: 72px !important; width: calc(100vw - 72px) !important; }
+  .stats-row { grid-template-columns: repeat(3,1fr) !important; }
+
+  /* ADMIN tablette */
+  #adminSidebarEl { width: 72px !important; }
+  #adminWrap { margin-left: 72px !important; width: calc(100vw - 72px) !important; }
+  .adm-stats-grid { grid-template-columns: repeat(3,1fr) !important; }
+  #missKpis { grid-template-columns: repeat(3,1fr) !important; }
+  #rptMoisListe { grid-template-columns: repeat(2,1fr) !important; }
+
+  /* LOGIN */
+  .login-left-panel { display: none !important; }
+  .login-right-panel { width: 100% !important; min-height: 100vh !important; }
+}
+
+/* ════════════════════════
+   DESKTOP > 1024px
+   ════════════════════════ */
+@media (min-width: 1025px) {
+  .nav-links { display: flex !important; }
+  .nav-ctas { display: flex !important; }
+  #navHamburger { display: none !important; }
+  .nav-logo-text { display: inline !important; }
+  .hero-visual { display: block !important; }
+  .hero-inner { grid-template-columns: 1fr 1fr !important; }
+  #artisansGrid, #providersGrid { grid-template-columns: repeat(3,1fr) !important; }
+  .cats-grid { grid-template-columns: repeat(5,1fr) !important; }
+  #page-dashboard .sidebar {
+    width: 220px !important;
+    transform: none !important;
+    display: flex !important;
+    position: fixed !important;
+  }
+  #page-dashboard .main {
+    margin-left: 220px !important;
+    width: calc(100vw - 220px) !important;
+  }
+  #adminWrap { margin-left: 220px !important; }
+  .login-left-panel { display: flex !important; }
+  .login-right-panel { width: 420px !important; }
+  /* Tapbar caché */
+  #mobileTapbar { display: none !important; }
+  body { padding-bottom: 0 !important; }
+}
+
+/* ════════════════
+   TRÈS PETIT < 380px
+   ════════════════ */
+@media (max-width: 380px) {
+  .hero h1 { font-size: 22px !important; }
+  .kpi-num { font-size: 18px !important; }
+  #lpin1,#lpin2,#lpin3,#lpin4 { width: 46px !important; height: 46px !important; font-size: 18px !important; }
+  .cats-grid { grid-template-columns: repeat(2,1fr) !important; }
+  .btn-hero-main, .btn-hero-outline { font-size: 13px !important; padding: 11px 14px !important; }
+}
+
+</style>
 </head>
 <body>
 <!-- 
