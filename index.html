@@ -638,7 +638,7 @@ async function verifierSession() {
       </a></li>
     </ul>
     <div class="nav-ctas">
-      <button class="btn-nav-ghost" onclick="if(typeof _realNavigate==='function')_realNavigate('login');else if(typeof navigate==='function')navigate('login')"><i class="fa-solid fa-lock"></i> Connexion</button>
+      <button class="btn-nav-ghost" onclick="(function(){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');p.style.display='';});var mc=document.getElementById('mainContent');var mn=document.getElementById('mainNav');document.body.classList.remove('on-home','on-dashboard','on-admin');if(mc)mc.style.cssText='display:none!important';if(mn)mn.style.cssText='display:none!important';var pl=document.getElementById('page-login');if(pl){pl.classList.add('active');pl.style.cssText='display:block!important';window.scrollTo(0,0);}})()"><i class="fa-solid fa-lock"></i> Connexion</button>
       <button class="btn-nav-ghost" onclick="if(typeof _realNavigate==='function')_realNavigate('inscription');else if(typeof navigate==='function')navigate('inscription')">+ Devenir artisan</button>
       <button class="btn-nav-primary" onclick="document.getElementById('prestataires').scrollIntoView({behavior:'smooth'})">Trouver un artisan</button>
     </div>
@@ -1465,6 +1465,503 @@ async function verifierSession() {
   </div>
 </footer>
 
+</div>
+
+<div class="page" id="page-login">
+<div style="min-height:100vh;background:linear-gradient(135deg,#0A0A1E 0%,#1A1A4E 50%,#0D0D2E 100%);display:flex;align-items:stretch;">
+
+  <!-- Panneau gauche -->
+  <div class="login-left-panel" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 40px;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:-100px;left:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(232,93,4,.2),transparent 70%);pointer-events:none;"></div>
+    <div style="position:relative;z-index:1;text-align:center;max-width:400px;">
+      <div style="display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:48px;">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAEUElEQVR42u2Xy29UdRTHP7/fvXce93Y6D/ugU4FigSkolZSFBtKghIaFQfwDdCeJO5eaEJaauDNx4UKMkRATxZUmRk2MC1SIkfAIoNWQQlugQOfZaed5f8fFtCgGY2eYGhZzkptJ7r1z7ifnnN/39/0pEREe4dA84tEB7AB2ADuAaxx2s394oKwrUPe9IxgjaK1QSj0UoGrPTiKIEXxRKMCy/oIyRlBK0Srnqiq4Uo0TX03y/S8zuI7G+D5+pUKhpAl5HgNRRSzogwhih+ntTbB7Zy+p4cS9qrZSTXt19WnE9O0iZ3+9SzxskS8s4bgxDqbKHHC/Y6h8CXcxi6Ao6DiTmRE+Oz9GOJnitVdG6eoKtwTZ1AwGHE236yAibB9Zz9EtP5CaOQ4zcxhf4ysLgAEMSedHno9/zTfZlzj69jxvvj5Of39305BNLhLFYqnGti0DvDt0kp5zx1iSCNqJorTcWyhVQIxC5u5woOt9+uN53nlP8daR/QSDTiOTWgOZEb+O7opzZPMZei5+yJJ+DDvgoDEoMY1hEEEhaGWwgkEWl8LsLHzKuP0Tx09eQmuFiFkbHSzWLCaGa2y79gGlagBb+VCrQL3agKtXwNTBrzXu1Ws42qecrXEo8AXXL//G3fQiWmtWqx1NtdgOhdkbv4rUhsAbRsp5VCgCSsPCbehPwewFiPSBl4BbVyA2iCxk0SGL0fw5Tp/bzYv7PYwxWJZuTwVXxiURc9mUOYWyPHRyBIVAdB1q8ClkKY9oDVv3Qs8mCEWRrXshsQHVswEGdrI1OM3sTKb9q3hloL2A4NXSmPkcKn0TcUIwcwG8OET7UelpsB1EOxAMou6kkWgvlBeQW2miXZsoF4vLOVV7dVABllIYx0Xd+BmxvUYFAXI3UJYN1Roko6igDbdLqLgLfg60QZkiptaPjjj/yNoOwOVcIdcl6wywztZgB8D498+A5YAVQCUiSLYKrgtaIRaILdzJJ4l0u/++pz/sDG5c5/GHuwscC2OWZWVZWhABu+Ea5Pe5xu/UXZjNIDczqEyFS/khto/0NdXiVQE2tAtG1weZiu2mnNiBVS2CfkAD5vJQqsFCGap1pFjHyc2TY4Rpexu7dvQh0tjb26qDIkIooBkbHeLz7sME4h5+pYz8HXKlbVqBpRHLwVSXsB9Pcix7kImJUQIBi2b806oBtVYYI4w/GcXfvI8ve98gnAhhV/L4BgwWRi1faPy6IVDNER7s46PFV+navofn9my454zWzA8aAY3h429nqU6e4lD5BH2F81ApNh4CWBrC3dxwx/hk4QViI89w+OWnMYam4Fo2rCINbTxzJcvps9eJZi6ysXyZmD+PCKTp4areQs5NsW98mGfHki37wZYdtRFBKwUIkzMlpm4uUiiUQAwRL8gTgx6poe77DO//bvn/68Migggtw7XtTCIijfFbSaUUWvHQB6Y2Hpo6B/cOYAewA9gBXKv4EwW01J5x+MQNAAAAAElFTkSuQmCC" style="width:40px;height:40px;object-fit:contain;border-radius:10px;"/>
+        <span style="font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;color:#fff;">YOUMMA <span style="color:#E85D04;">JOBS</span></span>
+      </div>
+      <h2 style="font-family:'Libre Baskerville',serif;font-size:clamp(24px,3vw,36px);font-weight:700;color:#fff;margin-bottom:16px;line-height:1.25;">Bienvenue dans<br>votre espace pro</h2>
+      <p style="font-size:15px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:40px;">Gerez votre profil, vos missions et suivez vos performances depuis votre tableau de bord.</p>
+      <div style="display:flex;flex-direction:column;gap:14px;text-align:left;">
+        <div style="display:flex;align-items:center;gap:12px;"><div style="width:36px;height:36px;border-radius:9px;background:rgba(232,93,4,.15);border:1px solid rgba(232,93,4,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-user-check" style="color:#E85D04;font-size:14px;"></i></div><span style="font-size:13.5px;color:rgba(255,255,255,.7);">Profil verifie et certifie YOUMMA</span></div>
+        <div style="display:flex;align-items:center;gap:12px;"><div style="width:36px;height:36px;border-radius:9px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-bullseye" style="color:#10B981;font-size:14px;"></i></div><span style="font-size:13.5px;color:rgba(255,255,255,.7);">Suivi de vos missions en temps reel</span></div>
+        <div style="display:flex;align-items:center;gap:12px;"><div style="width:36px;height:36px;border-radius:9px;background:rgba(245,200,66,.15);border:1px solid rgba(245,200,66,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-star" style="color:#F5C842;font-size:14px;"></i></div><span style="font-size:13.5px;color:rgba(255,255,255,.7);">Avis clients et notation automatique</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panneau droit -->
+  <div class="login-right-panel" style="width:420px;background:#fff;display:flex;flex-direction:column;justify-content:center;padding:48px 40px;position:relative;">
+    <button onclick="goHome()" style="position:absolute;top:20px;left:20px;display:flex;align-items:center;gap:6px;font-size:12.5px;color:#9CA3AF;background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:8px;"><i class="fa-solid fa-arrow-left" style="font-size:10px;"></i> Accueil</button>
+
+    <div style="margin-bottom:28px;">
+      <div style="font-size:11px;font-weight:700;color:#E85D04;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Espace Prestataire</div>
+      <h1 style="font-family:'Libre Baskerville',serif;font-size:26px;font-weight:700;color:#1A1A4E;margin-bottom:6px;">Connexion</h1>
+      <p style="font-size:13.5px;color:#9CA3AF;">Entrez votre telephone et votre code PIN</p>
+    </div>
+
+    <div id="errorBox" style="display:none;background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:10px 14px;font-size:13px;color:#DC2626;margin-bottom:16px;"></div>
+
+    <div style="margin-bottom:18px;">
+      <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:7px;">Numero de telephone</label>
+      <div style="display:flex;align-items:center;border:1.5px solid #E5E7EB;border-radius:11px;overflow:hidden;" id="telWrap">
+        <div style="padding:0 12px;background:#F4F6FB;border-right:1.5px solid #E5E7EB;height:48px;display:flex;align-items:center;"><i class="fa-solid fa-phone" style="color:#9CA3AF;font-size:14px;"></i></div>
+        <input type="tel" id="telephone" placeholder="+224 6XX XX XX XX" autocomplete="tel" style="flex:1;padding:0 14px;height:48px;border:none;outline:none;font-size:14px;color:#1A1A4E;" onfocus="document.getElementById('telWrap').style.borderColor='#E85D04'" onblur="document.getElementById('telWrap').style.borderColor='#E5E7EB'"/>
+      </div>
+    </div>
+
+    <div style="margin-bottom:28px;">
+      <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:10px;">Code PIN (4 chiffres)</label>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <input id="lpin1" type="password" inputmode="numeric" maxlength="1" style="width:60px;height:60px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('lpin2').focus()" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
+        <input id="lpin2" type="password" inputmode="numeric" maxlength="1" style="width:60px;height:60px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('lpin3').focus()" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
+        <input id="lpin3" type="password" inputmode="numeric" maxlength="1" style="width:60px;height:60px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('lpin4').focus()" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
+        <input id="lpin4" type="password" inputmode="numeric" maxlength="1" style="width:60px;height:60px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('loginSubmitBtn').click()" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
+      </div>
+    </div>
+
+    <button id="loginSubmitBtn" onclick="loginSubmitHandler()" style="width:100%;padding:15px;background:linear-gradient(135deg,#E85D04,#C74B00);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(232,93,4,.35);margin-bottom:20px;">
+      <i class="fa-solid fa-right-to-bracket"></i> Se connecter
+    </button>
+
+    <div style="text-align:center;">
+      <span style="font-size:13.5px;color:#9CA3AF;">Pas de compte ?</span>
+      <button onclick="(function(){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');p.style.display='';});document.getElementById('page-login').style.cssText='display:none!important';var pi=document.getElementById('page-inscription');if(pi){pi.classList.add('active');pi.style.cssText='display:block!important';window.scrollTo(0,0);}})()" style="background:none;border:none;color:#E85D04;font-size:13.5px;font-weight:700;cursor:pointer;margin-left:4px;">S'inscrire</button>
+    </div>
+
+    <script>
+// Définition locale connexionPrestataire (fallback)
+if (typeof connexionPrestataire === 'undefined') {
+  window.connexionPrestataire = async function(telephone, password) {
+    try {
+      var msgBuf = new TextEncoder().encode(password);
+      var hashBuf = await crypto.subtle.digest('SHA-256', msgBuf);
+      var hash = Array.from(new Uint8Array(hashBuf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+      var res = await sb.from('providers')
+        .select('id,nom,prenom,metier,statut,password_hash')
+        .eq('telephone', telephone)
+        .single();
+      if (res.error || !res.data) return { success: false, message: 'Numéro non trouvé' };
+      if (res.data.password_hash !== hash) return { success: false, message: 'PIN incorrect' };
+      if (res.data.statut === 'suspendu') return { success: false, message: 'Compte suspendu' };
+      var token = Math.random().toString(36).slice(2) + Date.now();
+      localStorage.setItem('yj_provider_session', JSON.stringify({
+        provider_id: res.data.id, token: token, nom: res.data.nom, prenom: res.data.prenom
+      }));
+      sb.from('provider_sessions').insert({provider_id: res.data.id, token: token}).then(function(){}).catch(function(){});
+      return { success: true, provider: res.data };
+    } catch(e) { return { success: false, message: e.message }; }
+  };
+}
+</script>
+  </div>
+</div>
+
+<style>
+@media(max-width:768px){.login-left-panel{display:none!important;}.login-right-panel{width:100%!important;padding:32px 20px!important;min-height:100vh;}}
+</style>
+</div>
+
+<div class="page" id="page-inscription">
+<div style="background:linear-gradient(135deg,#1A1A4E 0%,#0D0D2E 100%);min-height:100vh;padding:40px 20px;display:flex;align-items:flex-start;justify-content:center;">
+<div style="background:#fff;border-radius:24px;padding:32px;width:100%;max-width:500px;box-shadow:0 32px 80px rgba(0,0,0,.3);">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;justify-content:center;">
+    <img src="data:image/png;base64,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" alt="YJ" style="width:48px;height:48px;object-fit:contain;border-radius:10px;"/>
+    <div style="font-family:'Libre Baskerville',serif;font-weight:700;font-size:17px;color:#1A1A4E;">YOUMMA <span style="color:#E85D04;">JOBS</span></div>
+  </div>
+  <h2 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;text-align:center;margin-bottom:6px;">Créer mon profil prestataire</h2>
+  <p style="font-size:13px;color:#6B7280;text-align:center;margin-bottom:16px;">Rejoignez YOUMMA JOBS et trouvez de nouveaux clients à Conakry</p>
+  <div style="background:linear-gradient(135deg,#E85D04,#C74B00);border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:center;margin-bottom:20px;">
+    <span style="font-size:22px;"><i class="fa-solid fa-bullseye"></i></span>
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:#fff;">14 jours d'essai gratuit après validation</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.8);">Abonnement 50 000 GNF/mois — Orange Money, MTN MoMo, Wave</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;margin-bottom:24px;">
+    <div id="i-dot-1" style="width:30px;height:30px;border-radius:50%;background:#E85D04;border:2px solid #E85D04;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">1</div>
+    <div id="i-line-1" style="flex:1;height:2px;background:#E5E7EB;"></div>
+    <div id="i-dot-2" style="width:30px;height:30px;border-radius:50%;background:#fff;border:2px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#6B7280;flex-shrink:0;">2</div>
+    <div id="i-line-2" style="flex:1;height:2px;background:#E5E7EB;"></div>
+    <div id="i-dot-3" style="width:30px;height:30px;border-radius:50%;background:#fff;border:2px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#6B7280;flex-shrink:0;">3</div>
+  </div>
+  <div id="i-err" style="display:none;background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:13px;color:#DC2626;margin-bottom:14px;"></div>
+  <div id="i-step1">
+    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">Informations personnelles</div>
+
+    <!-- CHOIX TYPE DE COMPTE -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:8px;">Type de compte *</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <label id="type-particulier-label" onclick="setTypeCompte('particulier')" style="display:flex;align-items:center;gap:10px;padding:13px 14px;border:2px solid #E85D04;border-radius:12px;cursor:pointer;background:#FFF7F0;transition:all .2s;">
+          <div style="width:36px;height:36px;border-radius:9px;background:#FDE8D8;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">👤</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#1A1A4E;">Particulier</div>
+            <div style="font-size:10.5px;color:#9CA3AF;">Artisan indépendant</div>
+          </div>
+          <div id="type-check-particulier" style="margin-left:auto;width:18px;height:18px;border-radius:50%;background:#E85D04;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fa-solid fa-check" style="color:#fff;font-size:9px;"></i>
+          </div>
+        </label>
+        <label id="type-entreprise-label" onclick="setTypeCompte('entreprise')" style="display:flex;align-items:center;gap:10px;padding:13px 14px;border:2px solid #E5E7EB;border-radius:12px;cursor:pointer;background:#fff;transition:all .2s;">
+          <div style="width:36px;height:36px;border-radius:9px;background:#EEF2FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">🏢</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#1A1A4E;">Entreprise</div>
+            <div style="font-size:10.5px;color:#9CA3AF;">Société, cabinet, agence</div>
+          </div>
+          <div id="type-check-entreprise" style="margin-left:auto;width:18px;height:18px;border-radius:50%;background:#E5E7EB;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:.3;">
+            <i class="fa-solid fa-check" style="color:#fff;font-size:9px;"></i>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Champs nom selon type -->
+    <div id="fields-particulier">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Prénom *</label><input id="i-prenom" type="text" placeholder="Mamadou" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
+      <div><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Nom *</label><input id="i-nom" type="text" placeholder="Diallo" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
+    </div>
+    </div><!-- /fields-particulier -->
+
+    <!-- Champs entreprise (cachés par défaut) -->
+    <div id="fields-entreprise" style="display:none;">
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Nom de l'entreprise *</label>
+        <input id="i-nom-entreprise" type="text" placeholder="Ex: DIALLO Construction SARL" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div>
+          <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Prénom du représentant *</label>
+          <input id="i-prenom-rep" type="text" placeholder="Mamadou" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/>
+        </div>
+        <div>
+          <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Nom du représentant *</label>
+          <input id="i-nom-rep" type="text" placeholder="Diallo" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/>
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Rôle dans l'entreprise</label>
+        <select id="i-role-entreprise" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;background:#fff;">
+          <option value="Directeur">Directeur / PDG</option>
+          <option value="Gérant">Gérant</option>
+          <option value="Responsable commercial">Responsable commercial</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+    </div><!-- /fields-entreprise -->
+
+    <div style="margin-bottom:12px;"><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Téléphone (WhatsApp) *</label><input id="i-tel" type="tel" placeholder="+224 6XX XX XX XX" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:8px;">Code PIN 4 chiffres *</label>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <input id="i-pin1" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('i-pin2').focus()"/>
+        <input id="i-pin2" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('i-pin3').focus()"/>
+        <input id="i-pin3" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('i-pin4').focus()"/>
+        <input id="i-pin4" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1)"/>
+      </div>
+      <div style="text-align:center;font-size:11px;color:#9CA3AF;margin-top:6px;">Ce code vous servira à vous connecter</div>
+    </div>
+    <button id="i-btn1" onclick="(function(){var p=(document.getElementById('i-prenom')||{}).value||'';var n=(document.getElementById('i-nom')||{}).value||'';var t=(document.getElementById('i-tel')||{}).value||'';var pin=((document.getElementById('i-pin1')||{}).value||'')+((document.getElementById('i-pin2')||{}).value||'')+((document.getElementById('i-pin3')||{}).value||'')+((document.getElementById('i-pin4')||{}).value||'');var e=document.getElementById('i-err');if(!p.trim()||!n.trim()||!t.trim()){if(e){e.textContent='Remplissez tous les champs';e.style.display='block';}return;}if(pin.length<4){if(e){e.textContent='Entrez votre PIN 4 chiffres';e.style.display='block';}return;}if(e)e.style.display='none';document.getElementById('i-step1').style.display='none';document.getElementById('i-step2').style.display='block';})()" style="width:100%;padding:14px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Suivant →</button>
+  </div>
+  <div id="i-step2" style="display:none;">
+    <div id="i-err2" style="display:none;background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:13px;color:#DC2626;margin-bottom:14px;"></div>
+    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">Profil professionnel</div>
+    <div style="margin-bottom:12px;"><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Catégorie *</label>
+      <select id="i-cat" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;background:#fff;">
+        <option value="">Choisir votre catégorie</option>
+        <option>Artisans</option><option>Santé &amp; Beauté</option><option>Construction &amp; BTP</option>
+        <option>IT &amp; Digital</option><option>Éducation</option><option>Transport</option>
+        <option>Juridique</option><option>Services Express</option><option>Aide à domicile</option><option>Autre</option>
+      </select>
+    </div>
+    <div style="margin-bottom:12px;"><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Métier *</label><input id="i-metier" type="text" placeholder="Ex: Électricien certifié..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
+    <div style="margin-bottom:20px;"><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Description *</label><textarea id="i-desc" placeholder="Décrivez vos services..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;min-height:80px;resize:vertical;box-sizing:border-box;"></textarea></div>
+    <div style="display:flex;gap:10px;">
+      <button id="i-back2" onclick="document.getElementById('i-step2').style.display='none';document.getElementById('i-step1').style.display='block';" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;">← Retour</button>
+      <button id="i-btn2" onclick="(function(){var cat=(document.getElementById('i-cat')||{}).value||'';var met=((document.getElementById('i-metier')||{}).value||'').trim();var dsc=((document.getElementById('i-desc')||{}).value||'').trim();var e=document.getElementById('i-err');if(!cat||!met||!dsc){if(e){e.textContent='Remplissez tous les champs';e.style.display='block';}return;}if(e)e.style.display='none';document.getElementById('i-step2').style.display='none';document.getElementById('i-step3').style.display='block';})()" style="flex:2;padding:13px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">Suivant →</button>
+    </div>
+  </div>
+  <div id="i-step3" style="display:none;">
+    <div id="i-err3" style="display:none;background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:13px;color:#DC2626;margin-bottom:14px;"></div>
+    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">Localisation</div>
+    <div style="margin-bottom:12px;"><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Ville *</label>
+      <select id="i-ville" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;background:#fff;">
+        <option value="Conakry">Conakry</option><option>Kindia</option><option>Labé</option><option>Kankan</option><option>Nzérékoré</option><option>Boké</option><option>Faranah</option>
+      </select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+      <div><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Commune</label>
+        <select id="i-commune" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;background:#fff;">
+          <option value="">Choisir</option><option>Kaloum</option><option>Dixinn</option><option>Matam</option><option>Ratoma</option><option>Matoto</option><option>Lambanyi</option><option>Kipé</option>
+        </select>
+      </div>
+      <div><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Quartier</label><input id="i-quartier" type="text" placeholder="Ex: Hamdallaye..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button id="i-back3" onclick="document.getElementById('i-step3').style.display='none';document.getElementById('i-step2').style.display='block';" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;">← Retour</button>
+      <button id="i-submit" style="flex:2;padding:13px;background:#1A1A4E;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">Créer mon compte</button>
+    </div>
+  </div>
+  <div id="i-success" style="display:none;text-align:center;padding:20px 0;">
+    <div style="font-size:56px;margin-bottom:16px;"><i class="fa-solid fa-circle-check" style="font-size:52px;color:#16A34A;"></i></div>
+    <h3 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;margin-bottom:10px;">Compte créé avec succès !</h3>
+    <p style="font-size:13.5px;color:#6B7280;line-height:1.7;margin-bottom:6px;">Votre profil est en cours de validation.<br>Vous serez contacté(e) sous <strong>24h</strong>.</p>
+    <p style="font-size:12px;color:#9CA3AF;margin-bottom:20px;">Vous pouvez dès maintenant accéder à votre tableau de bord.</p>
+    <button onclick="navigate('dashboard');if(typeof chargerDashboard==='function'&&providerId)chargerDashboard(providerId);" style="display:inline-flex;align-items:center;gap:8px;background:#E85D04;color:#fff;padding:13px 28px;border-radius:50px;border:none;font-weight:700;font-size:14px;cursor:pointer;"><i class="fa-solid fa-gauge"></i> Accéder à mon tableau de bord</button>
+  </div>
+  <div style="text-align:center;margin-top:16px;font-size:13px;">
+    <a href="#login" style="color:#E85D04;text-decoration:none;font-weight:600;">Déjà inscrit ? Se connecter</a>
+    &nbsp;·&nbsp;
+    <a href="#" onclick="navigate('home');return false;" style="color:#6B7280;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Retour au site</a>
+  </div>
+</div>
+</div>
+<script>
+(function() {
+  function showErr(msg) {
+    var e = document.getElementById('i-err');
+    if (e) { e.textContent = msg; e.style.display = 'block'; }
+  }
+  function hideErr() {
+    var e = document.getElementById('i-err');
+    if (e) e.style.display = 'none';
+  }
+
+  function goTo(step) {
+    for (var s = 1; s <= 3; s++) {
+      var el = document.getElementById('i-step' + s);
+      if (el) el.style.display = s === step ? 'block' : 'none';
+    }
+    // Mettre à jour les dots
+    var base = 'width:30px;height:30px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;';
+    var A = 'background:#E85D04;border-color:#E85D04;color:#fff;';
+    var D = 'background:#16A34A;border-color:#16A34A;color:#fff;';
+    var I = 'background:#fff;border-color:#E5E7EB;color:#6B7280;';
+    var d1 = document.getElementById('i-dot-1');
+    var d2 = document.getElementById('i-dot-2');
+    var d3 = document.getElementById('i-dot-3');
+    var l1 = document.getElementById('i-line-1');
+    var l2 = document.getElementById('i-line-2');
+    if (d1) { d1.style.cssText = (step > 1 ? D : A) + base; d1.innerHTML = step > 1 ? '<i class="fa-solid fa-check"></i>' : '1'; }
+    if (d2) { d2.style.cssText = (step > 2 ? D : step === 2 ? A : I) + base; d2.innerHTML = step > 2 ? '<i class="fa-solid fa-check"></i>' : '2'; }
+    if (d3) { d3.style.cssText = (step === 3 ? A : I) + base; d3.innerHTML = '3'; }
+    if (l1) l1.style.background = step > 1 ? '#16A34A' : '#E5E7EB';
+    if (l2) l2.style.background = step > 2 ? '#16A34A' : '#E5E7EB';
+    hideErr();
+    window.scrollTo(0, 0);
+  }
+
+  function init() {
+    // Bouton suivant étape 1
+    var b1 = document.getElementById('i-btn1');
+    if (b1) b1.onclick = function() {
+      var prenom = (document.getElementById('i-prenom') || {}).value || '';
+      var nom    = (document.getElementById('i-nom')    || {}).value || '';
+      var tel    = (document.getElementById('i-tel')    || {}).value || '';
+      var pin    = ((document.getElementById('i-pin1')||{}).value||'')
+                + ((document.getElementById('i-pin2')||{}).value||'')
+                + ((document.getElementById('i-pin3')||{}).value||'')
+                + ((document.getElementById('i-pin4')||{}).value||'');
+      if (!prenom.trim() || !nom.trim() || !tel.trim()) { showErr('Remplissez tous les champs'); return; }
+      if (pin.length < 4) { showErr('Entrez votre code PIN 4 chiffres'); return; }
+      goTo(2);
+    };
+
+    // Bouton suivant étape 2
+    var b2 = document.getElementById('i-btn2');
+    if (b2) b2.onclick = function() {
+      var cat = (document.getElementById('i-cat')    || {}).value || '';
+      var met = (document.getElementById('i-metier') || {}).value || '';
+      var dsc = (document.getElementById('i-desc')   || {}).value || '';
+      if (!cat || !met.trim() || !dsc.trim()) { showErr('Remplissez tous les champs'); return; }
+      goTo(3);
+    };
+
+    // Retour étape 2
+    var ba2 = document.getElementById('i-back2');
+    if (ba2) ba2.onclick = function() { goTo(1); };
+
+    // Retour étape 3
+    var ba3 = document.getElementById('i-back3');
+    if (ba3) ba3.onclick = function() { goTo(2); };
+
+    // Soumettre étape 3
+    var b3 = document.getElementById('i-submit');
+    if (b3) b3.onclick = async function() {
+      b3.disabled = true;
+      b3.textContent = 'Inscription en cours...';
+      var pin = ((document.getElementById('i-pin1')||{}).value||'')
+              + ((document.getElementById('i-pin2')||{}).value||'')
+              + ((document.getElementById('i-pin3')||{}).value||'')
+              + ((document.getElementById('i-pin4')||{}).value||'');
+      var fd = {
+        prenom:      (document.getElementById('i-prenom')  || {}).value || '',
+        nom:         (document.getElementById('i-nom')     || {}).value || '',
+        telephone:   (document.getElementById('i-tel')     || {}).value || '',
+        password:    pin,
+        categorie:   (document.getElementById('i-cat')     || {}).value || '',
+        metier:      (document.getElementById('i-metier')  || {}).value || '',
+        description: (document.getElementById('i-desc')    || {}).value || '',
+        ville:       (document.getElementById('i-ville')   || {}).value || 'Conakry',
+        commune:     (document.getElementById('i-commune') || {}).value || null,
+        quartier:    (document.getElementById('i-quartier')|| {}).value || null,
+        skills: []
+      };
+      try {
+        var res = await inscrirePrestataire(fd);
+        if (res.success) {
+          for (var s = 1; s <= 3; s++) {
+            var el = document.getElementById('i-step' + s);
+            if (el) el.style.display = 'none';
+          }
+          var su = document.getElementById('i-success');
+          if (su) su.style.display = 'block';
+        } else {
+          showErr(res.message || "Erreur lors de l'inscription");
+          b3.disabled = false;
+          b3.textContent = 'Créer mon compte';
+        }
+      } catch(e) {
+        showErr('Erreur: ' + e.message);
+        b3.disabled = false;
+        b3.textContent = 'Créer mon compte';
+      }
+    };
+  }
+
+  // Initialiser dès que possible
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  // Re-initialiser si navigate('inscription') est appelé
+  window.navigate = (function(_prev){
+    return function(p) {
+      if (typeof _realNavigate === 'function') _realNavigate(p);
+      else if (_prev) _prev(p);
+      if (p === 'inscription') setTimeout(init, 100);
+    };
+  })(window.navigate);
+})();
+</script>
+
+<script>
+// Définition locale de inscrirePrestataire (fallback)
+if (typeof inscrirePrestataire === 'undefined') {
+  window.inscrirePrestataire = async function(formData) {
+    try {
+      var hash = await hashPassword(formData.password);
+      var row = {
+        prenom: formData.prenom, nom: formData.nom,
+        telephone: formData.telephone, password_hash: hash,
+        metier: formData.metier, categorie: formData.categorie,
+        description: formData.description, ville: formData.ville,
+        commune: formData.commune || null, quartier: formData.quartier || null,
+        statut: 'en_attente', skills: formData.skills || []
+      };
+      var res = await sb.from('providers').insert([row]);
+      if (res.error) return { success: false, message: res.error.message };
+      return { success: true };
+    } catch(e) { return { success: false, message: e.message }; }
+  };
+}
+</script>
+<script>
+(function() {
+  function showErr(msg){var e=document.getElementById('i-err');if(e){e.textContent=msg;e.style.display='block';}}
+  function hideErr(){var e=document.getElementById('i-err');if(e)e.style.display='none';}
+  function goTo(step){
+    [1,2,3].forEach(function(s){var el=document.getElementById('i-step'+s);if(el)el.style.display=s===step?'block':'none';});
+    var d1=document.getElementById('i-dot-1'),d2=document.getElementById('i-dot-2'),d3=document.getElementById('i-dot-3');
+    var l1=document.getElementById('i-line-1'),l2=document.getElementById('i-line-2');
+    var A='background:#E85D04;border-color:#E85D04;color:#fff;',D='background:#16A34A;border-color:#16A34A;color:#fff;',I='background:#fff;border-color:#E5E7EB;color:#6B7280;';
+    var base='width:30px;height:30px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;';
+    if(d1){d1.style.cssText=(step>1?D:A)+base;if(step>1){d1.innerHTML='<i class="fa-solid fa-check"></i>';}else{d1.textContent='1';}}
+    if(d2){d2.style.cssText=(step>2?D:step===2?A:I)+base;if(step>2){d2.innerHTML='<i class="fa-solid fa-check"></i>';}else{d2.textContent='2';}}
+    if(d3){d3.style.cssText=(step===3?A:I)+base;d3.textContent='3';}
+    if(l1)l1.style.background=step>1?'#16A34A':'#E5E7EB';
+    if(l2)l2.style.background=step>2?'#16A34A':'#E5E7EB';
+    hideErr();window.scrollTo(0,0);
+  }
+  function init(){
+    var b1=document.getElementById('i-btn1'),b2=document.getElementById('i-btn2'),ba2=document.getElementById('i-back2'),b3=document.getElementById('i-submit'),ba3=document.getElementById('i-back3');
+    if(b1)b1.onclick=function(){
+      var p=(document.getElementById('i-prenom')||{}).value||'',n=(document.getElementById('i-nom')||{}).value||'',t=(document.getElementById('i-tel')||{}).value||'';
+      var pin=(document.getElementById('i-pin1')||{}).value+(document.getElementById('i-pin2')||{}).value+(document.getElementById('i-pin3')||{}).value+(document.getElementById('i-pin4')||{}).value;
+      if(!p.trim()||!n.trim()||!t.trim()){showErr('Remplissez tous les champs');return;}
+      if(pin.length<4){showErr('Entrez votre code PIN 4 chiffres');return;}
+      goTo(2);
+    };
+    if(b2)b2.onclick=function(){
+      var cat=(document.getElementById('i-cat')||{}).value||'',met=((document.getElementById('i-metier')||{}).value||'').trim(),desc=((document.getElementById('i-desc')||{}).value||'').trim();
+      if(!cat||!met||!desc){showErr('Remplissez tous les champs');return;}
+      goTo(3);
+    };
+    if(ba2)ba2.onclick=function(){goTo(1);};
+    if(ba3)ba3.onclick=function(){goTo(2);};
+    if(b3)b3.onclick=async function(){
+      b3.disabled=true;
+      b3.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Création du compte...';
+      var pin=(document.getElementById('i-pin1').value||'')+(document.getElementById('i-pin2').value||'')+(document.getElementById('i-pin3').value||'')+(document.getElementById('i-pin4').value||'');
+      var tel=document.getElementById('i-tel').value.trim();
+      var fd={
+        prenom:document.getElementById('i-prenom').value.trim(),
+        nom:document.getElementById('i-nom').value.trim(),
+        telephone:tel,
+        password:pin,
+        categorie:document.getElementById('i-cat').value,
+        metier:document.getElementById('i-metier').value.trim(),
+        description:document.getElementById('i-desc').value.trim(),
+        ville:(document.getElementById('i-ville')||{}).value||'Conakry',
+        commune:(document.getElementById('i-commune')||{}).value||null,
+        quartier:((document.getElementById('i-quartier')||{}).value||'').trim()||null,
+        skills:[]
+      };
+      try{
+        // Vérifier si téléphone déjà utilisé
+        var chk = await sb.from('providers').select('id').eq('telephone',tel).maybeSingle();
+        if(chk.data){ showErr('Ce numéro de téléphone est déjà inscrit. Connectez-vous.'); b3.disabled=false; b3.textContent='Créer mon compte'; return; }
+
+        // Hasher le PIN
+        var hashBuf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
+        var hash = Array.from(new Uint8Array(hashBuf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+
+        // Insérer dans Supabase
+        var ins = await sb.from('providers').insert([{
+          prenom:fd.prenom, nom:fd.nom, telephone:fd.telephone,
+          password_hash:hash, metier:fd.metier, categorie:fd.categorie,
+          description:fd.description, ville:fd.ville,
+          commune:fd.commune, quartier:fd.quartier,
+          statut:'en_attente', skills:[], note_moyenne:4.5,
+          nb_vues:0, nb_favoris:0, nb_appels:0, nb_whatsapp:0, nb_avis:0
+        }]).select().single();
+
+        if(ins.error){
+          showErr('Erreur: '+ins.error.message);
+          b3.disabled=false; b3.textContent='Créer mon compte'; return;
+        }
+
+        // Connexion automatique
+        var newId = ins.data.id;
+        var token = generateToken();
+        setSession({provider_id:newId, token:token, nom:fd.nom, prenom:fd.prenom});
+        providerId = newId; _dashProviderId = newId;
+        sb.from('provider_sessions').insert({provider_id:newId, token:token}).catch(function(){});
+
+        // Afficher succès
+        [1,2,3].forEach(function(s){var el=document.getElementById('i-step'+s);if(el)el.style.display='none';});
+        var su=document.getElementById('i-success'); if(su) su.style.display='block';
+
+      }catch(e){
+        showErr('Erreur: '+e.message);
+        b3.disabled=false; b3.textContent='Créer mon compte';
+      }
+    };
+  }
+  init();window.addEventListener('load',init);
+  var _on=window.navigate;window.navigate=(function(_p){return function(p){if(typeof _realNavigate==='function')_realNavigate(p);else if(_p)_p(p);if(p==='inscription')setTimeout(init,100);};})(window.navigate);
+})();
+</script>
 </div>
 
 <!-- ── PAGE NOUVEAUTÉS — YOUMMA JOBS ── -->
@@ -2488,535 +2985,9 @@ document.addEventListener('keydown', e => {
 });
 </script>
 
-<div class="page" id="page-login">
-  <div style="background:linear-gradient(135deg,#1A1A4E 0%,#0D0D2E 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;">
-    <div class="card">
-  <div class="logo">
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAEUElEQVR42u2Xy29UdRTHP7/fvXce93Y6D/ugU4FigSkolZSFBtKghIaFQfwDdCeJO5eaEJaauDNx4UKMkRATxZUmRk2MC1SIkfAIoNWQQlugQOfZaed5f8fFtCgGY2eYGhZzkptJ7r1z7ifnnN/39/0pEREe4dA84tEB7AB2ADuAaxx2s394oKwrUPe9IxgjaK1QSj0UoGrPTiKIEXxRKMCy/oIyRlBK0Srnqiq4Uo0TX03y/S8zuI7G+D5+pUKhpAl5HgNRRSzogwhih+ntTbB7Zy+p4cS9qrZSTXt19WnE9O0iZ3+9SzxskS8s4bgxDqbKHHC/Y6h8CXcxi6Ao6DiTmRE+Oz9GOJnitVdG6eoKtwTZ1AwGHE236yAibB9Zz9EtP5CaOQ4zcxhf4ysLgAEMSedHno9/zTfZlzj69jxvvj5Of39305BNLhLFYqnGti0DvDt0kp5zx1iSCNqJorTcWyhVQIxC5u5woOt9+uN53nlP8daR/QSDTiOTWgOZEb+O7opzZPMZei5+yJJ+DDvgoDEoMY1hEEEhaGWwgkEWl8LsLHzKuP0Tx09eQmuFiFkbHSzWLCaGa2y79gGlagBb+VCrQL3agKtXwNTBrzXu1Ws42qecrXEo8AXXL//G3fQiWmtWqx1NtdgOhdkbv4rUhsAbRsp5VCgCSsPCbehPwewFiPSBl4BbVyA2iCxk0SGL0fw5Tp/bzYv7PYwxWJZuTwVXxiURc9mUOYWyPHRyBIVAdB1q8ClkKY9oDVv3Qs8mCEWRrXshsQHVswEGdrI1OM3sTKb9q3hloL2A4NXSmPkcKn0TcUIwcwG8OET7UelpsB1EOxAMou6kkWgvlBeQW2miXZsoF4vLOVV7dVABllIYx0Xd+BmxvUYFAXI3UJYN1Roko6igDbdLqLgLfg60QZkiptaPjjj/yNoOwOVcIdcl6wywztZgB8D498+A5YAVQCUiSLYKrgtaIRaILdzJJ4l0u/++pz/sDG5c5/GHuwscC2OWZWVZWhABu+Ea5Pe5xu/UXZjNIDczqEyFS/khto/0NdXiVQE2tAtG1weZiu2mnNiBVS2CfkAD5vJQqsFCGap1pFjHyc2TY4Rpexu7dvQh0tjb26qDIkIooBkbHeLz7sME4h5+pYz8HXKlbVqBpRHLwVSXsB9Pcix7kImJUQIBi2b806oBtVYYI4w/GcXfvI8ve98gnAhhV/L4BgwWRi1faPy6IVDNER7s46PFV+navofn9my454zWzA8aAY3h429nqU6e4lD5BH2F81ApNh4CWBrC3dxwx/hk4QViI89w+OWnMYam4Fo2rCINbTxzJcvps9eJZi6ysXyZmD+PCKTp4areQs5NsW98mGfHki37wZYdtRFBKwUIkzMlpm4uUiiUQAwRL8gTgx6poe77DO//bvn/68Migggtw7XtTCIijfFbSaUUWvHQB6Y2Hpo6B/cOYAewA9gBXKv4EwW01J5x+MQNAAAAAElFTkSuQmCC" alt="YJ" style="width:36px;height:36px;object-fit:contain;border-radius:8px;"/>
-    <div class="logo-text">YOUMMA <span>JOBS</span></div>
-  </div>
-  <h1>Connexion prestataire</h1>
-  <p class="subtitle">Accédez à votre espace professionnel</p>
 
-  <div class="error-box" id="errorBox"></div>
 
-  <div class="form-group">
-    <label>Numéro de téléphone</label>
-    <div class="input-wrap">
-      <span class="input-prefix"><i class="fa-solid fa-phone"></i></span>
-      <input type="tel" id="telephone" class="has-prefix" placeholder="+224 6XX XX XX XX" autocomplete="tel"/>
-    </div>
-  </div>
 
-  <div class="form-group">
-    <label>Code PIN (4 chiffres)</label>
-    <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;">
-      <input id="lpin1" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('lpin2').focus()"/>
-      <input id="lpin2" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('lpin3').focus()"/>
-      <input id="lpin3" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('lpin4').focus()"/>
-      <input id="lpin4" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:54px;height:54px;text-align:center;border:1.5px solid #E5E7EB;border-radius:12px;font-size:22px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value.length===1)document.getElementById('btnConnexion').click()"/>
-    </div>
-  </div>
-  <button class="btn-primary" id="btnConnexion" onclick="connexion()">
-    <span class="spinner"></span>
-    Se connecter
-  </button>
-
-  <div class="link-row" style="margin-top:16px;">
-    <a href="#" onclick="navigate('inscription');return false;">Pas encore inscrit ? Créer un compte →</a>
-  </div>
-
-  <div class="divider">ou</div>
-
-  <button class="btn-whatsapp" onclick="window.open('https://wa.me/22461252510?text=Bonjour%20YOUMMA%20JOBS%2C%20j\'ai%20besoin%20d\'aide%20pour%20me%20connecter','_blank')">
-    <i class="fa-brands fa-whatsapp"></i> Aide via WhatsApp
-  </button>
-
-  <div class="link-row" style="margin-top:16px;">
-    <a href="#" onclick="navigate('home');return false;"><i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Retour au site</a>
-  </div>
-</div>
-
-<script>
-// Définition locale connexionPrestataire (fallback)
-if (typeof connexionPrestataire === 'undefined') {
-  window.connexionPrestataire = async function(telephone, password) {
-    try {
-      var msgBuf = new TextEncoder().encode(password);
-      var hashBuf = await crypto.subtle.digest('SHA-256', msgBuf);
-      var hash = Array.from(new Uint8Array(hashBuf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
-      var res = await sb.from('providers')
-        .select('id,nom,prenom,metier,statut,password_hash')
-        .eq('telephone', telephone)
-        .single();
-      if (res.error || !res.data) return { success: false, message: 'Numéro non trouvé' };
-      if (res.data.password_hash !== hash) return { success: false, message: 'PIN incorrect' };
-      if (res.data.statut === 'suspendu') return { success: false, message: 'Compte suspendu' };
-      var token = Math.random().toString(36).slice(2) + Date.now();
-      localStorage.setItem('yj_provider_session', JSON.stringify({
-        provider_id: res.data.id, token: token, nom: res.data.nom, prenom: res.data.prenom
-      }));
-      sb.from('provider_sessions').insert({provider_id: res.data.id, token: token}).then(function(){}).catch(function(){});
-      return { success: true, provider: res.data };
-    } catch(e) { return { success: false, message: e.message }; }
-  };
-}
-</script>
-<script>
-// Auto-submit sur dernière case PIN
-document.addEventListener('DOMContentLoaded', function() {
-  var lpin4 = document.getElementById('lpin4');
-  if (lpin4) {
-    lpin4.addEventListener('input', function() {
-      if (this.value.length === 1) connexion();
-    });
-  }
-});
-
-async function connexion() {
-  const tel = (document.getElementById('telephone') || {}).value || '';
-  const pin = ((document.getElementById('lpin1')||{}).value||'')
-            + ((document.getElementById('lpin2')||{}).value||'')
-            + ((document.getElementById('lpin3')||{}).value||'')
-            + ((document.getElementById('lpin4')||{}).value||'');
-  const btn = document.getElementById('btnConnexion');
-  const errBox = document.getElementById('errorBox');
-
-  if (errBox) { errBox.classList.remove('show'); errBox.textContent = ''; }
-  if (!tel.trim()) { 
-    if (errBox) { errBox.textContent = 'Entrez votre numéro de téléphone'; errBox.classList.add('show'); }
-    return; 
-  }
-  if (pin.length < 4) { 
-    if (errBox) { errBox.textContent = 'Entrez votre code PIN 4 chiffres'; errBox.classList.add('show'); }
-    return; 
-  }
-
-  if (btn) btn.disabled = true;
-
-  try {
-    const res = await connexionPrestataire(tel.trim(), pin);
-    if (res.success) {
-      navigate('dashboard');
-      const pid = res.provider && res.provider.id;
-      if (pid && typeof chargerDashboard === 'function') await chargerDashboard(pid);
-    } else {
-      const msg = res.message || 'Téléphone ou PIN incorrect';
-      if (errBox) { errBox.textContent = msg; errBox.classList.add('show'); }
-    }
-  } catch(e) {
-    if (errBox) { errBox.textContent = 'Erreur: ' + e.message; errBox.classList.add('show'); }
-  }
-
-  if (btn) btn.disabled = false;
-}
-</script>
-  </div>
-</div>
-
-<div class="page" id="page-inscription">
-<div style="background:linear-gradient(135deg,#1A1A4E 0%,#0D0D2E 100%);min-height:100vh;padding:40px 20px;display:flex;align-items:flex-start;justify-content:center;">
-<div style="background:#fff;border-radius:24px;padding:32px;width:100%;max-width:500px;box-shadow:0 32px 80px rgba(0,0,0,.3);">
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;justify-content:center;">
-    <img src="data:image/png;base64,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" alt="YJ" style="width:48px;height:48px;object-fit:contain;border-radius:10px;"/>
-    <div style="font-family:'Libre Baskerville',serif;font-weight:700;font-size:17px;color:#1A1A4E;">YOUMMA <span style="color:#E85D04;">JOBS</span></div>
-  </div>
-  <h2 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;text-align:center;margin-bottom:6px;">Créer mon profil prestataire</h2>
-  <p style="font-size:13px;color:#6B7280;text-align:center;margin-bottom:16px;">Rejoignez YOUMMA JOBS et trouvez de nouveaux clients à Conakry</p>
-  <div style="background:linear-gradient(135deg,#E85D04,#C74B00);border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:center;margin-bottom:20px;">
-    <span style="font-size:22px;"><i class="fa-solid fa-bullseye"></i></span>
-    <div>
-      <div style="font-size:12.5px;font-weight:700;color:#fff;">14 jours d'essai gratuit après validation</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.8);">Abonnement 50 000 GNF/mois — Orange Money, MTN MoMo, Wave</div>
-    </div>
-  </div>
-  <div style="display:flex;align-items:center;margin-bottom:24px;">
-    <div id="i-dot-1" style="width:30px;height:30px;border-radius:50%;background:#E85D04;border:2px solid #E85D04;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">1</div>
-    <div id="i-line-1" style="flex:1;height:2px;background:#E5E7EB;"></div>
-    <div id="i-dot-2" style="width:30px;height:30px;border-radius:50%;background:#fff;border:2px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#6B7280;flex-shrink:0;">2</div>
-    <div id="i-line-2" style="flex:1;height:2px;background:#E5E7EB;"></div>
-    <div id="i-dot-3" style="width:30px;height:30px;border-radius:50%;background:#fff;border:2px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#6B7280;flex-shrink:0;">3</div>
-  </div>
-  <div id="i-err" style="display:none;background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:13px;color:#DC2626;margin-bottom:14px;"></div>
-  <div id="i-step1">
-    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">Informations personnelles</div>
-
-    <!-- CHOIX TYPE DE COMPTE -->
-    <div style="margin-bottom:18px;">
-      <div style="font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:8px;">Type de compte *</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <label id="type-particulier-label" onclick="setTypeCompte('particulier')" style="display:flex;align-items:center;gap:10px;padding:13px 14px;border:2px solid #E85D04;border-radius:12px;cursor:pointer;background:#FFF7F0;transition:all .2s;">
-          <div style="width:36px;height:36px;border-radius:9px;background:#FDE8D8;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">👤</div>
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#1A1A4E;">Particulier</div>
-            <div style="font-size:10.5px;color:#9CA3AF;">Artisan indépendant</div>
-          </div>
-          <div id="type-check-particulier" style="margin-left:auto;width:18px;height:18px;border-radius:50%;background:#E85D04;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <i class="fa-solid fa-check" style="color:#fff;font-size:9px;"></i>
-          </div>
-        </label>
-        <label id="type-entreprise-label" onclick="setTypeCompte('entreprise')" style="display:flex;align-items:center;gap:10px;padding:13px 14px;border:2px solid #E5E7EB;border-radius:12px;cursor:pointer;background:#fff;transition:all .2s;">
-          <div style="width:36px;height:36px;border-radius:9px;background:#EEF2FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">🏢</div>
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#1A1A4E;">Entreprise</div>
-            <div style="font-size:10.5px;color:#9CA3AF;">Société, cabinet, agence</div>
-          </div>
-          <div id="type-check-entreprise" style="margin-left:auto;width:18px;height:18px;border-radius:50%;background:#E5E7EB;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:.3;">
-            <i class="fa-solid fa-check" style="color:#fff;font-size:9px;"></i>
-          </div>
-        </label>
-      </div>
-    </div>
-
-    <!-- Champs nom selon type -->
-    <div id="fields-particulier">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
-      <div><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Prénom *</label><input id="i-prenom" type="text" placeholder="Mamadou" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
-      <div><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Nom *</label><input id="i-nom" type="text" placeholder="Diallo" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
-    </div>
-    </div><!-- /fields-particulier -->
-
-    <!-- Champs entreprise (cachés par défaut) -->
-    <div id="fields-entreprise" style="display:none;">
-      <div style="margin-bottom:12px;">
-        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Nom de l'entreprise *</label>
-        <input id="i-nom-entreprise" type="text" placeholder="Ex: DIALLO Construction SARL" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-        <div>
-          <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Prénom du représentant *</label>
-          <input id="i-prenom-rep" type="text" placeholder="Mamadou" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/>
-        </div>
-        <div>
-          <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Nom du représentant *</label>
-          <input id="i-nom-rep" type="text" placeholder="Diallo" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/>
-        </div>
-      </div>
-      <div style="margin-bottom:12px;">
-        <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Rôle dans l'entreprise</label>
-        <select id="i-role-entreprise" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;background:#fff;">
-          <option value="Directeur">Directeur / PDG</option>
-          <option value="Gérant">Gérant</option>
-          <option value="Responsable commercial">Responsable commercial</option>
-          <option value="Autre">Autre</option>
-        </select>
-      </div>
-    </div><!-- /fields-entreprise -->
-
-    <div style="margin-bottom:12px;"><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Téléphone (WhatsApp) *</label><input id="i-tel" type="tel" placeholder="+224 6XX XX XX XX" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
-    <div style="margin-bottom:20px;">
-      <label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:8px;">Code PIN 4 chiffres *</label>
-      <div style="display:flex;gap:12px;justify-content:center;">
-        <input id="i-pin1" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('i-pin2').focus()"/>
-        <input id="i-pin2" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('i-pin3').focus()"/>
-        <input id="i-pin3" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1);if(this.value)document.getElementById('i-pin4').focus()"/>
-        <input id="i-pin4" type="text" min="0" max="9" placeholder="•" inputmode="numeric" pattern="[0-9]" maxlength="1" style="width:58px;height:58px;text-align:center;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:700;color:#1A1A4E;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,1)"/>
-      </div>
-      <div style="text-align:center;font-size:11px;color:#9CA3AF;margin-top:6px;">Ce code vous servira à vous connecter</div>
-    </div>
-    <button id="i-btn1" onclick="(function(){var p=(document.getElementById('i-prenom')||{}).value||'';var n=(document.getElementById('i-nom')||{}).value||'';var t=(document.getElementById('i-tel')||{}).value||'';var pin=((document.getElementById('i-pin1')||{}).value||'')+((document.getElementById('i-pin2')||{}).value||'')+((document.getElementById('i-pin3')||{}).value||'')+((document.getElementById('i-pin4')||{}).value||'');var e=document.getElementById('i-err');if(!p.trim()||!n.trim()||!t.trim()){if(e){e.textContent='Remplissez tous les champs';e.style.display='block';}return;}if(pin.length<4){if(e){e.textContent='Entrez votre PIN 4 chiffres';e.style.display='block';}return;}if(e)e.style.display='none';document.getElementById('i-step1').style.display='none';document.getElementById('i-step2').style.display='block';})()" style="width:100%;padding:14px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Suivant →</button>
-  </div>
-  <div id="i-step2" style="display:none;">
-    <div id="i-err2" style="display:none;background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:13px;color:#DC2626;margin-bottom:14px;"></div>
-    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">Profil professionnel</div>
-    <div style="margin-bottom:12px;"><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Catégorie *</label>
-      <select id="i-cat" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;background:#fff;">
-        <option value="">Choisir votre catégorie</option>
-        <option>Artisans</option><option>Santé &amp; Beauté</option><option>Construction &amp; BTP</option>
-        <option>IT &amp; Digital</option><option>Éducation</option><option>Transport</option>
-        <option>Juridique</option><option>Services Express</option><option>Aide à domicile</option><option>Autre</option>
-      </select>
-    </div>
-    <div style="margin-bottom:12px;"><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Métier *</label><input id="i-metier" type="text" placeholder="Ex: Électricien certifié..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
-    <div style="margin-bottom:20px;"><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Description *</label><textarea id="i-desc" placeholder="Décrivez vos services..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;min-height:80px;resize:vertical;box-sizing:border-box;"></textarea></div>
-    <div style="display:flex;gap:10px;">
-      <button id="i-back2" onclick="document.getElementById('i-step2').style.display='none';document.getElementById('i-step1').style.display='block';" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;">← Retour</button>
-      <button id="i-btn2" onclick="(function(){var cat=(document.getElementById('i-cat')||{}).value||'';var met=((document.getElementById('i-metier')||{}).value||'').trim();var dsc=((document.getElementById('i-desc')||{}).value||'').trim();var e=document.getElementById('i-err');if(!cat||!met||!dsc){if(e){e.textContent='Remplissez tous les champs';e.style.display='block';}return;}if(e)e.style.display='none';document.getElementById('i-step2').style.display='none';document.getElementById('i-step3').style.display='block';})()" style="flex:2;padding:13px;background:#E85D04;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">Suivant →</button>
-    </div>
-  </div>
-  <div id="i-step3" style="display:none;">
-    <div id="i-err3" style="display:none;background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:13px;color:#DC2626;margin-bottom:14px;"></div>
-    <div style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E7EB;">Localisation</div>
-    <div style="margin-bottom:12px;"><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Ville *</label>
-      <select id="i-ville" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;background:#fff;">
-        <option value="Conakry">Conakry</option><option>Kindia</option><option>Labé</option><option>Kankan</option><option>Nzérékoré</option><option>Boké</option><option>Faranah</option>
-      </select>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-      <div><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Commune</label>
-        <select id="i-commune" style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;background:#fff;">
-          <option value="">Choisir</option><option>Kaloum</option><option>Dixinn</option><option>Matam</option><option>Ratoma</option><option>Matoto</option><option>Lambanyi</option><option>Kipé</option>
-        </select>
-      </div>
-      <div><label style="display:block;font-size:11.5px;font-weight:700;color:#0F1020;margin-bottom:5px;">Quartier</label><input id="i-quartier" type="text" placeholder="Ex: Hamdallaye..." style="width:100%;padding:11px 13px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:13.5px;outline:none;box-sizing:border-box;"/></div>
-    </div>
-    <div style="display:flex;gap:10px;">
-      <button id="i-back3" onclick="document.getElementById('i-step3').style.display='none';document.getElementById('i-step2').style.display='block';" style="flex:1;padding:13px;background:#F4F6FB;border:none;border-radius:12px;color:#1A1A4E;font-size:13.5px;font-weight:700;cursor:pointer;">← Retour</button>
-      <button id="i-submit" style="flex:2;padding:13px;background:#1A1A4E;border:none;border-radius:12px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">Créer mon compte</button>
-    </div>
-  </div>
-  <div id="i-success" style="display:none;text-align:center;padding:20px 0;">
-    <div style="font-size:56px;margin-bottom:16px;"><i class="fa-solid fa-circle-check" style="font-size:52px;color:#16A34A;"></i></div>
-    <h3 style="font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#1A1A4E;margin-bottom:10px;">Compte créé avec succès !</h3>
-    <p style="font-size:13.5px;color:#6B7280;line-height:1.7;margin-bottom:6px;">Votre profil est en cours de validation.<br>Vous serez contacté(e) sous <strong>24h</strong>.</p>
-    <p style="font-size:12px;color:#9CA3AF;margin-bottom:20px;">Vous pouvez dès maintenant accéder à votre tableau de bord.</p>
-    <button onclick="navigate('dashboard');if(typeof chargerDashboard==='function'&&providerId)chargerDashboard(providerId);" style="display:inline-flex;align-items:center;gap:8px;background:#E85D04;color:#fff;padding:13px 28px;border-radius:50px;border:none;font-weight:700;font-size:14px;cursor:pointer;"><i class="fa-solid fa-gauge"></i> Accéder à mon tableau de bord</button>
-  </div>
-  <div style="text-align:center;margin-top:16px;font-size:13px;">
-    <a href="#login" style="color:#E85D04;text-decoration:none;font-weight:600;">Déjà inscrit ? Se connecter</a>
-    &nbsp;·&nbsp;
-    <a href="#" onclick="navigate('home');return false;" style="color:#6B7280;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Retour au site</a>
-  </div>
-</div>
-</div>
-<script>
-(function() {
-  function showErr(msg) {
-    var e = document.getElementById('i-err');
-    if (e) { e.textContent = msg; e.style.display = 'block'; }
-  }
-  function hideErr() {
-    var e = document.getElementById('i-err');
-    if (e) e.style.display = 'none';
-  }
-
-  function goTo(step) {
-    for (var s = 1; s <= 3; s++) {
-      var el = document.getElementById('i-step' + s);
-      if (el) el.style.display = s === step ? 'block' : 'none';
-    }
-    // Mettre à jour les dots
-    var base = 'width:30px;height:30px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;';
-    var A = 'background:#E85D04;border-color:#E85D04;color:#fff;';
-    var D = 'background:#16A34A;border-color:#16A34A;color:#fff;';
-    var I = 'background:#fff;border-color:#E5E7EB;color:#6B7280;';
-    var d1 = document.getElementById('i-dot-1');
-    var d2 = document.getElementById('i-dot-2');
-    var d3 = document.getElementById('i-dot-3');
-    var l1 = document.getElementById('i-line-1');
-    var l2 = document.getElementById('i-line-2');
-    if (d1) { d1.style.cssText = (step > 1 ? D : A) + base; d1.innerHTML = step > 1 ? '<i class="fa-solid fa-check"></i>' : '1'; }
-    if (d2) { d2.style.cssText = (step > 2 ? D : step === 2 ? A : I) + base; d2.innerHTML = step > 2 ? '<i class="fa-solid fa-check"></i>' : '2'; }
-    if (d3) { d3.style.cssText = (step === 3 ? A : I) + base; d3.innerHTML = '3'; }
-    if (l1) l1.style.background = step > 1 ? '#16A34A' : '#E5E7EB';
-    if (l2) l2.style.background = step > 2 ? '#16A34A' : '#E5E7EB';
-    hideErr();
-    window.scrollTo(0, 0);
-  }
-
-  function init() {
-    // Bouton suivant étape 1
-    var b1 = document.getElementById('i-btn1');
-    if (b1) b1.onclick = function() {
-      var prenom = (document.getElementById('i-prenom') || {}).value || '';
-      var nom    = (document.getElementById('i-nom')    || {}).value || '';
-      var tel    = (document.getElementById('i-tel')    || {}).value || '';
-      var pin    = ((document.getElementById('i-pin1')||{}).value||'')
-                + ((document.getElementById('i-pin2')||{}).value||'')
-                + ((document.getElementById('i-pin3')||{}).value||'')
-                + ((document.getElementById('i-pin4')||{}).value||'');
-      if (!prenom.trim() || !nom.trim() || !tel.trim()) { showErr('Remplissez tous les champs'); return; }
-      if (pin.length < 4) { showErr('Entrez votre code PIN 4 chiffres'); return; }
-      goTo(2);
-    };
-
-    // Bouton suivant étape 2
-    var b2 = document.getElementById('i-btn2');
-    if (b2) b2.onclick = function() {
-      var cat = (document.getElementById('i-cat')    || {}).value || '';
-      var met = (document.getElementById('i-metier') || {}).value || '';
-      var dsc = (document.getElementById('i-desc')   || {}).value || '';
-      if (!cat || !met.trim() || !dsc.trim()) { showErr('Remplissez tous les champs'); return; }
-      goTo(3);
-    };
-
-    // Retour étape 2
-    var ba2 = document.getElementById('i-back2');
-    if (ba2) ba2.onclick = function() { goTo(1); };
-
-    // Retour étape 3
-    var ba3 = document.getElementById('i-back3');
-    if (ba3) ba3.onclick = function() { goTo(2); };
-
-    // Soumettre étape 3
-    var b3 = document.getElementById('i-submit');
-    if (b3) b3.onclick = async function() {
-      b3.disabled = true;
-      b3.textContent = 'Inscription en cours...';
-      var pin = ((document.getElementById('i-pin1')||{}).value||'')
-              + ((document.getElementById('i-pin2')||{}).value||'')
-              + ((document.getElementById('i-pin3')||{}).value||'')
-              + ((document.getElementById('i-pin4')||{}).value||'');
-      var fd = {
-        prenom:      (document.getElementById('i-prenom')  || {}).value || '',
-        nom:         (document.getElementById('i-nom')     || {}).value || '',
-        telephone:   (document.getElementById('i-tel')     || {}).value || '',
-        password:    pin,
-        categorie:   (document.getElementById('i-cat')     || {}).value || '',
-        metier:      (document.getElementById('i-metier')  || {}).value || '',
-        description: (document.getElementById('i-desc')    || {}).value || '',
-        ville:       (document.getElementById('i-ville')   || {}).value || 'Conakry',
-        commune:     (document.getElementById('i-commune') || {}).value || null,
-        quartier:    (document.getElementById('i-quartier')|| {}).value || null,
-        skills: []
-      };
-      try {
-        var res = await inscrirePrestataire(fd);
-        if (res.success) {
-          for (var s = 1; s <= 3; s++) {
-            var el = document.getElementById('i-step' + s);
-            if (el) el.style.display = 'none';
-          }
-          var su = document.getElementById('i-success');
-          if (su) su.style.display = 'block';
-        } else {
-          showErr(res.message || "Erreur lors de l'inscription");
-          b3.disabled = false;
-          b3.textContent = 'Créer mon compte';
-        }
-      } catch(e) {
-        showErr('Erreur: ' + e.message);
-        b3.disabled = false;
-        b3.textContent = 'Créer mon compte';
-      }
-    };
-  }
-
-  // Initialiser dès que possible
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-  // Re-initialiser si navigate('inscription') est appelé
-  window.navigate = (function(_prev){
-    return function(p) {
-      if (typeof _realNavigate === 'function') _realNavigate(p);
-      else if (_prev) _prev(p);
-      if (p === 'inscription') setTimeout(init, 100);
-    };
-  })(window.navigate);
-})();
-</script>
-
-<script>
-// Définition locale de inscrirePrestataire (fallback)
-if (typeof inscrirePrestataire === 'undefined') {
-  window.inscrirePrestataire = async function(formData) {
-    try {
-      var hash = await hashPassword(formData.password);
-      var row = {
-        prenom: formData.prenom, nom: formData.nom,
-        telephone: formData.telephone, password_hash: hash,
-        metier: formData.metier, categorie: formData.categorie,
-        description: formData.description, ville: formData.ville,
-        commune: formData.commune || null, quartier: formData.quartier || null,
-        statut: 'en_attente', skills: formData.skills || []
-      };
-      var res = await sb.from('providers').insert([row]);
-      if (res.error) return { success: false, message: res.error.message };
-      return { success: true };
-    } catch(e) { return { success: false, message: e.message }; }
-  };
-}
-</script>
-<script>
-(function() {
-  function showErr(msg){var e=document.getElementById('i-err');if(e){e.textContent=msg;e.style.display='block';}}
-  function hideErr(){var e=document.getElementById('i-err');if(e)e.style.display='none';}
-  function goTo(step){
-    [1,2,3].forEach(function(s){var el=document.getElementById('i-step'+s);if(el)el.style.display=s===step?'block':'none';});
-    var d1=document.getElementById('i-dot-1'),d2=document.getElementById('i-dot-2'),d3=document.getElementById('i-dot-3');
-    var l1=document.getElementById('i-line-1'),l2=document.getElementById('i-line-2');
-    var A='background:#E85D04;border-color:#E85D04;color:#fff;',D='background:#16A34A;border-color:#16A34A;color:#fff;',I='background:#fff;border-color:#E5E7EB;color:#6B7280;';
-    var base='width:30px;height:30px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;';
-    if(d1){d1.style.cssText=(step>1?D:A)+base;if(step>1){d1.innerHTML='<i class="fa-solid fa-check"></i>';}else{d1.textContent='1';}}
-    if(d2){d2.style.cssText=(step>2?D:step===2?A:I)+base;if(step>2){d2.innerHTML='<i class="fa-solid fa-check"></i>';}else{d2.textContent='2';}}
-    if(d3){d3.style.cssText=(step===3?A:I)+base;d3.textContent='3';}
-    if(l1)l1.style.background=step>1?'#16A34A':'#E5E7EB';
-    if(l2)l2.style.background=step>2?'#16A34A':'#E5E7EB';
-    hideErr();window.scrollTo(0,0);
-  }
-  function init(){
-    var b1=document.getElementById('i-btn1'),b2=document.getElementById('i-btn2'),ba2=document.getElementById('i-back2'),b3=document.getElementById('i-submit'),ba3=document.getElementById('i-back3');
-    if(b1)b1.onclick=function(){
-      var p=(document.getElementById('i-prenom')||{}).value||'',n=(document.getElementById('i-nom')||{}).value||'',t=(document.getElementById('i-tel')||{}).value||'';
-      var pin=(document.getElementById('i-pin1')||{}).value+(document.getElementById('i-pin2')||{}).value+(document.getElementById('i-pin3')||{}).value+(document.getElementById('i-pin4')||{}).value;
-      if(!p.trim()||!n.trim()||!t.trim()){showErr('Remplissez tous les champs');return;}
-      if(pin.length<4){showErr('Entrez votre code PIN 4 chiffres');return;}
-      goTo(2);
-    };
-    if(b2)b2.onclick=function(){
-      var cat=(document.getElementById('i-cat')||{}).value||'',met=((document.getElementById('i-metier')||{}).value||'').trim(),desc=((document.getElementById('i-desc')||{}).value||'').trim();
-      if(!cat||!met||!desc){showErr('Remplissez tous les champs');return;}
-      goTo(3);
-    };
-    if(ba2)ba2.onclick=function(){goTo(1);};
-    if(ba3)ba3.onclick=function(){goTo(2);};
-    if(b3)b3.onclick=async function(){
-      b3.disabled=true;
-      b3.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Création du compte...';
-      var pin=(document.getElementById('i-pin1').value||'')+(document.getElementById('i-pin2').value||'')+(document.getElementById('i-pin3').value||'')+(document.getElementById('i-pin4').value||'');
-      var tel=document.getElementById('i-tel').value.trim();
-      var fd={
-        prenom:document.getElementById('i-prenom').value.trim(),
-        nom:document.getElementById('i-nom').value.trim(),
-        telephone:tel,
-        password:pin,
-        categorie:document.getElementById('i-cat').value,
-        metier:document.getElementById('i-metier').value.trim(),
-        description:document.getElementById('i-desc').value.trim(),
-        ville:(document.getElementById('i-ville')||{}).value||'Conakry',
-        commune:(document.getElementById('i-commune')||{}).value||null,
-        quartier:((document.getElementById('i-quartier')||{}).value||'').trim()||null,
-        skills:[]
-      };
-      try{
-        // Vérifier si téléphone déjà utilisé
-        var chk = await sb.from('providers').select('id').eq('telephone',tel).maybeSingle();
-        if(chk.data){ showErr('Ce numéro de téléphone est déjà inscrit. Connectez-vous.'); b3.disabled=false; b3.textContent='Créer mon compte'; return; }
-
-        // Hasher le PIN
-        var hashBuf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
-        var hash = Array.from(new Uint8Array(hashBuf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
-
-        // Insérer dans Supabase
-        var ins = await sb.from('providers').insert([{
-          prenom:fd.prenom, nom:fd.nom, telephone:fd.telephone,
-          password_hash:hash, metier:fd.metier, categorie:fd.categorie,
-          description:fd.description, ville:fd.ville,
-          commune:fd.commune, quartier:fd.quartier,
-          statut:'en_attente', skills:[], note_moyenne:4.5,
-          nb_vues:0, nb_favoris:0, nb_appels:0, nb_whatsapp:0, nb_avis:0
-        }]).select().single();
-
-        if(ins.error){
-          showErr('Erreur: '+ins.error.message);
-          b3.disabled=false; b3.textContent='Créer mon compte'; return;
-        }
-
-        // Connexion automatique
-        var newId = ins.data.id;
-        var token = generateToken();
-        setSession({provider_id:newId, token:token, nom:fd.nom, prenom:fd.prenom});
-        providerId = newId; _dashProviderId = newId;
-        sb.from('provider_sessions').insert({provider_id:newId, token:token}).catch(function(){});
-
-        // Afficher succès
-        [1,2,3].forEach(function(s){var el=document.getElementById('i-step'+s);if(el)el.style.display='none';});
-        var su=document.getElementById('i-success'); if(su) su.style.display='block';
-
-      }catch(e){
-        showErr('Erreur: '+e.message);
-        b3.disabled=false; b3.textContent='Créer mon compte';
-      }
-    };
-  }
-  init();window.addEventListener('load',init);
-  var _on=window.navigate;window.navigate=(function(_p){return function(p){if(typeof _realNavigate==='function')_realNavigate(p);else if(_p)_p(p);if(p==='inscription')setTimeout(init,100);};})(window.navigate);
-})();
-</script>
-</div>
 </div>
 
 <div class="page" id="page-dashboard">
@@ -8587,6 +8558,9 @@ window.addEventListener('resize', function() {
 // Charger au démarrage
 document.addEventListener('DOMContentLoaded', loadPublicRealisations);
 
+
+function loginSubmitHandler(){var tel=document.getElementById("telephone")?.value;var pin=["lpin1","lpin2","lpin3","lpin4"].map(function(id){return document.getElementById(id)?.value||"";}).join("");var errBox=document.getElementById("errorBox");var btn=document.getElementById("loginSubmitBtn");if(errBox)errBox.style.display="none";if(!tel||tel.trim().length<8){if(errBox){errBox.textContent="Entrez un numero valide";errBox.style.display="block";}return;}if(pin.length<4){if(errBox){errBox.textContent="Entrez votre code PIN 4 chiffres";errBox.style.display="block";}return;}if(btn)btn.disabled=true;(async function(){try{var res=await connexionPrestataire(tel.trim(),pin);if(res.success){var pid=res.provider&&res.provider.id;if(pid){document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");p.style.display="";});document.getElementById("page-login").style.cssText="display:none!important";document.body.classList.add("on-dashboard");document.body.classList.remove("on-home","on-admin");var pd=document.getElementById("page-dashboard");if(pd){pd.classList.add("active");pd.style.cssText="display:block!important";window.scrollTo(0,0);}if(typeof chargerDashboard==="function")await chargerDashboard(pid);}}else{if(errBox){errBox.textContent=res.message||"Telephone ou PIN incorrect";errBox.style.display="block";}}}catch(e){if(errBox){errBox.textContent="Erreur: "+e.message;errBox.style.display="block";}}if(btn)btn.disabled=false;})();}
+window.loginSubmitHandler=loginSubmitHandler;
 </script>
 </body>
 </html>
