@@ -4309,14 +4309,85 @@ async function chargerAvis() {
     </div>
 
     
-    <div class="admin-section" id="admin-missions" style="display:none;">
-      <h2 style="font-family:'Libre Baskerville',serif;font-size:20px;color:#1A1A4E;margin-bottom:20px;"><i class="fa-solid fa-bullseye" style="color:var(--orange);"></i> Missions à valider</h2>
-      <div id="adminMissionsList" style="display:flex;flex-direction:column;gap:10px;">
-        <div style="text-align:center;color:#94A3B8;padding:20px;"><i class="fa-solid fa-spinner fa-spin"></i> Chargement...</div>
+    <div class="admin-section" id="admin-missions">
+      <div class="admin-section-inner">
+
+        <!-- En-tête -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+          <div class="adm-section-title"><i class="fa-solid fa-bullseye" style="color:#E85D04;"></i> Gestion des Missions</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <select id="missFilterStatut" onchange="renderAdminMissions()" style="padding:8px 14px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:13px;outline:none;background:#fff;cursor:pointer;">
+              <option value="">Tous les statuts</option>
+              <option value="en_attente">En attente</option>
+              <option value="accepte">Acceptées</option>
+              <option value="en_cours">En cours</option>
+              <option value="termine">Terminées</option>
+              <option value="valide">Validées</option>
+              <option value="annule">Annulées</option>
+            </select>
+            <button onclick="renderAdminMissions()" style="padding:8px 16px;background:#F4F6FB;border:1.5px solid #E5E7EB;border-radius:9px;color:#374151;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-rotate"></i> Actualiser</button>
+          </div>
+        </div>
+
+        <!-- KPIs Missions -->
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px;" id="missKpis">
+          <div style="background:#fff;border-radius:14px;padding:14px;border:1.5px solid #F0F0F8;text-align:center;">
+            <div style="font-size:22px;font-weight:800;color:#1A1A4E;" id="missTotal">—</div>
+            <div style="font-size:10.5px;color:#9CA3AF;margin-top:3px;">Total</div>
+          </div>
+          <div style="background:#FFFBEB;border-radius:14px;padding:14px;border:1.5px solid #FDE68A;text-align:center;">
+            <div style="font-size:22px;font-weight:800;color:#D97706;" id="missEnAttente">—</div>
+            <div style="font-size:10.5px;color:#9CA3AF;margin-top:3px;">En attente</div>
+          </div>
+          <div style="background:#EFF6FF;border-radius:14px;padding:14px;border:1.5px solid #BFDBFE;text-align:center;">
+            <div style="font-size:22px;font-weight:800;color:#2563EB;" id="missEnCours">—</div>
+            <div style="font-size:10.5px;color:#9CA3AF;margin-top:3px;">En cours</div>
+          </div>
+          <div style="background:#ECFDF5;border-radius:14px;padding:14px;border:1.5px solid #A7F3D0;text-align:center;">
+            <div style="font-size:22px;font-weight:800;color:#059669;" id="missValides">—</div>
+            <div style="font-size:10.5px;color:#9CA3AF;margin-top:3px;">Validées</div>
+          </div>
+          <div style="background:#FEF2F2;border-radius:14px;padding:14px;border:1.5px solid #FECACA;text-align:center;">
+            <div style="font-size:22px;font-weight:800;color:#DC2626;" id="missAnnulees">—</div>
+            <div style="font-size:10.5px;color:#9CA3AF;margin-top:3px;">Annulées</div>
+          </div>
+        </div>
+
+        <!-- Tableau missions -->
+        <div class="adm-table-wrap">
+          <table class="adm-table" id="adminMissionsTable" style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:#F4F6FB;border-bottom:2px solid #E5E7EB;">
+                <th style="padding:12px 14px;text-align:left;font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;white-space:nowrap;">Ref.</th>
+                <th style="padding:12px 14px;text-align:left;font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;">Client</th>
+                <th style="padding:12px 14px;text-align:left;font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;">Prestataire</th>
+                <th style="padding:12px 14px;text-align:left;font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;">Service</th>
+                <th style="padding:12px 14px;text-align:center;font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;">Montant</th>
+                <th style="padding:12px 14px;text-align:center;font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;">Statut</th>
+                <th style="padding:12px 14px;text-align:center;font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;">Date</th>
+                <th style="padding:12px 14px;text-align:center;font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminMissionsList">
+              <tr><td colspan="8" style="text-align:center;padding:40px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin"></i> Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Modal détail mission -->
+        <div id="missDetailModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+          <div style="background:#fff;border-radius:20px;width:100%;max-width:580px;max-height:88vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.3);">
+            <div style="padding:20px 24px;border-bottom:1px solid #F0F0F8;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1;">
+              <div id="missDetailTitre" style="font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;color:#1A1A4E;"></div>
+              <button onclick="document.getElementById('missDetailModal').style.display='none'" style="width:30px;height:30px;border-radius:50%;background:#F4F6FB;border:none;cursor:pointer;color:#6B7280;font-size:15px;">✕</button>
+            </div>
+            <div id="missDetailContenu" style="padding:20px 24px;"></div>
+            <div id="missDetailActions" style="padding:16px 24px;border-top:1px solid #F0F0F8;display:flex;gap:10px;flex-wrap:wrap;"></div>
+          </div>
+        </div>
       </div>
     </div>
 
-    
     <div class="admin-section" id="admin-realisations">
       <div class="admin-section-inner">
 
@@ -8381,6 +8452,181 @@ function goHome() {
   history.pushState({}, '', '/');
 }
 window.goHome = goHome;
+
+
+// ══════════════════════════════════════════════════════════════
+// SYSTÈME DE GESTION DES MISSIONS — ADMIN
+// ══════════════════════════════════════════════════════════════
+
+var _allMissions = [];
+
+async function renderAdminMissions() {
+  const tbody = document.getElementById('adminMissionsList');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin"></i> Chargement...</td></tr>';
+
+  try {
+    const filtreStatut = document.getElementById('missFilterStatut')?.value || '';
+    
+    let query = sb.from('missions')
+      .select('id,titre,description,statut,montant,created_at,updated_at,client_nom,client_tel,provider_id,categorie,ville,note,avis')
+      .order('created_at', { ascending: false })
+      .limit(100);
+    
+    if (filtreStatut) query = query.eq('statut', filtreStatut);
+    
+    const { data, error } = await query;
+    
+    if (error || !data) {
+      // Table missions peut ne pas exister encore
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;"><div style="background:#FFFBEB;border-radius:12px;padding:20px;display:inline-block;"><div style="font-size:20px;margin-bottom:8px;">📋</div><div style="font-size:14px;font-weight:700;color:#1A1A4E;margin-bottom:4px;">Système de missions</div><div style="font-size:13px;color:#6B7280;margin-bottom:16px;">La table missions doit etre creee dans Supabase.</div><div style="font-size:11px;background:#F4F6FB;border-radius:8px;padding:10px;color:#374151;text-align:left;font-family:monospace;">CREATE TABLE missions (<br>&nbsp;&nbsp;id uuid DEFAULT gen_random_uuid() PRIMARY KEY,<br>&nbsp;&nbsp;titre TEXT,<br>&nbsp;&nbsp;description TEXT,<br>&nbsp;&nbsp;statut TEXT DEFAULT &#39;en_attente&#39;,<br>&nbsp;&nbsp;montant NUMERIC,<br>&nbsp;&nbsp;client_nom TEXT,<br>&nbsp;&nbsp;client_tel TEXT,<br>&nbsp;&nbsp;provider_id uuid REFERENCES providers(id),<br>&nbsp;&nbsp;categorie TEXT,<br>&nbsp;&nbsp;ville TEXT,<br>&nbsp;&nbsp;note INT,<br>&nbsp;&nbsp;avis TEXT,<br>&nbsp;&nbsp;created_at TIMESTAMPTZ DEFAULT now(),<br>&nbsp;&nbsp;updated_at TIMESTAMPTZ DEFAULT now()<br>);</div></div></td></tr>';
+      return;
+    }
+    
+    _allMissions = data;
+    
+    // Mettre à jour KPIs
+    const setKpi = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+    setKpi('missTotal', data.length);
+    setKpi('missEnAttente', data.filter(m=>m.statut==='en_attente').length);
+    setKpi('missEnCours', data.filter(m=>m.statut==='en_cours' || m.statut==='accepte').length);
+    setKpi('missValides', data.filter(m=>m.statut==='valide' || m.statut==='termine').length);
+    setKpi('missAnnulees', data.filter(m=>m.statut==='annule').length);
+    
+    if (!data.length) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#9CA3AF;"><i class="fa-solid fa-inbox" style="font-size:24px;display:block;margin-bottom:10px;"></i>Aucune mission trouvée</td></tr>';
+      return;
+    }
+    
+    const statConfig = {
+      en_attente: { label:'En attente', bg:'#FFFBEB', color:'#D97706' },
+      accepte: { label:'Acceptée', bg:'#EFF6FF', color:'#2563EB' },
+      en_cours: { label:'En cours', bg:'#F0F9FF', color:'#0284C7' },
+      termine: { label:'Terminée', bg:'#F0FDF4', color:'#16A34A' },
+      valide: { label:'Validée', bg:'#ECFDF5', color:'#059669' },
+      annule: { label:'Annulée', bg:'#FEF2F2', color:'#DC2626' },
+    };
+    
+    tbody.innerHTML = data.map((m, i) => {
+      const sc = statConfig[m.statut] || { label: m.statut, bg:'#F3F4F6', color:'#6B7280' };
+      const date = new Date(m.created_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});
+      const ref = 'MIS-' + String(m.id).slice(0,6).toUpperCase();
+      const montant = m.montant ? Number(m.montant).toLocaleString('fr-FR') + ' GNF' : '—';
+      return `
+        <tr style="border-bottom:1px solid #F7F8FC;" onmouseover="this.style.background='#FAFBFF'" onmouseout="this.style.background=''">
+          <td style="padding:12px 14px;font-size:11.5px;font-weight:700;color:#E85D04;white-space:nowrap;">${ref}</td>
+          <td style="padding:12px 14px;">
+            <div style="font-size:13px;font-weight:700;color:#1A1A4E;">${m.client_nom||'—'}</div>
+            <div style="font-size:11px;color:#9CA3AF;">${m.client_tel||''}</div>
+          </td>
+          <td style="padding:12px 14px;font-size:12.5px;color:#374151;">${m.provider_id ? '👤 Assigné' : '<span style="color:#9CA3AF;">Non assigné</span>'}</td>
+          <td style="padding:12px 14px;">
+            <div style="font-size:13px;color:#374151;">${m.titre||m.categorie||'—'}</div>
+            <div style="font-size:11px;color:#9CA3AF;">${m.ville||''}</div>
+          </td>
+          <td style="padding:12px 14px;text-align:center;font-size:13px;font-weight:700;color:#1A1A4E;">${montant}</td>
+          <td style="padding:12px;text-align:center;">
+            <span style="background:${sc.bg};color:${sc.color};border-radius:20px;padding:4px 11px;font-size:11px;font-weight:700;white-space:nowrap;">${sc.label}</span>
+          </td>
+          <td style="padding:12px;text-align:center;font-size:12px;color:#6B7280;white-space:nowrap;">${date}</td>
+          <td style="padding:8px;text-align:center;">
+            <div style="display:flex;gap:4px;justify-content:center;flex-wrap:wrap;">
+              <button onclick="missOuvrirDetail('${m.id}')" style="padding:5px 10px;background:#F4F6FB;border:1.5px solid #E5E7EB;border-radius:7px;font-size:11px;font-weight:600;color:#374151;cursor:pointer;" title="Voir détail">👁</button>
+              ${m.statut==='en_attente' ? `<button onclick="missChangerStatut('${m.id}','en_cours')" style="padding:5px 10px;background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:7px;font-size:11px;font-weight:600;color:#2563EB;cursor:pointer;" title="Démarrer">▶</button>` : ''}
+              ${m.statut==='en_cours' ? `<button onclick="missChangerStatut('${m.id}','termine')" style="padding:5px 10px;background:#ECFDF5;border:1.5px solid #A7F3D0;border-radius:7px;font-size:11px;font-weight:600;color:#059669;cursor:pointer;" title="Terminer">✓</button>` : ''}
+              ${m.statut==='termine' ? `<button onclick="missChangerStatut('${m.id}','valide')" style="padding:5px 10px;background:#ECFDF5;border:1.5px solid #059669;border-radius:7px;font-size:11px;font-weight:700;color:#059669;cursor:pointer;" title="Valider">✅ Valider</button>` : ''}
+              ${m.statut!=='annule' && m.statut!=='valide' ? `<button onclick="missChangerStatut('${m.id}','annule')" style="padding:5px 10px;background:#FEF2F2;border:1.5px solid #FECACA;border-radius:7px;font-size:11px;font-weight:600;color:#DC2626;cursor:pointer;" title="Annuler">✕</button>` : ''}
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+  } catch(e) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:30px;color:#EF4444;">Erreur: ' + e.message + '</td></tr>';
+  }
+}
+
+async function missOuvrirDetail(id) {
+  const m = _allMissions.find(x => x.id === id);
+  if (!m) return;
+  
+  const modal = document.getElementById('missDetailModal');
+  const titre = document.getElementById('missDetailTitre');
+  const contenu = document.getElementById('missDetailContenu');
+  const actions = document.getElementById('missDetailActions');
+  
+  const ref = 'MIS-' + String(m.id).slice(0,6).toUpperCase();
+  if (titre) titre.innerHTML = '<i class="fa-solid fa-bullseye" style="color:#E85D04;margin-right:8px;"></i>' + ref + ' — ' + (m.titre || m.categorie || 'Mission');
+  
+  const statConfig = {
+    en_attente:{ label:'En attente', bg:'#FFFBEB', color:'#D97706' },
+    accepte:{ label:'Acceptée', bg:'#EFF6FF', color:'#2563EB' },
+    en_cours:{ label:'En cours', bg:'#F0F9FF', color:'#0284C7' },
+    termine:{ label:'Terminée', bg:'#F0FDF4', color:'#16A34A' },
+    valide:{ label:'Validée ✅', bg:'#ECFDF5', color:'#059669' },
+    annule:{ label:'Annulée', bg:'#FEF2F2', color:'#DC2626' },
+  };
+  const sc = statConfig[m.statut] || {label:m.statut, bg:'#F3F4F6', color:'#6B7280'};
+  const date = new Date(m.created_at).toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const montant = m.montant ? Number(m.montant).toLocaleString('fr-FR') + ' GNF' : 'Non défini';
+  
+  if (contenu) contenu.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+      <div style="background:#F4F6FB;border-radius:12px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;margin-bottom:6px;">Client</div>
+        <div style="font-size:14px;font-weight:700;color:#1A1A4E;">${m.client_nom||'—'}</div>
+        <div style="font-size:12px;color:#6B7280;">${m.client_tel||'—'}</div>
+      </div>
+      <div style="background:#F4F6FB;border-radius:12px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;margin-bottom:6px;">Statut</div>
+        <span style="background:${sc.bg};color:${sc.color};border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;">${sc.label}</span>
+      </div>
+      <div style="background:#F4F6FB;border-radius:12px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;margin-bottom:6px;">Service</div>
+        <div style="font-size:13px;font-weight:700;color:#1A1A4E;">${m.titre||m.categorie||'—'}</div>
+        <div style="font-size:12px;color:#6B7280;">${m.ville||''}</div>
+      </div>
+      <div style="background:#F4F6FB;border-radius:12px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;margin-bottom:6px;">Montant</div>
+        <div style="font-size:16px;font-weight:800;color:#E85D04;">${montant}</div>
+      </div>
+    </div>
+    ${m.description ? `<div style="background:#F4F6FB;border-radius:12px;padding:14px;margin-bottom:14px;"><div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;margin-bottom:6px;">Description</div><div style="font-size:13px;color:#374151;line-height:1.6;">${m.description}</div></div>` : ''}
+    <div style="font-size:11px;color:#9CA3AF;text-align:center;">Créée le ${date}</div>
+    ${m.note ? `<div style="margin-top:14px;background:#FFFBEB;border-radius:12px;padding:14px;"><div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;margin-bottom:6px;">Évaluation client</div><div style="font-size:18px;">★★★★★</div><div style="font-size:13px;color:#374151;margin-top:6px;">${m.avis||''}</div></div>` : ''}
+  `;
+  
+  // Boutons d'action
+  const btns = [];
+  if (m.statut === 'en_attente') btns.push(`<button onclick="missChangerStatut('${m.id}','en_cours');document.getElementById('missDetailModal').style.display='none'" style="flex:1;padding:11px;background:#2563EB;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="fa-solid fa-play"></i> Démarrer</button>`);
+  if (m.statut === 'en_cours') btns.push(`<button onclick="missChangerStatut('${m.id}','termine');document.getElementById('missDetailModal').style.display='none'" style="flex:1;padding:11px;background:#059669;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="fa-solid fa-check"></i> Marquer terminée</button>`);
+  if (m.statut === 'termine') btns.push(`<button onclick="missChangerStatut('${m.id}','valide');document.getElementById('missDetailModal').style.display='none'" style="flex:1;padding:11px;background:#059669;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="fa-solid fa-circle-check"></i> Valider la mission</button>`);
+  if (!['annule','valide'].includes(m.statut)) btns.push(`<button onclick="missChangerStatut('${m.id}','annule');document.getElementById('missDetailModal').style.display='none'" style="padding:11px 20px;background:#FEF2F2;border:1.5px solid #FECACA;border-radius:10px;color:#DC2626;font-size:13px;font-weight:700;cursor:pointer;"><i class="fa-solid fa-xmark"></i> Annuler</button>`);
+  
+  if (actions) actions.innerHTML = btns.join('') || '<div style="font-size:13px;color:#9CA3AF;width:100%;text-align:center;">Aucune action disponible</div>';
+  
+  if (modal) modal.style.display = 'flex';
+}
+
+async function missChangerStatut(id, newStatut) {
+  try {
+    const { error } = await sb.from('missions')
+      .update({ statut: newStatut, updated_at: new Date().toISOString() })
+      .eq('id', id);
+    if (error) throw error;
+    
+    const labels = { en_cours:'En cours', termine:'Terminée', valide:'Validée ✅', annule:'Annulée' };
+    showToast(`✅ Mission ${labels[newStatut]||newStatut}`);
+    
+    // Mettre à jour localement
+    const m = _allMissions.find(x=>x.id===id);
+    if (m) m.statut = newStatut;
+    
+    await renderAdminMissions();
+  } catch(e) {
+    showToast('❌ Erreur: ' + e.message, 'error');
+  }
+}
+
 </script>
 </body>
 </html>
