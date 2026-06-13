@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YOUMMA JOBS | Trouvez votre artisan en Guinée — Électricien, Plombier, Maçon Conakry</title>
 <meta name="description" content="YOUMMA JOBS — Trouvez rapidement un artisan qualifié en Guinée. Électricien Conakry, plombier Guinée, maçon, soudeur, menuisier, mécanicien, carreleur, peintre. Profils vérifiés, contact direct WhatsApp."/>
 <meta name="keywords" content="artisan Guinée, électricien Conakry, plombier Guinée, maçon Conakry, soudeur Guinée, menuisier Guinée, mécanicien Conakry, carreleur, peintre, climaticien, couturier, artisan qualifié Guinée, prestataire vérifié Conakry, YOUMMA JOBS"/>
@@ -419,6 +419,216 @@ body.admin-mode #page-admin.logged #adminWrap{
     transform:translateX(0)!important;
   }
   /* dashboard main mobile reset moved to @media */
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE COMPLET — YOUMMA JOBS
+   Mobile < 640px | Tablette 640-1024px | Desktop > 1024px
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── META VIEWPORT ── */
+/* Assuré dans le <head> */
+
+/* ══ DESKTOP > 1024px ══════════════════════════════════════════ */
+@media(min-width:1025px){
+  /* Nav */
+  .nav-inner{height:68px;padding:0 5%;}
+  .nav-links{display:flex!important;}
+  .nav-ctas{display:flex!important;}
+  .hamburger{display:none!important;}
+  /* Hero */
+  .hero{padding:100px 5% 70px;}
+  .hero-inner{grid-template-columns:1fr 1fr;gap:40px;}
+  .hero-visual{display:flex!important;}
+  /* Grilles */
+  #providersGrid,#artisansGrid{grid-template-columns:repeat(3,1fr)!important;}
+  /* Dashboard dashboard */
+  #page-dashboard .sidebar{width:220px!important;transform:none!important;display:flex!important;}
+  #page-dashboard .main{margin-left:220px!important;width:calc(100vw - 220px)!important;}
+  /* Admin */
+  #adminWrap{margin-left:220px!important;width:calc(100vw - 220px)!important;}
+}
+
+/* ══ TABLETTE 640px - 1024px ════════════════════════════════════ */
+@media(min-width:640px) and (max-width:1024px){
+  /* Nav */
+  .nav-inner{height:60px;padding:0 3%;}
+  .nav-links{display:none!important;}
+  .nav-ctas{display:none!important;}
+  .hamburger{display:flex!important;}
+  /* Hero */
+  .hero{padding:80px 4% 50px;min-height:auto!important;}
+  .hero-inner{grid-template-columns:1fr!important;gap:28px;}
+  .hero-visual{display:none!important;}
+  .hero h1{font-size:clamp(28px,5vw,42px)!important;}
+  .hero-actions{flex-direction:row!important;flex-wrap:wrap!important;gap:10px!important;}
+  .btn-hero-main,.btn-hero-outline{flex:1;min-width:140px;justify-content:center!important;}
+  /* KPIs hero tablette */
+  .hero-kpis{display:flex!important;flex-wrap:nowrap!important;gap:0!important;}
+  .kpi{flex:1!important;text-align:center!important;padding:0 12px!important;margin:0!important;}
+  .kpi:not(:last-child){border-right:1px solid rgba(255,255,255,.1)!important;}
+  .kpi-num{font-size:22px!important;}
+  /* Grilles 2 cols sur tablette */
+  #providersGrid,#artisansGrid{grid-template-columns:repeat(2,1fr)!important;}
+  .cats-grid{grid-template-columns:repeat(3,1fr)!important;}
+  .how-grid,.devenir-grid{grid-template-columns:repeat(2,1fr)!important;}
+  .tarifs-grid{grid-template-columns:repeat(2,1fr)!important;}
+  .temo-grid{grid-template-columns:repeat(2,1fr)!important;}
+  .faq-grid{grid-template-columns:1fr!important;}
+  /* Dashboard tablette */
+  #page-dashboard .sidebar{width:70px!important;transform:none!important;display:flex!important;}
+  #page-dashboard .sidebar .logo-text,
+  #page-dashboard .sidebar .nav-item span:last-child,
+  #page-dashboard .sidebar .btn-deconnexion span{display:none!important;}
+  #page-dashboard .main{margin-left:70px!important;width:calc(100vw - 70px)!important;}
+  /* Admin tablette */
+  #adminSidebarEl{width:70px!important;}
+  #adminWrap{margin-left:70px!important;width:calc(100vw - 70px)!important;}
+  .adm-stats-grid{grid-template-columns:repeat(3,1fr)!important;}
+  /* Real carousel tablette */
+  .real-pub-card{flex-basis:calc(50% - 8px)!important;}
+}
+
+/* ══ MOBILE < 640px ═════════════════════════════════════════════ */
+@media(max-width:639px){
+  /* NAV */
+  .nav-inner{height:54px!important;padding:0 14px!important;}
+  .nav-links{display:none!important;}
+  .nav-ctas{display:none!important;}
+  .hamburger{display:flex!important;}
+  .nav-logo{font-size:16px!important;}
+  
+  /* HERO */
+  .hero{padding:70px 14px 36px!important;min-height:auto!important;}
+  .hero-inner{grid-template-columns:1fr!important;gap:20px!important;}
+  .hero-visual{display:none!important;}
+  .hero h1{font-size:clamp(24px,8vw,36px)!important;line-height:1.2!important;}
+  .hero-subtitle{font-size:14px!important;}
+  .hero-actions{flex-direction:column!important;gap:10px!important;}
+  .btn-hero-main,.btn-hero-outline{width:100%!important;justify-content:center!important;padding:13px!important;}
+  .hero-kpis{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important;padding-top:20px!important;}
+  .kpi{text-align:center!important;padding:0!important;margin:0!important;border-right:none!important;border-bottom:none!important;}
+  .kpi-num{font-size:22px!important;}
+  .kpi-label{font-size:10px!important;}
+  .hero-express{flex-direction:column!important;gap:8px!important;}
+  .btn-express{width:100%!important;text-align:center!important;}
+  
+  /* SEARCH */
+  .search-box{flex-direction:column!important;padding:12px!important;gap:8px!important;}
+  .search-divider{display:none!important;}
+  .search-field{padding:10px 12px!important;border:1.5px solid var(--bordure)!important;border-radius:10px!important;background:#fff!important;}
+  .btn-search{width:100%!important;justify-content:center!important;}
+  .search-filters{gap:6px!important;padding:8px 12px!important;flex-wrap:wrap!important;}
+  .filter-chip{font-size:11px!important;padding:5px 10px!important;}
+  
+  /* SECTIONS GÉNÉRALES */
+  section{padding:36px 14px!important;}
+  .counters-inner,.how-inner,.devenir-inner,.faq-inner,.temo-inner,.tarifs-inner,.realisations-inner{padding:36px 14px!important;}
+  
+  /* GRILLES PRESTATAIRES */
+  #providersGrid,#artisansGrid{grid-template-columns:1fr!important;}
+  .cats-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important;}
+  .how-grid,.devenir-grid{grid-template-columns:1fr!important;gap:18px!important;}
+  .tarifs-grid{grid-template-columns:1fr!important;}
+  .tarif-card.featured{transform:none!important;}
+  .temo-grid{grid-template-columns:1fr!important;}
+  .counters-inner{grid-template-columns:repeat(2,1fr)!important;}
+  .faq-grid{grid-template-columns:1fr!important;}
+  .part-grid{grid-template-columns:repeat(2,1fr)!important;}
+  
+  /* PROVIDER CARD mobile */
+  .pc2-card{border-radius:14px!important;}
+  .modal-backdrop{align-items:flex-end!important;}
+  .modal{border-radius:20px 20px 0 0!important;max-height:92vh!important;}
+  .modal-meta-grid{grid-template-columns:1fr!important;}
+  .modal-actions{flex-direction:column!important;}
+  .modal-actions a,.modal-actions button{width:100%!important;justify-content:center!important;}
+  
+  /* RÉALISATIONS carousel */
+  .real-pub-card{flex-basis:100%!important;}
+  
+  /* SECTION LOGO YOUMMAJOBS */
+  .hero-section h1{font-size:28px!important;}
+  
+  /* ── DASHBOARD PRESTATAIRE MOBILE ── */
+  #page-dashboard .sidebar{
+    transform:translateX(-100%)!important;
+    width:260px!important;
+    position:fixed!important;
+    top:0!important;left:0!important;
+    height:100vh!important;
+    z-index:9999!important;
+    transition:transform .3s ease!important;
+  }
+  #page-dashboard .sidebar.open{
+    transform:translateX(0)!important;
+  }
+  #page-dashboard .main{
+    margin-left:0!important;
+    width:100%!important;
+  }
+  /* Hamburger dashboard visible sur mobile */
+  .dash-hamburger{display:flex!important;}
+  /* Topbar mobile */
+  #page-dashboard .topbar{padding:0 12px!important;height:50px!important;}
+  /* Stats 2x2 */
+  .stats-row{grid-template-columns:repeat(2,1fr)!important;gap:10px!important;}
+  /* Sections padding */
+  .section{padding:14px!important;}
+  /* Form cols */
+  .form-row{grid-template-columns:1fr!important;}
+  /* Actions 2 cols */
+  .actions-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important;}
+  /* Profil banner */
+  .profile-banner{flex-direction:column!important;gap:14px!important;}
+  
+  /* ── ADMIN MOBILE ── */
+  #page-dashboard.admin-view #adminSidebarEl,
+  #adminSidebarEl{
+    transform:translateX(-100%)!important;
+    transition:transform .3s ease!important;
+  }
+  #adminSidebarEl.open{transform:translateX(0)!important;}
+  #adminWrap{margin-left:0!important;width:100%!important;}
+  .admin-hamburger{display:flex!important;}
+  .adm-stats-grid{grid-template-columns:repeat(2,1fr)!important;gap:8px!important;}
+  .admin-section-inner{padding:12px!important;}
+  .adm-table{min-width:600px!important;}
+  .adm-table-wrap{overflow-x:auto!important;}
+  /* Admin rapports */
+  #rptMoisListe{grid-template-columns:1fr!important;}
+  /* Admin missions KPIs */
+  #missKpis{grid-template-columns:repeat(2,1fr)!important;}
+  
+  /* ── PAGE LOGIN MOBILE ── */
+  .login-left-panel{display:none!important;}
+  .login-right-panel{width:100%!important;min-height:100vh!important;padding:28px 16px!important;}
+  #lpin1,#lpin2,#lpin3,#lpin4{width:52px!important;height:52px!important;font-size:20px!important;}
+  
+  /* ── NOUVEAUTÉS HUB MOBILE ── */
+  #page-soon-hub section{padding:36px 14px!important;}
+  #page-soon-hub div[style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr!important;}
+  #page-soon-hub div[style*="grid-template-columns:repeat(2"]{grid-template-columns:1fr!important;}
+  
+  /* ── TIMELINE NOUVEAUTÉS ── */
+  #page-soon-hub .timeline-step{margin:0 8px!important;}
+  
+  /* ── HIDE MOBILE ── */
+  .hide-mobile{display:none!important;}
+  
+  /* ── FONT SIZES ── */
+  h2{font-size:clamp(20px,5vw,28px)!important;}
+  .section-title{font-size:clamp(20px,5vw,28px)!important;}
+}
+
+/* ══ TRÈS PETIT MOBILE < 380px ═══════════════════════════════ */
+@media(max-width:380px){
+  .hero h1{font-size:24px!important;}
+  .kpi-num{font-size:20px!important;}
+  #lpin1,#lpin2,#lpin3,#lpin4{width:44px!important;height:44px!important;font-size:18px!important;gap:6px!important;}
+  .adm-stat-num{font-size:18px!important;}
+  .hero-actions .btn-hero-main,.hero-actions .btn-hero-outline{font-size:13px!important;padding:11px!important;}
 }
 
 </style>
