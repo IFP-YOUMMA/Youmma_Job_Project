@@ -4251,12 +4251,50 @@ async function chargerAvis() {
 
     
     <div class="admin-section" id="admin-rapports">
-      <div class="admin-section-inner" id="rapportsContent">
-        
-        <div style="text-align:center;padding:60px;color:#9CA3AF;">
-          <i class="fa-solid fa-spinner fa-spin" style="font-size:28px;margin-bottom:12px;display:block;"></i>
-          Chargement des rapports...
+      <div class="admin-section-inner">
+
+        <!-- En-tête rapports -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+          <div class="adm-section-title"><i class="fa-solid fa-chart-line" style="color:#E85D04;"></i> Rapports & Statistiques</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button onclick="rptExportPDF()" style="padding:8px 16px;background:#1A1A4E;border:none;border-radius:9px;color:#fff;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-file-pdf"></i> Exporter PDF</button>
+            <button onclick="renderRapports()" style="padding:8px 16px;background:#F4F6FB;border:1.5px solid #E5E7EB;border-radius:9px;color:#374151;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-rotate"></i> Actualiser</button>
+          </div>
         </div>
+
+        <!-- Vue selector -->
+        <div style="display:flex;background:#F4F6FB;border-radius:12px;padding:4px;margin-bottom:24px;width:fit-content;gap:2px;">
+          <button onclick="rptSetVue('mensuel')" id="rptVueMensuel" style="padding:8px 20px;background:#1A1A4E;color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">📅 Vue mensuelle</button>
+          <button onclick="rptSetVue('journalier')" id="rptVueJournalier" style="padding:8px 20px;background:transparent;color:#6B7280;border:none;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;">📋 Vue journalière</button>
+        </div>
+
+        <!-- Vue mensuelle -->
+        <div id="rptPanelMensuel">
+          <div id="rptMoisListe" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;"></div>
+        </div>
+
+        <!-- Vue journalière -->
+        <div id="rptPanelJournalier" style="display:none;">
+          <!-- Sélecteur mois -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+            <div style="font-size:13px;font-weight:600;color:#374151;">Mois :</div>
+            <select id="rptSelectMois" onchange="rptChargerJours()" style="padding:8px 14px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:13px;outline:none;background:#fff;cursor:pointer;"></select>
+            <button onclick="rptChargerJours()" style="padding:8px 16px;background:#E85D04;border:none;border-radius:9px;color:#fff;font-size:12.5px;font-weight:600;cursor:pointer;"><i class="fa-solid fa-search"></i> Voir les jours</button>
+          </div>
+          <div id="rptJoursListe"></div>
+        </div>
+
+        <!-- Détail d'un jour (modal) -->
+        <div id="rptDetailOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+          <div style="background:#fff;border-radius:20px;width:100%;max-width:700px;max-height:85vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.3);">
+            <div style="padding:24px 28px;border-bottom:1px solid #F0F0F8;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1;">
+              <div id="rptDetailTitre" style="font-family:'Libre Baskerville',serif;font-size:17px;font-weight:700;color:#1A1A4E;"></div>
+              <button onclick="rptFermerDetail()" style="width:32px;height:32px;border-radius:50%;background:#F4F6FB;border:none;cursor:pointer;font-size:16px;color:#6B7280;">✕</button>
+            </div>
+            <div id="rptDetailContenu" style="padding:24px 28px;"></div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -6190,88 +6228,309 @@ async function _adminValidDoc(id, docType, statut) {
 var _rptPeriod = 'mois'; // Mois par défaut — plus de données pertinentes // 'jour' | 'semaine' | 'mois' | 'annee'
 var _rptData = null;
 
-async function renderRapports() {
-  const container = document.getElementById('rapportsContent');
-  if (!container) return;
-  container.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
-      <div class="adm-section-title"><i class="fa-solid fa-chart-line" style="color:#E85D04;"></i> Rapports & Statistiques</div>
-      <button onclick="renderRapports()" style="padding:7px 14px;background:#F4F6FB;border:1.5px solid #E5E7EB;border-radius:9px;color:#6B7280;font-size:12.5px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;" onmouseover="this.style.borderColor='#1A1A4E'" onmouseout="this.style.borderColor='#E5E7EB'">
-        <i class="fa-solid fa-arrows-rotate"></i> Actualiser
-      </button>
-    </div>
 
-    
-    <div class="rpt-period-bar">
-      <button class="rpt-period-btn ${_rptPeriod==='jour'?'active':''}" onclick="_rptSetPeriod('jour')">Aujourd'hui</button>
-      <button class="rpt-period-btn ${_rptPeriod==='semaine'?'active':''}" onclick="_rptSetPeriod('semaine')">7 derniers jours</button>
-      <button class="rpt-period-btn ${_rptPeriod==='mois'?'active':''}" onclick="_rptSetPeriod('mois')">Ce mois</button>
-      <button class="rpt-period-btn ${_rptPeriod==='annee'?'active':''}" onclick="_rptSetPeriod('annee')">Cette année</button>
-      <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
-        <span style="font-size:12px;color:#9CA3AF;">Personnalisé :</span>
-        <input type="date" class="rpt-date-input" id="rptDateFrom" onchange="_rptCustomRange()"/>
-        <span style="font-size:12px;color:#9CA3AF;">→</span>
-        <input type="date" class="rpt-date-input" id="rptDateTo" onchange="_rptCustomRange()"/>
-      </div>
-    </div>
+// ══════════════════════════════════════════════════════════════
+// SYSTÈME DE RAPPORTS — Journaliers & Mensuels
+// ══════════════════════════════════════════════════════════════
 
-    <div id="rptBody"><div style="text-align:center;padding:40px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin"></i> Chargement...</div></div>
-  `;
+var _rptVue = 'mensuel';
+var _rptCache = {}; // cache des données par mois
 
-  // _rptSetPeriod cherche les inputs de date qui sont maintenant dans le DOM
-  // Calculer les dates manuellement
-  const _today = new Date();
-  const _todayStr = _today.toISOString().split('T')[0];
-  const _fromDate = new Date(_today.getFullYear(), _today.getMonth(), 1).toISOString().split('T')[0];
-  const df = document.getElementById('rptDateFrom');
-  const dt = document.getElementById('rptDateTo');
-  if (df) df.value = _fromDate;
-  if (dt) dt.value = _todayStr;
-  // Charger les données
-  await _rptLoadData();
-}
-
-function _rptSetPeriod(p) {
-  _rptPeriod = p;
-  const today = new Date();
-  const todayStr = today.toISOString().split('T')[0];
-  const d = document.getElementById('rptDateFrom');
-  const d2 = document.getElementById('rptDateTo');
-
-  if (p === 'jour') {
-    if (d) d.value = todayStr;
-    if (d2) d2.value = todayStr;
-  } else if (p === 'semaine') {
-    const w = new Date(today); w.setDate(today.getDate()-6);
-    if (d) d.value = w.toISOString().split('T')[0];
-    if (d2) d2.value = todayStr;
-  } else if (p === 'mois') {
-    const m = new Date(today.getFullYear(), today.getMonth(), 1);
-    if (d) d.value = m.toISOString().split('T')[0];
-    if (d2) d2.value = todayStr;
-  } else if (p === 'annee') {
-    const y = new Date(today.getFullYear(), 0, 1);
-    if (d) d.value = y.toISOString().split('T')[0];
-    if (d2) d2.value = todayStr;
+function rptSetVue(vue) {
+  _rptVue = vue;
+  const btnM = document.getElementById('rptVueMensuel');
+  const btnJ = document.getElementById('rptVueJournalier');
+  const panM = document.getElementById('rptPanelMensuel');
+  const panJ = document.getElementById('rptPanelJournalier');
+  if (vue === 'mensuel') {
+    if (btnM) { btnM.style.background='#1A1A4E'; btnM.style.color='#fff'; }
+    if (btnJ) { btnJ.style.background='transparent'; btnJ.style.color='#6B7280'; }
+    if (panM) panM.style.display = 'block';
+    if (panJ) panJ.style.display = 'none';
+    rptChargerMois();
+  } else {
+    if (btnM) { btnM.style.background='transparent'; btnM.style.color='#6B7280'; }
+    if (btnJ) { btnJ.style.background='#1A1A4E'; btnJ.style.color='#fff'; }
+    if (panM) panM.style.display = 'none';
+    if (panJ) panJ.style.display = 'block';
+    rptInitSelectMois();
+    rptChargerJours();
   }
-
-  // Mettre à jour les boutons
-  document.querySelectorAll('.rpt-period-btn').forEach(b => b.classList.remove('active'));
-  const btns = document.querySelectorAll('.rpt-period-btn');
-  const idx = ['jour','semaine','mois','annee'].indexOf(p);
-  if (btns[idx]) btns[idx].classList.add('active');
-
-  _rptLoadData();
 }
 
-function _rptCustomRange() {
-  document.querySelectorAll('.rpt-period-btn').forEach(b => b.classList.remove('active'));
-  _rptPeriod = 'custom';
-  _rptLoadData();
+// Initialiser le sélecteur de mois (12 derniers mois)
+function rptInitSelectMois() {
+  const sel = document.getElementById('rptSelectMois');
+  if (!sel) return;
+  const moisNoms = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const today = new Date();
+  sel.innerHTML = '';
+  for (let i = 0; i < 12; i++) {
+    const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+    const val = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    const label = moisNoms[d.getMonth()] + ' ' + d.getFullYear();
+    const opt = document.createElement('option');
+    opt.value = val; opt.textContent = label;
+    if (i === 0) opt.selected = true;
+    sel.appendChild(opt);
+  }
 }
 
-var _rptLastLoad = 0;
-var _rptCache = null;
+// ─── VUE MENSUELLE ───
+async function rptChargerMois() {
+  const container = document.getElementById('rptMoisListe');
+  if (!container) return;
+  container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin" style="font-size:24px;"></i><br><br>Chargement...</div>';
+  
+  try {
+    const moisNoms = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+    const today = new Date();
+    const moisCards = [];
+    
+    for (let i = 0; i < 6; i++) {
+      const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      const ym = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+      const debut = ym + '-01';
+      const fin = new Date(d.getFullYear(), d.getMonth()+1, 0);
+      const finStr = ym + '-' + String(fin.getDate()).padStart(2,'0');
+      
+      // Charger les stats du mois
+      const stats = await rptGetStatsMois(debut, finStr);
+      moisCards.push({ ym, label: moisNoms[d.getMonth()] + ' ' + d.getFullYear(), debut, fin: finStr, stats, isCurrent: i === 0 });
+    }
+    
+    container.innerHTML = moisCards.map(m => `
+      <div onclick="rptOuvrirMois('${m.ym}','${m.label}')" style="background:#fff;border-radius:16px;border:1.5px solid ${m.isCurrent ? '#E85D04' : '#F0F0F8'};padding:20px;cursor:pointer;transition:.2s;box-shadow:0 2px 12px rgba(0,0,0,.05);" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.1)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.05)'">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div>
+            <div style="font-size:9px;font-weight:800;color:${m.isCurrent ? '#E85D04' : '#9CA3AF'};letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;">${m.isCurrent ? '● Mois en cours' : 'Archivé'}</div>
+            <div style="font-family:'Libre Baskerville',serif;font-size:17px;font-weight:700;color:#1A1A4E;">${m.label}</div>
+          </div>
+          <div style="width:40px;height:40px;border-radius:10px;background:${m.isCurrent ? '#FFF7F0' : '#F4F6FB'};display:flex;align-items:center;justify-content:center;">
+            <i class="fa-solid fa-calendar-days" style="color:${m.isCurrent ? '#E85D04' : '#9CA3AF'};font-size:16px;"></i>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+          <div style="background:#F4F6FB;border-radius:10px;padding:10px;text-align:center;">
+            <div style="font-size:20px;font-weight:800;color:#1A1A4E;">${m.stats.inscriptions}</div>
+            <div style="font-size:10px;color:#9CA3AF;">Inscriptions</div>
+          </div>
+          <div style="background:#F4F6FB;border-radius:10px;padding:10px;text-align:center;">
+            <div style="font-size:20px;font-weight:800;color:#059669;">${m.stats.valides}</div>
+            <div style="font-size:10px;color:#9CA3AF;">Validés</div>
+          </div>
+          <div style="background:#F4F6FB;border-radius:10px;padding:10px;text-align:center;">
+            <div style="font-size:20px;font-weight:800;color:#E85D04;">${m.stats.missions}</div>
+            <div style="font-size:10px;color:#9CA3AF;">Missions</div>
+          </div>
+          <div style="background:#F4F6FB;border-radius:10px;padding:10px;text-align:center;">
+            <div style="font-size:20px;font-weight:800;color:#2563EB;">${m.stats.codesActives}</div>
+            <div style="font-size:10px;color:#9CA3AF;">Codes activés</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12.5px;">
+          <span style="color:#6B7280;">${m.debut} → ${m.fin}</span>
+          <span style="color:#E85D04;font-weight:700;display:flex;align-items:center;gap:4px;">Voir détails <i class="fa-solid fa-arrow-right" style="font-size:10px;"></i></span>
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    if (container) container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#EF4444;">Erreur de chargement: ' + e.message + '</div>';
+  }
+}
+
+async function rptGetStatsMois(debut, fin) {
+  try {
+    const [r1, r2, r3, r4] = await Promise.all([
+      sb.from('providers').select('id', {count:'exact'}).gte('created_at', debut).lte('created_at', fin + 'T23:59:59'),
+      sb.from('providers').select('id', {count:'exact'}).eq('statut','valide').gte('created_at', debut).lte('created_at', fin + 'T23:59:59'),
+      sb.from('missions').select('id', {count:'exact'}).gte('created_at', debut).lte('created_at', fin + 'T23:59:59').catch(()=>({count:0})),
+      sb.from('codes_activation').select('id', {count:'exact'}).eq('statut','utilise').gte('created_at', debut).lte('created_at', fin + 'T23:59:59').catch(()=>({count:0})),
+    ]);
+    return { inscriptions: r1.count||0, valides: r2.count||0, missions: r3.count||0, codesActives: r4.count||0 };
+  } catch(e) { return { inscriptions:0, valides:0, missions:0, codesActives:0 }; }
+}
+
+// ─── VUE JOURNALIÈRE ───
+async function rptChargerJours() {
+  const sel = document.getElementById('rptSelectMois');
+  const container = document.getElementById('rptJoursListe');
+  if (!sel || !container) return;
+  const ym = sel.value;
+  if (!ym) return;
+  
+  const moisNoms = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const [year, month] = ym.split('-').map(Number);
+  const nbJours = new Date(year, month, 0).getDate();
+  const labelMois = moisNoms[month-1] + ' ' + year;
+  
+  container.innerHTML = `
+    <div style="font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;color:#1A1A4E;margin-bottom:16px;">
+      <i class="fa-solid fa-calendar-week" style="color:#E85D04;"></i> ${labelMois} — ${nbJours} jours
+    </div>
+    <div style="background:#fff;border-radius:16px;border:1.5px solid #F0F0F8;overflow:hidden;">
+      <div style="display:grid;grid-template-columns:80px 1fr 80px 80px 80px 80px;gap:0;background:#F4F6FB;border-bottom:1px solid #E5E7EB;">
+        <div style="padding:10px 14px;font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;">Date</div>
+        <div style="padding:10px 14px;font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;">Jour</div>
+        <div style="padding:10px;font-size:11px;font-weight:700;color:#6B7280;text-align:center;">Inscrits</div>
+        <div style="padding:10px;font-size:11px;font-weight:700;color:#059669;text-align:center;">Validés</div>
+        <div style="padding:10px;font-size:11px;font-weight:700;color:#E85D04;text-align:center;">Missions</div>
+        <div style="padding:10px;font-size:11px;font-weight:700;color:#2563EB;text-align:center;">Actions</div>
+      </div>
+      <div id="rptJoursRows">
+        <div style="text-align:center;padding:30px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin"></i> Chargement...</div>
+      </div>
+    </div>`;
+  
+  // Charger les providers inscrits ce mois
+  const debut = ym + '-01';
+  const fin = ym + '-' + String(nbJours).padStart(2,'0');
+  const today = new Date().toISOString().split('T')[0];
+  
+  try {
+    const { data: providers } = await sb.from('providers')
+      .select('id,nom,prenom,metier,statut,created_at')
+      .gte('created_at', debut).lte('created_at', fin + 'T23:59:59')
+      .order('created_at', { ascending: true });
+    
+    const joursNoms = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+    const rows = [];
+    
+    for (let j = 1; j <= nbJours; j++) {
+      const dateStr = ym + '-' + String(j).padStart(2,'0');
+      const dateObj = new Date(year, month-1, j);
+      const jourNom = joursNoms[dateObj.getDay()];
+      const isToday = dateStr === today;
+      const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;
+      
+      const dayProviders = (providers||[]).filter(p => p.created_at?.startsWith(dateStr));
+      const inscrits = dayProviders.length;
+      const valides = dayProviders.filter(p => p.statut === 'valide').length;
+      
+      // Ne montrer que les jours passés ou aujourd'hui
+      const isPast = dateStr <= today;
+      
+      rows.push(`
+        <div style="display:grid;grid-template-columns:80px 1fr 80px 80px 80px 80px;gap:0;border-bottom:1px solid #F9FAFB;background:${isToday?'#FFF7F0':isWeekend?'#FAFBFF':'#fff'};" ${inscrits>0||isToday ? `onmouseover="this.style.background='#F4F6FB'" onmouseout="this.style.background='${isToday?'#FFF7F0':isWeekend?'#FAFBFF':'#fff'}'"` : ''}>
+          <div style="padding:10px 14px;font-size:12.5px;font-weight:${isToday?'800':'600'};color:${isToday?'#E85D04':'#374151'};">${String(j).padStart(2,'0')}/${String(month).padStart(2,'0')}</div>
+          <div style="padding:10px 14px;font-size:12.5px;color:${isWeekend?'#9CA3AF':'#374151'};">${jourNom}${isToday?' <span style="font-size:9px;background:#E85D04;color:#fff;padding:1px 6px;border-radius:20px;font-weight:700;">Aujourd&#39;hui</span>':''}</div>
+          <div style="padding:10px;text-align:center;font-size:13px;font-weight:700;color:${inscrits>0?'#1A1A4E':'#D1D5DB'};">${isPast?(inscrits||'—'):'—'}</div>
+          <div style="padding:10px;text-align:center;font-size:13px;font-weight:700;color:${valides>0?'#059669':'#D1D5DB'};">${isPast?(valides||'—'):'—'}</div>
+          <div style="padding:10px;text-align:center;font-size:13px;color:#D1D5DB;">—</div>
+          <div style="padding:8px;text-align:center;">${isPast && inscrits>0 ? `<button onclick="rptOuvrirJour('${dateStr}','${jourNom} ${j} ${moisNoms[month-1]}')" style="padding:4px 10px;background:#E85D04;border:none;border-radius:7px;color:#fff;font-size:10.5px;font-weight:700;cursor:pointer;">Voir</button>` : ''}</div>
+        </div>`);
+    }
+    
+    const rowsDiv = document.getElementById('rptJoursRows');
+    if (rowsDiv) rowsDiv.innerHTML = rows.join('');
+    
+    // Totaux
+    const totalInscrits = (providers||[]).length;
+    const totalValides = (providers||[]).filter(p=>p.statut==='valide').length;
+    rowsDiv.innerHTML += `
+      <div style="display:grid;grid-template-columns:80px 1fr 80px 80px 80px 80px;gap:0;background:#1A1A4E;border-top:2px solid #E85D04;">
+        <div style="padding:12px 14px;font-size:12px;font-weight:800;color:#F5C842;grid-column:1/3;">TOTAL ${labelMois.toUpperCase()}</div>
+        <div style="padding:12px;text-align:center;font-size:14px;font-weight:800;color:#fff;">${totalInscrits}</div>
+        <div style="padding:12px;text-align:center;font-size:14px;font-weight:800;color:#34D399;">${totalValides}</div>
+        <div style="padding:12px;text-align:center;font-size:14px;font-weight:800;color:#fff;">—</div>
+        <div></div>
+      </div>`;
+  } catch(e) {
+    document.getElementById('rptJoursRows').innerHTML = '<div style="padding:20px;color:#EF4444;">Erreur: ' + e.message + '</div>';
+  }
+}
+
+// ─── DÉTAIL D'UN MOIS ───
+async function rptOuvrirMois(ym, label) {
+  // Basculer en vue journalière sur ce mois
+  rptSetVue('journalier');
+  const sel = document.getElementById('rptSelectMois');
+  if (sel) { sel.value = ym; }
+  rptChargerJours();
+}
+
+// ─── DÉTAIL D'UN JOUR ───
+async function rptOuvrirJour(dateStr, label) {
+  const overlay = document.getElementById('rptDetailOverlay');
+  const titre = document.getElementById('rptDetailTitre');
+  const contenu = document.getElementById('rptDetailContenu');
+  if (!overlay || !titre || !contenu) return;
+  
+  titre.innerHTML = '<i class="fa-solid fa-calendar-day" style="color:#E85D04;margin-right:8px;"></i>' + label;
+  contenu.innerHTML = '<div style="text-align:center;padding:30px;color:#9CA3AF;"><i class="fa-solid fa-spinner fa-spin"></i> Chargement...</div>';
+  overlay.style.display = 'flex';
+  
+  try {
+    const { data: providers } = await sb.from('providers')
+      .select('id,nom,prenom,metier,categorie,ville,statut,telephone,created_at')
+      .gte('created_at', dateStr).lt('created_at', dateStr + 'T23:59:59')
+      .order('created_at', { ascending: true });
+    
+    const moisNoms = ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+    
+    if (!providers || !providers.length) {
+      contenu.innerHTML = '<div style="text-align:center;padding:40px;color:#9CA3AF;"><i class="fa-solid fa-inbox" style="font-size:28px;display:block;margin-bottom:12px;"></i>Aucune activité ce jour</div>';
+      return;
+    }
+    
+    const statColors = {valide:'#059669',en_attente:'#D97706',rejete:'#DC2626',suspendu:'#9CA3AF'};
+    const statBg = {valide:'#ECFDF5',en_attente:'#FFFBEB',rejete:'#FEF2F2',suspendu:'#F3F4F6'};
+    const statLabel = {valide:'Validé',en_attente:'En attente',rejete:'Rejeté',suspendu:'Suspendu'};
+    
+    contenu.innerHTML = `
+      <!-- Résumé du jour -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;">
+        <div style="background:#F4F6FB;border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:24px;font-weight:800;color:#1A1A4E;">${providers.length}</div>
+          <div style="font-size:11px;color:#9CA3AF;">Inscriptions</div>
+        </div>
+        <div style="background:#ECFDF5;border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:24px;font-weight:800;color:#059669;">${providers.filter(p=>p.statut==='valide').length}</div>
+          <div style="font-size:11px;color:#9CA3AF;">Validés</div>
+        </div>
+        <div style="background:#FFFBEB;border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:24px;font-weight:800;color:#D97706;">${providers.filter(p=>p.statut==='en_attente').length}</div>
+          <div style="font-size:11px;color:#9CA3AF;">En attente</div>
+        </div>
+      </div>
+      
+      <!-- Liste des activités -->
+      <div style="font-size:12px;font-weight:700;color:#9CA3AF;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;">Détail des inscriptions</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        ${providers.map(p => {
+          const heure = new Date(p.created_at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+          const ini = ((p.prenom||'?')[0]+(p.nom||'?')[0]).toUpperCase();
+          return `
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#FAFBFF;border-radius:12px;border:1.5px solid #F0F0F8;">
+            <div style="width:38px;height:38px;border-radius:10px;background:#E0E0F8;color:#2D2D6B;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">${ini}</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13.5px;font-weight:700;color:#1A1A4E;">${p.prenom||''} ${p.nom||''}</div>
+              <div style="font-size:11.5px;color:#9CA3AF;">${p.metier||'—'} · ${p.ville||'—'} · 📞 ${p.telephone||'—'}</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;">
+              <span style="background:${statBg[p.statut]||'#F3F4F6'};color:${statColors[p.statut]||'#9CA3AF'};border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;">${statLabel[p.statut]||p.statut}</span>
+              <div style="font-size:10px;color:#9CA3AF;margin-top:3px;">${heure}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+  } catch(e) {
+    contenu.innerHTML = '<div style="padding:20px;color:#EF4444;">Erreur: ' + e.message + '</div>';
+  }
+}
+
+function rptFermerDetail() {
+  const ov = document.getElementById('rptDetailOverlay');
+  if (ov) ov.style.display = 'none';
+}
+
+function rptExportPDF() {
+  showToast('Export PDF en cours de développement', 'info');
+}
+
+async function renderRapports() {
+  rptSetVue(_rptVue || 'mensuel');
+}
 
 async function _rptLoadData() {
   const body = document.getElementById('rptBody');
