@@ -638,8 +638,8 @@ async function verifierSession() {
       </a></li>
     </ul>
     <div class="nav-ctas">
-      <button class="btn-nav-ghost" onclick="navigate('login')"><i class="fa-solid fa-lock"></i> Connexion</button>
-      <button class="btn-nav-ghost" onclick="navigate('inscription')">+ Devenir artisan</button>
+      <button class="btn-nav-ghost" onclick="if(typeof _realNavigate==='function')_realNavigate('login');else if(typeof navigate==='function')navigate('login')"><i class="fa-solid fa-lock"></i> Connexion</button>
+      <button class="btn-nav-ghost" onclick="if(typeof _realNavigate==='function')_realNavigate('inscription');else if(typeof navigate==='function')navigate('inscription')">+ Devenir artisan</button>
       <button class="btn-nav-primary" onclick="document.getElementById('prestataires').scrollIntoView({behavior:'smooth'})">Trouver un artisan</button>
     </div>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -1429,7 +1429,7 @@ async function verifierSession() {
           <ul>
             <li><span onclick="ouvrirInscription()">📝 Inscription</span></li>
             <li><a href="#login" onclick="navigate && navigate('login')"><i class="fa-solid fa-lock"></i> Connexion</a></li>
-            <li><a href="#dashboard" onclick="navigate && navigate('dashboard')"><i class="fa-solid fa-chart-bar"></i> Mon espace</a></li>
+            <li><a href="#dashboard" onclick="navigate && if(typeof _realNavigate==='function')_realNavigate('dashboard');else if(typeof navigate==='function')navigate('dashboard')"><i class="fa-solid fa-chart-bar"></i> Mon espace</a></li>
             <li><span onclick="ouvrirInscription()">🚀 Devenir artisan</span></li>
           </ul>
         </div>
@@ -3001,6 +3001,7 @@ if (typeof inscrirePrestataire === 'undefined') {
 })();
 </script>
 </div>
+</div>
 
 <div class="page" id="page-dashboard">
 <div class="dash-layout">
@@ -3970,6 +3971,7 @@ async function chargerAvis() {
 // ── TOAST ──
 
 </script>
+</div>
 </div>
 
 <div class="page" id="page-admin">
@@ -5870,7 +5872,11 @@ window._realNavigate = navigate;
 
 window.addEventListener('load', async function() {
   const hash = location.hash.replace('#','').toLowerCase().trim();
-  if (hash === 'admin') { navigate('admin'); if (typeof initAdmin==='function') await initAdmin(); }
+  if (hash === 'admin') { 
+    if (typeof _realNavigate==='function') _realNavigate('admin'); 
+    else if (typeof _showAdminPanel==='function') _showAdminPanel();
+    if (typeof initAdmin==='function') await initAdmin(); 
+  }
   else if (hash === 'dashboard') {
     const pid = typeof verifierSession==='function' ? await verifierSession() : null;
     if (!pid) { navigate('login'); return; }
@@ -5942,6 +5948,9 @@ window.addEventListener('hashchange', async function() {
 <script>
 // ── FONCTIONS ADMIN ──
 function _showAdminPanel() {
+  // Activer le mode admin sur body
+  document.body.classList.add('admin-mode', 'on-admin');
+  document.body.classList.remove('on-home', 'on-dashboard');
   // Cacher tout le contenu public
   ['mainNav','mainContent'].forEach(id => {
     const el = document.getElementById(id);
