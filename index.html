@@ -1013,23 +1013,39 @@ async function verifierSession() {
   </div>
 </section>
 
-<section class="realisations-section" id="realisations">
-  <div class="realisations-inner">
-    <div class="section-head" style="text-align:center;margin-bottom:8px;">
-      <span class="section-tag" style="display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Portfolio</span>
-      <h2 class="section-title" style="font-family:'Libre Baskerville',serif;font-size:clamp(24px,4vw,38px);font-weight:700;margin-bottom:10px;">Nos réalisations</h2>
-      <p class="section-sub" style="font-size:15px;max-width:520px;margin:0 auto;">Découvrez les travaux réalisés par nos artisans qualifiés à Conakry.</p>
+<section id="realisations" style="background:#0D0D2E;padding:60px 0;overflow:hidden;">
+  <div style="max-width:1320px;margin:0 auto;padding:0 5%;">
+    <!-- En-tête -->
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#E85D04;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Portfolio</div>
+        <h2 style="font-family:'Libre Baskerville',serif;font-size:clamp(22px,3.5vw,34px);font-weight:700;color:#fff;margin-bottom:8px;">Nos réalisations</h2>
+        <p style="font-size:14px;color:rgba(255,255,255,.55);max-width:380px;">Les travaux réalisés par nos artisans qualifiés à Conakry et en Guinée.</p>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="realPrev()" id="realBtnPrev" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;cursor:pointer;font-size:16px;transition:.2s;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='rgba(232,93,4,.6)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">‹</button>
+        <button onclick="realNext()" id="realBtnNext" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;cursor:pointer;font-size:16px;transition:.2s;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='rgba(232,93,4,.6)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">›</button>
+      </div>
     </div>
 
-    
-    <div class="real-carousel-wrap" id="publicRealCarousel">
-      <div class="real-empty">
-        <i class="fa-solid fa-images" style="font-size:36px;"></i>
-        <span>Les réalisations seront bientôt disponibles</span>
+    <!-- Carousel track -->
+    <div style="position:relative;overflow:hidden;">
+      <div id="realTrack" style="display:flex;gap:16px;transition:transform .5s cubic-bezier(.25,.46,.45,.94);will-change:transform;">
+        <!-- Cartes injectées par JS -->
       </div>
+    </div>
+
+    <!-- Dots -->
+    <div id="realDots" style="display:flex;gap:6px;justify-content:center;margin-top:24px;"></div>
+
+    <!-- État vide -->
+    <div id="realEmpty" style="display:none;text-align:center;padding:60px 20px;">
+      <i class="fa-solid fa-images" style="font-size:40px;color:rgba(255,255,255,.2);display:block;margin-bottom:12px;"></i>
+      <p style="color:rgba(255,255,255,.4);font-size:14px;">Les réalisations seront bientôt disponibles</p>
     </div>
   </div>
 </section>
+
 
 <section class="temo-bg" id="temoignages">
   <div class="temo-inner">
@@ -4395,6 +4411,7 @@ async function chargerAvis() {
         <div class="adm-section-header" style="margin-bottom:20px;">
           <div class="adm-section-title">
             <i class="fa-solid fa-images" style="color:#E85D04;"></i> Gestion des réalisations
+            <span style="font-size:11px;font-weight:500;background:#FFF7F0;color:#E85D04;padding:3px 10px;border-radius:20px;margin-left:8px;">10 slots disponibles</span>
           </div>
           <button onclick="saveAllReals()" style="padding:9px 20px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;">
             <i class="fa-solid fa-cloud-arrow-up"></i> Tout publier
@@ -7575,77 +7592,52 @@ async function renderAdminRealisations() {
   const grid = document.getElementById('adminRealGrid');
   if (!grid) return;
   
-  // Charger les données existantes depuis site_config
+  // Charger depuis Supabase
   try {
     const { data } = await sb.from('site_config')
-      .select('cle,valeur')
-      .like('cle', 'realisation_%');
+      .select('cle,valeur').like('cle', 'realisation_%');
     _realData = {};
     (data || []).forEach(row => {
       const idx = row.cle.replace('realisation_', '');
       try { _realData[idx] = JSON.parse(row.valeur || '{}'); } catch(e) {}
     });
-  } catch(e) { console.warn('realData load:', e); }
+  } catch(e) { console.warn('realData:', e); }
 
-  // Générer les 5 cartes
-  const categories = ['Construction', 'Électricité', 'Plomberie', 'Soudure', 'Menuiserie'];
-  const colors = ['#C74B00', '#7C3AED', '#059669', '#B45309', '#1A1A4E'];
+  const categories = ['Construction','Électricité','Plomberie','Soudure','Menuiserie','Informatique','Beauté','Éducation','Transport','Autre'];
+  const colors = ['#C74B00','#7C3AED','#059669','#B45309','#1A1A4E','#2563EB','#DB2777','#D97706','#0891B2','#6B7280'];
 
   grid.innerHTML = categories.map((cat, i) => {
     const r = _realData[i] || {};
     const hasImg = !!r.imageUrl;
     return `
       <div class="adm-table-wrap" style="overflow:visible;">
-        
-        <div id="areal-preview-wrap-${i}" style="aspect-ratio:3/2;background:linear-gradient(135deg,${colors[i]}22,${colors[i]}44);overflow:hidden;position:relative;cursor:pointer;" onclick="document.getElementById('areal-file-${i}').click()">
+        <div id="areal-preview-wrap-${i}" style="aspect-ratio:4/3;background:linear-gradient(135deg,${colors[i]}22,${colors[i]}44);overflow:hidden;position:relative;cursor:pointer;border-radius:14px 14px 0 0;" onclick="document.getElementById('areal-file-${i}').click()">
           ${hasImg
             ? `<img src="${r.imageUrl}" style="width:100%;height:100%;object-fit:cover;" id="areal-img-${i}"/>`
             : `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;">
-                <i class="fa-solid fa-camera-retro" style="font-size:32px;color:${colors[i]};opacity:.6;"></i>
-                <span style="font-size:12px;font-weight:600;color:${colors[i]};opacity:.7;">Cliquer pour choisir</span>
+                <i class="fa-solid fa-camera-retro" style="font-size:28px;color:${colors[i]};opacity:.5;"></i>
+                <span style="font-size:11px;font-weight:600;color:${colors[i]};opacity:.6;">Cliquer pour ajouter</span>
                </div>`}
-          
-          <div style="position:absolute;top:10px;right:10px;background:${hasImg?'#ECFDF5':'#F3F4F6'};color:${hasImg?'#059669':'#9CA3AF'};border-radius:20px;padding:3px 10px;font-size:10.5px;font-weight:700;">
+          <div style="position:absolute;top:8px;right:8px;background:${hasImg?'#ECFDF5':'#F3F4F6'};color:${hasImg?'#059669':'#9CA3AF'};border-radius:20px;padding:2px 8px;font-size:9.5px;font-weight:700;">
             ${hasImg?'✅ Publié':'⚪ Vide'}
           </div>
-          
-          <div style="position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0">
-            <div style="color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-arrow-up-from-bracket"></i> Changer l'image
-            </div>
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;opacity:0;transition:.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0">
+            <span style="color:#fff;font-size:12px;font-weight:700;"><i class="fa-solid fa-arrow-up-from-bracket"></i> Changer</span>
           </div>
           <input type="file" id="areal-file-${i}" accept="image/*" style="display:none;" onchange="previewRealImage(this,${i})"/>
         </div>
-
-        
-        <div style="padding:16px;">
-          <div style="font-size:11px;font-weight:700;color:#E85D04;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;">Réalisation ${i+1} — ${cat}</div>
-          
-          <div style="margin-bottom:10px;">
-            <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">Titre <span style="color:#E85D04;">*</span></label>
-            <input id="areal-titre-${i}" value="${r.titre||''}" placeholder="Ex: Installation électrique villa" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:13px;box-sizing:border-box;outline:none;font-family:'DM Sans',sans-serif;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
-          </div>
-          
-          <div style="margin-bottom:10px;">
-            <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">Description</label>
-            <textarea id="areal-desc-${i}" placeholder="Décrivez le travail réalisé..." style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:12.5px;box-sizing:border-box;min-height:56px;resize:none;outline:none;font-family:'DM Sans',sans-serif;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'">${r.desc||''}</textarea>
-          </div>
-          
-          <div style="margin-bottom:14px;">
-            <label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">Artisan / Prestataire</label>
-            <input id="areal-artisan-${i}" value="${r.artisan||''}" placeholder="Nom de l'artisan" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:9px;font-size:13px;box-sizing:border-box;outline:none;font-family:'DM Sans',sans-serif;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
-          </div>
-
-          <button onclick="validerReal(${i})" id="areal-btn-${i}" style="width:100%;padding:11px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s;" onmouseover="this.style.background='#C74B00'" onmouseout="this.style.background='#E85D04'">
-            <i class="fa-solid fa-cloud-arrow-up"></i> Publier
-          </button>
+        <div style="padding:12px;">
+          <div style="font-size:9px;font-weight:700;color:#E85D04;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">Réal. ${i+1} — ${cat}</div>
+          <input id="areal-titre-${i}" value="${r.titre||''}" placeholder="Titre de la réalisation" style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12px;box-sizing:border-box;outline:none;margin-bottom:6px;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
+          <input id="areal-artisan-${i}" value="${r.artisan||''}" placeholder="Nom de l'artisan" style="width:100%;padding:8px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:12px;box-sizing:border-box;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='#E85D04'" onblur="this.style.borderColor='#E5E7EB'"/>
+          <button onclick="validerReal(${i})" style="width:100%;padding:9px;background:#E85D04;border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;"><i class="fa-solid fa-cloud-arrow-up"></i> Publier</button>
         </div>
       </div>`;
   }).join('');
 
-  // Mettre à jour le carousel aperçu
   _updateRealPreview();
 }
+
 
 // Mettre à jour l'aperçu carousel dans l'admin
 function _updateRealPreview() {
@@ -7824,195 +7816,6 @@ function previewRealImage(input, idx) {
   reader.readAsDataURL(file);
 }
 
-// ── CAROUSEL PUBLIC RÉALISATIONS ──
-var _pubCarouselIdx = 0;
-var _pubCarouselTimer = null;
-var _pubCarouselData = [];
-
-async function loadPublicRealisations() {
-  try {
-    const { data } = await sb.from('site_config')
-      .select('cle,valeur')
-      .like('cle', 'realisation_%')
-      .order('cle', { ascending: true });
-    
-    if (!data || !data.length) return;
-    _pubCarouselData = data
-      .map(row => { try { return JSON.parse(row.valeur||'{}'); } catch(e) { return {}; } })
-      .filter(r => r.titre || r.imageUrl);
-    
-    if (!_pubCarouselData.length) return;
-    buildPublicCarousel(_pubCarouselData);
-  } catch(e) { console.warn('loadPublicRealisations:', e); }
-}
-
-function buildPublicCarousel(data) {
-  const wrap = document.getElementById('publicRealCarousel');
-  if (!wrap) return;
-  
-  _pubCarouselData = data;
-  _pubCarouselIdx = 0;
-  
-  wrap.innerHTML = `
-    ${data.map((r, i) => `
-      <div class="real-slide ${i===0?'active':''}" id="realSlide${i}">
-        <div class="real-slide-img">
-          ${r.imageUrl
-            ? `<img src="${r.imageUrl}" alt="${r.titre||'Réalisation'}" loading="lazy"/>`
-            : `<div class="real-slide-img-placeholder"><i class="fa-solid fa-hammer" style="font-size:48px;color:rgba(255,255,255,.2);"></i></div>`}
-        </div>
-        <div class="real-slide-info">
-          <div class="real-slide-cat">Réalisation ${i+1}</div>
-          <div class="real-slide-title">${r.titre||'Réalisation'}</div>
-          <div class="real-slide-desc">${r.desc||'Un travail de qualité réalisé par nos artisans qualifiés.'}</div>
-          ${r.artisan ? `
-            <div class="real-slide-artisan">
-              <div class="real-slide-artisan-avatar">${r.artisan[0].toUpperCase()}</div>
-              <div>
-                <div class="real-slide-artisan-name">${r.artisan}</div>
-                <div class="real-slide-artisan-label">Artisan certifié YOUMMA</div>
-              </div>
-            </div>` : ''}
-        </div>
-      </div>`).join('')}
-    
-    <button class="real-arrow prev" onclick="pubCarouselPrev()">
-      <i class="fa-solid fa-chevron-left"></i>
-    </button>
-    <button class="real-arrow next" onclick="pubCarouselNext()">
-      <i class="fa-solid fa-chevron-right"></i>
-    </button>
-    <div class="real-dots" id="realDots">
-      ${data.map((_, i) => `<button class="real-dot ${i===0?'active':''}" onclick="pubCarouselGo(${i})"></button>`).join('')}
-    </div>
-  `;
-  
-  // Auto-play
-  if (_pubCarouselTimer) clearInterval(_pubCarouselTimer);
-  _pubCarouselTimer = setInterval(() => pubCarouselNext(), 4500);
-}
-
-function pubCarouselGo(n) {
-  const slides = document.querySelectorAll('.real-slide');
-  const dots = document.querySelectorAll('#realDots .real-dot');
-  slides[_pubCarouselIdx]?.classList.remove('active');
-  dots[_pubCarouselIdx]?.classList.remove('active');
-  _pubCarouselIdx = (n + _pubCarouselData.length) % _pubCarouselData.length;
-  slides[_pubCarouselIdx]?.classList.add('active');
-  dots[_pubCarouselIdx]?.classList.add('active');
-  if (_pubCarouselTimer) { clearInterval(_pubCarouselTimer); _pubCarouselTimer = setInterval(() => pubCarouselNext(), 4500); }
-}
-
-function pubCarouselNext() { pubCarouselGo(_pubCarouselIdx + 1); }
-function pubCarouselPrev() { pubCarouselGo(_pubCarouselIdx - 1); }
-
-// Rafraîchir depuis l'admin sans recharger
-function refreshPublicCarousel() {
-  const data = Object.values(_realData || {}).filter(r => r.imageUrl || r.titre);
-  if (data.length) buildPublicCarousel(data);
-}
-
-// Charger au démarrage de la page d'accueil
-document.addEventListener('DOMContentLoaded', function() {
-  if (location.hash === '' || location.hash === '#' || location.hash === '#home') {
-    loadPublicRealisations();
-  }
-});
-// Aussi charger quand on navigue vers home
-const _origNavigate = window.navigate;
-// navigate wrapper supprimé - loadPublicRealisations appelé directement
-
-</script>
-
-<!-- Overlays sidebar mobile -->
-<div class="sidebar-overlay" id="adminSidebarOverlay" onclick="toggleAdminSidebar()"></div>
-<div class="sidebar-overlay" id="dashSidebarOverlay" onclick="toggleDashSidebar()"></div>
-
-<script>
-// ── HAMBURGERS MOBILE ──
-function toggleAdminSidebar() {
-  const sb = document.getElementById('adminSidebarEl');
-  const ov = document.getElementById('adminSidebarOverlay');
-  if (!sb) return;
-  const isOpen = sb.classList.contains('open');
-  if (isOpen) {
-    sb.classList.remove('open');
-    sb.style.transform = 'translateX(-100%)';
-    if (ov) ov.classList.remove('show');
-    document.body.style.overflow = '';
-  } else {
-    sb.classList.add('open');
-    sb.style.transform = 'translateX(0)';
-    sb.style.display = 'flex';
-    if (ov) ov.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
-}
-
-function toggleDashSidebar() {
-  const sb = document.querySelector('#page-dashboard .sidebar');
-  const ov = document.getElementById('dashSidebarOverlay');
-  if (!sb) return;
-  const isOpen = sb.classList.contains('open');
-  if (isOpen) {
-    sb.classList.remove('open');
-    sb.style.transform = 'translateX(-100%)';
-    if (ov) ov.classList.remove('show');
-    document.body.style.overflow = '';
-  } else {
-    sb.classList.add('open');
-    sb.style.transform = 'translateX(0)';
-    sb.style.display = 'flex';
-    if (ov) ov.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
-}
-
-// Fermer les sidebars quand on clique sur un item du menu
-document.addEventListener('click', function(e) {
-  // Admin : fermer après click sur item menu
-  if (e.target.closest('#adminSidebarEl .anav') || e.target.closest('[onclick*="showAdmin"]')) {
-    if (window.innerWidth <= 768) {
-      const sb = document.getElementById('adminSidebarEl');
-      const ov = document.getElementById('adminSidebarOverlay');
-      if (sb) sb.classList.remove('open');
-      if (ov) ov.classList.remove('show');
-      document.body.style.overflow = '';
-    }
-  }
-  // Dashboard : fermer après click nav-item
-  if (e.target.closest('#page-dashboard .nav-item')) {
-    if (window.innerWidth <= 768) {
-      const sb = document.querySelector('#page-dashboard .sidebar');
-      const ov = document.getElementById('dashSidebarOverlay');
-      if (sb) sb.classList.remove('open');
-      if (ov) ov.classList.remove('show');
-      document.body.style.overflow = '';
-    }
-  }
-});
-
-// Afficher/cacher hamburgers selon taille écran
-function checkHamburgers() {
-  const isMobile = window.innerWidth <= 768;
-  document.querySelectorAll('.admin-hamburger').forEach(b => b.style.display = isMobile ? 'flex' : 'none');
-  document.querySelectorAll('.dash-hamburger').forEach(b => b.style.display = isMobile ? 'flex' : 'none');
-  // Sur desktop, s'assurer que les sidebars sont visibles sans transform
-  if (!isMobile) {
-    const adminSb = document.getElementById('adminSidebarEl');
-    if (adminSb) adminSb.style.transform = '';
-    const dashSb = document.querySelector('#page-dashboard .sidebar');
-    if (dashSb) dashSb.style.transform = '';
-  }
-}
-window.addEventListener('resize', checkHamburgers);
-document.addEventListener('DOMContentLoaded', checkHamburgers);
-setTimeout(checkHamburgers, 500);
-
-
-
-// ══════════════════════════════════════════════════════════════
-// SYSTÈME PARTICULIER / ENTREPRISE
 // ══════════════════════════════════════════════════════════════
 
 var _typeCompte = 'particulier'; // 'particulier' | 'entreprise'
@@ -8626,6 +8429,163 @@ async function missChangerStatut(id, newStatut) {
     showToast('❌ Erreur: ' + e.message, 'error');
   }
 }
+
+
+
+// ══════════════════════════════════════════════════════════════
+// CAROUSEL RÉALISATIONS PUBLIC — 10 images, défilement fluide
+// ══════════════════════════════════════════════════════════════
+
+var _realPubData = [];
+var _realPubIdx = 0;
+var _realPubTimer = null;
+var _realCardsPerView = 3;
+
+function _realGetCardsPerView() {
+  const w = window.innerWidth;
+  if (w < 640) return 1;
+  if (w < 1024) return 2;
+  return 3;
+}
+
+async function loadPublicRealisations() {
+  try {
+    const { data } = await sb.from('site_config')
+      .select('cle,valeur').like('cle', 'realisation_%').order('cle');
+    if (!data || !data.length) { _realShowEmpty(); return; }
+    
+    _realPubData = data
+      .map(row => { try { return { key: row.cle, ...JSON.parse(row.valeur||'{}') }; } catch(e) { return null; } })
+      .filter(r => r && (r.imageUrl || r.titre));
+    
+    if (!_realPubData.length) { _realShowEmpty(); return; }
+    _realBuildCarousel();
+  } catch(e) { _realShowEmpty(); }
+}
+
+function _realShowEmpty() {
+  const empty = document.getElementById('realEmpty');
+  const track = document.getElementById('realTrack');
+  if (empty) empty.style.display = 'block';
+  if (track) track.parentElement.style.display = 'none';
+}
+
+function _realBuildCarousel() {
+  const track = document.getElementById('realTrack');
+  if (!track) return;
+  _realCardsPerView = _realGetCardsPerView();
+  
+  track.innerHTML = _realPubData.map((r, i) => `
+    <div class="real-pub-card" style="flex:0 0 calc(${100/_realCardsPerView}% - ${16*(_realCardsPerView-1)/_realCardsPerView}px);min-width:0;border-radius:16px;overflow:hidden;background:#1A1A4E;position:relative;cursor:pointer;" onclick="realOuvrirDetail(${i})">
+      ${r.imageUrl
+        ? `<img src="${r.imageUrl}" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;" loading="lazy"/>`
+        : `<div style="width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#2D2D6B,#1A1A4E);display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-hammer" style="font-size:32px;color:rgba(255,255,255,.2);"></i></div>`}
+      <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.85),transparent);padding:20px 16px 14px;">
+        <div style="font-size:13.5px;font-weight:700;color:#fff;margin-bottom:3px;">${r.titre||'Réalisation'}</div>
+        ${r.artisan ? `<div style="font-size:11px;color:rgba(255,255,255,.65);display:flex;align-items:center;gap:5px;"><i class="fa-solid fa-user-check" style="font-size:9px;color:#E85D04;"></i>${r.artisan}</div>` : ''}
+      </div>
+      <!-- Numéro -->
+      <div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,.5);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;backdrop-filter:blur(4px);">${i+1}/${_realPubData.length}</div>
+    </div>`).join('');
+
+  // Dots
+  const dotsDiv = document.getElementById('realDots');
+  if (dotsDiv) {
+    const nbDots = Math.ceil(_realPubData.length / _realCardsPerView);
+    dotsDiv.innerHTML = Array.from({length:nbDots},(_,i) =>
+      `<button onclick="realGoTo(${i})" id="realDot${i}" style="width:${i===0?'24px':'8px'};height:8px;border-radius:4px;border:none;background:${i===0?'#E85D04':'rgba(255,255,255,.25)'};cursor:pointer;transition:all .3s;padding:0;"></button>`
+    ).join('');
+  }
+  
+  _realPubIdx = 0;
+  _realAnimate();
+  _realStartAuto();
+}
+
+function _realAnimate() {
+  const track = document.getElementById('realTrack');
+  if (!track) return;
+  _realCardsPerView = _realGetCardsPerView();
+  const cardW = track.parentElement.offsetWidth / _realCardsPerView;
+  const offset = _realPubIdx * (cardW + 16);
+  track.style.transform = `translateX(-${offset}px)`;
+  
+  // Dots
+  const nbDots = Math.ceil(_realPubData.length / _realCardsPerView);
+  for (let i = 0; i < nbDots; i++) {
+    const d = document.getElementById('realDot'+i);
+    if (d) {
+      const active = i === Math.floor(_realPubIdx / _realCardsPerView);
+      d.style.width = active ? '24px' : '8px';
+      d.style.background = active ? '#E85D04' : 'rgba(255,255,255,.25)';
+    }
+  }
+}
+
+function realGoTo(dotIdx) {
+  _realPubIdx = dotIdx * _realCardsPerView;
+  _realAnimate();
+  _realStartAuto();
+}
+
+function realNext() {
+  const max = Math.max(0, _realPubData.length - _realCardsPerView);
+  _realPubIdx = _realPubIdx >= max ? 0 : _realPubIdx + 1;
+  _realAnimate();
+  _realStartAuto();
+}
+
+function realPrev() {
+  const max = Math.max(0, _realPubData.length - _realCardsPerView);
+  _realPubIdx = _realPubIdx <= 0 ? max : _realPubIdx - 1;
+  _realAnimate();
+  _realStartAuto();
+}
+
+function _realStartAuto() {
+  if (_realPubTimer) clearInterval(_realPubTimer);
+  _realPubTimer = setInterval(realNext, 4000);
+}
+
+function realOuvrirDetail(idx) {
+  const r = _realPubData[idx];
+  if (!r) return;
+  // Simple lightbox
+  const existing = document.getElementById('realLightbox');
+  if (existing) existing.remove();
+  
+  const lb = document.createElement('div');
+  lb.id = 'realLightbox';
+  lb.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;cursor:pointer;';
+  lb.onclick = () => lb.remove();
+  lb.innerHTML = `
+    <div style="max-width:700px;width:100%;cursor:default;" onclick="event.stopPropagation()">
+      ${r.imageUrl ? `<img src="${r.imageUrl}" style="width:100%;border-radius:16px;display:block;max-height:60vh;object-fit:contain;"/>` : ''}
+      <div style="background:#1A1A4E;border-radius:0 0 16px 16px;padding:20px;">
+        <div style="font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;">${r.titre||'Réalisation'}</div>
+        ${r.desc ? `<div style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:10px;">${r.desc}</div>` : ''}
+        ${r.artisan ? `<div style="font-size:12px;color:#E85D04;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-user-check"></i>${r.artisan} — Artisan certifié YOUMMA</div>` : ''}
+      </div>
+      <button onclick="document.getElementById('realLightbox').remove()" style="position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:18px;cursor:pointer;">✕</button>
+    </div>`;
+  document.body.appendChild(lb);
+}
+
+function refreshPublicCarousel() {
+  if (_realData && Object.keys(_realData).length) {
+    _realPubData = Object.values(_realData).filter(r => r.imageUrl || r.titre)
+      .map((r,i) => ({...r, key:'realisation_'+i}));
+    if (_realPubData.length) _realBuildCarousel();
+  }
+}
+
+// Recalculer au resize
+window.addEventListener('resize', function() {
+  if (_realPubData.length) _realBuildCarousel();
+});
+
+// Charger au démarrage
+document.addEventListener('DOMContentLoaded', loadPublicRealisations);
 
 </script>
 </body>
