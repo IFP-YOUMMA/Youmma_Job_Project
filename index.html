@@ -633,6 +633,32 @@ body.admin-mode #page-admin.logged #adminWrap{
 
 </style>
 
+
+<style>
+/* ── NAV RESPONSIVE ── */
+.nav-link{display:inline-flex;align-items:center;padding:6px 10px;border-radius:8px;color:rgba(255,255,255,.8);text-decoration:none;font-size:13.5px;font-weight:500;transition:.2s;white-space:nowrap;}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,.07);}
+.btn-nav-ghost{display:flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:50px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:.2s;}
+.btn-nav-ghost:hover{background:rgba(255,255,255,.14);}
+.btn-nav-primary{display:flex;align-items:center;gap:6px;padding:9px 18px;background:#E85D04;border:none;border-radius:50px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 3px 12px rgba(232,93,4,.35);transition:.2s;}
+.btn-nav-primary:hover{background:#C74B00;}
+
+@media(max-width:1024px){
+  .nav-links{display:none!important;}
+  .nav-ctas{display:none!important;}
+  #navHamburger{display:flex!important;}
+  .nav-logo-text{display:none!important;}
+}
+@media(min-width:1025px){
+  .nav-links{display:flex!important;}
+  .nav-ctas{display:flex!important;}
+  #navHamburger{display:none!important;}
+  .nav-logo-text{display:inline!important;}
+}
+/* Menu mobile animation */
+#mobileMenu{transition:opacity .25s;}
+#mobileMenu.open{opacity:1;}
+</style>
 </head>
 <body>
 <!-- 
@@ -893,53 +919,108 @@ async function verifierSession() {
 <div class="toast" id="toast"></div>
 
 <nav id="mainNav">
-  <div class="nav-inner">
-    <a href="#accueil" class="nav-logo">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAEUElEQVR42u2Xy29UdRTHP7/fvXce93Y6D/ugU4FigSkolZSFBtKghIaFQfwDdCeJO5eaEJaauDNx4UKMkRATxZUmRk2MC1SIkfAIoNWQQlugQOfZaed5f8fFtCgGY2eYGhZzkptJ7r1z7ifnnN/39/0pEREe4dA84tEB7AB2ADuAaxx2s394oKwrUPe9IxgjaK1QSj0UoGrPTiKIEXxRKMCy/oIyRlBK0Srnqiq4Uo0TX03y/S8zuI7G+D5+pUKhpAl5HgNRRSzogwhih+ntTbB7Zy+p4cS9qrZSTXt19WnE9O0iZ3+9SzxskS8s4bgxDqbKHHC/Y6h8CXcxi6Ao6DiTmRE+Oz9GOJnitVdG6eoKtwTZ1AwGHE236yAibB9Zz9EtP5CaOQ4zcxhf4ysLgAEMSedHno9/zTfZlzj69jxvvj5Of39305BNLhLFYqnGti0DvDt0kp5zx1iSCNqJorTcWyhVQIxC5u5woOt9+uN53nlP8daR/QSDTiOTWgOZEb+O7opzZPMZei5+yJJ+DDvgoDEoMY1hEEEhaGWwgkEWl8LsLHzKuP0Tx09eQmuFiFkbHSzWLCaGa2y79gGlagBb+VCrQL3agKtXwNTBrzXu1Ws42qecrXEo8AXXL//G3fQiWmtWqx1NtdgOhdkbv4rUhsAbRsp5VCgCSsPCbehPwewFiPSBl4BbVyA2iCxk0SGL0fw5Tp/bzYv7PYwxWJZuTwVXxiURc9mUOYWyPHRyBIVAdB1q8ClkKY9oDVv3Qs8mCEWRrXshsQHVswEGdrI1OM3sTKb9q3hloL2A4NXSmPkcKn0TcUIwcwG8OET7UelpsB1EOxAMou6kkWgvlBeQW2miXZsoF4vLOVV7dVABllIYx0Xd+BmxvUYFAXI3UJYN1Roko6igDbdLqLgLfg60QZkiptaPjjj/yNoOwOVcIdcl6wywztZgB8D498+A5YAVQCUiSLYKrgtaIRaILdzJJ4l0u/++pz/sDG5c5/GHuwscC2OWZWVZWhABu+Ea5Pe5xu/UXZjNIDczqEyFS/khto/0NdXiVQE2tAtG1weZiu2mnNiBVS2CfkAD5vJQqsFCGap1pFjHyc2TY4Rpexu7dvQh0tjb26qDIkIooBkbHeLz7sME4h5+pYz8HXKlbVqBpRHLwVSXsB9Pcix7kImJUQIBi2b806oBtVYYI4w/GcXfvI8ve98gnAhhV/L4BgwWRi1faPy6IVDNER7s46PFV+navofn9my454zWzA8aAY3h429nqU6e4lD5BH2F81ApNh4CWBrC3dxwx/hk4QViI89w+OWnMYam4Fo2rCINbTxzJcvps9eJZi6ysXyZmD+PCKTp4areQs5NsW98mGfHki37wZYdtRFBKwUIkzMlpm4uUiiUQAwRL8gTgx6poe77DO//bvn/68Migggtw7XtTCIijfFbSaUUWvHQB6Y2Hpo6B/cOYAewA9gBXKv4EwW01J5x+MQNAAAAAElFTkSuQmCC" alt="YOUMMA JOBS" style="width:40px;height:40px;object-fit:contain;border-radius:8px;"/>
+  <div class="nav-inner" style="display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 4%;max-width:1400px;margin:0 auto;width:100%;box-sizing:border-box;">
+    
+    <!-- Logo -->
+    <a href="#accueil" class="nav-logo" style="display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0;">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAEUElEQVR42u2Xy29UdRTHP7/fvXce93Y6D/ugU4FigSkolZSFBtKghIaFQfwDdCeJO5eaEJaauDNx4UKMkRATxZUmRk2MC1SIkfAIoNWQQlugQOfZaed5f8fFtCgGY2eYGhZzkptJ7r1z7ifnnN/39/0pEREe4dA84tEB7AB2ADuAaxx2s394oKwrUPe9IxgjaK1QSj0UoGrPTiKIEXxRKMCy/oIyRlBK0Srnqiq4Uo0TX03y/S8zuI7G+D5+pUKhpAl5HgNRRSzogwhih+ntTbB7Zy+p4cS9qrZSTXt19WnE9O0iZ3+9SzxskS8s4bgxDqbKHHC/Y6h8CXcxi6Ao6DiTmRE+Oz9GOJnitVdG6eoKtwTZ1AwGHE236yAibB9Zz9EtP5CaOQ4zcxhf4ysLgAEMSedHno9/zTfZlzj69jxvvj5Of39305BNLhLFYqnGti0DvDt0kp5zx1iSCNqJorTcWyhVQIxC5u5woOt9+uN53nlP8daR/QSDTiOTWgOZEb+O7opzZPMZei5+yJJ+DDvgoDEoMY1hEEEhaGWwgkEWl8LsLHzKuP0Tx09eQmuFiFkbHSzWLCaGa2y79gGlagBb+VCrQL3agKtXwNTBrzXu1Ws42qecrXEo8AXXL//G3fQiWmtWqx1NtdgOhdkbv4rUhsAbRsp5VCgCSsPCbehPwewFiPSBl4BbVyA2iCxk0SGL0fw5Tp/bzYv7PYwxWJZuTwVXxiURc9mUOYWyPHRyBIVAdB1q8ClkKY9oDVv3Qs8mCEWRrXshsQHVswEGdrI1OM3sTKb9q3hloL2A4NXSmPkcKn0TcUIwcwG8OET7UelpsB1EOxAMou6kkWgvlBeQW2miXZsoF4vLOVV7dVABllIYx0Xd+BmxvUYFAXI3UJYN1Roko6igDbdLqLgLfg60QZkiptaPjjj/yNoOwOVcIdcl6wywztZgB8D498+A5YAVQCUiSLYKrgtaIRaILdzJJ4l0u/++pz/sDG5c5/GHuwscC2OWZWVZWhABu+Ea5Pe5xu/UXZjNIDczqEyFS/khto/0NdXiVQE2tAtG1weZiu2mnNiBVS2CfkAD5vJQqsFCGap1pFjHyc2TY4Rpexu7dvQh0tjb26qDIkIooBkbHeLz7sME4h5+pYz8HXKlbVqBpRHLwVSXsB9Pcix7kImJUQIBi2b806oBtVYYI4w/GcXfvI8ve98gnAhhV/L4BgwWRi1faPy6IVDNER7s46PFV+navofn9my454zWzA8aAY3h429nqU6e4lD5BH2F81ApNh4CWBrC3dxwx/hk4QViI89w+OWnMYam4Fo2rCINbTxzJcvps9eJZi6ysXyZmD+PCKTp4areQs5NsW98mGfHki37wZYdtRFBKwUIkzMlpm4uUiiUQAwRL8gTgx6poe77DO//bvn/68Migggtw7XtTCIijfFbSaUUWvHQB6Y2Hpo6B/cOYAewA9gBXKv4EwW01J5x+MQNAAAAAElFTkSuQmCC" alt="YOUMMA JOBS" style="width:36px;height:36px;object-fit:contain;border-radius:8px;flex-shrink:0;"/>
+      <span style="font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;color:#fff;white-space:nowrap;" class="nav-logo-text">YOUMMA <span style="color:#E85D04;">JOBS</span></span>
     </a>
-    <ul class="nav-links">
-      <li><a href="#accueil">Accueil</a></li>
-      <li><a href="#prestataires" onclick="filterCat('')">Artisans</a></li>
-      <li><a href="#prestataires" onclick="filterCat('Services Express')">Express</a></li>
-      <li><a href="#categories">Catégories</a></li>
-      <li><a href="#tarifs">Tarifs</a></li>
-      <li><a href="javascript:void(0)" onclick="(function(){var h=document.getElementById('page-soon-hub');var m=document.getElementById('mainContent');var n=document.getElementById('mainNav');if(!h)return;document.querySelectorAll('.page').forEach(function(p){p.style.display='';p.classList.remove('active');});if(m)m.style.cssText='display:none!important';if(n)n.style.cssText='display:none!important';document.body.classList.remove('on-home');h.style.cssText='display:block!important;min-height:100vh;background:#F4F6FB;';h.classList.add('active');window.scrollTo(0,0);if(window._initHubVote)_initHubVote();if(window._loadHubVoteStats)_loadHubVoteStats();})()" class="nav-link-soon" style="display:flex;align-items:center;gap:5px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.3);border-radius:50px;padding:5px 13px!important;">
-        <span style="font-size:9px;">✨</span> Nouveautés
-        <span style="font-size:8px;background:#F5C842;color:#0D0D2E;padding:1px 6px;border-radius:20px;font-weight:800;">4</span>
-      </a></li>
+
+    <!-- Liens desktop (cachés sur mobile) -->
+    <ul class="nav-links" style="display:flex;align-items:center;gap:4px;list-style:none;margin:0;padding:0;">
+      <li><a href="#accueil" class="nav-link">Accueil</a></li>
+      <li><a href="#prestataires" onclick="filterCat('')" class="nav-link">Artisans</a></li>
+      <li><a href="#prestataires" onclick="filterCat('Services Express')" class="nav-link">Express</a></li>
+      <li><a href="#categories" class="nav-link">Catégories</a></li>
+      <li><a href="#tarifs" class="nav-link">Tarifs</a></li>
+      <li>
+        <a href="javascript:void(0)" onclick="(function(){var h=document.getElementById('page-soon-hub');var m=document.getElementById('mainContent');var n=document.getElementById('mainNav');if(!h)return;document.querySelectorAll('.page').forEach(function(p){p.style.display='';p.classList.remove('active');});if(m)m.style.cssText='display:none!important';if(n)n.style.cssText='display:none!important';document.body.classList.remove('on-home');h.style.cssText='display:block!important;min-height:100vh;background:#F4F6FB;';h.classList.add('active');window.scrollTo(0,0);if(window._initHubVote)_initHubVote();if(window._loadHubVoteStats)_loadHubVoteStats();})()" class="nav-link nav-link-soon" style="display:flex;align-items:center;gap:5px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.3);border-radius:50px;padding:5px 13px;">
+          ✨ Nouveautés <span style="font-size:8px;background:#F5C842;color:#0D0D2E;padding:1px 6px;border-radius:20px;font-weight:800;">4</span>
+        </a>
+      </li>
     </ul>
-    <div class="nav-ctas">
-      <button class="btn-nav-ghost" onclick="(function(){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');p.style.display='';});var mc=document.getElementById('mainContent');var mn=document.getElementById('mainNav');document.body.classList.remove('on-home','on-dashboard','on-admin');if(mc)mc.style.cssText='display:none!important';if(mn)mn.style.cssText='display:none!important';var pl=document.getElementById('page-login');if(pl){pl.classList.add('active');pl.style.cssText='display:block!important';window.scrollTo(0,0);}})()"><i class="fa-solid fa-lock"></i> Connexion</button>
-      <button class="btn-nav-ghost" onclick="if(typeof _realNavigate==='function')_realNavigate('inscription');else if(typeof navigate==='function')navigate('inscription')">+ Devenir artisan</button>
+
+    <!-- CTAs desktop -->
+    <div class="nav-ctas" style="display:flex;align-items:center;gap:8px;">
+      <button class="btn-nav-ghost" onclick="(function(){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');p.style.display='';});var mc=document.getElementById('mainContent');var mn=document.getElementById('mainNav');document.body.classList.remove('on-home','on-dashboard','on-admin');if(mc)mc.style.cssText='display:none!important';if(mn)mn.style.cssText='display:none!important';var pl=document.getElementById('page-login');if(pl){pl.classList.add('active');pl.style.cssText='display:block!important';window.scrollTo(0,0);}})()"><i class="fa-solid fa-lock" style="font-size:12px;"></i> Connexion</button>
+      <button class="btn-nav-ghost" onclick="(function(){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');p.style.display='';});var mc=document.getElementById('mainContent');var mn=document.getElementById('mainNav');document.body.classList.remove('on-home','on-dashboard','on-admin');if(mc)mc.style.cssText='display:none!important';if(mn)mn.style.cssText='display:none!important';var pi=document.getElementById('page-inscription');if(pi){pi.classList.add('active');pi.style.cssText='display:block!important';window.scrollTo(0,0);}})()"><i class="fa-solid fa-plus" style="font-size:11px;"></i> Devenir artisan</button>
       <button class="btn-nav-primary" onclick="document.getElementById('prestataires').scrollIntoView({behavior:'smooth'})">Trouver un artisan</button>
     </div>
-    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
-      <span></span><span></span><span></span>
+
+    <!-- Hamburger mobile -->
+    <button class="hamburger" id="navHamburger" onclick="toggleMenu()" aria-label="Menu" style="display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:40px;height:40px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;cursor:pointer;flex-shrink:0;">
+      <span style="display:block;width:18px;height:2px;background:#fff;border-radius:2px;transition:.3s;"></span>
+      <span style="display:block;width:18px;height:2px;background:#fff;border-radius:2px;transition:.3s;"></span>
+      <span style="display:block;width:14px;height:2px;background:#fff;border-radius:2px;transition:.3s;align-self:flex-end;"></span>
     </button>
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu" onclick="toggleMenu()">
-  <div class="mobile-menu-inner" onclick="event.stopPropagation()">
-    <div style="padding:10px 16px 6px;font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;">Disponible</div>
-    <a href="#accueil" onclick="toggleMenu()"><i class="fa-solid fa-house"></i> Accueil</a>
-    <a href="#prestataires" onclick="toggleMenu();filterCat('')"><i class="fa-solid fa-hammer"></i> Artisans</a>
-    <a href="#prestataires" onclick="toggleMenu();filterCat('Services Express')"><i class="fa-solid fa-bolt"></i> Services Express</a>
-    <a href="#categories" onclick="toggleMenu()"><i class="fa-solid fa-grid-2"></i> Catégories</a>
-    <a href="#tarifs" onclick="toggleMenu()"><i class="fa-solid fa-tag"></i> Tarifs</a>
-    <div style="height:1px;background:rgba(255,255,255,.1);margin:8px 16px;"></div>
-    <div style="padding:6px 16px;font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;">Prochainement</div>
-    <a href="javascript:void(0)" onclick="toggleMenu();openSoonPage('emplois')" style="opacity:.65;"><i class="fa-solid fa-briefcase"></i> Emplois <span style="font-size:9px;background:rgba(245,200,66,.2);color:#F5C842;padding:1px 6px;border-radius:20px;margin-left:4px;">Bientôt</span></a>
-    <a href="javascript:void(0)" onclick="toggleMenu();openSoonPage('formations')" style="opacity:.65;"><i class="fa-solid fa-graduation-cap"></i> Formations <span style="font-size:9px;background:rgba(245,200,66,.2);color:#F5C842;padding:1px 6px;border-radius:20px;margin-left:4px;">Bientôt</span></a>
-    <a href="javascript:void(0)" onclick="toggleMenu();openSoonPage('freelance')" style="opacity:.65;"><i class="fa-solid fa-laptop-code"></i> Freelance <span style="font-size:9px;background:rgba(245,200,66,.2);color:#F5C842;padding:1px 6px;border-radius:20px;margin-left:4px;">Bientôt</span></a>
-    <a href="javascript:void(0)" onclick="toggleMenu();openSoonPage('appels-offres')" style="opacity:.65;"><i class="fa-solid fa-file-signature"></i> Appels d'offres <span style="font-size:9px;background:rgba(245,200,66,.2);color:#F5C842;padding:1px 6px;border-radius:20px;margin-left:4px;">Bientôt</span></a>
-    <div style="height:1px;background:rgba(255,255,255,.1);margin:8px 16px;"></div>
-    <a href="#contact" onclick="toggleMenu()"><i class="fa-solid fa-phone"></i> Contact</a>
-    <div style="height:1px;background:rgba(255,255,255,.1);margin:8px 16px;"></div>
-    <a href="javascript:void(0)" onclick="toggleMenu();navigate('login')" style="background:rgba(255,255,255,.06);border-radius:8px;margin:0 8px;"><i class="fa-solid fa-lock"></i> Connexion</a>
-    <a href="javascript:void(0)" onclick="toggleMenu();navigate('inscription')" style="background:#E85D04;border-radius:8px;margin:0 8px;color:#fff!important;"><i class="fa-solid fa-plus"></i> Devenir artisan</a>
+
+<div class="mobile-menu" id="mobileMenu" onclick="toggleMenu()" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);">
+  <div onclick="event.stopPropagation()" style="position:absolute;top:0;right:0;width:min(300px,88vw);height:100vh;background:#0D0D2E;display:flex;flex-direction:column;box-shadow:-8px 0 32px rgba(0,0,0,.4);overflow-y:auto;">
+    
+    <!-- Header menu -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.08);">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAEUElEQVR42u2Xy29UdRTHP7/fvXce93Y6D/ugU4FigSkolZSFBtKghIaFQfwDdCeJO5eaEJaauDNx4UKMkRATxZUmRk2MC1SIkfAIoNWQQlugQOfZaed5f8fFtCgGY2eYGhZzkptJ7r1z7ifnnN/39/0pEREe4dA84tEB7AB2ADuAaxx2s394oKwrUPe9IxgjaK1QSj0UoGrPTiKIEXxRKMCy/oIyRlBK0Srnqiq4Uo0TX03y/S8zuI7G+D5+pUKhpAl5HgNRRSzogwhih+ntTbB7Zy+p4cS9qrZSTXt19WnE9O0iZ3+9SzxskS8s4bgxDqbKHHC/Y6h8CXcxi6Ao6DiTmRE+Oz9GOJnitVdG6eoKtwTZ1AwGHE236yAibB9Zz9EtP5CaOQ4zcxhf4ysLgAEMSedHno9/zTfZlzj69jxvvj5Of39305BNLhLFYqnGti0DvDt0kp5zx1iSCNqJorTcWyhVQIxC5u5woOt9+uN53nlP8daR/QSDTiOTWgOZEb+O7opzZPMZei5+yJJ+DDvgoDEoMY1hEEEhaGWwgkEWl8LsLHzKuP0Tx09eQmuFiFkbHSzWLCaGa2y79gGlagBb+VCrQL3agKtXwNTBrzXu1Ws42qecrXEo8AXXL//G3fQiWmtWqx1NtdgOhdkbv4rUhsAbRsp5VCgCSsPCbehPwewFiPSBl4BbVyA2iCxk0SGL0fw5Tp/bzYv7PYwxWJZuTwVXxiURc9mUOYWyPHRyBIVAdB1q8ClkKY9oDVv3Qs8mCEWRrXshsQHVswEGdrI1OM3sTKb9q3hloL2A4NXSmPkcKn0TcUIwcwG8OET7UelpsB1EOxAMou6kkWgvlBeQW2miXZsoF4vLOVV7dVABllIYx0Xd+BmxvUYFAXI3UJYN1Roko6igDbdLqLgLfg60QZkiptaPjjj/yNoOwOVcIdcl6wywztZgB8D498+A5YAVQCUiSLYKrgtaIRaILdzJJ4l0u/++pz/sDG5c5/GHuwscC2OWZWVZWhABu+Ea5Pe5xu/UXZjNIDczqEyFS/khto/0NdXiVQE2tAtG1weZiu2mnNiBVS2CfkAD5vJQqsFCGap1pFjHyc2TY4Rpexu7dvQh0tjb26qDIkIooBkbHeLz7sME4h5+pYz8HXKlbVqBpRHLwVSXsB9Pcix7kImJUQIBi2b806oBtVYYI4w/GcXfvI8ve98gnAhhV/L4BgwWRi1faPy6IVDNER7s46PFV+navofn9my454zWzA8aAY3h429nqU6e4lD5BH2F81ApNh4CWBrC3dxwx/hk4QViI89w+OWnMYam4Fo2rCINbTxzJcvps9eJZi6ysXyZmD+PCKTp4areQs5NsW98mGfHki37wZYdtRFBKwUIkzMlpm4uUiiUQAwRL8gTgx6poe77DO//bvn/68Migggtw7XtTCIijfFbSaUUWvHQB6Y2Hpo6B/cOYAewA9gBXKv4EwW01J5x+MQNAAAAAElFTkSuQmCC" style="width:30px;height:30px;border-radius:7px;object-fit:contain;"/>
+        <span style="font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#fff;">YOUMMA <span style="color:#E85D04;">JOBS</span></span>
+      </div>
+      <button onclick="toggleMenu()" style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.08);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    </div>
+
+    <!-- CTAs rapides -->
+    <div style="padding:14px 16px;display:flex;gap:8px;border-bottom:1px solid rgba(255,255,255,.08);">
+      <button onclick="toggleMenu();(function(){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');p.style.display='';});var mc=document.getElementById('mainContent');var mn=document.getElementById('mainNav');document.body.classList.remove('on-home','on-dashboard','on-admin');if(mc)mc.style.cssText='display:none!important';if(mn)mn.style.cssText='display:none!important';var pl=document.getElementById('page-login');if(pl){pl.classList.add('active');pl.style.cssText='display:block!important';window.scrollTo(0,0);}})()" style="flex:1;padding:10px 8px;background:#E85D04;border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fa-solid fa-lock" style="font-size:11px;"></i> Connexion</button>
+      <button onclick="toggleMenu();(function(){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');p.style.display='';});var mc=document.getElementById('mainContent');var mn=document.getElementById('mainNav');document.body.classList.remove('on-home','on-dashboard','on-admin');if(mc)mc.style.cssText='display:none!important';if(mn)mn.style.cssText='display:none!important';var pi=document.getElementById('page-inscription');if(pi){pi.classList.add('active');pi.style.cssText='display:block!important';window.scrollTo(0,0);}})()" style="flex:1;padding:10px 8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:10px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fa-solid fa-plus" style="font-size:11px;"></i> S'inscrire</button>
+    </div>
+
+    <!-- Liens navigation -->
+    <div style="padding:8px 10px;flex:1;">
+      <div style="font-size:9.5px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;padding:8px 8px 6px;">Navigation</div>
+      
+      <a href="#accueil" onclick="toggleMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:10px;color:rgba(255,255,255,.85);text-decoration:none;font-size:14px;font-weight:500;transition:.15s;" onmouseover="this.style.background='rgba(255,255,255,.06)'" onmouseout="this.style.background=''">
+        <span style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-house" style="font-size:13px;color:#E85D04;"></i></span>
+        Accueil
+      </a>
+      <a href="#prestataires" onclick="toggleMenu();filterCat('')" style="display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:10px;color:rgba(255,255,255,.85);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.background='rgba(255,255,255,.06)'" onmouseout="this.style.background=''">
+        <span style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-hammer" style="font-size:13px;color:#E85D04;"></i></span>
+        Artisans
+      </a>
+      <a href="#prestataires" onclick="toggleMenu();filterCat('Services Express')" style="display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:10px;color:rgba(255,255,255,.85);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.background='rgba(255,255,255,.06)'" onmouseout="this.style.background=''">
+        <span style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-bolt" style="font-size:13px;color:#F59E0B;"></i></span>
+        Services Express
+      </a>
+      <a href="#categories" onclick="toggleMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:10px;color:rgba(255,255,255,.85);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.background='rgba(255,255,255,.06)'" onmouseout="this.style.background=''">
+        <span style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-grip" style="font-size:13px;color:#8B5CF6;"></i></span>
+        Catégories
+      </a>
+      <a href="#tarifs" onclick="toggleMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:10px;color:rgba(255,255,255,.85);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.background='rgba(255,255,255,.06)'" onmouseout="this.style.background=''">
+        <span style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-tag" style="font-size:13px;color:#10B981;"></i></span>
+        Tarifs
+      </a>
+
+      <!-- Nouveautés -->
+      <a href="javascript:void(0)" onclick="toggleMenu();(function(){var h=document.getElementById('page-soon-hub');var m=document.getElementById('mainContent');var n=document.getElementById('mainNav');if(!h)return;document.querySelectorAll('.page').forEach(function(p){p.style.display='';p.classList.remove('active');});if(m)m.style.cssText='display:none!important';if(n)n.style.cssText='display:none!important';document.body.classList.remove('on-home');h.style.cssText='display:block!important;min-height:100vh;background:#F4F6FB;';h.classList.add('active');window.scrollTo(0,0);if(window._initHubVote)_initHubVote();if(window._loadHubVoteStats)_loadHubVoteStats();})()" style="display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:600;background:rgba(245,200,66,.06);border:1px solid rgba(245,200,66,.15);margin-top:8px;" onmouseover="this.style.background='rgba(245,200,66,.1)'" onmouseout="this.style.background='rgba(245,200,66,.06)'">
+        <span style="width:32px;height:32px;border-radius:8px;background:rgba(245,200,66,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">✨</span>
+        <span style="color:#F5C842;">Nouveautés</span>
+        <span style="margin-left:auto;font-size:9px;background:#F5C842;color:#0D0D2E;padding:2px 7px;border-radius:20px;font-weight:800;">4</span>
+      </a>
+
+      <!-- Bouton Trouver -->
+      <button onclick="toggleMenu();document.getElementById('prestataires').scrollIntoView({behavior:'smooth'})" style="width:100%;margin-top:12px;padding:13px;background:linear-gradient(135deg,#E85D04,#C74B00);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(232,93,4,.35);">
+        <i class="fa-solid fa-magnifying-glass"></i> Trouver un artisan
+      </button>
+    </div>
+
+    <!-- Footer menu -->
+    <div style="padding:14px 18px;border-top:1px solid rgba(255,255,255,.06);text-align:center;">
+      <div style="font-size:10.5px;color:rgba(255,255,255,.3);">YOUMMA JOBS © 2025 — Guinée</div>
+    </div>
   </div>
 </div>
+
 
 <div id="mainContent" style="display:block;">
 
